@@ -1,0 +1,34 @@
+@startuml(id=Container)
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/android-icon.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/docker-icon.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/kafka.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/postgresql.puml
+title My Software System - Containers
+caption Test container view
+
+SHOW_PERSON_OUTLINE()
+
+SystemQueue_Ext(10, "Broker", "Message Broker", "kafka")
+AddProperty("prop 1", "value 1")
+Person(7, "Maintainer", "some employee", "", $link="https://www.google.de")
+Person_Ext(16, "User", "some user", "")
+System_Boundary(1_boundary, My Software System) {
+  Container(3, "App", "Android", "android app", "android-icon")
+  AddProperty("prop 1", "value 1")
+  Container(2, "Backend App", "Kotlin", "some backend app", "docker-icon", $link="https://www.google.de")
+  ContainerDb(5, "Database", "postgres", "some database", "postgresql")
+}
+Rel_D(3, 2, "desc", "Soap")
+Rel_D(2, 10, "reads topic", "Avro")
+Rel_D(2, 5, "CRUD", "JPA")
+Rel_D(7, 2, "Admin UI", "REST")
+Rel_D(16, 3, "uses app")
+
+LAYOUT_WITH_LEGEND()
+LAYOUT_TOP_DOWN()
+
+@enduml

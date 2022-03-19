@@ -1,0 +1,31 @@
+@startuml(id=Component)
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/kotlin.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/postgresql.puml
+title My Software System - Backend App - Components
+caption Test component view
+
+SHOW_PERSON_OUTLINE()
+
+AddRelTag("async", $lineStyle = DashedLine())
+
+ContainerDb(10, "Database", "postgres", "some database", "postgresql")
+Person(12, "Maintainer", "some employee", "")
+Person_Ext(3, "User", "A user", "")
+Container_Boundary(2_boundary, Backend App) {
+  AddProperty("jdbcUrl", "someurl")
+  Component(6, "MyRepo", "Kotlin, JDBC", "Provides CRUD operations for data", "")
+  Component(4, "MyRestController", "REST", "Provides data via rest", "")
+  Component(7, "MyService", "", "Does implement some logic", "kotlin", $link="www.google.de")
+}
+Rel_D(12, 4, "Admin UI", "REST")
+Rel_D(6, 10, "gets data from")
+Rel_D(4, 7, "calls")
+Rel_D(7, 6, "calls")
+Rel_D(3, 4, "Website", "REST", $tags="async")
+
+
+@enduml

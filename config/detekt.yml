@@ -1,0 +1,11 @@
+formatting:
+  MaximumLineLength:
+    active: false
+style:
+  MaxLineLength:
+    active: true
+    maxLineLength: 150
+complexity:
+  LongMethod:
+    active: true
+    excludes: "**/*Test.kt, **/test/**"
