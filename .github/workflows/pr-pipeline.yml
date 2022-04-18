@@ -2,9 +2,9 @@ name: PR pipeline
 
 on:
   push:
-    branches: [ $default-branch ]
   pull_request:
-    branches: [ $default-branch ]
+    branches:
+      - main
 
 permissions:
   contents: read
