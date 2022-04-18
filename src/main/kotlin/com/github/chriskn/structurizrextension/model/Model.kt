@@ -78,7 +78,7 @@ fun Model.addDeploymentNode(
     hostsSystems: List<SoftwareSystem> = listOf(),
     hostsContainers: List<Container> = listOf(),
 
-    ): DeploymentNode {
+): DeploymentNode {
     val node = this.addDeploymentNode(environment, name, description, technology)
     node.configure(icon, link, tags, properties)
     hostsSystems.forEach { node.add(it) }

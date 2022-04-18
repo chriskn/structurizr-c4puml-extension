@@ -1,0 +1,1 @@
+This extension aims to add rich C4-PlantUML support to the structurizr library be extending the structurizr model and providing an extended C4-PlantUML writer. 
