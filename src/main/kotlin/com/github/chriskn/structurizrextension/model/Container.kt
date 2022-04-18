@@ -6,8 +6,6 @@ import com.structurizr.model.Container
 import com.structurizr.model.Person
 import com.structurizr.model.SoftwareSystem
 
-
-
 @Suppress("LongParameterList")
 fun Container.addComponent(
     name: String,
@@ -39,7 +37,6 @@ fun Container.addComponent(
     }
     return component
 }
-
 
 var Container.type: C4Type?
     get() = if (this.properties.containsKey(C4PlantUMLWriter.C4_ELEMENT_TYPE)) {
