@@ -21,7 +21,6 @@ fun ViewSet.createSystemLandscapeView(
     return this.createSystemLandscapeView(key, description)
 }
 
-// TODO test
 fun ViewSet.createSystemContextView(
     softwareSystem: SoftwareSystem,
     key: String,
@@ -62,7 +61,6 @@ fun ViewSet.createDynamicView(
     return this.createDynamicView(container, key, description)
 }
 
-// TODO test
 fun ViewSet.createDynamicView(
     system: SoftwareSystem,
     key: String,
@@ -83,11 +81,3 @@ fun ViewSet.createDeploymentView(
     return this.createDeploymentView(system, key, description)
 }
 
-fun ViewSet.createDeploymentView(
-    key: String,
-    description: String,
-    layout: C4PlantUmlLayout? = null
-): DeploymentView {
-    layout?.let { LayoutRegistry.registerLayoutForKey(key, layout) }
-    return this.createDeploymentView(key, description)
-}

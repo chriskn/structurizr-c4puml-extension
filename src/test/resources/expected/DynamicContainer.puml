@@ -1,0 +1,27 @@
+@startuml(id=DynamicContainer)
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Deployment.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/docker-icon.puml
+title API Application - Dynamic
+caption description
+
+SHOW_PERSON_OUTLINE()
+
+Container(2, "Single-Page Application", "JavaScript and Angular", "Provides all of the functionality to customers via their web browser.", "docker-icon")
+Component(7, "Sign In Controller", "Spring MVC Rest Controller", "Allows users to sign in.", "")
+Component(9, "Security Component", "Spring Bean", "Provides functionality related to signing in, changing passwords, etc.", "")
+ContainerDb(5, "Database", "Oracle Database Schema", "Stores user registration information", "")
+2 -[#707070]> 7 : 1. Submits credentials to
+7 -[#707070]> 9 : 2. Validates credentials using
+9 -[#707070]> 5 : 3. select * from users where username = ?
+5 -[#707070]-> 9 : 4. Returns user data to
+9 -[#707070]-> 7 : 5. Returns true if the hashed password matches
+7 -[#707070]-> 2 : 6. Sends back an authentication token to
+
+LAYOUT_TOP_DOWN()
+SHOW_FLOATING_LEGEND()
+
+@enduml

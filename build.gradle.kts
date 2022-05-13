@@ -55,12 +55,10 @@ detekt {
     autoCorrect = true
 }
 
-
 java {
     withJavadocJar()
     withSourcesJar()
 }
-
 
 publishing {
     val uri = "github.com/chriskn/structurizr-c4puml-extension"

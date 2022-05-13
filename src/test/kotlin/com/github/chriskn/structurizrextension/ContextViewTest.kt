@@ -74,7 +74,6 @@ class ContextViewTest {
         model.enterprise = Enterprise("My Enterprise")
     }
 
-
     @Test
     fun `landscape diagram is written to plant uml as expected`() {
         val diagramName = "SystemLandscape"

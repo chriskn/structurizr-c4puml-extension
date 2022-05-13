@@ -1,0 +1,22 @@
+@startuml(id=DynamicSystem)
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Deployment.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/docker-icon.puml
+title Software System 1 - Dynamic
+caption description
+
+SHOW_PERSON_OUTLINE()
+
+Container(2, "Single-Page Application", "JavaScript and Angular", "Provides all of the functionality to customers via their web browser.", "docker-icon")
+Container(3, "API Application", "Java and Spring MVC", "Provides functionality via a JSON/HTTPS API.", "")
+ContainerDb(5, "Database", "Oracle Database Schema", "Stores user registration information", "")
+2 -[#707070]> 3 : 1. gets data from
+3 -[#707070]> 5 : 2. stores data to
+
+LAYOUT_TOP_DOWN()
+SHOW_FLOATING_LEGEND()
+
+@enduml

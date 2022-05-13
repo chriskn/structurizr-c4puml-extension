@@ -11,8 +11,10 @@ import com.github.chriskn.structurizrextension.plantuml.layout.Legend
 import com.structurizr.Workspace
 import com.structurizr.model.Container
 import com.structurizr.model.Enterprise
+import com.structurizr.model.InteractionStyle
 import com.structurizr.view.DynamicView
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 import java.io.File
@@ -22,70 +24,100 @@ class DynamicViewTest {
     @TempDir
     private lateinit var tempDir: File
 
-    private val diagramName = "Dynamic"
+    private val workspace = Workspace("My Workspace", "Some Description")
+    private val model = workspace.model
+    private val system1 = model.addSoftwareSystem(
+        name = "Software System 1",
+        description = "Description 1",
+    )
+    private val singlePageApplication: Container = system1.addContainer(
+        "Single-Page Application",
+        "Provides all of the functionality to customers via their web browser.",
+        technology = "JavaScript and Angular",
+        icon = "Docker"
+    )
+    private val apiApplication: Container = system1.addContainer(
+        "API Application",
+        "Provides functionality via a JSON/HTTPS API.",
+        technology = "Java and Spring MVC",
+        usedBy = listOf(Dependency(singlePageApplication, "gets data from"))
+    )
+    private val database: Container = system1.addContainer(
+        "Database",
+        "Stores user registration information",
+        technology = "Oracle Database Schema",
+        type = C4Type.DATABASE,
+        usedBy =  listOf(Dependency(apiApplication, "stores data to"))
+    )
+    private val loginController = apiApplication.addComponent(
+        "Sign In Controller",
+        "Allows users to sign in.",
+        technology = "Spring MVC Rest Controller",
+        usedBy = listOf(
+            Dependency(singlePageApplication, "")
+        )
+    )
+    private val securityComponent = apiApplication.addComponent(
+        "Security Component",
+        "Provides functionality related to signing in, changing passwords, etc.",
+        technology = "Spring Bean",
+        usedBy = listOf(
+            Dependency(loginController, ""),
+        ),
+        uses = listOf(
+            Dependency(database, ""),
+        )
+    )
 
-    private val expectedDiagramContent =
-        this::class.java.getResource("/expected/$diagramName.puml")!!.readText(Charsets.UTF_8)
-
-    @Test
-    fun `test interaction diagram is written to plant uml as expected`() {
-        val workspace = Workspace("My Workspace", "Some Description")
-        val model = workspace.model
-        model.enterprise = Enterprise("My Enterprise")
-        val system1 = model.addSoftwareSystem(
-            name = "Software System 1",
-            description = "Description 1",
-        )
-        val singlePageApplication: Container = system1.addContainer(
-            "Single-Page Application",
-            "Provides all of the Internet banking functionality to customers via their web browser.",
-            technology = "JavaScript and Angular",
-            icon = "Docker"
-        )
-        val apiApplication: Container = system1.addContainer(
-            "API Application",
-            "Provides Internet banking functionality via a JSON/HTTPS API.",
-            technology = "Java and Spring MVC"
-        )
-        val database: Container = system1.addContainer(
-            "Database",
-            "Stores user registration information, hashed authentication credentials, access logs, etc.",
-            technology = "Oracle Database Schema",
-            type = C4Type.DATABASE
-        )
-        val loginController = apiApplication.addComponent(
-            "Sign In Controller",
-            "Allows users to sign in to the Internet Banking System.",
-            technology = "Spring MVC Rest Controller",
-            usedBy = listOf(
-                Dependency(singlePageApplication, "")
-            )
-        )
-        val securityComponent = apiApplication.addComponent(
-            "Security Component",
-            "Provides functionality related to signing in, changing passwords, etc.",
-            technology = "Spring Bean",
-            usedBy = listOf(
-                Dependency(loginController, ""),
-            ),
-            uses = listOf(
-                Dependency(database, ""),
-            )
-        )
-        val dynamicView: DynamicView = workspace.views.createDynamicView(
-            apiApplication,
-            diagramName,
-            "description",
-            C4PlantUmlLayout(legend = Legend.SHOW_FLOATING_LEGEND)
-        )
+    private fun addElements(dynamicView: DynamicView){
         dynamicView.add(singlePageApplication, "Submits credentials to", loginController)
         dynamicView.add(loginController, "Validates credentials using", securityComponent)
         dynamicView.add(securityComponent, "select * from users where username = ?", database)
         dynamicView.add(database, "Returns user data to", securityComponent)
         dynamicView.add(securityComponent, "Returns true if the hashed password matches", loginController)
         dynamicView.add(loginController, "Sends back an authentication token to", singlePageApplication)
+    }
+
+    @Test
+    fun `test interaction diagram for container is written to plant uml as expected`() {
+        val diagramName = "DynamicContainer"
+        val expectedDiagramContent =
+            this::class.java.getResource("/expected/$diagramName.puml")!!.readText(Charsets.UTF_8)
+        val dynamicView: DynamicView = workspace.views.createDynamicView(
+            apiApplication,
+            diagramName,
+            "description",
+            C4PlantUmlLayout(legend = Legend.SHOW_FLOATING_LEGEND)
+        )
+        addElements(dynamicView)
 
         val diagramFolder = File(tempDir, "./diagram/")
+        C4PlantUmlDiagramWriter.writeDiagrams(
+            diagramFolder,
+            workspace
+        )
+
+        assertThat(diagramFolder.isDirectory).isTrue
+        val actualDiagramFile = File(diagramFolder, "${dynamicView.key}.puml")
+        assertThat(actualDiagramFile.isFile).isTrue
+        assertThat(actualDiagramFile.readText(Charsets.UTF_8)).isEqualToIgnoringWhitespace(expectedDiagramContent)
+    }
+
+    @Test
+    fun `test interaction diagram for system is written to plant uml as expected`() {
+        val diagramName = "DynamicSystem"
+        val expectedDiagramContent =
+            this::class.java.getResource("/expected/$diagramName.puml")!!.readText(Charsets.UTF_8)
+        val dynamicView: DynamicView = workspace.views.createDynamicView(
+            system1,
+            diagramName,
+            "description",
+            C4PlantUmlLayout(legend = Legend.SHOW_FLOATING_LEGEND)
+        )
+        dynamicView.add(singlePageApplication, "gets data from", apiApplication)
+        dynamicView.add(apiApplication, "stores data to", database)
+
+        val diagramFolder = File( "./diagram/")
         C4PlantUmlDiagramWriter.writeDiagrams(
             diagramFolder,
             workspace
