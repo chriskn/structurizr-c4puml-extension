@@ -3,12 +3,12 @@ package com.github.chriskn.structurizrextension
 import com.github.chriskn.structurizrextension.model.C4Properties
 import com.github.chriskn.structurizrextension.model.C4Type
 import com.github.chriskn.structurizrextension.model.Dependency
-import com.github.chriskn.structurizrextension.model.addComponent
-import com.github.chriskn.structurizrextension.model.addContainer
-import com.github.chriskn.structurizrextension.model.addPerson
+import com.github.chriskn.structurizrextension.model.component
+import com.github.chriskn.structurizrextension.model.container
+import com.github.chriskn.structurizrextension.model.person
 import com.github.chriskn.structurizrextension.plantuml.C4PlantUmlDiagramWriter
 import com.github.chriskn.structurizrextension.plantuml.layout.C4PlantUmlLayout
-import com.github.chriskn.structurizrextension.plantuml.layout.Direction
+import com.github.chriskn.structurizrextension.plantuml.layout.Layout
 import com.github.chriskn.structurizrextension.plantuml.layout.LineType
 import com.structurizr.Workspace
 import com.structurizr.model.InteractionStyle
@@ -35,20 +35,20 @@ class ComponentViewTest {
         val softwareSystem = model.addSoftwareSystem("My Software System", "system description")
         val backendApplication = softwareSystem.addContainer("Backend App", "some backend app", "Kotlin")
         val user = model.addPerson(Location.External, "User", "A user")
-        val restController = backendApplication.addComponent(
+        val restController = backendApplication.component(
             "MyRestController",
             "Provides data via rest",
             technology = "REST",
             usedBy = listOf(Dependency(user, "Website", "REST"))
         )
-        val repository = backendApplication.addComponent(
+        val repository = backendApplication.component(
             "MyRepo",
             "Provides CRUD operations for data",
             technology = "Kotlin, JDBC",
             tags = listOf("repo", "persistence"),
             properties = C4Properties(values = listOf(listOf("jdbcUrl", "someurl")))
         )
-        backendApplication.addComponent(
+        backendApplication.component(
             "MyService",
             "Does implement some logic",
             link = "www.google.de",
@@ -57,7 +57,7 @@ class ComponentViewTest {
             usedBy = listOf(Dependency(restController, "calls")),
             uses = listOf(Dependency(repository, "gets notified", interactionStyle = InteractionStyle.Asynchronous))
         )
-        softwareSystem.addContainer(
+        softwareSystem.container(
             "Database",
             "some database",
             type = C4Type.DATABASE,
@@ -65,7 +65,7 @@ class ComponentViewTest {
             icon = "postgresql",
             usedBy = listOf(Dependency(backendApplication.components.first { it.hasTag("repo") }, "gets data from"))
         )
-        model.addPerson(
+        model.person(
             "Maintainer",
             "some employee",
             location = Location.Internal
@@ -75,7 +75,12 @@ class ComponentViewTest {
             backendApplication,
             diagramName,
             "Test component view",
-            C4PlantUmlLayout(direction = Direction.LEFT_TO_RIGHT, lineType = LineType.ORTHO, nodeSep = 100, rankSep = 150)
+            C4PlantUmlLayout(
+                nodeSep = 100,
+                rankSep = 150,
+                lineType = LineType.ORTHO,
+                layout = Layout.LEFT_TO_RIGHT
+            )
         )
         componentView.addAllElements()
 

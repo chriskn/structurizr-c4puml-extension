@@ -1,0 +1,25 @@
+@startuml(id=DependencyPosition)
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Deployment.puml
+title System Landscape
+caption Dependency Test
+
+SHOW_PERSON_OUTLINE()
+LAYOUT_TOP_DOWN()
+
+System(1, "A", "", "")
+System(2, "B", "", "")
+System(4, "C", "", "")
+System(6, "D", "", "")
+System(8, "E", "", "")
+Rel_U(1, 6, "uses")
+Rel_L(2, 1, "uses")
+Rel_L(4, 1, "uses")
+Rel_L(8, 1, "uses")
+
+SHOW_LEGEND()
+
+@enduml

@@ -12,6 +12,7 @@ title My Software System - Containers
 caption Test container view
 
 SHOW_PERSON_OUTLINE()
+LAYOUT_TOP_DOWN()
 
 SystemQueue_Ext(10, "Broker", "Message Broker", "kafka")
 WithoutPropertyHeader()
@@ -31,7 +32,6 @@ Rel_D(2, 5, "CRUD", "JPA")
 Rel_D(7, 2, "Admin UI", "REST")
 Rel_D(16, 3, "uses app")
 
-LAYOUT_TOP_DOWN()
 LAYOUT_WITH_LEGEND()
 
 @enduml

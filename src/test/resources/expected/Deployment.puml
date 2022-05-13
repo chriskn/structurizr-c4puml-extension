@@ -16,6 +16,7 @@ title System container - Deployment - Production
 caption A deployment diagram showing the Production environment.
 
 SHOW_PERSON_OUTLINE()
+LAYOUT_LEFT_RIGHT()
 
 SetPropertyHeader("Property", "Value", "Description")
 AddProperty("Property1", "Value1", "Description1")
@@ -49,7 +50,6 @@ Rel_D(26, 18, "requests data from")
 
 skinparam nodesep 20
 skinparam ranksep 50
-LAYOUT_LEFT_RIGHT()
 SHOW_LEGEND()
 
 @enduml

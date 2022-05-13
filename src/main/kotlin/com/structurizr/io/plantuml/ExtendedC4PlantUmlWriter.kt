@@ -6,6 +6,8 @@ import com.github.chriskn.structurizrextension.model.link
 import com.github.chriskn.structurizrextension.model.type
 import com.github.chriskn.structurizrextension.plantuml.IconRegistry
 import com.github.chriskn.structurizrextension.plantuml.layout.C4PlantUmlLayout
+import com.github.chriskn.structurizrextension.plantuml.layout.DependencyConfiguration
+import com.github.chriskn.structurizrextension.plantuml.layout.DependencyMode
 import com.github.chriskn.structurizrextension.plantuml.layout.LayoutRegistry
 import com.structurizr.model.Component
 import com.structurizr.model.Container
@@ -17,6 +19,7 @@ import com.structurizr.model.InfrastructureNode
 import com.structurizr.model.InteractionStyle
 import com.structurizr.model.Location
 import com.structurizr.model.Person
+import com.structurizr.model.Relationship
 import com.structurizr.model.SoftwareSystem
 import com.structurizr.model.SoftwareSystemInstance
 import com.structurizr.view.ComponentView
@@ -152,6 +155,35 @@ class ExtendedC4PlantUmlWriter : C4PlantUMLWriter {
         }"${linkString(link)})$separator"""
     }
 
+    override fun writeRelationships(view: View, writer: Writer) {
+        val dependencyConfigurations = LayoutRegistry.layoutForKey(view.key).dependencyConfigurations
+        dependencyConfigurations.forEach { conf ->
+            view.relationships.filter { conf.filter(it.relationship) }.map { relationshipView ->
+                relationshipView.apply(conf)
+            }
+        }
+        view.relationships
+            .sortedBy { rv: RelationshipView ->
+                rv.relationship.source.name + rv.relationship.destination.name
+            }
+            .forEach { rv: RelationshipView -> writeRelationship(view, rv, writer) }
+    }
+
+    private fun RelationshipView.apply(
+        conf: DependencyConfiguration
+    ): Relationship {
+        val rel = this.relationship
+        val position = conf.position
+        val mode = conf.mode
+        if (position != null) {
+            rel.addProperty(C4_LAYOUT_DIRECTION, position.name)
+        }
+        if (mode != null) {
+            rel.addProperty(C4_LAYOUT_MODE, mode.name)
+        }
+        return rel
+    }
+
     @Suppress("PrintStackTrace")
     override fun writeRelationship(view: View?, relationshipView: RelationshipView, writer: Writer) {
         val relationship = relationshipView.relationship
@@ -163,12 +195,13 @@ class ExtendedC4PlantUmlWriter : C4PlantUMLWriter {
         }
         try {
             var relationshipMacro: String?
-            var mode = RelationshipModes.Rel
-            if (relationship.properties.containsKey(C4_LAYOUT_MODE)) {
-                mode = RelationshipModes.valueOf(relationship.properties[C4_LAYOUT_MODE]!!)
+            var mode = if (relationship.properties.containsKey(C4_LAYOUT_MODE)) {
+                DependencyMode.valueOf(relationship.properties[C4_LAYOUT_MODE]!!)
+            } else {
+                DependencyMode.Rel
             }
             when (mode) {
-                RelationshipModes.Lay, RelationshipModes.Rel -> {
+                DependencyMode.Rel -> {
                     relationshipMacro = mode.name
                     var direction = Directions.Down
                     if (relationship.properties.containsKey(C4_LAYOUT_DIRECTION)) {
@@ -298,9 +331,7 @@ class ExtendedC4PlantUmlWriter : C4PlantUMLWriter {
         if (layout.rankSep != null) {
             writer.write("skinparam ranksep ${layout.rankSep}" + separator)
         }
-        writer.write(layout.direction.macro + separator)
-        writer.write(layout.legend.macro + separator)
-        writer.write(separator)
+        writer.write(layout.legend.macro + separator + separator)
     }
 
     @Suppress("EmptyFunctionBlock")
@@ -309,10 +340,13 @@ class ExtendedC4PlantUmlWriter : C4PlantUMLWriter {
 
     override fun writeHeader(view: View, writer: Writer) {
         super.writeHeader(view, writer)
-        if (LayoutRegistry.layoutForKey(view.key).showPersonOutline) {
+        val layout = LayoutRegistry.layoutForKey(view.key)
+        if (layout.showPersonOutline) {
             writer.write("SHOW_PERSON_OUTLINE()")
-            writer.write(separator + separator)
+            writer.write(separator)
         }
+        writer.write(layout.layout.macro)
+        writer.write(separator + separator)
         if (view.relationships.any { it.relationship.interactionStyle == InteractionStyle.Asynchronous }) {
             writeAsyncRelTag(writer)
         }

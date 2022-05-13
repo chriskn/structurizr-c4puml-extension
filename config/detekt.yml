@@ -5,6 +5,8 @@ style:
   MaxLineLength:
     active: true
     maxLineLength: 150
+  UnusedPrivateMember:
+    excludes: "**/*Test.kt, **/test/**"
 complexity:
   LongMethod:
     active: true

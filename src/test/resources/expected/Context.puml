@@ -10,6 +10,7 @@ title Software System 1 - System Context
 caption A test Landscape
 
 SHOW_PERSON_OUTLINE()
+LAYOUT_LEFT_RIGHT()
 
 WithoutPropertyHeader()
 AddProperty("prop 1", "value 1")
@@ -20,7 +21,6 @@ Rel_D(6, 1, "deletes", "gRPC")
 Rel_D(6, 2, "creates", "HTTP")
 Rel_D(1, 2, "0 used by 1")
 
-LAYOUT_LEFT_RIGHT()
 SHOW_FLOATING_LEGEND()
 
 @enduml

@@ -9,6 +9,7 @@ title API Application - Dynamic
 caption description
 
 SHOW_PERSON_OUTLINE()
+LAYOUT_TOP_DOWN()
 
 Container(2, "Single-Page Application", "JavaScript and Angular", "Provides all of the functionality to customers via their web browser.", "docker-icon")
 Component(7, "Sign In Controller", "Spring MVC Rest Controller", "Allows users to sign in.", "")
@@ -21,7 +22,6 @@ ContainerDb(5, "Database", "Oracle Database Schema", "Stores user registration i
 9 -[#707070]-> 7 : 5. Returns true if the hashed password matches
 7 -[#707070]-> 2 : 6. Sends back an authentication token to
 
-LAYOUT_TOP_DOWN()
 SHOW_FLOATING_LEGEND()
 
 @enduml

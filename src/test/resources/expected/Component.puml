@@ -10,6 +10,7 @@ title My Software System - Backend App - Components
 caption Test component view
 
 SHOW_PERSON_OUTLINE()
+LAYOUT_LEFT_RIGHT()
 
 AddRelTag("async", $lineStyle = DashedLine())
 
@@ -32,7 +33,6 @@ Rel_D(3, 4, "Website", "REST")
 skinparam linetype ortho
 skinparam nodesep 100
 skinparam ranksep 150
-LAYOUT_LEFT_RIGHT()
 SHOW_LEGEND()
 
 @enduml

@@ -5,7 +5,7 @@ import com.structurizr.model.DeploymentNode
 import com.structurizr.model.SoftwareSystem
 
 @Suppress("LongParameterList")
-fun DeploymentNode.addDeploymentNode(
+fun DeploymentNode.deploymentNode(
     name: String,
     description: String = "",
     icon: String? = null,

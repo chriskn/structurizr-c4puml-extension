@@ -3,14 +3,14 @@ package com.github.chriskn.structurizrextension
 import com.github.chriskn.structurizrextension.model.C4Properties
 import com.github.chriskn.structurizrextension.model.C4Type
 import com.github.chriskn.structurizrextension.model.Dependency
-import com.github.chriskn.structurizrextension.model.addContainer
-import com.github.chriskn.structurizrextension.model.addDeploymentNode
-import com.github.chriskn.structurizrextension.model.addSoftwareSystem
+import com.github.chriskn.structurizrextension.model.container
+import com.github.chriskn.structurizrextension.model.deploymentNode
 import com.github.chriskn.structurizrextension.model.icon
+import com.github.chriskn.structurizrextension.model.softwareSystem
 import com.github.chriskn.structurizrextension.model.type
 import com.github.chriskn.structurizrextension.plantuml.C4PlantUmlDiagramWriter
 import com.github.chriskn.structurizrextension.plantuml.layout.C4PlantUmlLayout
-import com.github.chriskn.structurizrextension.plantuml.layout.Direction
+import com.github.chriskn.structurizrextension.plantuml.layout.Layout
 import com.structurizr.Workspace
 import com.structurizr.model.Container
 import com.structurizr.model.Location
@@ -45,11 +45,11 @@ class DeploymentViewTest {
             "System container",
             "Example System"
         )
-        val iosApp = model.addSoftwareSystem(
+        val iosApp = model.softwareSystem(
             location = Location.External,
             name = "iOS App",
         )
-        val webApplication: Container = mySystem.addContainer(
+        val webApplication: Container = mySystem.container(
             "Web Application",
             "Spring Boot web application",
             technology = "Java and Spring MVC",
@@ -59,7 +59,7 @@ class DeploymentViewTest {
             "Sidecar",
             "Some sidecar"
         )
-        val nginx: Container = mySystem.addContainer(
+        val nginx: Container = mySystem.container(
             name = "Load Balancer",
             description = "Nginx Load Balancer",
             technology = "nginx",
@@ -68,7 +68,7 @@ class DeploymentViewTest {
             uses = listOf(Dependency(webApplication, "forwards requests to")),
             usedBy = listOf(Dependency(iosApp, "requests data from"))
         )
-        val database: Container = mySystem.addContainer(
+        val database: Container = mySystem.container(
             "Database",
             "Stores data",
             technology = "PostgreSql",
@@ -77,7 +77,7 @@ class DeploymentViewTest {
             properties = C4Properties(values = listOf(listOf("region", "eu-central-1"))),
             usedBy = listOf(Dependency(webApplication, "stores data in", "JDBC"))
         )
-        val failoverDatabase: Container = mySystem.addContainer(
+        val failoverDatabase: Container = mySystem.container(
             "Failover Database",
             database.description,
             technology = database.technology,
@@ -86,7 +86,7 @@ class DeploymentViewTest {
             properties = C4Properties(values = listOf(listOf("region", "eu-west-1"))),
             usedBy = listOf(Dependency(database, "replicates data to"))
         )
-        val aws = model.addDeploymentNode(
+        val aws = model.deploymentNode(
             environment,
             "AWS",
             "Production AWS environment",
@@ -99,26 +99,26 @@ class DeploymentViewTest {
                 )
             )
         )
-        aws.addDeploymentNode(
+        aws.deploymentNode(
             "AWS RDS",
             icon = "rds",
             hostsContainers = listOf(failoverDatabase, database)
         )
-        aws.addDeploymentNode(
+        aws.deploymentNode(
             "EKS cluster",
             icon = "awsEKSCloud",
             hostsContainers = listOf(nginx)
-        ).addDeploymentNode(
+        ).deploymentNode(
             "my.web.app",
             "Web App POD",
             hostsContainers = listOf(webAppSidecar)
-        ).addDeploymentNode(
+        ).deploymentNode(
             "Web App container",
             icon = "docker",
             hostsContainers = listOf(webApplication)
         )
 
-        model.addDeploymentNode(
+        model.deploymentNode(
             environment = environment,
             "Apple Device",
             icon = "apple",
@@ -130,7 +130,7 @@ class DeploymentViewTest {
                 mySystem,
                 diagramName,
                 "A deployment diagram showing the $environment environment.",
-                C4PlantUmlLayout(direction = Direction.LEFT_TO_RIGHT, nodeSep = 20, rankSep = 50)
+                C4PlantUmlLayout(nodeSep = 20, rankSep = 50, layout = Layout.LEFT_TO_RIGHT)
             )
         deploymentView.environment = environment
         deploymentView.addAllDeploymentNodes()

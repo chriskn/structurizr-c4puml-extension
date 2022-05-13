@@ -9,7 +9,7 @@ import com.structurizr.model.Person
 import com.structurizr.model.SoftwareSystem
 
 @Suppress("LongParameterList")
-fun Model.addPerson(
+fun Model.person(
     name: String,
     description: String = "",
     icon: String? = null,
@@ -21,18 +21,18 @@ fun Model.addPerson(
 ): Person {
     val person = this.addPerson(location, name, description)
     person.configure(icon, link, tags, properties)
-    uses.forEach { d ->
-        when (val element = d.element) {
-            is SoftwareSystem -> person.uses(element, d.description, d.technology)
-            is Container -> person.uses(element, d.description, d.technology)
-            is Component -> person.uses(element, d.description, d.technology)
+    uses.forEach { dep ->
+        when (val element = dep.element) {
+            is SoftwareSystem -> person.uses(element, dep.description, dep.technology)
+            is Container -> person.uses(element, dep.description, dep.technology)
+            is Component -> person.uses(element, dep.description, dep.technology)
         }
     }
     return person
 }
 
 @Suppress("LongParameterList")
-fun Model.addSoftwareSystem(
+fun Model.softwareSystem(
     name: String,
     description: String = "",
     location: Location = Location.Unspecified,
@@ -47,26 +47,26 @@ fun Model.addSoftwareSystem(
     val softwareSystem = this.addSoftwareSystem(location, name, description)
     softwareSystem.type = type
     softwareSystem.configure(icon, link, tags, properties)
-    uses.forEach { d ->
-        when (d.element) {
-            is SoftwareSystem -> softwareSystem.uses(d.element, d.description, d.technology, d.interactionStyle)
-            is Container -> softwareSystem.uses(d.element, d.description, d.technology, d.interactionStyle)
-            is Component -> softwareSystem.uses(d.element, d.description, d.technology, d.interactionStyle)
+    uses.forEach { dep ->
+        when (dep.element) {
+            is SoftwareSystem -> softwareSystem.uses(dep.element, dep.description, dep.technology, dep.interactionStyle)
+            is Container -> softwareSystem.uses(dep.element, dep.description, dep.technology, dep.interactionStyle)
+            is Component -> softwareSystem.uses(dep.element, dep.description, dep.technology, dep.interactionStyle)
         }
     }
-    usedBy.forEach { d ->
-        when (d.element) {
-            is SoftwareSystem -> d.element.uses(softwareSystem, d.description, d.technology, d.interactionStyle)
-            is Container -> d.element.uses(softwareSystem, d.description, d.technology, d.interactionStyle)
-            is Component -> d.element.uses(softwareSystem, d.description, d.technology, d.interactionStyle)
-            is Person -> d.element.uses(softwareSystem, d.description, d.technology)
+    usedBy.forEach { dep ->
+        when (dep.element) {
+            is SoftwareSystem -> dep.element.uses(softwareSystem, dep.description, dep.technology, dep.interactionStyle)
+            is Container -> dep.element.uses(softwareSystem, dep.description, dep.technology, dep.interactionStyle)
+            is Component -> dep.element.uses(softwareSystem, dep.description, dep.technology, dep.interactionStyle)
+            is Person -> dep.element.uses(softwareSystem, dep.description, dep.technology)
         }
     }
     return softwareSystem
 }
 
 @Suppress("LongParameterList")
-fun Model.addDeploymentNode(
+fun Model.deploymentNode(
     environment: String,
     name: String,
     description: String = "",

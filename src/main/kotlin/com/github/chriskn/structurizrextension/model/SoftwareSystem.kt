@@ -7,7 +7,7 @@ import com.structurizr.model.Person
 import com.structurizr.model.SoftwareSystem
 
 @Suppress("LongParameterList")
-fun SoftwareSystem.addContainer(
+fun SoftwareSystem.container(
     name: String,
     description: String,
     type: C4Type? = null,
@@ -22,19 +22,19 @@ fun SoftwareSystem.addContainer(
     val container = this.addContainer(name, description, technology)
     container.type = type
     container.configure(icon, link, tags, properties)
-    uses.forEach { d ->
-        when (d.element) {
-            is SoftwareSystem -> container.uses(d.element, d.description, d.technology, d.interactionStyle)
-            is Container -> container.uses(d.element, d.description, d.technology, d.interactionStyle)
-            is Component -> container.uses(d.element, d.description, d.technology, d.interactionStyle)
+    uses.forEach { dep ->
+        when (dep.element) {
+            is SoftwareSystem -> container.uses(dep.element, dep.description, dep.technology, dep.interactionStyle)
+            is Container -> container.uses(dep.element, dep.description, dep.technology, dep.interactionStyle)
+            is Component -> container.uses(dep.element, dep.description, dep.technology, dep.interactionStyle)
         }
     }
-    usedBy.forEach { d ->
-        when (d.element) {
-            is SoftwareSystem -> d.element.uses(container, d.description, d.technology, d.interactionStyle)
-            is Container -> d.element.uses(container, d.description, d.technology, d.interactionStyle)
-            is Component -> d.element.uses(container, d.description, d.technology, d.interactionStyle)
-            is Person -> d.element.uses(container, d.description, d.technology)
+    usedBy.forEach { dep ->
+        when (dep.element) {
+            is SoftwareSystem -> dep.element.uses(container, dep.description, dep.technology, dep.interactionStyle)
+            is Container -> dep.element.uses(container, dep.description, dep.technology, dep.interactionStyle)
+            is Component -> dep.element.uses(container, dep.description, dep.technology, dep.interactionStyle)
+            is Person -> dep.element.uses(container, dep.description, dep.technology)
         }
     }
     return container

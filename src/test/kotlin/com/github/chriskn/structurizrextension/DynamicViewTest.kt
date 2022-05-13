@@ -2,19 +2,16 @@ package com.github.chriskn.structurizrextension
 
 import com.github.chriskn.structurizrextension.model.C4Type
 import com.github.chriskn.structurizrextension.model.Dependency
-import com.github.chriskn.structurizrextension.model.addComponent
-import com.github.chriskn.structurizrextension.model.addContainer
-import com.github.chriskn.structurizrextension.model.addSoftwareSystem
+import com.github.chriskn.structurizrextension.model.component
+import com.github.chriskn.structurizrextension.model.container
+import com.github.chriskn.structurizrextension.model.softwareSystem
 import com.github.chriskn.structurizrextension.plantuml.C4PlantUmlDiagramWriter
 import com.github.chriskn.structurizrextension.plantuml.layout.C4PlantUmlLayout
 import com.github.chriskn.structurizrextension.plantuml.layout.Legend
 import com.structurizr.Workspace
 import com.structurizr.model.Container
-import com.structurizr.model.Enterprise
-import com.structurizr.model.InteractionStyle
 import com.structurizr.view.DynamicView
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 import java.io.File
@@ -26,30 +23,30 @@ class DynamicViewTest {
 
     private val workspace = Workspace("My Workspace", "Some Description")
     private val model = workspace.model
-    private val system1 = model.addSoftwareSystem(
+    private val system1 = model.softwareSystem(
         name = "Software System 1",
         description = "Description 1",
     )
-    private val singlePageApplication: Container = system1.addContainer(
+    private val singlePageApplication: Container = system1.container(
         "Single-Page Application",
         "Provides all of the functionality to customers via their web browser.",
         technology = "JavaScript and Angular",
         icon = "Docker"
     )
-    private val apiApplication: Container = system1.addContainer(
+    private val apiApplication: Container = system1.container(
         "API Application",
         "Provides functionality via a JSON/HTTPS API.",
         technology = "Java and Spring MVC",
         usedBy = listOf(Dependency(singlePageApplication, "gets data from"))
     )
-    private val database: Container = system1.addContainer(
+    private val database: Container = system1.container(
         "Database",
         "Stores user registration information",
         technology = "Oracle Database Schema",
         type = C4Type.DATABASE,
-        usedBy =  listOf(Dependency(apiApplication, "stores data to"))
+        usedBy = listOf(Dependency(apiApplication, "stores data to"))
     )
-    private val loginController = apiApplication.addComponent(
+    private val loginController = apiApplication.component(
         "Sign In Controller",
         "Allows users to sign in.",
         technology = "Spring MVC Rest Controller",
@@ -57,7 +54,7 @@ class DynamicViewTest {
             Dependency(singlePageApplication, "")
         )
     )
-    private val securityComponent = apiApplication.addComponent(
+    private val securityComponent = apiApplication.component(
         "Security Component",
         "Provides functionality related to signing in, changing passwords, etc.",
         technology = "Spring Bean",
@@ -69,7 +66,7 @@ class DynamicViewTest {
         )
     )
 
-    private fun addElements(dynamicView: DynamicView){
+    private fun addElements(dynamicView: DynamicView) {
         dynamicView.add(singlePageApplication, "Submits credentials to", loginController)
         dynamicView.add(loginController, "Validates credentials using", securityComponent)
         dynamicView.add(securityComponent, "select * from users where username = ?", database)
@@ -117,7 +114,7 @@ class DynamicViewTest {
         dynamicView.add(singlePageApplication, "gets data from", apiApplication)
         dynamicView.add(apiApplication, "stores data to", database)
 
-        val diagramFolder = File( "./diagram/")
+        val diagramFolder = File("./diagram/")
         C4PlantUmlDiagramWriter.writeDiagrams(
             diagramFolder,
             workspace

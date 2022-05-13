@@ -7,7 +7,7 @@ import com.structurizr.model.Person
 import com.structurizr.model.SoftwareSystem
 
 @Suppress("LongParameterList")
-fun Container.addComponent(
+fun Container.component(
     name: String,
     description: String,
     icon: String? = null,
@@ -20,19 +20,19 @@ fun Container.addComponent(
 ): Component {
     val component = this.addComponent(name, description, technology)
     component.configure(icon, link, tags, properties)
-    uses.forEach { d ->
-        when (d.element) {
-            is SoftwareSystem -> component.uses(d.element, d.description, d.technology, d.interactionStyle)
-            is Container -> component.uses(d.element, d.description, d.technology, d.interactionStyle)
-            is Component -> component.uses(d.element, d.description, d.technology, d.interactionStyle)
+    uses.forEach { dep ->
+        when (dep.element) {
+            is SoftwareSystem -> component.uses(dep.element, dep.description, dep.technology, dep.interactionStyle)
+            is Container -> component.uses(dep.element, dep.description, dep.technology, dep.interactionStyle)
+            is Component -> component.uses(dep.element, dep.description, dep.technology, dep.interactionStyle)
         }
     }
-    usedBy.forEach { d ->
-        when (d.element) {
-            is SoftwareSystem -> d.element.uses(component, d.description, d.technology, d.interactionStyle)
-            is Container -> d.element.uses(component, d.description, d.technology, d.interactionStyle)
-            is Component -> d.element.uses(component, d.description, d.technology, d.interactionStyle)
-            is Person -> d.element.uses(component, d.description, d.technology)
+    usedBy.forEach { dep ->
+        when (dep.element) {
+            is SoftwareSystem -> dep.element.uses(component, dep.description, dep.technology, dep.interactionStyle)
+            is Container -> dep.element.uses(component, dep.description, dep.technology, dep.interactionStyle)
+            is Component -> dep.element.uses(component, dep.description, dep.technology, dep.interactionStyle)
+            is Person -> dep.element.uses(component, dep.description, dep.technology)
         }
     }
     return component

@@ -3,12 +3,12 @@ package com.github.chriskn.structurizrextension
 import com.github.chriskn.structurizrextension.model.C4Properties
 import com.github.chriskn.structurizrextension.model.C4Type
 import com.github.chriskn.structurizrextension.model.Dependency
-import com.github.chriskn.structurizrextension.model.addContainer
-import com.github.chriskn.structurizrextension.model.addPerson
-import com.github.chriskn.structurizrextension.model.addSoftwareSystem
+import com.github.chriskn.structurizrextension.model.container
+import com.github.chriskn.structurizrextension.model.person
+import com.github.chriskn.structurizrextension.model.softwareSystem
 import com.github.chriskn.structurizrextension.plantuml.C4PlantUmlDiagramWriter
 import com.github.chriskn.structurizrextension.plantuml.layout.C4PlantUmlLayout
-import com.github.chriskn.structurizrextension.plantuml.layout.Direction
+import com.github.chriskn.structurizrextension.plantuml.layout.Layout
 import com.github.chriskn.structurizrextension.plantuml.layout.Legend
 import com.structurizr.Workspace
 import com.structurizr.model.CreateImpliedRelationshipsUnlessSameRelationshipExistsStrategy
@@ -34,12 +34,12 @@ class ContainerViewTest {
         val model = workspace.model
         model.impliedRelationshipsStrategy = CreateImpliedRelationshipsUnlessSameRelationshipExistsStrategy()
         val properties = C4Properties(values = listOf(listOf("prop 1", "value 1")))
-        val softwareSystem = model.addSoftwareSystem(
+        val softwareSystem = model.softwareSystem(
             "My Software System",
             "system description",
             link = "https://www.google.de"
         )
-        val backendApplication = softwareSystem.addContainer(
+        val backendApplication = softwareSystem.container(
             name = "Backend App",
             description = "some backend app",
             technology = "Kotlin",
@@ -48,14 +48,14 @@ class ContainerViewTest {
             link = "https://www.google.de",
             properties = properties
         )
-        val app = softwareSystem.addContainer(
+        val app = softwareSystem.container(
             name = "App",
             description = "android app",
             technology = "Android",
             icon = "android",
             uses = listOf(Dependency(backendApplication, "desc", "Soap"))
         )
-        softwareSystem.addContainer(
+        softwareSystem.container(
             name = "Database",
             description = "some database",
             type = C4Type.DATABASE,
@@ -63,7 +63,7 @@ class ContainerViewTest {
             icon = "postgresql",
             usedBy = listOf(Dependency(backendApplication, "CRUD", "JPA"))
         )
-        model.addPerson(
+        model.person(
             name = "Maintainer",
             description = "some employee",
             location = Location.Internal,
@@ -73,14 +73,14 @@ class ContainerViewTest {
             ),
             properties = properties
         )
-        val broker = model.addSoftwareSystem(
+        val broker = model.softwareSystem(
             "Broker",
             "Message Broker",
             Location.External,
             C4Type.QUEUE,
             icon = "kafka",
         )
-        broker.addContainer(
+        broker.container(
             "Topic: my.topic",
             "external topic",
             type = C4Type.QUEUE,
@@ -89,7 +89,7 @@ class ContainerViewTest {
                 Dependency(backendApplication, "reads topic", "Avro")
             )
         )
-        model.addPerson(
+        model.person(
             "User",
             "some user",
             location = Location.External,
@@ -100,7 +100,7 @@ class ContainerViewTest {
             softwareSystem,
             diagramName,
             "Test container view",
-            C4PlantUmlLayout(legend = Legend.SHOW_STATIC_LEGEND, direction = Direction.TOP_DOWN)
+            C4PlantUmlLayout(legend = Legend.SHOW_STATIC_LEGEND, layout = Layout.TOP_DOWN)
         )
         containerView.addAllElements()
         containerView.externalSoftwareSystemBoundariesVisible = true

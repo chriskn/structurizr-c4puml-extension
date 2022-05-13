@@ -2,11 +2,11 @@ package com.github.chriskn.structurizrextension
 
 import com.github.chriskn.structurizrextension.model.C4Properties
 import com.github.chriskn.structurizrextension.model.Dependency
-import com.github.chriskn.structurizrextension.model.addPerson
-import com.github.chriskn.structurizrextension.model.addSoftwareSystem
+import com.github.chriskn.structurizrextension.model.person
+import com.github.chriskn.structurizrextension.model.softwareSystem
 import com.github.chriskn.structurizrextension.plantuml.C4PlantUmlDiagramWriter
 import com.github.chriskn.structurizrextension.plantuml.layout.C4PlantUmlLayout
-import com.github.chriskn.structurizrextension.plantuml.layout.Direction
+import com.github.chriskn.structurizrextension.plantuml.layout.Layout
 import com.github.chriskn.structurizrextension.plantuml.layout.Legend
 import com.structurizr.Workspace
 import com.structurizr.model.Enterprise
@@ -25,13 +25,13 @@ class ContextViewTest {
 
     private val workspace = Workspace("My Workspace", "Some Description")
     private val model: Model = workspace.model
-    private val system0 = model.addSoftwareSystem(
+    private val system0 = model.softwareSystem(
         "Software System 0",
         "Description 0",
         Location.External,
         tags = listOf("tag1", "tag2")
     )
-    private val system1 = model.addSoftwareSystem(
+    private val system1 = model.softwareSystem(
         name = "Software System 1",
         icon = "android",
         link = "https://www.android.com",
@@ -40,7 +40,7 @@ class ContextViewTest {
             Dependency(system0, "0 used by 1")
         ),
     )
-    private val system2 = model.addSoftwareSystem(
+    private val system2 = model.softwareSystem(
         "Software System 2",
         "Description 2",
         Location.Internal,
@@ -58,7 +58,7 @@ class ContextViewTest {
             Dependency(system0, "2 uses 1")
         )
     )
-    private val person = model.addPerson(
+    private val person = model.person(
         "Actor",
         link = "https://www.google.de",
         tags = listOf("human"),
@@ -82,7 +82,7 @@ class ContextViewTest {
         val landscapeView = workspace.views.createSystemLandscapeView(
             diagramName,
             "A test Landscape",
-            C4PlantUmlLayout(direction = Direction.LEFT_TO_RIGHT, legend = Legend.SHOW_FLOATING_LEGEND)
+            C4PlantUmlLayout(layout = Layout.LEFT_TO_RIGHT, legend = Legend.SHOW_FLOATING_LEGEND)
         )
         landscapeView.addAllElements()
 
@@ -107,7 +107,7 @@ class ContextViewTest {
             system1,
             diagramName,
             "A test Landscape",
-            C4PlantUmlLayout(direction = Direction.LEFT_TO_RIGHT, legend = Legend.SHOW_FLOATING_LEGEND)
+            C4PlantUmlLayout(layout = Layout.LEFT_TO_RIGHT, legend = Legend.SHOW_FLOATING_LEGEND)
         )
         contextView.addDefaultElements()
 
