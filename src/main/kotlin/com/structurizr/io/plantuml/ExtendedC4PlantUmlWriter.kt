@@ -337,12 +337,11 @@ class ExtendedC4PlantUmlWriter : C4PlantUMLWriter {
 
     private fun Legend.toMacro(hideStereotypes: Boolean): String {
         val macro = this.macro
-        return when(this){
+        return when (this) {
             Legend.SHOW_STATIC_LEGEND -> "$macro()"
             Legend.SHOW_LEGEND -> "$macro($hideStereotypes)"
             Legend.SHOW_FLOATING_LEGEND -> "$macro(LEGEND, $hideStereotypes)"
         }
-
     }
 
     @Suppress("EmptyFunctionBlock")
