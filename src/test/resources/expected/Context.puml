@@ -1,4 +1,4 @@
-@startuml(id=SystemLandscape)
+@startuml(id=Context)
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4.puml
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
@@ -6,7 +6,7 @@
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Deployment.puml
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/android-icon.puml
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/docker-icon.puml
-title System Landscape for My Enterprise
+title Software System 1 - System Context
 caption A test Landscape
 
 SHOW_PERSON_OUTLINE()
@@ -16,17 +16,9 @@ AddProperty("prop 1", "value 1")
 Person(6, "Actor", "", "", $link="https://www.google.de")
 System_Ext(1, "Software System 0", "Description 0", "")
 System(2, "Software System 1", "", "android-icon", $link="https://www.android.com")
-package "My Enterprise" {
-  SetPropertyHeader("Property", "Value")
-  AddProperty("prop key0", "prop value0")
-  AddProperty("prop key1", "prop value1")
-  AddProperty("prop key2", "prop value2")
-  System(4, "Software System 2", "Description 2", "docker-icon", $link="https://www.docker.com/")
-}
 Rel_D(6, 1, "deletes", "gRPC")
 Rel_D(6, 2, "creates", "HTTP")
 Rel_D(1, 2, "0 used by 1")
-Rel_D(4, 1, "2 uses 1")
 
 LAYOUT_LEFT_RIGHT()
 SHOW_FLOATING_LEGEND()

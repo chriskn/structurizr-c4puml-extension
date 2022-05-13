@@ -23,12 +23,13 @@ fun ViewSet.createSystemLandscapeView(
 
 // TODO test
 fun ViewSet.createSystemContextView(
+    softwareSystem: SoftwareSystem,
     key: String,
     description: String,
     layout: C4PlantUmlLayout? = null
 ): SystemContextView {
     layout?.let { LayoutRegistry.registerLayoutForKey(key, layout) }
-    return this.createSystemContextView(key, description)
+    return this.createSystemContextView(softwareSystem, key, description)
 }
 
 fun ViewSet.createContainerView(

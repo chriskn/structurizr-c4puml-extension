@@ -9,14 +9,14 @@ plugins {
 }
 
 group = "io.github.chriskn"
-version = "0.1.0"
+version = "0.1.1"
 java.sourceCompatibility = JavaVersion.VERSION_11
 
 repositories {
     mavenCentral()
 }
 
-val structurizrVersion = "1.12.1"
+val structurizrVersion = "1.12.2"
 val structurizrPlantUmlVersion = "1.6.3"
 val junitVersion = "5.8.2"
 val assertJVersion = "3.22.0"
