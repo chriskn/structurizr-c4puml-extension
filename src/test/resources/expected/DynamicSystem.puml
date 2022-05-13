@@ -17,6 +17,6 @@ ContainerDb(5, "Database", "Oracle Database Schema", "Stores user registration i
 2 -[#707070]> 3 : 1. gets data from
 3 -[#707070]> 5 : 2. stores data to
 
-SHOW_FLOATING_LEGEND()
+SHOW_FLOATING_LEGEND(LEGEND, true)
 
 @enduml

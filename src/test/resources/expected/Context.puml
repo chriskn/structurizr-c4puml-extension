@@ -21,6 +21,6 @@ Rel_D(6, 1, "deletes", "gRPC")
 Rel_D(6, 2, "creates", "HTTP")
 Rel_D(1, 2, "0 used by 1")
 
-SHOW_FLOATING_LEGEND()
+SHOW_FLOATING_LEGEND(LEGEND, false)
 
 @enduml

@@ -9,6 +9,7 @@ import com.github.chriskn.structurizrextension.plantuml.layout.C4PlantUmlLayout
 import com.github.chriskn.structurizrextension.plantuml.layout.DependencyConfiguration
 import com.github.chriskn.structurizrextension.plantuml.layout.DependencyMode
 import com.github.chriskn.structurizrextension.plantuml.layout.LayoutRegistry
+import com.github.chriskn.structurizrextension.plantuml.layout.Legend
 import com.structurizr.model.Component
 import com.structurizr.model.Container
 import com.structurizr.model.ContainerInstance
@@ -331,7 +332,17 @@ class ExtendedC4PlantUmlWriter : C4PlantUMLWriter {
         if (layout.rankSep != null) {
             writer.write("skinparam ranksep ${layout.rankSep}" + separator)
         }
-        writer.write(layout.legend.macro + separator + separator)
+        writer.write(layout.legend.toMacro(layout.hideStereotypes) + separator + separator)
+    }
+
+    private fun Legend.toMacro(hideStereotypes: Boolean): String {
+        val macro = this.macro
+        return when(this){
+            Legend.SHOW_STATIC_LEGEND -> "$macro()"
+            Legend.SHOW_LEGEND -> "$macro($hideStereotypes)"
+            Legend.SHOW_FLOATING_LEGEND -> "$macro(LEGEND, $hideStereotypes)"
+        }
+
     }
 
     @Suppress("EmptyFunctionBlock")

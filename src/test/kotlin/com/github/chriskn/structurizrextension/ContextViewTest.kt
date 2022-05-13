@@ -107,7 +107,11 @@ class ContextViewTest {
             system1,
             diagramName,
             "A test Landscape",
-            C4PlantUmlLayout(layout = Layout.LEFT_TO_RIGHT, legend = Legend.SHOW_FLOATING_LEGEND)
+            C4PlantUmlLayout(
+                layout = Layout.LEFT_TO_RIGHT,
+                legend = Legend.SHOW_FLOATING_LEGEND,
+                hideStereotypes = false
+            )
         )
         contextView.addDefaultElements()
 

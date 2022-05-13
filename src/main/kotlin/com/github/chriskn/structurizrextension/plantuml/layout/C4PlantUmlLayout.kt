@@ -14,9 +14,9 @@ enum class Layout(val macro: String) {
 }
 
 enum class Legend(val macro: String) {
-    SHOW_STATIC_LEGEND("LAYOUT_WITH_LEGEND()"),
-    SHOW_FLOATING_LEGEND("SHOW_FLOATING_LEGEND()"),
-    SHOW_LEGEND("SHOW_LEGEND()")
+    SHOW_STATIC_LEGEND("LAYOUT_WITH_LEGEND"),
+    SHOW_FLOATING_LEGEND("SHOW_FLOATING_LEGEND"),
+    SHOW_LEGEND("SHOW_LEGEND")
 }
 
 enum class DependencyPosition {
@@ -40,5 +40,6 @@ data class C4PlantUmlLayout(
     val layout: Layout = Layout.TOP_DOWN,
     val legend: Legend = Legend.SHOW_LEGEND,
     val showPersonOutline: Boolean = true,
+    val hideStereotypes: Boolean = true,
     val dependencyConfigurations: List<DependencyConfiguration> = listOf()
 )

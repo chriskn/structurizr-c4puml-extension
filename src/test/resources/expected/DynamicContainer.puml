@@ -22,6 +22,6 @@ ContainerDb(5, "Database", "Oracle Database Schema", "Stores user registration i
 9 -[#707070]-> 7 : 5. Returns true if the hashed password matches
 7 -[#707070]-> 2 : 6. Sends back an authentication token to
 
-SHOW_FLOATING_LEGEND()
+SHOW_FLOATING_LEGEND(LEGEND, true)
 
 @enduml
