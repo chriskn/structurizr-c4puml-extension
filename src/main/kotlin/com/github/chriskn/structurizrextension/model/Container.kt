@@ -21,18 +21,18 @@ fun Container.component(
     val component = this.addComponent(name, description, technology)
     component.configure(icon, link, tags, properties)
     uses.forEach { dep ->
-        when (dep.element) {
-            is SoftwareSystem -> component.uses(dep.element, dep.description, dep.technology, dep.interactionStyle)
-            is Container -> component.uses(dep.element, dep.description, dep.technology, dep.interactionStyle)
-            is Component -> component.uses(dep.element, dep.description, dep.technology, dep.interactionStyle)
+        when (dep.target) {
+            is SoftwareSystem -> component.uses(dep.target, dep.description, dep.technology, dep.interactionStyle)
+            is Container -> component.uses(dep.target, dep.description, dep.technology, dep.interactionStyle)
+            is Component -> component.uses(dep.target, dep.description, dep.technology, dep.interactionStyle)
         }
     }
     usedBy.forEach { dep ->
-        when (dep.element) {
-            is SoftwareSystem -> dep.element.uses(component, dep.description, dep.technology, dep.interactionStyle)
-            is Container -> dep.element.uses(component, dep.description, dep.technology, dep.interactionStyle)
-            is Component -> dep.element.uses(component, dep.description, dep.technology, dep.interactionStyle)
-            is Person -> dep.element.uses(component, dep.description, dep.technology)
+        when (dep.target) {
+            is SoftwareSystem -> dep.target.uses(component, dep.description, dep.technology, dep.interactionStyle)
+            is Container -> dep.target.uses(component, dep.description, dep.technology, dep.interactionStyle)
+            is Component -> dep.target.uses(component, dep.description, dep.technology, dep.interactionStyle)
+            is Person -> dep.target.uses(component, dep.description, dep.technology)
         }
     }
     return component

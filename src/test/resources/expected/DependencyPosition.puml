@@ -18,7 +18,7 @@ System(8, "E", "", "")
 Rel_U(1, 6, "uses")
 Rel_L(2, 1, "uses")
 Rel_L(4, 1, "uses")
-Rel_L(8, 1, "uses")
+Rel_L(8, 1, " ")
 
 SHOW_LEGEND(true)
 

@@ -51,7 +51,7 @@ class ComponentViewTest {
         backendApplication.component(
             "MyService",
             "Does implement some logic",
-            link = "www.google.de",
+            link = "https://google.de",
             technology = "",
             icon = "kotlin",
             usedBy = listOf(Dependency(restController, "calls")),
@@ -71,7 +71,7 @@ class ComponentViewTest {
             location = Location.Internal
         ).uses(restController, "Admin UI", "REST")
 
-        val componentView = workspace.views.createComponentView(
+        val componentView = workspace.views.componentView(
             backendApplication,
             diagramName,
             "Test component view",

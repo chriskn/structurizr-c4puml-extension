@@ -16,21 +16,27 @@ enum class Layout(val macro: String) {
 enum class Legend(val macro: String) {
     SHOW_STATIC_LEGEND("LAYOUT_WITH_LEGEND"),
     SHOW_FLOATING_LEGEND("SHOW_FLOATING_LEGEND"),
-    SHOW_LEGEND("SHOW_LEGEND")
+    SHOW_LEGEND("SHOW_LEGEND"),
+    NONE("")
 }
 
-enum class DependencyPosition {
-    Up, Down, Right, Left
+enum class Direction {
+    UP, DOWN, RIGHT, LEFT;
+
+    fun macro() = this.name.first()
 }
 
-enum class DependencyMode {
-    Neighbor, Back, Back_Neighbor, Rel
+enum class Mode(val macro: String) {
+    NEIGHBOR("Neighbor"),
+    BACK("Back"),
+    BACK_NEIGHBOR("Back_Neighbor"),
+    REL("Rel")
 }
 
 data class DependencyConfiguration(
     val filter: (predicate: Relationship) -> Boolean,
-    val mode: DependencyMode? = null,
-    val position: DependencyPosition? = null
+    val mode: Mode? = null,
+    val direction: Direction? = null
 )
 
 data class C4PlantUmlLayout(

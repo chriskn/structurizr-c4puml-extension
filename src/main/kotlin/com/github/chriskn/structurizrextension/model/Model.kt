@@ -22,7 +22,7 @@ fun Model.person(
     val person = this.addPerson(location, name, description)
     person.configure(icon, link, tags, properties)
     uses.forEach { dep ->
-        when (val element = dep.element) {
+        when (val element = dep.target) {
             is SoftwareSystem -> person.uses(element, dep.description, dep.technology)
             is Container -> person.uses(element, dep.description, dep.technology)
             is Component -> person.uses(element, dep.description, dep.technology)
@@ -48,18 +48,18 @@ fun Model.softwareSystem(
     softwareSystem.type = type
     softwareSystem.configure(icon, link, tags, properties)
     uses.forEach { dep ->
-        when (dep.element) {
-            is SoftwareSystem -> softwareSystem.uses(dep.element, dep.description, dep.technology, dep.interactionStyle)
-            is Container -> softwareSystem.uses(dep.element, dep.description, dep.technology, dep.interactionStyle)
-            is Component -> softwareSystem.uses(dep.element, dep.description, dep.technology, dep.interactionStyle)
+        when (dep.target) {
+            is SoftwareSystem -> softwareSystem.uses(dep.target, dep.description, dep.technology, dep.interactionStyle)
+            is Container -> softwareSystem.uses(dep.target, dep.description, dep.technology, dep.interactionStyle)
+            is Component -> softwareSystem.uses(dep.target, dep.description, dep.technology, dep.interactionStyle)
         }
     }
     usedBy.forEach { dep ->
-        when (dep.element) {
-            is SoftwareSystem -> dep.element.uses(softwareSystem, dep.description, dep.technology, dep.interactionStyle)
-            is Container -> dep.element.uses(softwareSystem, dep.description, dep.technology, dep.interactionStyle)
-            is Component -> dep.element.uses(softwareSystem, dep.description, dep.technology, dep.interactionStyle)
-            is Person -> dep.element.uses(softwareSystem, dep.description, dep.technology)
+        when (dep.target) {
+            is SoftwareSystem -> dep.target.uses(softwareSystem, dep.description, dep.technology, dep.interactionStyle)
+            is Container -> dep.target.uses(softwareSystem, dep.description, dep.technology, dep.interactionStyle)
+            is Component -> dep.target.uses(softwareSystem, dep.description, dep.technology, dep.interactionStyle)
+            is Person -> dep.target.uses(softwareSystem, dep.description, dep.technology)
         }
     }
     return softwareSystem
@@ -67,7 +67,7 @@ fun Model.softwareSystem(
 
 @Suppress("LongParameterList")
 fun Model.deploymentNode(
-    environment: String,
+    environment: String?,
     name: String,
     description: String = "",
     icon: String? = null,
@@ -77,7 +77,6 @@ fun Model.deploymentNode(
     properties: C4Properties = C4Properties(values = listOf()),
     hostsSystems: List<SoftwareSystem> = listOf(),
     hostsContainers: List<Container> = listOf(),
-
 ): DeploymentNode {
     val node = this.addDeploymentNode(environment, name, description, technology)
     node.configure(icon, link, tags, properties)

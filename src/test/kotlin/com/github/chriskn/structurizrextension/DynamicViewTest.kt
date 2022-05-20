@@ -80,7 +80,7 @@ class DynamicViewTest {
         val diagramName = "DynamicContainer"
         val expectedDiagramContent =
             this::class.java.getResource("/expected/$diagramName.puml")!!.readText(Charsets.UTF_8)
-        val dynamicView: DynamicView = workspace.views.createDynamicView(
+        val dynamicView: DynamicView = workspace.views.dynamicView(
             apiApplication,
             diagramName,
             "description",
@@ -105,7 +105,7 @@ class DynamicViewTest {
         val diagramName = "DynamicSystem"
         val expectedDiagramContent =
             this::class.java.getResource("/expected/$diagramName.puml")!!.readText(Charsets.UTF_8)
-        val dynamicView: DynamicView = workspace.views.createDynamicView(
+        val dynamicView: DynamicView = workspace.views.dynamicView(
             system1,
             diagramName,
             "description",

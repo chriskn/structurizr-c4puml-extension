@@ -22,7 +22,7 @@ Container_Boundary(2_boundary, Backend App) {
   AddProperty("jdbcUrl", "someurl")
   Component(6, "MyRepo", "Kotlin, JDBC", "Provides CRUD operations for data", "")
   Component(4, "MyRestController", "REST", "Provides data via rest", "")
-  Component(7, "MyService", "", "Does implement some logic", "kotlin", $link="www.google.de")
+  Component(7, "MyService", "", "Does implement some logic", "kotlin", $link="https://google.de")
 }
 Rel_D(12, 4, "Admin UI", "REST")
 Rel_D(6, 10, "gets data from")

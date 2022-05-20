@@ -21,32 +21,34 @@ LAYOUT_LEFT_RIGHT()
 SetPropertyHeader("Property", "Value", "Description")
 AddProperty("Property1", "Value1", "Description1")
 AddProperty("Property2", "Value2", "Description2")
-Node(12, "AWS", "", "Production AWS environment", "Cloudalt"){
-  Node(13, "AWS RDS", "", "", ""){
+Node(9, "AWS", "", "Production AWS environment", "Cloudalt"){
+  Node(10, "AWS RDS", "", "", ""){
     WithoutPropertyHeader()
     AddProperty("region", "eu-central-1")
-    ContainerDb(15, "Database", "PostgreSql", "Stores data", "postgresql")
+    ContainerDb(12, "Database", "PostgreSql", "Stores data", "postgresql")
     WithoutPropertyHeader()
     AddProperty("region", "eu-west-1")
-    ContainerDb(14, "Failover Database", "PostgreSql", "Stores data", "postgresql")
+    ContainerDb(11, "Failover Database", "PostgreSql", "Stores data", "postgresql")
   }
-  Node(17, "EKS cluster", "", "", "EKSCloud"){
-    Node(19, "my.web.app", "", "Web App POD", ""){
-      Node(21, "Web App container", "", "", "docker-icon"){
-        Container(22, "Web Application", "Java and Spring MVC", "Spring Boot web application", "spring")
+  Node(14, "EKS cluster", "", "", "EKSCloud"){
+    Node(15, "my.web.app", "", "Web App POD", ""){
+      Node(17, "Web App container", "", "", "docker-icon"){
+        Container(18, "Web Application", "Java and Spring MVC", "Spring Boot web application", "spring")
       }
-      Container(20, "Sidecar", "", "Some sidecar", "")
+      Container(16, "Sidecar", "", "Some sidecar", "")
     }
-    Container(18, "Load Balancer", "nginx", "Nginx Load Balancer", "nginx", $link="https://www.google.de")
+    SetPropertyHeader("Property", "value")
+    AddProperty("IP", "10.234.234.132")
+    Node(22, "Load Balancer", "nginx", "Nginx Load Balancer", "nginx", $link="https://www.google.de"){
   }
 }
-Node(25, "Apple Device", "", "", "apple"){
-  System_Ext(26, "iOS App", "", "")
+Node(20, "Apple Device", "", "", "apple"){
+  System_Ext(21, "iOS App", "", "")
 }
-Rel_D(15, 14, "replicates data to")
-Rel_D(18, 22, "forwards requests to")
-Rel_D(22, 15, "stores data in", "JDBC")
-Rel_D(26, 18, "requests data from")
+Rel_R(20, 22, "requests data from")
+Rel_R(12, 11, "replicates data to")
+Rel_R(22, 17, "forwards requests to")
+Rel_D(18, 12, "stores data in", "JDBC")
 
 skinparam nodesep 20
 skinparam ranksep 50

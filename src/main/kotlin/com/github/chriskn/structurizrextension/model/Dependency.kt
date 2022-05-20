@@ -4,7 +4,7 @@ import com.structurizr.model.Element
 import com.structurizr.model.InteractionStyle
 
 data class Dependency(
-    val element: Element,
+    val target: Element,
     val description: String,
     val technology: String? = null,
     val interactionStyle: InteractionStyle? = null

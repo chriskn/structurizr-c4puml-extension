@@ -2,14 +2,14 @@ package com.structurizr.io.plantuml
 
 import com.github.chriskn.structurizrextension.model.c4Properties
 import com.github.chriskn.structurizrextension.model.icon
-import com.github.chriskn.structurizrextension.model.link
 import com.github.chriskn.structurizrextension.model.type
 import com.github.chriskn.structurizrextension.plantuml.IconRegistry
 import com.github.chriskn.structurizrextension.plantuml.layout.C4PlantUmlLayout
 import com.github.chriskn.structurizrextension.plantuml.layout.DependencyConfiguration
-import com.github.chriskn.structurizrextension.plantuml.layout.DependencyMode
+import com.github.chriskn.structurizrextension.plantuml.layout.Direction
 import com.github.chriskn.structurizrextension.plantuml.layout.LayoutRegistry
 import com.github.chriskn.structurizrextension.plantuml.layout.Legend
+import com.github.chriskn.structurizrextension.plantuml.layout.Mode
 import com.structurizr.model.Component
 import com.structurizr.model.Container
 import com.structurizr.model.ContainerInstance
@@ -96,6 +96,9 @@ class ExtendedC4PlantUmlWriter : C4PlantUMLWriter {
                     writeProperties(deploymentElement.softwareSystem, stringIdent, writer)
                     writer.write(deploymentElement.softwareSystem.toMacroString(deploymentElement.id, stringIdent))
                 }
+                is InfrastructureNode -> {
+                    writer.write(deploymentElement.toMacroString(stringIdent))
+                }
             }
         }
     }
@@ -123,21 +126,28 @@ class ExtendedC4PlantUmlWriter : C4PlantUMLWriter {
         IconRegistry.iconNameFor(
             icon ?: ""
         )
-        }"${linkString(link)}){$separator"""
+        }"${linkString(url)}){$separator"""
+
+    private fun InfrastructureNode.toMacroString(ident: String) =
+        """${ident}Node($id, "$name", "${technology ?: ""}", "${description ?: ""}", "${
+        IconRegistry.iconNameFor(
+            icon ?: ""
+        )
+        }"${linkString(url)}){$separator"""
 
     private fun SoftwareSystem.toMacroString(id: String, indent: String) =
         """${indent}System${this.type?.c4Type ?: ""}${this.location.toPlantUmlString()}($id, "$name", "${description ?: ""}", "${
         IconRegistry.iconNameFor(
             icon ?: ""
         )
-        }"${linkString(link)})$separator"""
+        }"${linkString(url)})$separator"""
 
     private fun Container.toMacroString(id: String, indent: String): String =
         """${indent}Container${this.type?.c4Type ?: ""}($id, "$name", "$technology", "${description ?: ""}", "${
         IconRegistry.iconNameFor(
             icon ?: ""
         )
-        }"${linkString(link)})$separator"""
+        }"${linkString(url)})$separator"""
 
     private fun Person.toMacroString(indent: String): String {
         val externalMarker = this.location.toPlantUmlString()
@@ -145,7 +155,7 @@ class ExtendedC4PlantUmlWriter : C4PlantUMLWriter {
         IconRegistry.iconNameFor(
             icon ?: ""
         )
-        }"${linkString(link)})$separator"""
+        }"${linkString(url)})$separator"""
     }
 
     private fun Component.toMacroString(indent: String): String {
@@ -153,7 +163,7 @@ class ExtendedC4PlantUmlWriter : C4PlantUMLWriter {
         IconRegistry.iconNameFor(
             icon ?: ""
         )
-        }"${linkString(link)})$separator"""
+        }"${linkString(url)})$separator"""
     }
 
     override fun writeRelationships(view: View, writer: Writer) {
@@ -174,7 +184,7 @@ class ExtendedC4PlantUmlWriter : C4PlantUMLWriter {
         conf: DependencyConfiguration
     ): Relationship {
         val rel = this.relationship
-        val position = conf.position
+        val position = conf.direction
         val mode = conf.mode
         if (position != null) {
             rel.addProperty(C4_LAYOUT_DIRECTION, position.name)
@@ -197,22 +207,23 @@ class ExtendedC4PlantUmlWriter : C4PlantUMLWriter {
         try {
             var relationshipMacro: String?
             var mode = if (relationship.properties.containsKey(C4_LAYOUT_MODE)) {
-                DependencyMode.valueOf(relationship.properties[C4_LAYOUT_MODE]!!)
+                Mode.valueOf(relationship.properties[C4_LAYOUT_MODE]!!)
             } else {
-                DependencyMode.Rel
+                Mode.REL
             }
             when (mode) {
-                DependencyMode.Rel -> {
-                    relationshipMacro = mode.name
-                    var direction = Directions.Down
+                Mode.REL -> {
+                    relationshipMacro = mode.macro
+                    var direction = Direction.DOWN
                     if (relationship.properties.containsKey(C4_LAYOUT_DIRECTION)) {
-                        direction = Directions.valueOf(relationship.properties[C4_LAYOUT_DIRECTION]!!)
+                        direction = Direction.valueOf(relationship.properties[C4_LAYOUT_DIRECTION]!!)
                     }
-                    relationshipMacro = "${relationshipMacro}_${direction.forMacro()}"
+                    relationshipMacro = "${relationshipMacro}_${direction.macro()}"
                 }
-                else -> relationshipMacro = "Rel_$mode"
+                else -> relationshipMacro = "Rel_${mode.macro}"
             }
-            var relMacro = """$relationshipMacro(${source.id}, ${destination.id}, "${relationship.description}""""
+            val description = relationship.description.ifEmpty { " " }
+            var relMacro = """$relationshipMacro(${source.id}, ${destination.id}, "$description""""
             if (relationship.technology != null) {
                 relMacro += """, "${relationship.technology}""""
             }
@@ -332,7 +343,9 @@ class ExtendedC4PlantUmlWriter : C4PlantUMLWriter {
         if (layout.rankSep != null) {
             writer.write("skinparam ranksep ${layout.rankSep}" + separator)
         }
-        writer.write(layout.legend.toMacro(layout.hideStereotypes) + separator + separator)
+        if (layout.legend != Legend.NONE) {
+            writer.write(layout.legend.toMacro(layout.hideStereotypes) + separator + separator)
+        }
     }
 
     private fun Legend.toMacro(hideStereotypes: Boolean): String {
@@ -341,6 +354,7 @@ class ExtendedC4PlantUmlWriter : C4PlantUMLWriter {
             Legend.SHOW_STATIC_LEGEND -> "$macro()"
             Legend.SHOW_LEGEND -> "$macro($hideStereotypes)"
             Legend.SHOW_FLOATING_LEGEND -> "$macro(LEGEND, $hideStereotypes)"
+            else -> ""
         }
     }
 

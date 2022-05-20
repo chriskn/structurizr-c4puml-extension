@@ -5,8 +5,9 @@ import com.github.chriskn.structurizrextension.model.softwareSystem
 import com.github.chriskn.structurizrextension.plantuml.C4PlantUmlDiagramWriter
 import com.github.chriskn.structurizrextension.plantuml.layout.C4PlantUmlLayout
 import com.github.chriskn.structurizrextension.plantuml.layout.DependencyConfiguration
-import com.github.chriskn.structurizrextension.plantuml.layout.DependencyMode
-import com.github.chriskn.structurizrextension.plantuml.layout.DependencyPosition
+import com.github.chriskn.structurizrextension.plantuml.layout.Direction
+import com.github.chriskn.structurizrextension.plantuml.layout.Legend
+import com.github.chriskn.structurizrextension.plantuml.layout.Mode
 import com.structurizr.Workspace
 import com.structurizr.model.Model
 import org.assertj.core.api.Assertions.assertThat
@@ -38,7 +39,7 @@ class DependencyTest {
     )
     private val e = model.softwareSystem(
         "E",
-        uses = listOf(Dependency(a, "uses"))
+        uses = listOf(Dependency(a, ""))
     )
 
     @Test
@@ -46,13 +47,13 @@ class DependencyTest {
         val diagramName = "DependencyPosition"
         val expectedDiagramContent =
             this::class.java.getResource("/expected/$diagramName.puml")!!.readText(Charsets.UTF_8)
-        val contextView = workspace.views.createSystemLandscapeView(
+        val contextView = workspace.views.systemLandscapeView(
             diagramName,
             "Dependency Test",
             C4PlantUmlLayout(
                 dependencyConfigurations = listOf(
-                    DependencyConfiguration(filter = { it.destination == a }, position = DependencyPosition.Left),
-                    DependencyConfiguration(filter = { it.source == a }, position = DependencyPosition.Up)
+                    DependencyConfiguration(filter = { it.destination == a }, direction = Direction.LEFT),
+                    DependencyConfiguration(filter = { it.source == a }, direction = Direction.UP)
                 )
             )
         )
@@ -75,12 +76,12 @@ class DependencyTest {
         val diagramName = "DependencyMode"
         val expectedDiagramContent =
             this::class.java.getResource("/expected/$diagramName.puml")!!.readText(Charsets.UTF_8)
-        val contextView = workspace.views.createSystemLandscapeView(
+        val contextView = workspace.views.systemLandscapeView(
             diagramName,
             "Dependency Test",
             C4PlantUmlLayout(
                 dependencyConfigurations = listOf(
-                    DependencyConfiguration(filter = { it.source == a }, mode = DependencyMode.Neighbor)
+                    DependencyConfiguration(filter = { it.source == a }, mode = Mode.NEIGHBOR)
                 )
             )
         )
@@ -103,13 +104,14 @@ class DependencyTest {
         val diagramName = "DependencyPositionMode"
         val expectedDiagramContent =
             this::class.java.getResource("/expected/$diagramName.puml")!!.readText(Charsets.UTF_8)
-        val contextView = workspace.views.createSystemLandscapeView(
+        val contextView = workspace.views.systemLandscapeView(
             diagramName,
             "Dependency Test",
             C4PlantUmlLayout(
                 dependencyConfigurations = listOf(
-                    DependencyConfiguration(filter = { it.source == a }, mode = DependencyMode.Back, position = DependencyPosition.Left)
-                )
+                    DependencyConfiguration(filter = { it.source == a }, mode = Mode.BACK, direction = Direction.LEFT)
+                ),
+                legend = Legend.NONE
             )
         )
         contextView.addDefaultElements()

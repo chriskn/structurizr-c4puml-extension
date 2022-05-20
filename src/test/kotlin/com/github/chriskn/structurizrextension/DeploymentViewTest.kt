@@ -6,10 +6,13 @@ import com.github.chriskn.structurizrextension.model.Dependency
 import com.github.chriskn.structurizrextension.model.container
 import com.github.chriskn.structurizrextension.model.deploymentNode
 import com.github.chriskn.structurizrextension.model.icon
+import com.github.chriskn.structurizrextension.model.infrastructureNode
 import com.github.chriskn.structurizrextension.model.softwareSystem
 import com.github.chriskn.structurizrextension.model.type
 import com.github.chriskn.structurizrextension.plantuml.C4PlantUmlDiagramWriter
 import com.github.chriskn.structurizrextension.plantuml.layout.C4PlantUmlLayout
+import com.github.chriskn.structurizrextension.plantuml.layout.DependencyConfiguration
+import com.github.chriskn.structurizrextension.plantuml.layout.Direction
 import com.github.chriskn.structurizrextension.plantuml.layout.Layout
 import com.structurizr.Workspace
 import com.structurizr.model.Container
@@ -59,15 +62,6 @@ class DeploymentViewTest {
             "Sidecar",
             "Some sidecar"
         )
-        val nginx: Container = mySystem.container(
-            name = "Load Balancer",
-            description = "Nginx Load Balancer",
-            technology = "nginx",
-            icon = "nginx",
-            link = "https://www.google.de",
-            uses = listOf(Dependency(webApplication, "forwards requests to")),
-            usedBy = listOf(Dependency(iosApp, "requests data from"))
-        )
         val database: Container = mySystem.container(
             "Database",
             "Stores data",
@@ -104,11 +98,12 @@ class DeploymentViewTest {
             icon = "rds",
             hostsContainers = listOf(failoverDatabase, database)
         )
-        aws.deploymentNode(
+        val eks = aws.deploymentNode(
             "EKS cluster",
             icon = "awsEKSCloud",
-            hostsContainers = listOf(nginx)
-        ).deploymentNode(
+        )
+
+        val webAppPod = eks.deploymentNode(
             "my.web.app",
             "Web App POD",
             hostsContainers = listOf(webAppSidecar)
@@ -117,20 +112,43 @@ class DeploymentViewTest {
             icon = "docker",
             hostsContainers = listOf(webApplication)
         )
-
-        model.deploymentNode(
+        val appleDevice = model.deploymentNode(
             environment = environment,
             "Apple Device",
             icon = "apple",
             hostsSystems = listOf(iosApp)
         )
 
+        val loadBalancer = eks.infrastructureNode(
+            name = "Load Balancer",
+            description = "Nginx Load Balancer",
+            technology = "nginx",
+            icon = "nginx",
+            link = "https://www.google.de",
+            uses = listOf(Dependency(webAppPod, "forwards requests to")),
+            usedBy = listOf(Dependency(appleDevice, "requests data from")),
+            properties = C4Properties(
+                headers = listOf("Property", "value"),
+                values = listOf(listOf("IP", "10.234.234.132"))
+            )
+        )
+
         val deploymentView =
-            views.createDeploymentView(
+            views.deploymentView(
                 mySystem,
                 diagramName,
                 "A deployment diagram showing the $environment environment.",
-                C4PlantUmlLayout(nodeSep = 20, rankSep = 50, layout = Layout.LEFT_TO_RIGHT)
+                C4PlantUmlLayout(
+                    nodeSep = 20, rankSep = 50, layout = Layout.LEFT_TO_RIGHT,
+                    dependencyConfigurations = listOf(
+                        DependencyConfiguration(
+                            filter = {
+                                it.source == loadBalancer || it.destination == loadBalancer || it.destination.name == failoverDatabase.name
+                            },
+                            direction = Direction.RIGHT
+                        )
+                    )
+                )
             )
         deploymentView.environment = environment
         deploymentView.addAllDeploymentNodes()

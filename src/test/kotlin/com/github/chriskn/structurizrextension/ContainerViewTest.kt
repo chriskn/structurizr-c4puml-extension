@@ -96,7 +96,7 @@ class ContainerViewTest {
             icon = "android",
             uses = listOf(Dependency(app, "uses app"))
         )
-        val containerView = workspace.views.createContainerView(
+        val containerView = workspace.views.containerView(
             softwareSystem,
             diagramName,
             "Test container view",

@@ -12,7 +12,7 @@ import com.structurizr.view.SystemContextView
 import com.structurizr.view.SystemLandscapeView
 import com.structurizr.view.ViewSet
 
-fun ViewSet.createSystemLandscapeView(
+fun ViewSet.systemLandscapeView(
     key: String,
     description: String,
     layout: C4PlantUmlLayout? = null
@@ -21,7 +21,7 @@ fun ViewSet.createSystemLandscapeView(
     return this.createSystemLandscapeView(key, description)
 }
 
-fun ViewSet.createSystemContextView(
+fun ViewSet.systemContextView(
     softwareSystem: SoftwareSystem,
     key: String,
     description: String,
@@ -31,7 +31,7 @@ fun ViewSet.createSystemContextView(
     return this.createSystemContextView(softwareSystem, key, description)
 }
 
-fun ViewSet.createContainerView(
+fun ViewSet.containerView(
     softwareSystem: SoftwareSystem,
     key: String,
     description: String,
@@ -41,7 +41,7 @@ fun ViewSet.createContainerView(
     return this.createContainerView(softwareSystem, key, description)
 }
 
-fun ViewSet.createComponentView(
+fun ViewSet.componentView(
     container: Container,
     key: String,
     description: String,
@@ -51,7 +51,7 @@ fun ViewSet.createComponentView(
     return this.createComponentView(container, key, description)
 }
 
-fun ViewSet.createDynamicView(
+fun ViewSet.dynamicView(
     container: Container,
     key: String,
     description: String,
@@ -61,7 +61,7 @@ fun ViewSet.createDynamicView(
     return this.createDynamicView(container, key, description)
 }
 
-fun ViewSet.createDynamicView(
+fun ViewSet.dynamicView(
     system: SoftwareSystem,
     key: String,
     description: String,
@@ -71,7 +71,7 @@ fun ViewSet.createDynamicView(
     return this.createDynamicView(system, key, description)
 }
 
-fun ViewSet.createDeploymentView(
+fun ViewSet.deploymentView(
     system: SoftwareSystem,
     key: String,
     description: String,

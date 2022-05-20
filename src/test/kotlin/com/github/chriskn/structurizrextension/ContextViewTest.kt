@@ -79,7 +79,7 @@ class ContextViewTest {
         val diagramName = "SystemLandscape"
         val expectedDiagramContent =
             this::class.java.getResource("/expected/$diagramName.puml")!!.readText(Charsets.UTF_8)
-        val landscapeView = workspace.views.createSystemLandscapeView(
+        val landscapeView = workspace.views.systemLandscapeView(
             diagramName,
             "A test Landscape",
             C4PlantUmlLayout(layout = Layout.LEFT_TO_RIGHT, legend = Legend.SHOW_FLOATING_LEGEND)
@@ -103,7 +103,7 @@ class ContextViewTest {
         val diagramName = "Context"
         val expectedDiagramContent =
             this::class.java.getResource("/expected/$diagramName.puml")!!.readText(Charsets.UTF_8)
-        val contextView = workspace.views.createSystemContextView(
+        val contextView = workspace.views.systemContextView(
             system1,
             diagramName,
             "A test Landscape",

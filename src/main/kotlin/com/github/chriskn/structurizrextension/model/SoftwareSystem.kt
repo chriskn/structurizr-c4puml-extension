@@ -23,18 +23,18 @@ fun SoftwareSystem.container(
     container.type = type
     container.configure(icon, link, tags, properties)
     uses.forEach { dep ->
-        when (dep.element) {
-            is SoftwareSystem -> container.uses(dep.element, dep.description, dep.technology, dep.interactionStyle)
-            is Container -> container.uses(dep.element, dep.description, dep.technology, dep.interactionStyle)
-            is Component -> container.uses(dep.element, dep.description, dep.technology, dep.interactionStyle)
+        when (dep.target) {
+            is SoftwareSystem -> container.uses(dep.target, dep.description, dep.technology, dep.interactionStyle)
+            is Container -> container.uses(dep.target, dep.description, dep.technology, dep.interactionStyle)
+            is Component -> container.uses(dep.target, dep.description, dep.technology, dep.interactionStyle)
         }
     }
     usedBy.forEach { dep ->
-        when (dep.element) {
-            is SoftwareSystem -> dep.element.uses(container, dep.description, dep.technology, dep.interactionStyle)
-            is Container -> dep.element.uses(container, dep.description, dep.technology, dep.interactionStyle)
-            is Component -> dep.element.uses(container, dep.description, dep.technology, dep.interactionStyle)
-            is Person -> dep.element.uses(container, dep.description, dep.technology)
+        when (dep.target) {
+            is SoftwareSystem -> dep.target.uses(container, dep.description, dep.technology, dep.interactionStyle)
+            is Container -> dep.target.uses(container, dep.description, dep.technology, dep.interactionStyle)
+            is Component -> dep.target.uses(container, dep.description, dep.technology, dep.interactionStyle)
+            is Person -> dep.target.uses(container, dep.description, dep.technology)
         }
     }
     return container
