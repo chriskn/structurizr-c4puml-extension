@@ -1,20 +1,16 @@
 @startuml(id=DependencyPositionMode)
-!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4.puml
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
-!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
-!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
-!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Deployment.puml
 title System Landscape
 caption Dependency Test
 
 SHOW_PERSON_OUTLINE()
 LAYOUT_TOP_DOWN()
 
-System(1, "A", "", "")
-System(2, "B", "", "")
-System(4, "C", "", "")
-System(6, "D", "", "")
-System(8, "E", "", "")
+System(1, "A", "A", "")
+System(2, "B", "B", "")
+System(4, "C", "C", "")
+System(6, "D", "C", "")
+System(8, "E", "E", "")
 Rel_Back(1, 6, "uses")
 Rel_D(2, 1, "uses")
 Rel_D(4, 1, "uses")

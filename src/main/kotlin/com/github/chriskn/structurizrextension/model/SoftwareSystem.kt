@@ -5,6 +5,7 @@ import com.structurizr.model.Component
 import com.structurizr.model.Container
 import com.structurizr.model.Person
 import com.structurizr.model.SoftwareSystem
+import com.structurizr.model.StaticStructureElement
 
 @Suppress("LongParameterList")
 fun SoftwareSystem.container(
@@ -16,8 +17,8 @@ fun SoftwareSystem.container(
     technology: String = "",
     tags: List<String> = listOf(),
     properties: C4Properties? = null,
-    uses: List<Dependency> = listOf(),
-    usedBy: List<Dependency> = listOf()
+    uses: List<Dependency<StaticStructureElement>> = listOf(),
+    usedBy: List<Dependency<StaticStructureElement>> = listOf()
 ): Container {
     val container = this.addContainer(name, description, technology)
     container.type = type
@@ -27,6 +28,7 @@ fun SoftwareSystem.container(
             is SoftwareSystem -> container.uses(dep.target, dep.description, dep.technology, dep.interactionStyle)
             is Container -> container.uses(dep.target, dep.description, dep.technology, dep.interactionStyle)
             is Component -> container.uses(dep.target, dep.description, dep.technology, dep.interactionStyle)
+            is Person -> throw IllegalArgumentException("SoftwareSystem can't use Person")
         }
     }
     usedBy.forEach { dep ->

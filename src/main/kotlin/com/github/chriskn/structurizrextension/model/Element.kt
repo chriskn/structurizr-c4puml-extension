@@ -5,6 +5,7 @@ import com.structurizr.model.Element
 private const val C4_PROPERTY_PREFIX = "additionalProperty:"
 private const val C4_PROPERTY_HEADER_PREFIX = "additionalPropertyHeader"
 private const val ICON_PROPERTY = "icon"
+private const val LINK_PROPERTY = "link"
 
 fun Element.configure(
     icon: String?,
@@ -13,7 +14,7 @@ fun Element.configure(
     c4Properties: C4Properties?
 ) {
     this.icon = icon
-    this.url = link
+    this.link = link
     tags.forEach { tag -> this.addTags(tag) }
     this.c4Properties = c4Properties
 }
@@ -58,5 +59,13 @@ var Element.icon: String?
     set(icon) {
         if (icon != null) {
             this.addProperty(ICON_PROPERTY, icon)
+        }
+    }
+
+var Element.link: String?
+    get() = this.properties[LINK_PROPERTY]
+    set(link) {
+        if (link != null) {
+            this.addProperty(LINK_PROPERTY, link)
         }
     }

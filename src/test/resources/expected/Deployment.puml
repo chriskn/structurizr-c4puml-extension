@@ -1,9 +1,4 @@
 @startuml(id=Deployment)
-!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4.puml
-!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
-!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
-!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
-!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Deployment.puml
 !includeurl https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/v11.1/dist/AWSCommon.puml
 !includeurl https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/v11.1/dist/Containers/EKSCloud.puml
 !includeurl https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/v11.1/dist/GroupIcons/Cloudalt.puml
@@ -12,8 +7,9 @@
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/nginx.puml
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/postgresql.puml
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/spring.puml
-title System container - Deployment - Production
-caption A deployment diagram showing the Production environment.
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Deployment.puml
+title System container - Deployment - Default
+caption A deployment diagram showing the environment.
 
 SHOW_PERSON_OUTLINE()
 LAYOUT_LEFT_RIGHT()
@@ -21,36 +17,36 @@ LAYOUT_LEFT_RIGHT()
 SetPropertyHeader("Property", "Value", "Description")
 AddProperty("Property1", "Value1", "Description1")
 AddProperty("Property2", "Value2", "Description2")
-Node(9, "AWS", "", "Production AWS environment", "Cloudalt"){
-  Node(10, "AWS RDS", "", "", ""){
+Node(8, "AWS", "", "Production AWS environment", "Cloudalt"){
+  Node(9, "AWS RDS", "", "", ""){
     WithoutPropertyHeader()
     AddProperty("region", "eu-central-1")
-    ContainerDb(12, "Database", "PostgreSql", "Stores data", "postgresql")
+    ContainerDb(11, "Database", "PostgreSql", "Stores data", "postgresql")
     WithoutPropertyHeader()
     AddProperty("region", "eu-west-1")
-    ContainerDb(11, "Failover Database", "PostgreSql", "Stores data", "postgresql")
+    ContainerDb(10, "Failover Database", "PostgreSql", "Stores data", "postgresql")
   }
-  Node(14, "EKS cluster", "", "", "EKSCloud"){
-    Node(15, "my.web.app", "", "Web App POD", ""){
-      Node(17, "Web App container", "", "", "docker-icon"){
-        Container(18, "Web Application", "Java and Spring MVC", "Spring Boot web application", "spring")
+  Node(13, "EKS cluster", "", "", "EKSCloud"){
+    Node(14, "my.web.app", "", "Web App POD", ""){
+      Node(15, "Web App container", "", "", "docker-icon"){
+        Node(18, "Sidecar", "", "Some sidecar", "")
+        Container(16, "Web Application", "Java and Spring MVC", "Spring Boot web application", "spring")
       }
-      Container(16, "Sidecar", "", "Some sidecar", "")
     }
     SetPropertyHeader("Property", "value")
     AddProperty("IP", "10.234.234.132")
-    Node(22, "Load Balancer", "nginx", "Nginx Load Balancer", "nginx", $link="https://www.google.de"){
+    Node(21, "Load Balancer", "nginx", "Nginx Load Balancer", "nginx", $link="https://www.google.de")
   }
 }
-Node(20, "Apple Device", "", "", "apple"){
-  System_Ext(21, "iOS App", "", "")
+Node(19, "Apple Device", "", "", "apple"){
+  System_Ext(20, "iOS App", "iOS Application", "")
 }
-Rel_R(20, 22, "requests data from")
-Rel_R(12, 11, "replicates data to")
-Rel_R(22, 17, "forwards requests to")
-Rel_D(18, 12, "stores data in", "JDBC")
+Rel_D(19, 21, "requests data from")
+Rel_R(11, 10, "replicates data to")
+Rel_R(21, 15, "forwards requests to")
+Rel_D(16, 11, "stores data in", "JDBC")
 
-skinparam nodesep 20
+skinparam nodesep 50
 skinparam ranksep 50
 SHOW_LEGEND(true)
 

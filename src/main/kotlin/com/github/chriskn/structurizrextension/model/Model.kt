@@ -2,11 +2,13 @@ package com.github.chriskn.structurizrextension.model
 
 import com.structurizr.model.Component
 import com.structurizr.model.Container
+import com.structurizr.model.DeploymentElement
 import com.structurizr.model.DeploymentNode
 import com.structurizr.model.Location
 import com.structurizr.model.Model
 import com.structurizr.model.Person
 import com.structurizr.model.SoftwareSystem
+import com.structurizr.model.StaticStructureElement
 
 @Suppress("LongParameterList")
 fun Model.person(
@@ -17,7 +19,7 @@ fun Model.person(
     link: String? = null,
     tags: List<String> = listOf(),
     properties: C4Properties? = null,
-    uses: List<Dependency> = listOf(),
+    uses: List<Dependency<StaticStructureElement>> = listOf(),
 ): Person {
     val person = this.addPerson(location, name, description)
     person.configure(icon, link, tags, properties)
@@ -26,6 +28,7 @@ fun Model.person(
             is SoftwareSystem -> person.uses(element, dep.description, dep.technology)
             is Container -> person.uses(element, dep.description, dep.technology)
             is Component -> person.uses(element, dep.description, dep.technology)
+            is Person -> throw IllegalArgumentException("Person can't use Person")
         }
     }
     return person
@@ -34,15 +37,15 @@ fun Model.person(
 @Suppress("LongParameterList")
 fun Model.softwareSystem(
     name: String,
-    description: String = "",
+    description: String,
     location: Location = Location.Unspecified,
     type: C4Type? = null,
     icon: String? = null,
     link: String? = null,
     tags: List<String> = listOf(),
     properties: C4Properties? = null,
-    uses: List<Dependency> = listOf(),
-    usedBy: List<Dependency> = listOf()
+    uses: List<Dependency<StaticStructureElement>> = listOf(),
+    usedBy: List<Dependency<StaticStructureElement>> = listOf()
 ): SoftwareSystem {
     val softwareSystem = this.addSoftwareSystem(location, name, description)
     softwareSystem.type = type
@@ -52,6 +55,7 @@ fun Model.softwareSystem(
             is SoftwareSystem -> softwareSystem.uses(dep.target, dep.description, dep.technology, dep.interactionStyle)
             is Container -> softwareSystem.uses(dep.target, dep.description, dep.technology, dep.interactionStyle)
             is Component -> softwareSystem.uses(dep.target, dep.description, dep.technology, dep.interactionStyle)
+            is Person -> throw IllegalArgumentException("SoftwareSystem can't use Person")
         }
     }
     usedBy.forEach { dep ->
@@ -67,9 +71,9 @@ fun Model.softwareSystem(
 
 @Suppress("LongParameterList")
 fun Model.deploymentNode(
-    environment: String?,
     name: String,
     description: String = "",
+    environment: String? = DeploymentElement.DEFAULT_DEPLOYMENT_ENVIRONMENT,
     icon: String? = null,
     link: String? = null,
     technology: String = "",

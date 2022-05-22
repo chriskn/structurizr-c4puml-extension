@@ -32,7 +32,8 @@ class ContextViewTest {
         tags = listOf("tag1", "tag2")
     )
     private val system1 = model.softwareSystem(
-        name = "Software System 1",
+        "Software System 1",
+        "Description 1",
         icon = "android",
         link = "https://www.android.com",
         tags = listOf("tag1", "tag2"),

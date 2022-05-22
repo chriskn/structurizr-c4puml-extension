@@ -23,24 +23,12 @@ class DependencyTest {
     private val workspace = Workspace("My Workspace", "Some Description")
     private val model: Model = workspace.model
     private val a = model.softwareSystem(
-        "A",
+        "A", "A"
     )
-    private val b = model.softwareSystem(
-        "B",
-        uses = listOf(Dependency(a, "uses"))
-    )
-    private val c = model.softwareSystem(
-        "C",
-        uses = listOf(Dependency(a, "uses"))
-    )
-    private val d = model.softwareSystem(
-        "D",
-        usedBy = listOf(Dependency(a, "uses"))
-    )
-    private val e = model.softwareSystem(
-        "E",
-        uses = listOf(Dependency(a, ""))
-    )
+    private val b = model.softwareSystem("B", "B", uses = listOf(Dependency(a, "uses")))
+    private val c = model.softwareSystem("C", "C", uses = listOf(Dependency(a, "uses")))
+    private val d = model.softwareSystem("D", "C", usedBy = listOf(Dependency(a, "uses")))
+    private val e = model.softwareSystem("E", "E", uses = listOf(Dependency(a, "")))
 
     @Test
     fun `position is applied`() {

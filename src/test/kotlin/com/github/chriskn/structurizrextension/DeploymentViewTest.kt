@@ -24,8 +24,6 @@ import java.io.File
 
 class DeploymentViewTest {
 
-    private val environment = "Production"
-
     @TempDir
     private lateinit var tempDir: File
 
@@ -51,16 +49,13 @@ class DeploymentViewTest {
         val iosApp = model.softwareSystem(
             location = Location.External,
             name = "iOS App",
+            description = "iOS Application"
         )
         val webApplication: Container = mySystem.container(
             "Web Application",
             "Spring Boot web application",
             technology = "Java and Spring MVC",
             icon = "springboot"
-        )
-        val webAppSidecar: Container = mySystem.addContainer(
-            "Sidecar",
-            "Some sidecar"
         )
         val database: Container = mySystem.container(
             "Database",
@@ -81,7 +76,6 @@ class DeploymentViewTest {
             usedBy = listOf(Dependency(database, "replicates data to"))
         )
         val aws = model.deploymentNode(
-            environment,
             "AWS",
             "Production AWS environment",
             icon = "aws", // TODO add
@@ -105,15 +99,17 @@ class DeploymentViewTest {
 
         val webAppPod = eks.deploymentNode(
             "my.web.app",
-            "Web App POD",
-            hostsContainers = listOf(webAppSidecar)
+            "Web App POD"
         ).deploymentNode(
             "Web App container",
             icon = "docker",
             hostsContainers = listOf(webApplication)
         )
+        webAppPod.infrastructureNode(
+            "Sidecar",
+            "Some sidecar"
+        )
         val appleDevice = model.deploymentNode(
-            environment = environment,
             "Apple Device",
             icon = "apple",
             hostsSystems = listOf(iosApp)
@@ -137,20 +133,22 @@ class DeploymentViewTest {
             views.deploymentView(
                 mySystem,
                 diagramName,
-                "A deployment diagram showing the $environment environment.",
+                "A deployment diagram showing the environment.",
                 C4PlantUmlLayout(
-                    nodeSep = 20, rankSep = 50, layout = Layout.LEFT_TO_RIGHT,
-                    dependencyConfigurations = listOf(
+                    nodeSep = 50,
+                    rankSep = 50,
+                    layout = Layout.LEFT_TO_RIGHT,
+                    dependencyConfigurations =
+                    listOf(
                         DependencyConfiguration(
                             filter = {
-                                it.source == loadBalancer || it.destination == loadBalancer || it.destination.name == failoverDatabase.name
+                                it.source == loadBalancer || it.destination.name == failoverDatabase.name
                             },
                             direction = Direction.RIGHT
                         )
                     )
                 )
             )
-        deploymentView.environment = environment
         deploymentView.addAllDeploymentNodes()
 
         val diagramFolder = File(tempDir, "./diagram/")
