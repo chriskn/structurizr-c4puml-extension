@@ -158,46 +158,46 @@ class ExtendedC4PlantUmlWriter : C4PlantUMLWriter() {
 
     private fun DeploymentNode.toMacroString(ident: String) =
         """${ident}Node($id, "$name", "${technology ?: ""}", "${description ?: ""}", "${
-        IconRegistry.iconNameFor(
-            icon ?: ""
-        )
+            IconRegistry.iconNameFor(
+                icon ?: ""
+            )
         }"${linkString(link)}){$separator"""
 
     private fun InfrastructureNode.toMacroString(ident: String) =
         """${ident}Node($id, "$name", "${technology ?: ""}", "${description ?: ""}", "${
-        IconRegistry.iconNameFor(
-            icon ?: ""
-        )
+            IconRegistry.iconNameFor(
+                icon ?: ""
+            )
         }"${linkString(link)})$separator"""
 
     private fun SoftwareSystem.toMacroString(id: String, indent: String) =
         """${indent}System${this.type?.c4Type ?: ""}${this.location.toPlantUmlString()}($id, "$name", "${description ?: ""}", "${
-        IconRegistry.iconNameFor(
-            icon ?: ""
-        )
+            IconRegistry.iconNameFor(
+                icon ?: ""
+            )
         }"${linkString(link)})$separator"""
 
     private fun Container.toMacroString(id: String, indent: String): String =
         """${indent}Container${this.type?.c4Type ?: ""}${this.location.toPlantUmlString()}($id, "$name", "$technology", "${description ?: ""}", "${
-        IconRegistry.iconNameFor(
-            icon ?: ""
-        )
+            IconRegistry.iconNameFor(
+                icon ?: ""
+            )
         }"${linkString(link)})$separator"""
 
     private fun Person.toMacroString(indent: String): String {
         val externalMarker = this.location.toPlantUmlString()
         return """${indent}Person$externalMarker($id, "$name", "${description ?: ""}", "${
-        IconRegistry.iconNameFor(
-            icon ?: ""
-        )
+            IconRegistry.iconNameFor(
+                icon ?: ""
+            )
         }"${linkString(link)})$separator"""
     }
 
     private fun Component.toMacroString(indent: String): String {
         return """${indent}Component($id, "$name", "$technology", "${description ?: ""}", "${
-        IconRegistry.iconNameFor(
-            icon ?: ""
-        )
+            IconRegistry.iconNameFor(
+                icon ?: ""
+            )
         }"${linkString(link)})$separator"""
     }
 
@@ -277,8 +277,58 @@ class ExtendedC4PlantUmlWriter : C4PlantUMLWriter() {
     }
 
     override fun write(view: ContainerView, writer: Writer) {
-        super.write(view, writer)
+        writeHeader(view, writer)
+        val elements = view.elements.map { it.element }
+        val nonContainerElements = elements
+            .filter { e -> e !is Container }
+            .sortedBy { e: Element -> e.name }
+        nonContainerElements.forEach { e: Element -> write(view, e, writer, false) }
+
+        writeContainerForSoftwareSystem(view, writer) { writtenView: ContainerView, usedWriter: Writer ->
+            val containersOfSoftwareSystem = elements
+                .filterIsInstance<Container>()
+                .filter { it.parent == view.softwareSystem }
+                .sortedBy { e -> e.name }
+            containersOfSoftwareSystem.forEach { e -> write(writtenView, e, usedWriter, true) }
+        }
+
+        if (view.externalSoftwareSystemBoundariesVisible) {
+            val externalContainerBySystems = elements
+                .filterIsInstance<Container>()
+                .filter { it.parent is SoftwareSystem }
+                .groupBy { it.parent }
+                .filter { it.key != view.softwareSystem }
+            externalContainerBySystems.forEach {
+                writeContainersForSoftwareSystem(
+                    it.key as SoftwareSystem,
+                    it.value,
+                    view,
+                    writer
+                )
+            }
+        }
+        val externalContainers = elements
+            .filterIsInstance<Container>()
+            .filter { it.parent != view.softwareSystem }
+            .sortedBy { e -> e.name }
+        externalContainers.forEach { e: Element -> write(view, e, writer, false) }
+
+        writeRelationships(view, writer)
+
         writeFooter(view, writer)
+    }
+
+    private fun writeContainersForSoftwareSystem(
+        system: SoftwareSystem,
+        containers: List<Container>,
+        view: View,
+        writer: Writer
+    ) {
+        writer.write("System_Boundary(${system.id}_boundary, ${system.name}) {")
+        writer.write(separator)
+        containers.forEach { write(view, it, writer, true) }
+        writer.write("}")
+        writer.write(separator)
     }
 
     override fun write(view: ComponentView, writer: Writer) {

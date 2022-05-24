@@ -8,6 +8,8 @@ import com.github.chriskn.structurizrextension.model.person
 import com.github.chriskn.structurizrextension.model.softwareSystem
 import com.github.chriskn.structurizrextension.plantuml.C4PlantUmlDiagramWriter
 import com.github.chriskn.structurizrextension.plantuml.layout.C4PlantUmlLayout
+import com.github.chriskn.structurizrextension.plantuml.layout.DependencyConfiguration
+import com.github.chriskn.structurizrextension.plantuml.layout.Direction
 import com.github.chriskn.structurizrextension.plantuml.layout.Layout
 import com.github.chriskn.structurizrextension.plantuml.layout.Legend
 import com.structurizr.Workspace
@@ -53,9 +55,8 @@ class ContainerViewTest {
             description = "android app",
             technology = "Android",
             icon = "android",
-            uses = listOf(Dependency(backendApplication, "desc", "Soap"))
         )
-        softwareSystem.container(
+        val database = softwareSystem.container(
             name = "Database",
             description = "some database",
             type = C4Type.DATABASE,
@@ -89,6 +90,26 @@ class ContainerViewTest {
                 Dependency(backendApplication, "reads topic", "Avro")
             )
         )
+        val graphql = model.softwareSystem(
+            "GraphQL",
+            "Federated GraphQL",
+            Location.External,
+            icon = "graphql"
+        )
+        val internalSchema = graphql.container(
+            "Internal Schema",
+            "Schema provided by our app",
+            Location.Internal,
+            usedBy = listOf(
+                Dependency(backendApplication, "provides subgraph to"),
+                Dependency(app, "reuqest data using", "GraphQL")
+            )
+        )
+        val externalSchema = graphql.container(
+            "External Schema",
+            "Schema provided by another team",
+            uses = listOf(Dependency(internalSchema, "extends schema"))
+        )
         model.person(
             "User",
             "some user",
@@ -100,11 +121,20 @@ class ContainerViewTest {
             softwareSystem,
             diagramName,
             "Test container view",
-            C4PlantUmlLayout(legend = Legend.SHOW_STATIC_LEGEND, layout = Layout.TOP_DOWN)
+            C4PlantUmlLayout(
+                legend = Legend.SHOW_STATIC_LEGEND,
+                layout = Layout.TOP_DOWN,
+                dependencyConfigurations = listOf(
+                    DependencyConfiguration(filter = { it.destination == database }, direction = Direction.RIGHT)
+                )
+            )
         )
         containerView.addAllContainers()
         containerView.externalSoftwareSystemBoundariesVisible = true
         containerView.add(topic)
+        containerView.add(internalSchema)
+        containerView.add(externalSchema)
+
         containerView.addDependentSoftwareSystems()
         containerView.addAllPeople()
 

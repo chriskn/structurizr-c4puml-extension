@@ -3,6 +3,7 @@ package com.github.chriskn.structurizrextension.model
 import com.structurizr.io.plantuml.C4PlantUMLWriter
 import com.structurizr.model.Component
 import com.structurizr.model.Container
+import com.structurizr.model.Location
 import com.structurizr.model.Person
 import com.structurizr.model.SoftwareSystem
 import com.structurizr.model.StaticStructureElement
@@ -11,6 +12,7 @@ import com.structurizr.model.StaticStructureElement
 fun SoftwareSystem.container(
     name: String,
     description: String,
+    location: Location = this.location,
     type: C4Type? = null,
     icon: String? = null,
     link: String? = null,
@@ -21,8 +23,8 @@ fun SoftwareSystem.container(
     usedBy: List<Dependency<StaticStructureElement>> = listOf()
 ): Container {
     val container = this.addContainer(name, description, technology)
-    container.location = this.location
     container.type = type
+    container.location = location
     container.configure(icon, link, tags, properties)
     uses.forEach { dep ->
         when (dep.target) {
