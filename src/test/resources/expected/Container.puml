@@ -10,7 +10,6 @@ caption Test container view
 SHOW_PERSON_OUTLINE()
 LAYOUT_TOP_DOWN()
 
-SystemQueue_Ext(10, "Broker", "Message Broker", "kafka")
 WithoutPropertyHeader()
 AddProperty("prop 1", "value 1")
 Person(7, "Maintainer", "some employee", "", $link="https://www.google.de")
@@ -21,13 +20,14 @@ System_Boundary(1_boundary, My Software System) {
   AddProperty("prop 1", "value 1")
   Container(2, "Backend App", "Kotlin", "some backend app", "docker-icon", $link="https://www.google.de")
   ContainerDb(5, "Database", "postgres", "some database", "postgresql")
+  ContainerQueue_Ext(11, "Topic: my.topic", "", "external topic", "kafka")
 }
 Rel_D(3, 2, "desc", "Soap")
-Rel_D(2, 10, "reads topic", "Avro")
 Rel_D(2, 5, "CRUD", "JPA")
+Rel_D(2, 11, "reads topic", "Avro")
 Rel_D(7, 2, "Admin UI", "REST")
 Rel_D(16, 3, "uses app")
 
-LAYOUT_WITH_LEGEND()
+SHOW_LEGEND()
 
 @enduml

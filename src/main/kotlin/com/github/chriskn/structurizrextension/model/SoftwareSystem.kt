@@ -21,6 +21,7 @@ fun SoftwareSystem.container(
     usedBy: List<Dependency<StaticStructureElement>> = listOf()
 ): Container {
     val container = this.addContainer(name, description, technology)
+    container.location = this.location
     container.type = type
     container.configure(icon, link, tags, properties)
     uses.forEach { dep ->

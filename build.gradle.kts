@@ -5,7 +5,7 @@ plugins {
 
     `java-library`
     `maven-publish`
-    signing
+     signing
 }
 
 group = "io.github.chriskn"

@@ -3,6 +3,7 @@ package com.structurizr.io.plantuml
 import com.github.chriskn.structurizrextension.model.c4Properties
 import com.github.chriskn.structurizrextension.model.icon
 import com.github.chriskn.structurizrextension.model.link
+import com.github.chriskn.structurizrextension.model.location
 import com.github.chriskn.structurizrextension.model.type
 import com.github.chriskn.structurizrextension.plantuml.AWS_ICON_COMMONS
 import com.github.chriskn.structurizrextension.plantuml.AWS_ICON_URL
@@ -177,7 +178,7 @@ class ExtendedC4PlantUmlWriter : C4PlantUMLWriter() {
         }"${linkString(link)})$separator"""
 
     private fun Container.toMacroString(id: String, indent: String): String =
-        """${indent}Container${this.type?.c4Type ?: ""}($id, "$name", "$technology", "${description ?: ""}", "${
+        """${indent}Container${this.type?.c4Type ?: ""}${this.location.toPlantUmlString()}($id, "$name", "$technology", "${description ?: ""}", "${
         IconRegistry.iconNameFor(
             icon ?: ""
         )

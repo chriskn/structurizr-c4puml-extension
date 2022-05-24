@@ -3,9 +3,13 @@ package com.github.chriskn.structurizrextension.model
 import com.structurizr.io.plantuml.C4PlantUMLWriter
 import com.structurizr.model.Component
 import com.structurizr.model.Container
+import com.structurizr.model.Element
+import com.structurizr.model.Location
 import com.structurizr.model.Person
 import com.structurizr.model.SoftwareSystem
 import com.structurizr.model.StaticStructureElement
+
+const val LOCATION_PROPERTY = "c4location"
 
 @Suppress("LongParameterList")
 fun Container.component(
@@ -50,4 +54,10 @@ var Container.type: C4Type?
         if (value != null) {
             this.addProperty(C4PlantUMLWriter.C4_ELEMENT_TYPE, value.c4Type)
         }
+    }
+
+var Container.location: Location
+    get() = Location.valueOf(this.properties.getValue(LOCATION_PROPERTY))
+    set(location) {
+        this.addProperty(LOCATION_PROPERTY, location.name)
     }

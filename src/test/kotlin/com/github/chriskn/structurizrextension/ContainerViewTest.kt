@@ -80,7 +80,7 @@ class ContainerViewTest {
             C4Type.QUEUE,
             icon = "kafka",
         )
-        broker.container(
+        val topic = broker.container(
             "Topic: my.topic",
             "external topic",
             type = C4Type.QUEUE,
@@ -102,9 +102,11 @@ class ContainerViewTest {
             "Test container view",
             C4PlantUmlLayout(legend = Legend.SHOW_STATIC_LEGEND, layout = Layout.TOP_DOWN)
         )
-        containerView.addAllElements()
+        containerView.addAllContainers()
         containerView.externalSoftwareSystemBoundariesVisible = true
-        containerView.addAllContainersAndInfluencers()
+        containerView.add(topic)
+        containerView.addDependentSoftwareSystems()
+        containerView.addAllPeople()
 
         val diagramFolder = File(tempDir, "./diagram/")
         C4PlantUmlDiagramWriter.writeDiagrams(
