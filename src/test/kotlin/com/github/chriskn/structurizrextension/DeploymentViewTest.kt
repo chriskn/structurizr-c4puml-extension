@@ -157,14 +157,14 @@ class DeploymentViewTest {
                 C4PlantUmlLayout(
                     nodeSep = 50,
                     rankSep = 50,
-                    layout = Layout.LEFT_TO_RIGHT,
+                    layout = Layout.LeftToRight,
                     dependencyConfigurations =
                     listOf(
                         DependencyConfiguration(
                             filter = {
                                 it.source == loadBalancer || it.destination.name == failoverDatabase.name
                             },
-                            direction = Direction.RIGHT
+                            direction = Direction.Right
                         )
                     )
                 )

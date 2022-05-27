@@ -244,22 +244,21 @@ class ExtendedC4PlantUmlWriter : C4PlantUMLWriter() {
             source = relationship.destination
             destination = relationship.source
         }
-        var relationshipMacro: String?
         val mode = if (relationship.properties.containsKey(C4_LAYOUT_MODE)) {
             Mode.valueOf(relationship.properties[C4_LAYOUT_MODE]!!)
         } else {
-            Mode.REL
+            Mode.Rel
         }
+        var relationshipMacro = mode.macro
         when (mode) {
-            Mode.REL -> {
-                relationshipMacro = mode.macro
-                var direction = Direction.DOWN
+            Mode.Rel -> {
+                var direction = Direction.Down
                 if (relationship.properties.containsKey(C4_LAYOUT_DIRECTION)) {
                     direction = Direction.valueOf(relationship.properties[C4_LAYOUT_DIRECTION]!!)
                 }
                 relationshipMacro = "${relationshipMacro}_${direction.macro()}"
             }
-            else -> relationshipMacro = "Rel_${mode.macro}"
+            else -> relationshipMacro = "Rel_${relationshipMacro}"
         }
         val description = relationship.description.ifEmpty { " " }
         var relMacro = """$relationshipMacro(${source.id}, ${destination.id}, "$description""""
@@ -427,7 +426,7 @@ class ExtendedC4PlantUmlWriter : C4PlantUMLWriter() {
         if (layout.rankSep != null) {
             writer.write("skinparam ranksep ${layout.rankSep}" + separator)
         }
-        if (layout.legend != Legend.NONE) {
+        if (layout.legend != Legend.None) {
             writer.write(layout.legend.toMacro(layout.hideStereotypes) + separator + separator)
         }
     }
@@ -435,9 +434,9 @@ class ExtendedC4PlantUmlWriter : C4PlantUMLWriter() {
     private fun Legend.toMacro(hideStereotypes: Boolean): String {
         val macro = this.macro
         return when (this) {
-            Legend.SHOW_STATIC_LEGEND -> "$macro()"
-            Legend.SHOW_LEGEND -> "$macro($hideStereotypes)"
-            Legend.SHOW_FLOATING_LEGEND -> "$macro(LEGEND, $hideStereotypes)"
+            Legend.ShowStaticLegend -> "$macro()"
+            Legend.ShowLegend -> "$macro($hideStereotypes)"
+            Legend.ShowFloatingLegend -> "$macro(LEGEND, $hideStereotypes)"
             else -> ""
         }
     }

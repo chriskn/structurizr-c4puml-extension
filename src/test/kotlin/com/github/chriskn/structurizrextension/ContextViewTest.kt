@@ -94,7 +94,7 @@ class ContextViewTest {
         val landscapeView = workspace.views.systemLandscapeView(
             diagramName,
             "A test Landscape",
-            C4PlantUmlLayout(layout = Layout.LEFT_TO_RIGHT, legend = Legend.SHOW_FLOATING_LEGEND)
+            C4PlantUmlLayout(layout = Layout.LeftToRight, legend = Legend.ShowFloatingLegend)
         )
         landscapeView.addAllElements()
 
@@ -120,8 +120,8 @@ class ContextViewTest {
             diagramName,
             "A test Landscape",
             C4PlantUmlLayout(
-                layout = Layout.LEFT_TO_RIGHT,
-                legend = Legend.SHOW_FLOATING_LEGEND,
+                layout = Layout.LeftToRight,
+                legend = Legend.ShowFloatingLegend,
                 hideStereotypes = false
             )
         )

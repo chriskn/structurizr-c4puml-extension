@@ -84,7 +84,7 @@ class DynamicViewTest {
             apiApplication,
             diagramName,
             "description",
-            C4PlantUmlLayout(legend = Legend.SHOW_FLOATING_LEGEND)
+            C4PlantUmlLayout(legend = Legend.ShowFloatingLegend)
         )
         addElements(dynamicView)
 
@@ -109,7 +109,7 @@ class DynamicViewTest {
             system1,
             diagramName,
             "description",
-            C4PlantUmlLayout(legend = Legend.SHOW_FLOATING_LEGEND)
+            C4PlantUmlLayout(legend = Legend.ShowFloatingLegend)
         )
         dynamicView.add(singlePageApplication, "gets data from", apiApplication)
         dynamicView.add(apiApplication, "stores data to", database)

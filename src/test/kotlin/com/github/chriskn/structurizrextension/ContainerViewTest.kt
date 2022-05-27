@@ -13,6 +13,7 @@ import com.github.chriskn.structurizrextension.plantuml.layout.Direction
 import com.github.chriskn.structurizrextension.plantuml.layout.Layout
 import com.github.chriskn.structurizrextension.plantuml.layout.Legend
 import com.structurizr.Workspace
+import com.structurizr.io.plantuml.C4PlantUMLWriter.Directions
 import com.structurizr.model.Location
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -119,10 +120,10 @@ class ContainerViewTest {
             diagramName,
             "Test container view",
             C4PlantUmlLayout(
-                legend = Legend.SHOW_STATIC_LEGEND,
-                layout = Layout.TOP_DOWN,
+                legend = Legend.ShowStaticLegend,
+                layout = Layout.TopDown,
                 dependencyConfigurations = listOf(
-                    DependencyConfiguration(filter = { it.destination == database }, direction = Direction.RIGHT)
+                    DependencyConfiguration(filter = { it.destination == database }, direction = Direction.Right)
                 )
             )
         )
@@ -157,12 +158,12 @@ class ContainerViewTest {
             diagramName,
             "Test container view",
             C4PlantUmlLayout(
-                legend = Legend.NONE,
-                layout = Layout.TOP_DOWN,
+                legend = Legend.None,
+                layout = Layout.TopDown,
                 showPersonOutline = false,
                 dependencyConfigurations = listOf(
-                    DependencyConfiguration(filter = { it.destination == database }, direction = Direction.RIGHT),
-                    DependencyConfiguration(filter = { it.source == externalSchema }, direction = Direction.UP)
+                    DependencyConfiguration(filter = { it.destination == database }, direction = Direction.Right),
+                    DependencyConfiguration(filter = { it.source == externalSchema }, direction = Direction.Up)
                 )
             )
         )

@@ -40,8 +40,8 @@ class DependencyTest {
             "Dependency Test",
             C4PlantUmlLayout(
                 dependencyConfigurations = listOf(
-                    DependencyConfiguration(filter = { it.destination == a }, direction = Direction.LEFT),
-                    DependencyConfiguration(filter = { it.source == a }, direction = Direction.UP)
+                    DependencyConfiguration(filter = { it.destination == a }, direction = Direction.Left),
+                    DependencyConfiguration(filter = { it.source == a }, direction = Direction.Up)
                 )
             )
         )
@@ -69,7 +69,7 @@ class DependencyTest {
             "Dependency Test",
             C4PlantUmlLayout(
                 dependencyConfigurations = listOf(
-                    DependencyConfiguration(filter = { it.source == a }, mode = Mode.NEIGHBOR)
+                    DependencyConfiguration(filter = { it.source == a }, mode = Mode.Neighbor)
                 )
             )
         )
@@ -97,9 +97,9 @@ class DependencyTest {
             "Dependency Test",
             C4PlantUmlLayout(
                 dependencyConfigurations = listOf(
-                    DependencyConfiguration(filter = { it.source == a }, mode = Mode.BACK, direction = Direction.LEFT)
+                    DependencyConfiguration(filter = { it.source == a }, mode = Mode.Back, direction = Direction.Left)
                 ),
-                legend = Legend.NONE
+                legend = Legend.None
             )
         )
         contextView.addDefaultElements()

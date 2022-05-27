@@ -3,34 +3,34 @@ package com.github.chriskn.structurizrextension.plantuml.layout
 import com.structurizr.model.Relationship
 
 enum class LineType(val macro: String) {
-    ORTHO("skinparam linetype ortho"),
-    POLYLINE("skinparam linetype polyline")
+    Ortho("skinparam linetype ortho"),
+    Polyline("skinparam linetype polyline")
 }
 
 enum class Layout(val macro: String) {
-    TOP_DOWN("LAYOUT_TOP_DOWN()"),
-    LEFT_TO_RIGHT("LAYOUT_LEFT_RIGHT()"),
-    LANDSCAPE("LAYOUT_LANDSCAPE()")
+    TopDown("LAYOUT_TOP_DOWN()"),
+    LeftToRight("LAYOUT_LEFT_RIGHT()"),
+    Landscape("LAYOUT_LANDSCAPE()")
 }
 
 enum class Legend(val macro: String) {
-    SHOW_STATIC_LEGEND("LAYOUT_WITH_LEGEND"),
-    SHOW_FLOATING_LEGEND("SHOW_FLOATING_LEGEND"),
-    SHOW_LEGEND("SHOW_LEGEND"),
-    NONE("")
-}
-
-enum class Direction {
-    UP, DOWN, RIGHT, LEFT;
-
-    fun macro() = this.name.first()
+    ShowStaticLegend("LAYOUT_WITH_LEGEND"),
+    ShowFloatingLegend("SHOW_FLOATING_LEGEND"),
+    ShowLegend("SHOW_LEGEND"),
+    None("")
 }
 
 enum class Mode(val macro: String) {
-    NEIGHBOR("Neighbor"),
-    BACK("Back"),
-    BACK_NEIGHBOR("Back_Neighbor"),
-    REL("Rel")
+    Neighbor("Neighbor"),
+    Back("Back"),
+    BackNeighbor("Back_Neighbor"),
+    Rel("Rel")
+}
+
+enum class Direction {
+    Up, Down, Right, Left;
+
+    fun macro() = this.name.first()
 }
 
 data class DependencyConfiguration(
@@ -43,8 +43,8 @@ data class C4PlantUmlLayout(
     val nodeSep: Int? = null,
     val rankSep: Int? = null,
     val lineType: LineType? = null,
-    val layout: Layout = Layout.TOP_DOWN,
-    val legend: Legend = Legend.SHOW_LEGEND,
+    val layout: Layout = Layout.TopDown,
+    val legend: Legend = Legend.ShowLegend,
     val showPersonOutline: Boolean = true,
     val hideStereotypes: Boolean = true,
     val dependencyConfigurations: List<DependencyConfiguration> = listOf()

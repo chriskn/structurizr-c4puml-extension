@@ -78,8 +78,8 @@ class ComponentViewTest {
             C4PlantUmlLayout(
                 nodeSep = 100,
                 rankSep = 150,
-                lineType = LineType.ORTHO,
-                layout = Layout.LEFT_TO_RIGHT
+                lineType = LineType.Ortho,
+                layout = Layout.LeftToRight
             )
         )
         componentView.addAllElements()

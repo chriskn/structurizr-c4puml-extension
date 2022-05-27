@@ -13,7 +13,7 @@ fun StaticStructureElement.configure(
 ) {
     this.configure(icon, link, tags, properties)
     uses.forEach { dep ->
-        when (dep.target) {
+        when (dep.destination) {
             is Person -> throw IllegalArgumentException("${this::class.java.name} can't use Person")
             else -> dep.addRelationShipFrom(this)
         }

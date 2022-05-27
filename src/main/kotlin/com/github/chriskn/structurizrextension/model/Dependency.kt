@@ -5,7 +5,7 @@ import com.structurizr.model.InteractionStyle
 import com.structurizr.model.StaticStructureElement
 
 data class Dependency<out T : Element>(
-    val target: T,
+    val destination: T,
     val description: String,
     val technology: String? = null,
     val interactionStyle: InteractionStyle? = null,
@@ -16,11 +16,11 @@ data class Dependency<out T : Element>(
 )
 
 fun Dependency<StaticStructureElement>.addRelationShipTo(target: StaticStructureElement) {
-    this.target.uses(target, description, technology, interactionStyle)
+    this.destination.uses(target, description, technology, interactionStyle)
         ?.configure(this.icon, this.link, this.tags, this.properties)
 }
 
 fun Dependency<StaticStructureElement>.addRelationShipFrom(source: StaticStructureElement) {
-    source.uses(this.target, this.description, this.technology, this.interactionStyle)
+    source.uses(this.destination, this.description, this.technology, this.interactionStyle)
         ?.configure(this.icon, this.link, this.tags, this.properties)
 }
