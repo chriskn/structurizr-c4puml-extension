@@ -1,5 +1,6 @@
 @startuml(id=Context)
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/android-icon.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/html-5.puml
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
 title Software System 1 - System Context
 caption A test Landscape
@@ -13,7 +14,9 @@ Person(6, "Actor", "", "", $link="https://www.google.de")
 System_Ext(1, "Software System 0", "Description 0", "")
 System(2, "Software System 1", "Description 1", "android-icon", $link="https://www.android.com")
 Rel_D(6, 1, "deletes", "gRPC")
-Rel_D(6, 2, "creates", "HTTP")
+WithoutPropertyHeader()
+AddProperty("prop", "val")
+Rel_D(6, 2, "creates", "HTTP", $sprite=html-5, $link="https://de.wikipedia.org/wiki/Hypertext_Transfer_Protocol")
 Rel_D(1, 2, "0 used by 1")
 
 SHOW_FLOATING_LEGEND(LEGEND, false)

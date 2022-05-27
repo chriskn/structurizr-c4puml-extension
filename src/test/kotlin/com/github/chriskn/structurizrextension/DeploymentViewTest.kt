@@ -16,6 +16,7 @@ import com.github.chriskn.structurizrextension.plantuml.layout.Direction
 import com.github.chriskn.structurizrextension.plantuml.layout.Layout
 import com.structurizr.Workspace
 import com.structurizr.model.Container
+import com.structurizr.model.InteractionStyle
 import com.structurizr.model.Location
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -78,7 +79,7 @@ class DeploymentViewTest {
         val aws = model.deploymentNode(
             "AWS",
             "Production AWS environment",
-            icon = "aws", // TODO add
+            icon = "aws",
             properties = C4Properties(
                 headers = listOf("Property", "Value", "Description"),
                 values = listOf(
@@ -105,10 +106,29 @@ class DeploymentViewTest {
             icon = "docker",
             hostsContainers = listOf(webApplication)
         )
-        webAppPod.infrastructureNode(
-            "Sidecar",
-            "Some sidecar"
+        val jaegerSidecar = webAppPod.infrastructureNode(
+            "Jaeger Sidecar",
+            "Jaeger sidecar sending Traces"
         )
+        model.deploymentNode(
+            "Another AWS Account",
+            icon = "aws"
+        ).deploymentNode(
+            "Jaeger Container",
+            usedBy = listOf(
+                Dependency(
+                    jaegerSidecar,
+                    "writes traces to",
+                    interactionStyle = InteractionStyle.Asynchronous,
+                    icon = "kafka",
+                    link = "https://www.jaegertracing.io/",
+                    properties = C4Properties(
+                        headers = listOf("key", "value"),
+                        values = listOf(listOf("ip", "10.234.12.13"))
+                    )
+                )
+            )
+        ).infrastructureNode("Jaeger")
         val appleDevice = model.deploymentNode(
             "Apple Device",
             icon = "apple",
@@ -149,7 +169,7 @@ class DeploymentViewTest {
                     )
                 )
             )
-        deploymentView.addAllDeploymentNodes()
+        deploymentView.addDefaultElements()
 
         val diagramFolder = File(tempDir, "./diagram/")
         C4PlantUmlDiagramWriter.writeDiagrams(

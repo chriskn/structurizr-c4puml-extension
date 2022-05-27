@@ -23,6 +23,7 @@ import com.structurizr.model.Element
 import com.structurizr.model.InfrastructureNode
 import com.structurizr.model.InteractionStyle
 import com.structurizr.model.Location
+import com.structurizr.model.ModelItem
 import com.structurizr.model.Person
 import com.structurizr.model.Relationship
 import com.structurizr.model.SoftwareSystem
@@ -37,6 +38,8 @@ import com.structurizr.view.SystemLandscapeView
 import com.structurizr.view.View
 import java.io.Writer
 import java.net.URI
+
+// TODO relationship config for deployment nodes
 
 private const val C4_PLANT_UML_STDLIB_URL = "https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master"
 
@@ -72,29 +75,30 @@ class ExtendedC4PlantUmlWriter : C4PlantUMLWriter() {
     }
 
     private fun addIncludeUrls(view: View) {
-        val elements = view.elements.map { it.element }.toMutableSet()
+        val elements: MutableSet<ModelItem> = view.elements.map { it.element }.toMutableSet()
         if (view is DeploymentView) {
             val children = elements
                 .filterIsInstance<DeploymentNode>()
                 .flatMap { collectElements(it, elements) }
             elements.addAll(children)
         }
-        val spriteIncludes: MutableList<String> = elements
+        elements += view.relationships.map { it.relationship }
+        val spriteIncludesForElements = elements
             .asSequence()
             .mapNotNull { it.icon?.let { technology -> IconRegistry.iconUrlFor(technology) } }
             .toSet()
             .toList()
             .sorted()
             .toMutableList()
-        if (spriteIncludes.any { it.startsWith(AWS_ICON_URL) }) {
-            spriteIncludes.add(0, AWS_ICON_COMMONS)
+        if (spriteIncludesForElements.any { it.startsWith(AWS_ICON_URL) }) {
+            spriteIncludesForElements.add(0, AWS_ICON_COMMONS)
         }
-        spriteIncludes.forEach { addIncludeURL(URI(it)) }
+        spriteIncludesForElements.forEach { addIncludeURL(URI(it)) }
         val c4PumlIncludeURI = URI("$C4_PLANT_UML_STDLIB_URL/${c4IncludeForView[view.javaClass]}")
         addIncludeURL(c4PumlIncludeURI)
     }
 
-    private fun collectElements(deploymentNode: DeploymentNode, elements: MutableSet<Element>): MutableSet<Element> {
+    private fun collectElements(deploymentNode: DeploymentNode, elements: MutableSet<ModelItem>): MutableSet<ModelItem> {
         elements.addAll(deploymentNode.infrastructureNodes)
         elements.addAll(deploymentNode.softwareSystemInstances.map { it.softwareSystem })
         elements.addAll(deploymentNode.containerInstances.map { it.container })
@@ -140,7 +144,7 @@ class ExtendedC4PlantUmlWriter : C4PlantUMLWriter() {
 
     private fun linkString(link: String?) = if (link != null) """, ${'$'}link="$link"""" else ""
 
-    private fun writeProperties(ele: Element, ident: String, writer: Writer) {
+    private fun writeProperties(ele: ModelItem, ident: String, writer: Writer) {
         if (ele.c4Properties == null) {
             return
         }
@@ -158,46 +162,46 @@ class ExtendedC4PlantUmlWriter : C4PlantUMLWriter() {
 
     private fun DeploymentNode.toMacroString(ident: String) =
         """${ident}Node($id, "$name", "${technology ?: ""}", "${description ?: ""}", "${
-            IconRegistry.iconNameFor(
-                icon ?: ""
-            )
+        IconRegistry.iconNameFor(
+            icon ?: ""
+        )
         }"${linkString(link)}){$separator"""
 
     private fun InfrastructureNode.toMacroString(ident: String) =
         """${ident}Node($id, "$name", "${technology ?: ""}", "${description ?: ""}", "${
-            IconRegistry.iconNameFor(
-                icon ?: ""
-            )
+        IconRegistry.iconNameFor(
+            icon ?: ""
+        )
         }"${linkString(link)})$separator"""
 
     private fun SoftwareSystem.toMacroString(id: String, indent: String) =
         """${indent}System${this.type?.c4Type ?: ""}${this.location.toPlantUmlString()}($id, "$name", "${description ?: ""}", "${
-            IconRegistry.iconNameFor(
-                icon ?: ""
-            )
+        IconRegistry.iconNameFor(
+            icon ?: ""
+        )
         }"${linkString(link)})$separator"""
 
     private fun Container.toMacroString(id: String, indent: String): String =
         """${indent}Container${this.type?.c4Type ?: ""}${this.location.toPlantUmlString()}($id, "$name", "$technology", "${description ?: ""}", "${
-            IconRegistry.iconNameFor(
-                icon ?: ""
-            )
+        IconRegistry.iconNameFor(
+            icon ?: ""
+        )
         }"${linkString(link)})$separator"""
 
     private fun Person.toMacroString(indent: String): String {
         val externalMarker = this.location.toPlantUmlString()
         return """${indent}Person$externalMarker($id, "$name", "${description ?: ""}", "${
-            IconRegistry.iconNameFor(
-                icon ?: ""
-            )
+        IconRegistry.iconNameFor(
+            icon ?: ""
+        )
         }"${linkString(link)})$separator"""
     }
 
     private fun Component.toMacroString(indent: String): String {
         return """${indent}Component($id, "$name", "$technology", "${description ?: ""}", "${
-            IconRegistry.iconNameFor(
-                icon ?: ""
-            )
+        IconRegistry.iconNameFor(
+            icon ?: ""
+        )
         }"${linkString(link)})$separator"""
     }
 
@@ -231,6 +235,8 @@ class ExtendedC4PlantUmlWriter : C4PlantUMLWriter() {
     }
 
     override fun writeRelationship(view: View?, relationshipView: RelationshipView, writer: Writer) {
+        writeProperties(relationshipView.relationship, "", writer)
+
         val relationship = relationshipView.relationship
         var source = relationship.source
         var destination = relationship.destination
@@ -259,6 +265,13 @@ class ExtendedC4PlantUmlWriter : C4PlantUMLWriter() {
         var relMacro = """$relationshipMacro(${source.id}, ${destination.id}, "$description""""
         if (relationship.technology != null) {
             relMacro += """, "${relationship.technology}""""
+        }
+
+        if (!relationship.icon.isNullOrBlank()) {
+            relMacro += """, ${'$'}sprite=${IconRegistry.iconNameFor(relationship.icon ?: "")}"""
+        }
+        if (!relationship.link.isNullOrBlank()) {
+            relMacro += linkString(relationship.link)
         }
         if (relationship.interactionStyle == InteractionStyle.Asynchronous) {
             relMacro += """, ${'$'}tags="async""""
@@ -299,19 +312,15 @@ class ExtendedC4PlantUmlWriter : C4PlantUMLWriter() {
                 .groupBy { it.parent }
                 .filter { it.key != view.softwareSystem }
             externalContainerBySystems.forEach {
-                writeContainersForSoftwareSystem(
-                    it.key as SoftwareSystem,
-                    it.value,
-                    view,
-                    writer
-                )
+                writeContainersForSoftwareSystem(it.key as SoftwareSystem, it.value, view, writer)
             }
+        } else {
+            val externalContainers = elements
+                .filterIsInstance<Container>()
+                .filter { it.parent != view.softwareSystem }
+                .sortedBy { e -> e.name }
+            externalContainers.forEach { e: Element -> write(view, e, writer, false) }
         }
-        val externalContainers = elements
-            .filterIsInstance<Container>()
-            .filter { it.parent != view.softwareSystem }
-            .sortedBy { e -> e.name }
-        externalContainers.forEach { e: Element -> write(view, e, writer, false) }
 
         writeRelationships(view, writer)
 

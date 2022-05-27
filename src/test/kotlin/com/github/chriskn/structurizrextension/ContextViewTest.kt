@@ -64,7 +64,18 @@ class ContextViewTest {
         link = "https://www.google.de",
         tags = listOf("human"),
         uses = listOf(
-            Dependency(system1, "creates", "HTTP"),
+            Dependency(
+                system1,
+                "creates",
+                "HTTP",
+                link = "https://de.wikipedia.org/wiki/Hypertext_Transfer_Protocol",
+                icon = "html5",
+                properties = C4Properties(
+                    values = listOf(
+                        listOf("prop", "val")
+                    )
+                )
+            ),
             Dependency(system0, "deletes", "gRPC")
         ),
         properties = C4Properties(values = listOf(listOf("prop 1", "value 1")))
@@ -76,7 +87,7 @@ class ContextViewTest {
     }
 
     @Test
-    fun `landscape diagram is written to plant uml as expected`() {
+    fun `landscape diagram is written as expected`() {
         val diagramName = "SystemLandscape"
         val expectedDiagramContent =
             this::class.java.getResource("/expected/$diagramName.puml")!!.readText(Charsets.UTF_8)
@@ -100,7 +111,7 @@ class ContextViewTest {
     }
 
     @Test
-    fun `context diagram is written to plant uml as expected`() {
+    fun `context diagram is written as expected`() {
         val diagramName = "Context"
         val expectedDiagramContent =
             this::class.java.getResource("/expected/$diagramName.puml")!!.readText(Charsets.UTF_8)

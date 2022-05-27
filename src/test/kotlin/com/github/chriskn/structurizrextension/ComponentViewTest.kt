@@ -29,7 +29,7 @@ class ComponentViewTest {
         this::class.java.getResource("/expected/$diagramName.puml")!!.readText(Charsets.UTF_8)
 
     @Test
-    fun `component diagram is written to plant uml as expected`() {
+    fun `component diagram is written as expected`() {
         val workspace = Workspace("My Workspace", "")
         val model = workspace.model
         val softwareSystem = model.addSoftwareSystem("My Software System", "system description")

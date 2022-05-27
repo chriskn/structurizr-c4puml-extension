@@ -1,6 +1,5 @@
 package com.github.chriskn.structurizrextension.model
 
-import com.structurizr.model.Component
 import com.structurizr.model.Container
 import com.structurizr.model.DeploymentElement
 import com.structurizr.model.DeploymentNode
@@ -23,14 +22,7 @@ fun Model.person(
 ): Person {
     val person = this.addPerson(location, name, description)
     person.configure(icon, link, tags, properties)
-    uses.forEach { dep ->
-        when (val element = dep.target) {
-            is SoftwareSystem -> person.uses(element, dep.description, dep.technology)
-            is Container -> person.uses(element, dep.description, dep.technology)
-            is Component -> person.uses(element, dep.description, dep.technology)
-            is Person -> throw IllegalArgumentException("Person can't use Person")
-        }
-    }
+    uses.forEach { dep -> dep.addRelationShipFrom(person) }
     return person
 }
 
@@ -49,23 +41,7 @@ fun Model.softwareSystem(
 ): SoftwareSystem {
     val softwareSystem = this.addSoftwareSystem(location, name, description)
     softwareSystem.type = type
-    softwareSystem.configure(icon, link, tags, properties)
-    uses.forEach { dep ->
-        when (dep.target) {
-            is SoftwareSystem -> softwareSystem.uses(dep.target, dep.description, dep.technology, dep.interactionStyle)
-            is Container -> softwareSystem.uses(dep.target, dep.description, dep.technology, dep.interactionStyle)
-            is Component -> softwareSystem.uses(dep.target, dep.description, dep.technology, dep.interactionStyle)
-            is Person -> throw IllegalArgumentException("SoftwareSystem can't use Person")
-        }
-    }
-    usedBy.forEach { dep ->
-        when (dep.target) {
-            is SoftwareSystem -> dep.target.uses(softwareSystem, dep.description, dep.technology, dep.interactionStyle)
-            is Container -> dep.target.uses(softwareSystem, dep.description, dep.technology, dep.interactionStyle)
-            is Component -> dep.target.uses(softwareSystem, dep.description, dep.technology, dep.interactionStyle)
-            is Person -> dep.target.uses(softwareSystem, dep.description, dep.technology)
-        }
-    }
+    softwareSystem.configure(icon, link, tags, properties, uses, usedBy)
     return softwareSystem
 }
 
@@ -79,12 +55,12 @@ fun Model.deploymentNode(
     technology: String = "",
     tags: List<String> = listOf(),
     properties: C4Properties = C4Properties(values = listOf()),
+    uses: List<Dependency<DeploymentElement>> = listOf(),
+    usedBy: List<Dependency<DeploymentElement>> = listOf(),
     hostsSystems: List<SoftwareSystem> = listOf(),
     hostsContainers: List<Container> = listOf(),
 ): DeploymentNode {
     val node = this.addDeploymentNode(environment, name, description, technology)
-    node.configure(icon, link, tags, properties)
-    hostsSystems.forEach { node.add(it) }
-    hostsContainers.forEach { node.add(it) }
+    node.configure(icon, link, tags, properties, hostsSystems, hostsContainers, uses, usedBy)
     return node
 }

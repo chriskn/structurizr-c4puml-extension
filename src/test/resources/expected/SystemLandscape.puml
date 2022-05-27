@@ -1,6 +1,7 @@
 @startuml(id=SystemLandscape)
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/android-icon.puml
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/docker-icon.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/html-5.puml
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
 title System Landscape for My Enterprise
 caption A test Landscape
@@ -21,7 +22,9 @@ package "My Enterprise" {
   System(4, "Software System 2", "Description 2", "docker-icon", $link="https://www.docker.com/")
 }
 Rel_D(6, 1, "deletes", "gRPC")
-Rel_D(6, 2, "creates", "HTTP")
+WithoutPropertyHeader()
+AddProperty("prop", "val")
+Rel_D(6, 2, "creates", "HTTP", $sprite=html-5, $link="https://de.wikipedia.org/wiki/Hypertext_Transfer_Protocol")
 Rel_D(1, 2, "0 used by 1")
 Rel_D(4, 1, "2 uses 1")
 

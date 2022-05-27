@@ -4,6 +4,7 @@
 !includeurl https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/v11.1/dist/GroupIcons/Cloudalt.puml
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/apple.puml
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/docker-icon.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/kafka.puml
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/nginx.puml
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/postgresql.puml
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/spring.puml
@@ -13,6 +14,8 @@ caption A deployment diagram showing the environment.
 
 SHOW_PERSON_OUTLINE()
 LAYOUT_LEFT_RIGHT()
+
+AddRelTag("async", $lineStyle = DashedLine())
 
 SetPropertyHeader("Property", "Value", "Description")
 AddProperty("Property1", "Value1", "Description1")
@@ -29,21 +32,29 @@ Node(8, "AWS", "", "Production AWS environment", "Cloudalt"){
   Node(13, "EKS cluster", "", "", "EKSCloud"){
     Node(14, "my.web.app", "", "Web App POD", ""){
       Node(15, "Web App container", "", "", "docker-icon"){
-        Node(18, "Sidecar", "", "Some sidecar", "")
+        Node(18, "Jaeger Sidecar", "", "Jaeger sidecar sending Traces", "")
         Container(16, "Web Application", "Java and Spring MVC", "Spring Boot web application", "spring")
       }
     }
     SetPropertyHeader("Property", "value")
     AddProperty("IP", "10.234.234.132")
-    Node(21, "Load Balancer", "nginx", "Nginx Load Balancer", "nginx", $link="https://www.google.de")
+    Node(25, "Load Balancer", "nginx", "Nginx Load Balancer", "nginx", $link="https://www.google.de")
   }
 }
-Node(19, "Apple Device", "", "", "apple"){
-  System_Ext(20, "iOS App", "iOS Application", "")
+Node(19, "Another AWS Account", "", "", "Cloudalt"){
+  Node(20, "Jaeger Container", "", "", ""){
+    Node(22, "Jaeger", "", "", "")
+  }
 }
-Rel_D(19, 21, "requests data from")
+Node(23, "Apple Device", "", "", "apple"){
+  System_Ext(24, "iOS App", "iOS Application", "")
+}
+Rel_D(23, 25, "requests data from")
 Rel_R(11, 10, "replicates data to")
-Rel_R(21, 15, "forwards requests to")
+SetPropertyHeader("key", "value")
+AddProperty("ip", "10.234.12.13")
+Rel_D(18, 20, "writes traces to", $sprite=kafka, $link="https://www.jaegertracing.io/", $tags="async")
+Rel_R(25, 15, "forwards requests to")
 Rel_D(16, 11, "stores data in", "JDBC")
 
 skinparam nodesep 50

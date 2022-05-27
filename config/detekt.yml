@@ -11,3 +11,5 @@ complexity:
   LongMethod:
     active: true
     excludes: "**/*Test.kt, **/test/**"
+  LongParameterList:
+    functionThreshold: 8

@@ -1,13 +1,13 @@
 package com.github.chriskn.structurizrextension.model
 
-import com.structurizr.model.Element
+import com.structurizr.model.ModelItem
 
 private const val C4_PROPERTY_PREFIX = "additionalProperty:"
 private const val C4_PROPERTY_HEADER_PREFIX = "additionalPropertyHeader"
 private const val ICON_PROPERTY = "icon"
 private const val LINK_PROPERTY = "link"
 
-fun Element.configure(
+fun ModelItem.configure(
     icon: String?,
     link: String?,
     tags: List<String>,
@@ -19,7 +19,7 @@ fun Element.configure(
     this.c4Properties = c4Properties
 }
 
-var Element.c4Properties: C4Properties?
+var ModelItem.c4Properties: C4Properties?
     get() {
         val headers = this.properties
             .filter { it.key.startsWith(C4_PROPERTY_HEADER_PREFIX) }
@@ -54,7 +54,7 @@ var Element.c4Properties: C4Properties?
         }
     }
 
-var Element.icon: String?
+var ModelItem.icon: String?
     get() = this.properties[ICON_PROPERTY]
     set(icon) {
         if (icon != null) {
@@ -62,7 +62,7 @@ var Element.icon: String?
         }
     }
 
-var Element.link: String?
+var ModelItem.link: String?
     get() = this.properties[LINK_PROPERTY]
     set(link) {
         if (link != null) {
