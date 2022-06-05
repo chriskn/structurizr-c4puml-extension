@@ -1,4 +1,6 @@
-package com.github.chriskn.structurizrextension.plantuml.layout
+package com.github.chriskn.structurizrextension.view
+
+import com.github.chriskn.structurizrextension.plantuml.layout.C4PlantUmlLayout
 
 object LayoutRegistry {
 

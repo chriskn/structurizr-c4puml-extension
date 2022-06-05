@@ -11,7 +11,7 @@ import com.github.chriskn.structurizrextension.plantuml.IconRegistry
 import com.github.chriskn.structurizrextension.plantuml.layout.C4PlantUmlLayout
 import com.github.chriskn.structurizrextension.plantuml.layout.DependencyConfiguration
 import com.github.chriskn.structurizrextension.plantuml.layout.Direction
-import com.github.chriskn.structurizrextension.plantuml.layout.LayoutRegistry
+import com.github.chriskn.structurizrextension.view.LayoutRegistry
 import com.github.chriskn.structurizrextension.plantuml.layout.Legend
 import com.github.chriskn.structurizrextension.plantuml.layout.Mode
 import com.structurizr.model.Component
@@ -38,8 +38,6 @@ import com.structurizr.view.SystemLandscapeView
 import com.structurizr.view.View
 import java.io.Writer
 import java.net.URI
-
-// TODO relationship config for deployment nodes
 
 private const val C4_PLANT_UML_STDLIB_URL = "https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master"
 

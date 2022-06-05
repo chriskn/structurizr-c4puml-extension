@@ -10,7 +10,7 @@ import java.io.FileWriter
 /**
  * Writes all views of the workspace as C4PlantUML diagrams to the given output folder.
  *
- * Diagrams are named after there key
+ * Diagrams files are named after their diagram key
  *
  * @throws IOException if writing fails.
  */

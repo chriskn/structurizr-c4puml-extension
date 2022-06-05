@@ -1,7 +1,7 @@
 package com.github.chriskn.structurizrextension
 
 import com.github.chriskn.structurizrextension.plantuml.layout.C4PlantUmlLayout
-import com.github.chriskn.structurizrextension.plantuml.layout.LayoutRegistry
+import com.github.chriskn.structurizrextension.view.LayoutRegistry
 import com.structurizr.model.Container
 import com.structurizr.model.SoftwareSystem
 import com.structurizr.view.ComponentView
