@@ -4,7 +4,6 @@ import com.github.chriskn.structurizrextension.model.C4Properties
 import com.github.chriskn.structurizrextension.model.Dependency
 import com.github.chriskn.structurizrextension.model.person
 import com.github.chriskn.structurizrextension.model.softwareSystem
-import com.github.chriskn.structurizrextension.plantuml.C4PlantUmlDiagramWriter
 import com.github.chriskn.structurizrextension.plantuml.layout.C4PlantUmlLayout
 import com.github.chriskn.structurizrextension.plantuml.layout.Layout
 import com.github.chriskn.structurizrextension.plantuml.layout.Legend
@@ -12,16 +11,10 @@ import com.structurizr.Workspace
 import com.structurizr.model.Enterprise
 import com.structurizr.model.Location
 import com.structurizr.model.Model
-import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.io.TempDir
-import java.io.File
 
 class ContextViewTest {
-
-    @TempDir
-    private lateinit var tempDir: File
 
     private val workspace = Workspace("My Workspace", "Some Description")
     private val model: Model = workspace.model
@@ -48,7 +41,7 @@ class ContextViewTest {
         icon = "docker",
         link = "https://www.docker.com/",
         properties = C4Properties(
-            headers = listOf("Property", "Value"),
+            header = listOf("Property", "Value"),
             values = listOf(
                 listOf("prop key0", "prop value0"),
                 listOf("prop key1", "prop value1"),
@@ -88,36 +81,27 @@ class ContextViewTest {
 
     @Test
     fun `landscape diagram is written as expected`() {
-        val diagramName = "SystemLandscape"
+        val diagramKey = "SystemLandscape"
         val expectedDiagramContent =
-            this::class.java.getResource("/expected/$diagramName.puml")!!.readText(Charsets.UTF_8)
+            this::class.java.getResource("/expected/$diagramKey.puml")!!.readText(Charsets.UTF_8)
         val landscapeView = workspace.views.systemLandscapeView(
-            diagramName,
+            diagramKey,
             "A test Landscape",
             C4PlantUmlLayout(layout = Layout.LeftToRight, legend = Legend.ShowFloatingLegend)
         )
         landscapeView.addAllElements()
 
-        val diagramFolder = File(tempDir, "./diagram/")
-        C4PlantUmlDiagramWriter.writeDiagrams(
-            diagramFolder,
-            workspace
-        )
-
-        assertThat(diagramFolder.isDirectory).isTrue
-        val actualDiagramFile = File(diagramFolder, "${landscapeView.key}.puml")
-        assertThat(actualDiagramFile.isFile).isTrue
-        assertThat(actualDiagramFile.readText(Charsets.UTF_8)).isEqualToIgnoringWhitespace(expectedDiagramContent)
+        assertExpectedDiagramWasWrittenForView(workspace, diagramKey, expectedDiagramContent)
     }
 
     @Test
     fun `context diagram is written as expected`() {
-        val diagramName = "Context"
+        val diagramKey = "Context"
         val expectedDiagramContent =
-            this::class.java.getResource("/expected/$diagramName.puml")!!.readText(Charsets.UTF_8)
+            this::class.java.getResource("/expected/$diagramKey.puml")!!.readText(Charsets.UTF_8)
         val contextView = workspace.views.systemContextView(
             system1,
-            diagramName,
+            diagramKey,
             "A test Landscape",
             C4PlantUmlLayout(
                 layout = Layout.LeftToRight,
@@ -127,15 +111,6 @@ class ContextViewTest {
         )
         contextView.addDefaultElements()
 
-        val diagramFolder = File(tempDir, "./diagram/")
-        C4PlantUmlDiagramWriter.writeDiagrams(
-            diagramFolder,
-            workspace
-        )
-
-        assertThat(diagramFolder.isDirectory).isTrue
-        val actualDiagramFile = File(diagramFolder, "${contextView.key}.puml")
-        assertThat(actualDiagramFile.isFile).isTrue
-        assertThat(actualDiagramFile.readText(Charsets.UTF_8)).isEqualToIgnoringWhitespace(expectedDiagramContent)
+        assertExpectedDiagramWasWrittenForView(workspace, diagramKey, expectedDiagramContent)
     }
 }

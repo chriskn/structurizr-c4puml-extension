@@ -20,6 +20,9 @@ fun ModelItem.configure(
 }
 
 var ModelItem.c4Properties: C4Properties?
+    /**
+     * Returns the [C4Properties] or null if not set.
+     */
     get() {
         val headers = this.properties
             .filter { it.key.startsWith(C4_PROPERTY_HEADER_PREFIX) }
@@ -41,9 +44,12 @@ var ModelItem.c4Properties: C4Properties?
             }
         return if (headers.isNullOrEmpty() && values.isEmpty()) null else C4Properties(headers, values)
     }
+    /**
+     * Sets the [C4Properties].
+     */
     set(properties) {
         if (properties != null) {
-            properties.headers?.forEachIndexed { index, headerValue ->
+            properties.header?.forEachIndexed { index, headerValue ->
                 this.addProperty("$C4_PROPERTY_HEADER_PREFIX:$index", headerValue)
             }
             properties.values.forEachIndexed { rowIndex, row ->
@@ -55,7 +61,13 @@ var ModelItem.c4Properties: C4Properties?
     }
 
 var ModelItem.icon: String?
+    /**
+     * Returns the icon or null if not set.
+     */
     get() = this.properties[ICON_PROPERTY]
+    /**
+     * Sets the icon.
+     */
     set(icon) {
         if (icon != null) {
             this.addProperty(ICON_PROPERTY, icon)
@@ -63,7 +75,13 @@ var ModelItem.icon: String?
     }
 
 var ModelItem.link: String?
+    /**
+     * Returns the link or null if not set.
+     */
     get() = this.properties[LINK_PROPERTY]
+    /**
+     * Sets the link.
+     */
     set(link) {
         if (link != null) {
             this.addProperty(LINK_PROPERTY, link)

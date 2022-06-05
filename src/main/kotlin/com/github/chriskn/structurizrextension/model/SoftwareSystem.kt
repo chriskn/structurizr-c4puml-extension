@@ -6,6 +6,21 @@ import com.structurizr.model.Location
 import com.structurizr.model.SoftwareSystem
 import com.structurizr.model.StaticStructureElement
 
+/**
+ * Adds a container.
+ *
+ * @param name          the name of the container
+ * @param description   the description of the container
+ * @param location      the [Location]] of the container
+ * @param icon          the icon of the container. See IconRegistry for available icons or add your own
+ * @param link          the link of the container
+ * @param tags          the list of tags of the container
+ * @param properties    the [C4Properties] of the container
+ * @param uses          the list of [Dependency] to a system, container or component the container uses. A person can't be used
+ * @param usedBy        the list of [Dependency] to a system, container, component or person the container is used by
+ * @return the Container created and added to the system (or null)
+ * @throws IllegalArgumentException if a container with the same name already exists or a person is used in an uses dependency
+ */
 @Suppress("LongParameterList")
 fun SoftwareSystem.container(
     name: String,

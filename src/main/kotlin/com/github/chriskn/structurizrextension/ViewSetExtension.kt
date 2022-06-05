@@ -12,6 +12,14 @@ import com.structurizr.view.SystemContextView
 import com.structurizr.view.SystemLandscapeView
 import com.structurizr.view.ViewSet
 
+/**
+ * Creates a system landscape view.
+ *
+ * @param key           the key for the view (must be unique)
+ * @param description   a description of the view
+ * @return a SystemLandscapeView object
+ * @throws IllegalArgumentException if the key is not unique
+ */
 fun ViewSet.systemLandscapeView(
     key: String,
     description: String,
@@ -21,6 +29,15 @@ fun ViewSet.systemLandscapeView(
     return this.createSystemLandscapeView(key, description)
 }
 
+/**
+ * Creates a system context view, where the scope of the view is the specified software system.
+ *
+ * @param softwareSystem    the SoftwareSystem object representing the scope of the view
+ * @param key               the key for the view (must be unique)
+ * @param description       a description of the view
+ * @return a SystemContextView object
+ * @throws IllegalArgumentException if the software system is null or the key is not unique
+ */
 fun ViewSet.systemContextView(
     softwareSystem: SoftwareSystem,
     key: String,
@@ -31,16 +48,34 @@ fun ViewSet.systemContextView(
     return this.createSystemContextView(softwareSystem, key, description)
 }
 
+/**
+ * Creates a container view, where the scope of the view is the specified software system.
+ *
+ * @param system        the SoftwareSystem object representing the scope of the view
+ * @param key           the key for the view (must be unique)
+ * @param description   a description of the view
+ * @return a ContainerView object
+ * @throws IllegalArgumentException if the software system is null or the key is not unique
+ */
 fun ViewSet.containerView(
-    softwareSystem: SoftwareSystem,
+    system: SoftwareSystem,
     key: String,
     description: String,
     layout: C4PlantUmlLayout? = null
 ): ContainerView {
     layout?.let { LayoutRegistry.registerLayoutForKey(key, layout) }
-    return this.createContainerView(softwareSystem, key, description)
+    return this.createContainerView(system, key, description)
 }
 
+/**
+ * Creates a component view, where the scope of the view is the specified container.
+ *
+ * @param container     the Container object representing the scope of the view
+ * @param key           the key for the view (must be unique)
+ * @param description   a description of the view
+ * @return a ContainerView object
+ * @throws IllegalArgumentException if the container is null or the key is not unique
+ */
 fun ViewSet.componentView(
     container: Container,
     key: String,
@@ -51,6 +86,15 @@ fun ViewSet.componentView(
     return this.createComponentView(container, key, description)
 }
 
+/**
+ * Creates a dynamic view, where the scope is the specified container.
+ *
+ * @param container     the Container object representing the scope of the view
+ * @param key           the key for the view (must be unique)
+ * @param description   a description of the view
+ * @return a DynamicView object
+ * @throws IllegalArgumentException if the container is null or the key is not unique
+ */
 fun ViewSet.dynamicView(
     container: Container,
     key: String,
@@ -61,6 +105,15 @@ fun ViewSet.dynamicView(
     return this.createDynamicView(container, key, description)
 }
 
+/**
+ * Creates a dynamic view, where the scope is the specified software system.
+ *
+ * @param system        the SoftwareSystem object representing the scope of the view
+ * @param key           the key for the view (must be unique)
+ * @param description   a description of the view
+ * @return a DynamicView object
+ * @throws IllegalArgumentException if the software system is null or the key is not unique
+ */
 fun ViewSet.dynamicView(
     system: SoftwareSystem,
     key: String,
@@ -71,6 +124,15 @@ fun ViewSet.dynamicView(
     return this.createDynamicView(system, key, description)
 }
 
+/**
+ * Creates a deployment view, where the scope of the view is the specified software system.
+ *
+ * @param system        the SoftwareSystem object representing the scope of the view
+ * @param key           the key for the deployment view (must be unique)
+ * @param description   a description of the view
+ * @return a DeploymentView object
+ * @throws IllegalArgumentException if the software system is null or the key is not unique
+ */
 fun ViewSet.deploymentView(
     system: SoftwareSystem,
     key: String,

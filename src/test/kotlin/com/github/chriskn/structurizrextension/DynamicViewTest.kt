@@ -5,21 +5,14 @@ import com.github.chriskn.structurizrextension.model.Dependency
 import com.github.chriskn.structurizrextension.model.component
 import com.github.chriskn.structurizrextension.model.container
 import com.github.chriskn.structurizrextension.model.softwareSystem
-import com.github.chriskn.structurizrextension.plantuml.C4PlantUmlDiagramWriter
 import com.github.chriskn.structurizrextension.plantuml.layout.C4PlantUmlLayout
 import com.github.chriskn.structurizrextension.plantuml.layout.Legend
 import com.structurizr.Workspace
 import com.structurizr.model.Container
 import com.structurizr.view.DynamicView
-import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.io.TempDir
-import java.io.File
 
 class DynamicViewTest {
-
-    @TempDir
-    private lateinit var tempDir: File
 
     private val workspace = Workspace("My Workspace", "Some Description")
     private val model = workspace.model
@@ -77,52 +70,34 @@ class DynamicViewTest {
 
     @Test
     fun `test interaction diagram for container is written to plant uml as expected`() {
-        val diagramName = "DynamicContainer"
+        val diagramKey = "DynamicContainer"
         val expectedDiagramContent =
-            this::class.java.getResource("/expected/$diagramName.puml")!!.readText(Charsets.UTF_8)
+            this::class.java.getResource("/expected/$diagramKey.puml")!!.readText(Charsets.UTF_8)
         val dynamicView: DynamicView = workspace.views.dynamicView(
             apiApplication,
-            diagramName,
+            diagramKey,
             "description",
             C4PlantUmlLayout(legend = Legend.ShowFloatingLegend)
         )
         addElements(dynamicView)
 
-        val diagramFolder = File(tempDir, "./diagram/")
-        C4PlantUmlDiagramWriter.writeDiagrams(
-            diagramFolder,
-            workspace
-        )
-
-        assertThat(diagramFolder.isDirectory).isTrue
-        val actualDiagramFile = File(diagramFolder, "${dynamicView.key}.puml")
-        assertThat(actualDiagramFile.isFile).isTrue
-        assertThat(actualDiagramFile.readText(Charsets.UTF_8)).isEqualToIgnoringWhitespace(expectedDiagramContent)
+        assertExpectedDiagramWasWrittenForView(workspace, diagramKey, expectedDiagramContent)
     }
 
     @Test
     fun `test interaction diagram for system is written to plant uml as expected`() {
-        val diagramName = "DynamicSystem"
+        val diagramKey = "DynamicSystem"
         val expectedDiagramContent =
-            this::class.java.getResource("/expected/$diagramName.puml")!!.readText(Charsets.UTF_8)
+            this::class.java.getResource("/expected/$diagramKey.puml")!!.readText(Charsets.UTF_8)
         val dynamicView: DynamicView = workspace.views.dynamicView(
             system1,
-            diagramName,
+            diagramKey,
             "description",
             C4PlantUmlLayout(legend = Legend.ShowFloatingLegend)
         )
         dynamicView.add(singlePageApplication, "gets data from", apiApplication)
         dynamicView.add(apiApplication, "stores data to", database)
 
-        val diagramFolder = File("./diagram/")
-        C4PlantUmlDiagramWriter.writeDiagrams(
-            diagramFolder,
-            workspace
-        )
-
-        assertThat(diagramFolder.isDirectory).isTrue
-        val actualDiagramFile = File(diagramFolder, "${dynamicView.key}.puml")
-        assertThat(actualDiagramFile.isFile).isTrue
-        assertThat(actualDiagramFile.readText(Charsets.UTF_8)).isEqualToIgnoringWhitespace(expectedDiagramContent)
+        assertExpectedDiagramWasWrittenForView(workspace, diagramKey, expectedDiagramContent)
     }
 }

@@ -2,25 +2,27 @@ package com.github.chriskn.structurizrextension.model
 
 import com.structurizr.model.Element
 import com.structurizr.model.InteractionStyle
-import com.structurizr.model.StaticStructureElement
 
+/**
+ * Dependency used to model relationships between elements.
+ *
+ * @param destination       the destination of the dependency
+ * @param description       the description of the dependency
+ * @param technology        the technology of the dependency
+ * @param interactionStyle  the [InteractionStyle] of the dependency
+ * @param icon              the icon of the dependency. See IconRegistry for available icons or add your own
+ * @param link              the link of the dependency
+ * @param tags              the list of tags of the dependency
+ * @param properties        [C4Properties] of the dependency
+ * @return a new Dependency instance
+ */
 data class Dependency<out T : Element>(
     val destination: T,
     val description: String,
     val technology: String? = null,
     val interactionStyle: InteractionStyle? = null,
-    val link: String? = null,
-    val properties: C4Properties? = null,
     val icon: String? = null,
+    val link: String? = null,
     val tags: List<String> = listOf(),
+    val properties: C4Properties? = null,
 )
-
-fun Dependency<StaticStructureElement>.addRelationShipTo(target: StaticStructureElement) {
-    this.destination.uses(target, description, technology, interactionStyle)
-        ?.configure(this.icon, this.link, this.tags, this.properties)
-}
-
-fun Dependency<StaticStructureElement>.addRelationShipFrom(source: StaticStructureElement) {
-    source.uses(this.destination, this.description, this.technology, this.interactionStyle)
-        ?.configure(this.icon, this.link, this.tags, this.properties)
-}

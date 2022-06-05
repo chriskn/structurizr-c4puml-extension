@@ -148,7 +148,7 @@ class ExtendedC4PlantUmlWriter : C4PlantUMLWriter() {
         if (ele.c4Properties == null) {
             return
         }
-        val headers = ele.c4Properties!!.headers
+        val headers = ele.c4Properties!!.header
         if (!headers.isNullOrEmpty()) {
             writer.write("""${ident}SetPropertyHeader(${headers.joinToString(", ") { """"$it"""" }})$separator""")
         } else {
@@ -162,28 +162,28 @@ class ExtendedC4PlantUmlWriter : C4PlantUMLWriter() {
 
     private fun DeploymentNode.toMacroString(ident: String) =
         """${ident}Node($id, "$name", "${technology ?: ""}", "${description ?: ""}", "${
-        IconRegistry.iconNameFor(
+        IconRegistry.iconFileNameFor(
             icon ?: ""
         )
         }"${linkString(link)}){$separator"""
 
     private fun InfrastructureNode.toMacroString(ident: String) =
         """${ident}Node($id, "$name", "${technology ?: ""}", "${description ?: ""}", "${
-        IconRegistry.iconNameFor(
+        IconRegistry.iconFileNameFor(
             icon ?: ""
         )
         }"${linkString(link)})$separator"""
 
     private fun SoftwareSystem.toMacroString(id: String, indent: String) =
         """${indent}System${this.type?.c4Type ?: ""}${this.location.toPlantUmlString()}($id, "$name", "${description ?: ""}", "${
-        IconRegistry.iconNameFor(
+        IconRegistry.iconFileNameFor(
             icon ?: ""
         )
         }"${linkString(link)})$separator"""
 
     private fun Container.toMacroString(id: String, indent: String): String =
         """${indent}Container${this.type?.c4Type ?: ""}${this.location.toPlantUmlString()}($id, "$name", "$technology", "${description ?: ""}", "${
-        IconRegistry.iconNameFor(
+        IconRegistry.iconFileNameFor(
             icon ?: ""
         )
         }"${linkString(link)})$separator"""
@@ -191,7 +191,7 @@ class ExtendedC4PlantUmlWriter : C4PlantUMLWriter() {
     private fun Person.toMacroString(indent: String): String {
         val externalMarker = this.location.toPlantUmlString()
         return """${indent}Person$externalMarker($id, "$name", "${description ?: ""}", "${
-        IconRegistry.iconNameFor(
+        IconRegistry.iconFileNameFor(
             icon ?: ""
         )
         }"${linkString(link)})$separator"""
@@ -199,7 +199,7 @@ class ExtendedC4PlantUmlWriter : C4PlantUMLWriter() {
 
     private fun Component.toMacroString(indent: String): String {
         return """${indent}Component($id, "$name", "$technology", "${description ?: ""}", "${
-        IconRegistry.iconNameFor(
+        IconRegistry.iconFileNameFor(
             icon ?: ""
         )
         }"${linkString(link)})$separator"""
@@ -258,7 +258,7 @@ class ExtendedC4PlantUmlWriter : C4PlantUMLWriter() {
                 }
                 relationshipMacro = "${relationshipMacro}_${direction.macro()}"
             }
-            else -> relationshipMacro = "Rel_${relationshipMacro}"
+            else -> relationshipMacro = "Rel_$relationshipMacro"
         }
         val description = relationship.description.ifEmpty { " " }
         var relMacro = """$relationshipMacro(${source.id}, ${destination.id}, "$description""""
@@ -267,7 +267,7 @@ class ExtendedC4PlantUmlWriter : C4PlantUMLWriter() {
         }
 
         if (!relationship.icon.isNullOrBlank()) {
-            relMacro += """, ${'$'}sprite=${IconRegistry.iconNameFor(relationship.icon ?: "")}"""
+            relMacro += """, ${'$'}sprite=${IconRegistry.iconFileNameFor(relationship.icon ?: "")}"""
         }
         if (!relationship.link.isNullOrBlank()) {
             relMacro += linkString(relationship.link)

@@ -9,7 +9,6 @@ import com.github.chriskn.structurizrextension.model.icon
 import com.github.chriskn.structurizrextension.model.infrastructureNode
 import com.github.chriskn.structurizrextension.model.softwareSystem
 import com.github.chriskn.structurizrextension.model.type
-import com.github.chriskn.structurizrextension.plantuml.C4PlantUmlDiagramWriter
 import com.github.chriskn.structurizrextension.plantuml.layout.C4PlantUmlLayout
 import com.github.chriskn.structurizrextension.plantuml.layout.DependencyConfiguration
 import com.github.chriskn.structurizrextension.plantuml.layout.Direction
@@ -18,15 +17,9 @@ import com.structurizr.Workspace
 import com.structurizr.model.Container
 import com.structurizr.model.InteractionStyle
 import com.structurizr.model.Location
-import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.io.TempDir
-import java.io.File
 
 class DeploymentViewTest {
-
-    @TempDir
-    private lateinit var tempDir: File
 
     private val diagramName = "Deployment"
 
@@ -81,7 +74,7 @@ class DeploymentViewTest {
             "Production AWS environment",
             icon = "aws",
             properties = C4Properties(
-                headers = listOf("Property", "Value", "Description"),
+                header = listOf("Property", "Value", "Description"),
                 values = listOf(
                     listOf("Property1", "Value1", "Description1"),
                     listOf("Property2", "Value2", "Description2"),
@@ -123,7 +116,7 @@ class DeploymentViewTest {
                     icon = "kafka",
                     link = "https://www.jaegertracing.io/",
                     properties = C4Properties(
-                        headers = listOf("key", "value"),
+                        header = listOf("key", "value"),
                         values = listOf(listOf("ip", "10.234.12.13"))
                     )
                 )
@@ -144,7 +137,7 @@ class DeploymentViewTest {
             uses = listOf(Dependency(webAppPod, "forwards requests to")),
             usedBy = listOf(Dependency(appleDevice, "requests data from")),
             properties = C4Properties(
-                headers = listOf("Property", "value"),
+                header = listOf("Property", "value"),
                 values = listOf(listOf("IP", "10.234.234.132"))
             )
         )
@@ -171,15 +164,6 @@ class DeploymentViewTest {
             )
         deploymentView.addDefaultElements()
 
-        val diagramFolder = File(tempDir, "./diagram/")
-        C4PlantUmlDiagramWriter.writeDiagrams(
-            diagramFolder,
-            workspace
-        )
-
-        assertThat(diagramFolder.isDirectory).isTrue
-        val actualDiagramFile = File(diagramFolder, "${deploymentView.key}.puml")
-        assertThat(actualDiagramFile.isFile).isTrue
-        assertThat(actualDiagramFile.readText(Charsets.UTF_8)).isEqualToIgnoringWhitespace(expectedDiagramContent)
+        assertExpectedDiagramWasWrittenForView(workspace, deploymentView.key, expectedDiagramContent)
     }
 }

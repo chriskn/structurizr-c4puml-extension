@@ -6,24 +6,16 @@ import com.github.chriskn.structurizrextension.model.Dependency
 import com.github.chriskn.structurizrextension.model.container
 import com.github.chriskn.structurizrextension.model.person
 import com.github.chriskn.structurizrextension.model.softwareSystem
-import com.github.chriskn.structurizrextension.plantuml.C4PlantUmlDiagramWriter
 import com.github.chriskn.structurizrextension.plantuml.layout.C4PlantUmlLayout
 import com.github.chriskn.structurizrextension.plantuml.layout.DependencyConfiguration
 import com.github.chriskn.structurizrextension.plantuml.layout.Direction
 import com.github.chriskn.structurizrextension.plantuml.layout.Layout
 import com.github.chriskn.structurizrextension.plantuml.layout.Legend
 import com.structurizr.Workspace
-import com.structurizr.io.plantuml.C4PlantUMLWriter.Directions
 import com.structurizr.model.Location
-import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.io.TempDir
-import java.io.File
 
 class ContainerViewTest {
-
-    @TempDir
-    private lateinit var tempDir: File
 
     val workspace = Workspace("My Workspace", "")
     val model = workspace.model
@@ -112,12 +104,12 @@ class ContainerViewTest {
 
     @Test
     fun `container diagram is written as expected with external boundary`() {
-        val diagramName = "ContainerWithBoundary"
+        val diagramKey = "ContainerWithBoundary"
         val expectedDiagramContent =
-            this::class.java.getResource("/expected/$diagramName.puml")!!.readText(Charsets.UTF_8)
+            this::class.java.getResource("/expected/$diagramKey.puml")!!.readText(Charsets.UTF_8)
         val containerView = workspace.views.containerView(
             softwareSystem,
-            diagramName,
+            diagramKey,
             "Test container view",
             C4PlantUmlLayout(
                 legend = Legend.ShowStaticLegend,
@@ -136,26 +128,17 @@ class ContainerViewTest {
         containerView.addDependentSoftwareSystems()
         containerView.addAllPeople()
 
-        val diagramFolder = File(tempDir, "./diagram/")
-        C4PlantUmlDiagramWriter.writeDiagrams(
-            diagramFolder,
-            workspace
-        )
-
-        assertThat(diagramFolder.isDirectory).isTrue
-        val actualDiagramFile = File(diagramFolder, "${containerView.key}.puml")
-        assertThat(actualDiagramFile.isFile).isTrue
-        assertThat(actualDiagramFile.readText(Charsets.UTF_8)).isEqualToIgnoringWhitespace(expectedDiagramContent)
+        assertExpectedDiagramWasWrittenForView(workspace, diagramKey, expectedDiagramContent)
     }
 
     @Test
     fun `container diagram is written as expected without external boundary`() {
-        val diagramName = "ContainerWithoutBoundary"
+        val diagramKey = "ContainerWithoutBoundary"
         val expectedDiagramContent =
-            this::class.java.getResource("/expected/$diagramName.puml")!!.readText(Charsets.UTF_8)
+            this::class.java.getResource("/expected/$diagramKey.puml")!!.readText(Charsets.UTF_8)
         val containerView = workspace.views.containerView(
             softwareSystem,
-            diagramName,
+            diagramKey,
             "Test container view",
             C4PlantUmlLayout(
                 legend = Legend.None,
@@ -175,15 +158,6 @@ class ContainerViewTest {
         containerView.addDependentSoftwareSystems()
         containerView.addAllPeople()
 
-        val diagramFolder = File(tempDir, "./diagram/")
-        C4PlantUmlDiagramWriter.writeDiagrams(
-            diagramFolder,
-            workspace
-        )
-
-        assertThat(diagramFolder.isDirectory).isTrue
-        val actualDiagramFile = File(diagramFolder, "${containerView.key}.puml")
-        assertThat(actualDiagramFile.isFile).isTrue
-        assertThat(actualDiagramFile.readText(Charsets.UTF_8)).isEqualToIgnoringWhitespace(expectedDiagramContent)
+        assertExpectedDiagramWasWrittenForView(workspace, diagramKey, expectedDiagramContent)
     }
 }

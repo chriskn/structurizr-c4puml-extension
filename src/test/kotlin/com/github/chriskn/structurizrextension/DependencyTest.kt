@@ -2,7 +2,6 @@ package com.github.chriskn.structurizrextension
 
 import com.github.chriskn.structurizrextension.model.Dependency
 import com.github.chriskn.structurizrextension.model.softwareSystem
-import com.github.chriskn.structurizrextension.plantuml.C4PlantUmlDiagramWriter
 import com.github.chriskn.structurizrextension.plantuml.layout.C4PlantUmlLayout
 import com.github.chriskn.structurizrextension.plantuml.layout.DependencyConfiguration
 import com.github.chriskn.structurizrextension.plantuml.layout.Direction
@@ -10,15 +9,9 @@ import com.github.chriskn.structurizrextension.plantuml.layout.Legend
 import com.github.chriskn.structurizrextension.plantuml.layout.Mode
 import com.structurizr.Workspace
 import com.structurizr.model.Model
-import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.io.TempDir
-import java.io.File
 
 class DependencyTest {
-
-    @TempDir
-    private lateinit var tempDir: File
 
     private val workspace = Workspace("My Workspace", "Some Description")
     private val model: Model = workspace.model
@@ -32,11 +25,11 @@ class DependencyTest {
 
     @Test
     fun `position is applied`() {
-        val diagramName = "DependencyPosition"
+        val diagramKey = "DependencyPosition"
         val expectedDiagramContent =
-            this::class.java.getResource("/expected/$diagramName.puml")!!.readText(Charsets.UTF_8)
+            this::class.java.getResource("/expected/$diagramKey.puml")!!.readText(Charsets.UTF_8)
         val contextView = workspace.views.systemLandscapeView(
-            diagramName,
+            diagramKey,
             "Dependency Test",
             C4PlantUmlLayout(
                 dependencyConfigurations = listOf(
@@ -47,25 +40,16 @@ class DependencyTest {
         )
         contextView.addDefaultElements()
 
-        val diagramFolder = File(tempDir, "./diagram/")
-        C4PlantUmlDiagramWriter.writeDiagrams(
-            diagramFolder,
-            workspace
-        )
-
-        assertThat(diagramFolder.isDirectory).isTrue
-        val actualDiagramFile = File(diagramFolder, "${contextView.key}.puml")
-        assertThat(actualDiagramFile.isFile).isTrue
-        assertThat(actualDiagramFile.readText(Charsets.UTF_8)).isEqualToIgnoringWhitespace(expectedDiagramContent)
+        assertExpectedDiagramWasWrittenForView(workspace, diagramKey, expectedDiagramContent)
     }
 
     @Test
     fun `mode is applied`() {
-        val diagramName = "DependencyMode"
+        val diagramKey = "DependencyMode"
         val expectedDiagramContent =
-            this::class.java.getResource("/expected/$diagramName.puml")!!.readText(Charsets.UTF_8)
+            this::class.java.getResource("/expected/$diagramKey.puml")!!.readText(Charsets.UTF_8)
         val contextView = workspace.views.systemLandscapeView(
-            diagramName,
+            diagramKey,
             "Dependency Test",
             C4PlantUmlLayout(
                 dependencyConfigurations = listOf(
@@ -75,25 +59,16 @@ class DependencyTest {
         )
         contextView.addDefaultElements()
 
-        val diagramFolder = File(tempDir, "./diagram/")
-        C4PlantUmlDiagramWriter.writeDiagrams(
-            diagramFolder,
-            workspace
-        )
-
-        assertThat(diagramFolder.isDirectory).isTrue
-        val actualDiagramFile = File(diagramFolder, "${contextView.key}.puml")
-        assertThat(actualDiagramFile.isFile).isTrue
-        assertThat(actualDiagramFile.readText(Charsets.UTF_8)).isEqualToIgnoringWhitespace(expectedDiagramContent)
+        assertExpectedDiagramWasWrittenForView(workspace, diagramKey, expectedDiagramContent)
     }
 
     @Test
     fun `position is ignored when mode is overridden`() {
-        val diagramName = "DependencyPositionMode"
+        val diagramKey = "DependencyPositionMode"
         val expectedDiagramContent =
-            this::class.java.getResource("/expected/$diagramName.puml")!!.readText(Charsets.UTF_8)
+            this::class.java.getResource("/expected/$diagramKey.puml")!!.readText(Charsets.UTF_8)
         val contextView = workspace.views.systemLandscapeView(
-            diagramName,
+            diagramKey,
             "Dependency Test",
             C4PlantUmlLayout(
                 dependencyConfigurations = listOf(
@@ -104,15 +79,6 @@ class DependencyTest {
         )
         contextView.addDefaultElements()
 
-        val diagramFolder = File(tempDir, "./diagram/")
-        C4PlantUmlDiagramWriter.writeDiagrams(
-            diagramFolder,
-            workspace
-        )
-
-        assertThat(diagramFolder.isDirectory).isTrue
-        val actualDiagramFile = File(diagramFolder, "${contextView.key}.puml")
-        assertThat(actualDiagramFile.isFile).isTrue
-        assertThat(actualDiagramFile.readText(Charsets.UTF_8)).isEqualToIgnoringWhitespace(expectedDiagramContent)
+        assertExpectedDiagramWasWrittenForView(workspace, diagramKey, expectedDiagramContent)
     }
 }

@@ -20,3 +20,13 @@ fun StaticStructureElement.configure(
     }
     usedBy.forEach { dep -> dep.addRelationShipTo(this) }
 }
+
+private fun Dependency<StaticStructureElement>.addRelationShipTo(target: StaticStructureElement) {
+    this.destination.uses(target, description, technology, interactionStyle)
+        ?.configure(this.icon, this.link, this.tags, this.properties)
+}
+
+fun Dependency<StaticStructureElement>.addRelationShipFrom(source: StaticStructureElement) {
+    source.uses(this.destination, this.description, this.technology, this.interactionStyle)
+        ?.configure(this.icon, this.link, this.tags, this.properties)
+}

@@ -4,19 +4,34 @@ private const val GILBARBARA_ICON_URL = "https://raw.githubusercontent.com/plant
 const val AWS_ICON_URL = "https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/v11.1/dist/"
 const val AWS_ICON_COMMONS = "${AWS_ICON_URL}AWSCommon.puml"
 
+/**
+ * Registry containing the available icons.
+ */
 object IconRegistry {
 
     private val iconNameToIconUrl = mutableMapOf<String, String>()
 
-    fun iconUrlFor(name: String) = iconNameToIconUrl[name.lowercase()]
+    /**
+     * Returns the URL of an icon with the given name or null if no icon with the given name exists.
+     */
+    fun iconUrlFor(name: String): String? = iconNameToIconUrl[name.lowercase()]
 
-    fun iconNameFor(name: String) = iconNameToIconUrl[name.lowercase()]?.split("/")
+    /**
+     * Returns the file name of an icon with the given name or null if no icon with the given name exists.
+     */
+    fun iconFileNameFor(name: String) = iconNameToIconUrl[name.lowercase()]?.split("/")
         ?.last()
         ?.replace(".puml", "")
         ?: ""
 
+    /**
+     * Adds a new icon with the given name and URL to the registry.
+     */
     fun addIcon(name: String, url: String) = iconNameToIconUrl.put(name, url)
 
+    /**
+     * Returns true if an icon with the given name exists, false otherwise.
+     */
     fun exists(name: String) = iconNameToIconUrl.containsKey(name)
 
     private val commonIcons = mapOf(
