@@ -6,10 +6,10 @@ Structurizr C4-PlantUML extension aims to bridge the gab between to [structurizr
 
 ## Example diagram
 
-The following example container diagram shows most of the features the Structurizr C4-PlantUML extension provides e.g. 
+The following example container diagram shows the additional features the Structurizr C4-PlantUML extension provides: 
 
 * links and properties for elements and relationships
-* icons
+* icons for elements and relationships
 * external containers and system boundaries
 * database and queue shapes
 * differentiation between synchronous and asynchronous relationships
@@ -34,4 +34,3 @@ dependencies {
     implementation("io.github.chriskn:structurizr-c4puml-extension:$currentVersion")
 } 
 ```
-
