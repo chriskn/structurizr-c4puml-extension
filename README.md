@@ -2,7 +2,7 @@
 
 # Structurizr C4-PlantUML extension
 
-Structurizr C4-PlantUML extension aims to bridge the gab between to structurizr java library and C4-PlantUML by extending the structurizr model and providing an extended C4-PlantUML writer.   
+Structurizr C4-PlantUML extension aims to bridge the gab between to [structurizr java library](https://github.com/structurizr/java) and [C4-PlantUML](https://github.com/plantuml-stdlib/C4-PlantUML) by extending the structurizr model and providing an extended C4-PlantUML writer.   
 
 ## Example diagram
 

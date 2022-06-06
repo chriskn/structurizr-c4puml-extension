@@ -38,7 +38,7 @@ Rel_D(15, 12, "extends schema")
 Rel_D(6, 2, "Admin UI", "REST")
 
 skinparam linetype ortho
-skinparam nodesep 160
+skinparam nodesep 170
 skinparam ranksep 130
 SHOW_LEGEND(true)
 
