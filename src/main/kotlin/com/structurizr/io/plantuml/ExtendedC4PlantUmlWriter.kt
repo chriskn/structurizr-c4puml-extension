@@ -11,9 +11,9 @@ import com.github.chriskn.structurizrextension.plantuml.IconRegistry
 import com.github.chriskn.structurizrextension.plantuml.layout.C4PlantUmlLayout
 import com.github.chriskn.structurizrextension.plantuml.layout.DependencyConfiguration
 import com.github.chriskn.structurizrextension.plantuml.layout.Direction
-import com.github.chriskn.structurizrextension.view.LayoutRegistry
 import com.github.chriskn.structurizrextension.plantuml.layout.Legend
 import com.github.chriskn.structurizrextension.plantuml.layout.Mode
+import com.github.chriskn.structurizrextension.view.LayoutRegistry
 import com.structurizr.model.Component
 import com.structurizr.model.Container
 import com.structurizr.model.ContainerInstance
