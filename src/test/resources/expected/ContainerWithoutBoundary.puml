@@ -1,6 +1,7 @@
 @startuml(id=ContainerWithoutBoundary)
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/android-icon.puml
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/docker-icon.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/graphql.puml
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/kafka.puml
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/postgresql.puml
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
@@ -9,10 +10,10 @@ caption Test container view
 
 LAYOUT_TOP_DOWN()
 
+Person_Ext(17, "Android User", "some Android user", "android-icon")
 WithoutPropertyHeader()
 AddProperty("prop 1", "value 1")
 Person(6, "Maintainer", "some employee", "", $link="https://www.google.de")
-Person_Ext(17, "User", "some user", "android-icon")
 System_Boundary(1_boundary, My Software System) {
   Container(3, "App", "Android", "android app", "android-icon")
   WithoutPropertyHeader()
@@ -22,13 +23,13 @@ System_Boundary(1_boundary, My Software System) {
 }
 Container_Ext(15, "External Schema", "", "Schema provided by another team", "")
 Container(12, "Internal Schema", "", "Schema provided by our app", "")
-ContainerQueue_Ext(9, "Topic: my.topic", "", "external topic", "kafka")
-Rel_D(3, 12, "reuqest data using", "GraphQL")
+ContainerQueue_Ext(9, "my.topic", "", "external topic", "kafka")
+Rel_D(17, 3, "uses app")
+Rel_D(3, 12, "reuqest data using", "GraphQL", $sprite=graphql, $link="https://graphql.org/")
 Rel_R(2, 4, "CRUD", "JPA")
 Rel_D(2, 12, "provides subgraph to")
 Rel_D(2, 9, "reads topic", "Avro")
 Rel_U(15, 12, "extends schema")
 Rel_D(6, 2, "Admin UI", "REST")
-Rel_D(17, 3, "uses app")
 
 @enduml

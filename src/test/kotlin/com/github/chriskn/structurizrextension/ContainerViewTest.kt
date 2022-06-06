@@ -11,6 +11,7 @@ import com.github.chriskn.structurizrextension.plantuml.layout.DependencyConfigu
 import com.github.chriskn.structurizrextension.plantuml.layout.Direction
 import com.github.chriskn.structurizrextension.plantuml.layout.Layout
 import com.github.chriskn.structurizrextension.plantuml.layout.Legend
+import com.github.chriskn.structurizrextension.plantuml.layout.LineType
 import com.structurizr.Workspace
 import com.structurizr.model.Location
 import org.junit.jupiter.api.Test
@@ -21,8 +22,8 @@ class ContainerViewTest {
     val model = workspace.model
     val properties = C4Properties(values = listOf(listOf("prop 1", "value 1")))
     val softwareSystem = model.softwareSystem(
-        "My Software System",
-        "system description",
+        name = "My Software System",
+        description = "system description",
         link = "https://www.google.de"
     )
     val backendApplication = softwareSystem.container(
@@ -59,14 +60,14 @@ class ContainerViewTest {
         properties = properties
     )
     val broker = model.softwareSystem(
-        "Broker",
-        "Message Broker",
-        Location.External,
-        C4Type.QUEUE,
+        name = "Broker",
+        description = "Message Broker",
+        location = Location.External,
+        type = C4Type.QUEUE,
         icon = "kafka",
     )
     val topic = broker.container(
-        "Topic: my.topic",
+        "my.topic",
         "external topic",
         type = C4Type.QUEUE,
         icon = "kafka",
@@ -75,28 +76,28 @@ class ContainerViewTest {
         )
     )
     val graphql = model.softwareSystem(
-        "GraphQL",
-        "Federated GraphQL",
-        Location.External,
+        name = "GraphQL",
+        description = "Federated GraphQL",
+        location = Location.External,
         icon = "graphql"
     )
     val internalSchema = graphql.container(
-        "Internal Schema",
-        "Schema provided by our app",
-        Location.Internal,
+        name = "Internal Schema",
+        description = "Schema provided by our app",
+        location = Location.Internal,
         usedBy = listOf(
             Dependency(backendApplication, "provides subgraph to"),
-            Dependency(app, "reuqest data using", "GraphQL")
+            Dependency(app, "reuqest data using", "GraphQL", icon = "graphql", link = "https://graphql.org/")
         )
     )
     val externalSchema = graphql.container(
-        "External Schema",
-        "Schema provided by another team",
+        name = "External Schema",
+        description = "Schema provided by another team",
         uses = listOf(Dependency(internalSchema, "extends schema"))
     )
-    val user = model.person(
-        "User",
-        "some user",
+    val androidUser = model.person(
+        name = "Android User",
+        description = "some Android user",
         location = Location.External,
         icon = "android",
         uses = listOf(Dependency(app, "uses app"))
@@ -110,10 +111,13 @@ class ContainerViewTest {
         val containerView = workspace.views.containerView(
             softwareSystem,
             diagramKey,
-            "Test container view",
+            "Example container view",
             C4PlantUmlLayout(
-                legend = Legend.ShowStaticLegend,
+                legend = Legend.ShowLegend,
                 layout = Layout.TopDown,
+                lineType = LineType.Ortho,
+                nodeSep = 160,
+                rankSep = 130,
                 dependencyConfigurations = listOf(
                     DependencyConfiguration(filter = { it.destination == database }, direction = Direction.Right)
                 )
