@@ -11,6 +11,8 @@ The following example container diagram shows most of the features the Structuri
 * links and properties for elements and relationships
 * icons
 * external containers and system boundaries
+* database and queue shapes
+* differentiation between synchronous and asynchronous relationships
 * advanced layout configuration for C4-PlantUML diagrams
 
 ![Example container diagram](./docs/container_example.svg)

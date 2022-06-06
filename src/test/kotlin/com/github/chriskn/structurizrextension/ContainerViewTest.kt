@@ -13,6 +13,7 @@ import com.github.chriskn.structurizrextension.plantuml.layout.Layout
 import com.github.chriskn.structurizrextension.plantuml.layout.Legend
 import com.github.chriskn.structurizrextension.plantuml.layout.LineType
 import com.structurizr.Workspace
+import com.structurizr.model.InteractionStyle
 import com.structurizr.model.Location
 import org.junit.jupiter.api.Test
 
@@ -72,7 +73,7 @@ class ContainerViewTest {
         type = C4Type.QUEUE,
         icon = "kafka",
         usedBy = listOf(
-            Dependency(backendApplication, "reads topic", "Avro")
+            Dependency(backendApplication, "reads topic", "Avro", interactionStyle = InteractionStyle.Asynchronous)
         )
     )
     val graphql = model.softwareSystem(
@@ -116,10 +117,11 @@ class ContainerViewTest {
                 legend = Legend.ShowLegend,
                 layout = Layout.TopDown,
                 lineType = LineType.Ortho,
-                nodeSep = 160,
+                nodeSep = 100,
                 rankSep = 130,
                 dependencyConfigurations = listOf(
-                    DependencyConfiguration(filter = { it.destination == database }, direction = Direction.Right)
+                    DependencyConfiguration(filter = { it.destination == database }, direction = Direction.Right),
+                    DependencyConfiguration(filter = { it.destination == topic }, direction = Direction.Up)
                 )
             )
         )

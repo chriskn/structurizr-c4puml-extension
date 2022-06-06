@@ -10,6 +10,8 @@ caption Test container view
 
 LAYOUT_TOP_DOWN()
 
+AddRelTag("async", $lineStyle = DashedLine())
+
 Person_Ext(17, "Android User", "some Android user", "android-icon")
 WithoutPropertyHeader()
 AddProperty("prop 1", "value 1")
@@ -28,7 +30,7 @@ Rel_D(17, 3, "uses app")
 Rel_D(3, 12, "reuqest data using", "GraphQL", $sprite=graphql, $link="https://graphql.org/")
 Rel_R(2, 4, "CRUD", "JPA")
 Rel_D(2, 12, "provides subgraph to")
-Rel_D(2, 9, "reads topic", "Avro")
+Rel_D(2, 9, "reads topic", "Avro", $tags="async")
 Rel_U(15, 12, "extends schema")
 Rel_D(6, 2, "Admin UI", "REST")
 
