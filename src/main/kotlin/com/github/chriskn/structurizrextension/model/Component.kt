@@ -20,4 +20,3 @@ var Component.c4Type: C4Type?
             this.addProperty(C4PlantUMLWriter.C4_ELEMENT_TYPE, value.c4Type)
         }
     }
-
