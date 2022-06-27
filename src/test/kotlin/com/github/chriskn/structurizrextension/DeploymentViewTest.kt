@@ -3,6 +3,7 @@ package com.github.chriskn.structurizrextension
 import com.github.chriskn.structurizrextension.model.C4Properties
 import com.github.chriskn.structurizrextension.model.C4Type
 import com.github.chriskn.structurizrextension.model.Dependency
+import com.github.chriskn.structurizrextension.model.c4Type
 import com.github.chriskn.structurizrextension.model.container
 import com.github.chriskn.structurizrextension.model.deploymentNode
 import com.github.chriskn.structurizrextension.model.icon
@@ -64,7 +65,7 @@ class DeploymentViewTest {
             database.description,
             technology = database.technology,
             icon = database.icon,
-            c4Type = database.type,
+            c4Type = database.c4Type,
             properties = C4Properties(values = listOf(listOf("region", "eu-west-1"))),
             usedBy = listOf(Dependency(database, "replicates data to"))
         )

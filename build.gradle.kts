@@ -33,7 +33,6 @@ dependencies {
     testImplementation(platform("org.junit:junit-bom:$junitVersion"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("org.assertj:assertj-core:$assertJVersion")
-    implementation(kotlin("script-runtime"))
 }
 
 tasks {
