@@ -8,7 +8,6 @@ import com.github.chriskn.structurizrextension.model.deploymentNode
 import com.github.chriskn.structurizrextension.model.icon
 import com.github.chriskn.structurizrextension.model.infrastructureNode
 import com.github.chriskn.structurizrextension.model.softwareSystem
-import com.github.chriskn.structurizrextension.model.type
 import com.github.chriskn.structurizrextension.plantuml.layout.C4PlantUmlLayout
 import com.github.chriskn.structurizrextension.plantuml.layout.DependencyConfiguration
 import com.github.chriskn.structurizrextension.plantuml.layout.Direction
@@ -56,7 +55,7 @@ class DeploymentViewTest {
             "Stores data",
             technology = "PostgreSql",
             icon = "postgresql",
-            type = C4Type.DATABASE,
+            c4Type = C4Type.DATABASE,
             properties = C4Properties(values = listOf(listOf("region", "eu-central-1"))),
             usedBy = listOf(Dependency(webApplication, "stores data in", "JDBC"))
         )
@@ -65,7 +64,7 @@ class DeploymentViewTest {
             database.description,
             technology = database.technology,
             icon = database.icon,
-            type = database.type,
+            c4Type = database.type,
             properties = C4Properties(values = listOf(listOf("region", "eu-west-1"))),
             usedBy = listOf(Dependency(database, "replicates data to"))
         )

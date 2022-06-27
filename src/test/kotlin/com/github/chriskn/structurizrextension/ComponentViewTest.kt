@@ -41,7 +41,7 @@ class ComponentViewTest {
             tags = listOf("repo", "persistence"),
             properties = C4Properties(values = listOf(listOf("jdbcUrl", "someurl")))
         )
-        backendApplication.component(
+        val service = backendApplication.component(
             "MyService",
             "Does implement some logic",
             link = "https://google.de",
@@ -50,10 +50,19 @@ class ComponentViewTest {
             usedBy = listOf(Dependency(restController, "calls")),
             uses = listOf(Dependency(repository, "gets notified", interactionStyle = InteractionStyle.Asynchronous))
         )
+        backendApplication.component(
+            "Cache",
+            "In Memory DB",
+            link = "https://google.de",
+            technology = "RocksDB",
+            icon = "rocksdb",
+            c4Type = C4Type.DATABASE,
+            usedBy = listOf(Dependency(service, "uses")),
+        )
         softwareSystem.container(
             "Database",
             "some database",
-            type = C4Type.DATABASE,
+            c4Type = C4Type.DATABASE,
             technology = "postgres",
             icon = "postgresql",
             usedBy = listOf(Dependency(backendApplication.components.first { it.hasTag("repo") }, "gets data from"))

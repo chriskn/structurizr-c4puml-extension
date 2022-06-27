@@ -13,6 +13,7 @@ const val LOCATION_PROPERTY = "c4location"
  *
  * @param name          the name of the component
  * @param description   the description of the component
+ * @param c4Type        the [C4Type] of the component
  * @param icon          the icon of the component. See IconRegistry for available icons or add your own
  * @param link          the link of the component
  * @param technology    the technology of the component
@@ -27,6 +28,7 @@ const val LOCATION_PROPERTY = "c4location"
 fun Container.component(
     name: String,
     description: String,
+    c4Type: C4Type? = null,
     icon: String? = null,
     link: String? = null,
     technology: String = "",
@@ -35,12 +37,14 @@ fun Container.component(
     uses: List<Dependency<StaticStructureElement>> = listOf(),
     usedBy: List<Dependency<StaticStructureElement>> = listOf()
 ): Component {
+
     val component = this.addComponent(name, description, technology)
+    component.c4Type = c4Type
     component.configure(icon, link, tags, properties, uses, usedBy)
     return component
 }
 
-var Container.type: C4Type?
+var Container.c4Type: C4Type?
     /**
      * Returns the [C4Type] of the container.
      */

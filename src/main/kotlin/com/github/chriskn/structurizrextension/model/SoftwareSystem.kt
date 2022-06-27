@@ -12,6 +12,7 @@ import com.structurizr.model.StaticStructureElement
  * @param name          the name of the container
  * @param description   the description of the container
  * @param location      the [Location]] of the container
+ * @param c4Type          the [C4Type] of the container
  * @param icon          the icon of the container. See IconRegistry for available icons or add your own
  * @param link          the link of the container
  * @param tags          the list of tags of the container
@@ -26,7 +27,7 @@ fun SoftwareSystem.container(
     name: String,
     description: String,
     location: Location = this.location,
-    type: C4Type? = null,
+    c4Type: C4Type? = null,
     icon: String? = null,
     link: String? = null,
     technology: String = "",
@@ -36,13 +37,13 @@ fun SoftwareSystem.container(
     usedBy: List<Dependency<StaticStructureElement>> = listOf()
 ): Container {
     val container = this.addContainer(name, description, technology)
-    container.type = type
+    container.c4Type = c4Type
     container.location = location
     container.configure(icon, link, tags, properties, uses, usedBy)
     return container
 }
 
-var SoftwareSystem.type: C4Type?
+var SoftwareSystem.c4Type: C4Type?
     get() = if (this.properties.containsKey(C4PlantUMLWriter.C4_ELEMENT_TYPE)) {
         C4Type.fromC4Type(this.properties.getValue(C4PlantUMLWriter.C4_ELEMENT_TYPE))
     } else {

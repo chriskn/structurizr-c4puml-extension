@@ -64,7 +64,8 @@ object IconRegistry {
         "swagger" to "${GILBARBARA_ICON_URL}swagger.puml",
         "springboot" to "${GILBARBARA_ICON_URL}spring.puml",
         "graphql" to "${GILBARBARA_ICON_URL}graphql.puml",
-        "apple" to "${GILBARBARA_ICON_URL}apple.puml"
+        "apple" to "${GILBARBARA_ICON_URL}apple.puml",
+        "rocksdb" to "${GILBARBARA_ICON_URL}rocksdb.puml"
     )
 
     private val awsIcons = mapOf(

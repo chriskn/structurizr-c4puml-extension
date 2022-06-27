@@ -45,7 +45,7 @@ class ContainerViewTest {
     val database = softwareSystem.container(
         name = "Database",
         description = "some database",
-        type = C4Type.DATABASE,
+        c4Type = C4Type.DATABASE,
         technology = "postgres",
         icon = "postgresql",
         usedBy = listOf(Dependency(backendApplication, "CRUD", "JPA"))
@@ -64,13 +64,13 @@ class ContainerViewTest {
         name = "Broker",
         description = "Message Broker",
         location = Location.External,
-        type = C4Type.QUEUE,
+        c4Type = C4Type.QUEUE,
         icon = "kafka",
     )
     val topic = broker.container(
         "my.topic",
         "external topic",
-        type = C4Type.QUEUE,
+        c4Type = C4Type.QUEUE,
         icon = "kafka",
         usedBy = listOf(
             Dependency(backendApplication, "reads topic", "Avro", interactionStyle = InteractionStyle.Asynchronous)

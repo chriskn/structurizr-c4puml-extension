@@ -36,7 +36,7 @@ class DynamicViewTest {
         "Database",
         "Stores user registration information",
         technology = "Oracle Database Schema",
-        type = C4Type.DATABASE,
+        c4Type = C4Type.DATABASE,
         usedBy = listOf(Dependency(apiApplication, "stores data to"))
     )
     private val loginController = apiApplication.component(

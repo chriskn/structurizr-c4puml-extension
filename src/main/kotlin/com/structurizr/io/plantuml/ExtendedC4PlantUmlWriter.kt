@@ -1,10 +1,10 @@
 package com.structurizr.io.plantuml
 
 import com.github.chriskn.structurizrextension.model.c4Properties
+import com.github.chriskn.structurizrextension.model.c4Type
 import com.github.chriskn.structurizrextension.model.icon
 import com.github.chriskn.structurizrextension.model.link
 import com.github.chriskn.structurizrextension.model.location
-import com.github.chriskn.structurizrextension.model.type
 import com.github.chriskn.structurizrextension.plantuml.AWS_ICON_COMMONS
 import com.github.chriskn.structurizrextension.plantuml.AWS_ICON_URL
 import com.github.chriskn.structurizrextension.plantuml.IconRegistry
@@ -173,14 +173,14 @@ class ExtendedC4PlantUmlWriter : C4PlantUMLWriter() {
         }"${linkString(link)})$separator"""
 
     private fun SoftwareSystem.toMacroString(id: String, indent: String) =
-        """${indent}System${this.type?.c4Type ?: ""}${this.location.toPlantUmlString()}($id, "$name", "${description ?: ""}", "${
+        """${indent}System${this.c4Type?.c4Type ?: ""}${this.location.toPlantUmlString()}($id, "$name", "${description ?: ""}", "${
         IconRegistry.iconFileNameFor(
             icon ?: ""
         )
         }"${linkString(link)})$separator"""
 
     private fun Container.toMacroString(id: String, indent: String): String =
-        """${indent}Container${this.type?.c4Type ?: ""}${this.location.toPlantUmlString()}($id, "$name", "$technology", "${description ?: ""}", "${
+        """${indent}Container${this.c4Type?.c4Type ?: ""}${this.location.toPlantUmlString()}($id, "$name", "$technology", "${description ?: ""}", "${
         IconRegistry.iconFileNameFor(
             icon ?: ""
         )
@@ -196,7 +196,7 @@ class ExtendedC4PlantUmlWriter : C4PlantUMLWriter() {
     }
 
     private fun Component.toMacroString(indent: String): String {
-        return """${indent}Component($id, "$name", "$technology", "${description ?: ""}", "${
+        return """${indent}Component${this.c4Type?.c4Type ?: ""}($id, "$name", "$technology", "${description ?: ""}", "${
         IconRegistry.iconFileNameFor(
             icon ?: ""
         )
