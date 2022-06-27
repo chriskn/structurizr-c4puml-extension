@@ -19,14 +19,14 @@ repositories {
 val structurizrVersion = "1.12.2"
 val structurizrPlantUmlVersion = "1.6.3"
 val junitVersion = "5.8.2"
-val assertJVersion = "3.22.0"
-val detektVersion = "1.19.0"
+val assertJVersion = "3.23.1"
+val detektVersion = "1.20.0"
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
 
-    implementation("com.structurizr:structurizr-core:$structurizrVersion")
-    implementation("com.structurizr:structurizr-plantuml:$structurizrPlantUmlVersion")
+    api("com.structurizr:structurizr-core:$structurizrVersion")
+    api("com.structurizr:structurizr-plantuml:$structurizrPlantUmlVersion")
 
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:$detektVersion")
 

@@ -21,7 +21,9 @@ The related code, together with more examples, can be found under `src/test/kotl
 
 ## How to use it 
 
-Structurizr C4-PlantUML extension is available in maven central. `structurizr-core` and `structurizr-plantuml` dependencies are required. Example using gradle kotlin:
+Structurizr C4-PlantUML extension is available in maven central. 
+
+Example using gradle kotlin:
 
 ```kotlin
 repositories {
@@ -29,8 +31,6 @@ repositories {
 }
 
 dependencies {
-    implementation("com.structurizr:structurizr-core:1.12.2")
-    implementation("com.structurizr:structurizr-plantuml:1.6.3")
     implementation("io.github.chriskn:structurizr-c4puml-extension:$currentVersion")
 } 
 ```
