@@ -44,6 +44,10 @@ private const val C4_PLANT_UML_STDLIB_URL = "https://raw.githubusercontent.com/p
 @Suppress("TooManyFunctions")
 class ExtendedC4PlantUmlWriter : C4PlantUMLWriter() {
 
+    companion object {
+        private const val ASYNC_REL_TAG_NAME = "async relationship"
+    }
+
     private val separator = System.lineSeparator()
 
     private val c4IncludeForView = mapOf(
@@ -96,7 +100,10 @@ class ExtendedC4PlantUmlWriter : C4PlantUMLWriter() {
         addIncludeURL(c4PumlIncludeURI)
     }
 
-    private fun collectElements(deploymentNode: DeploymentNode, elements: MutableSet<ModelItem>): MutableSet<ModelItem> {
+    private fun collectElements(
+        deploymentNode: DeploymentNode,
+        elements: MutableSet<ModelItem>
+    ): MutableSet<ModelItem> {
         elements.addAll(deploymentNode.infrastructureNodes)
         elements.addAll(deploymentNode.softwareSystemInstances.map { it.softwareSystem })
         elements.addAll(deploymentNode.containerInstances.map { it.container })
@@ -129,10 +136,12 @@ class ExtendedC4PlantUmlWriter : C4PlantUMLWriter() {
                     writeProperties(deploymentElement.container, stringIdent, writer)
                     writer.write(deploymentElement.container.toMacroString(deploymentElement.id, stringIdent))
                 }
+
                 is SoftwareSystemInstance -> {
                     writeProperties(deploymentElement.softwareSystem, stringIdent, writer)
                     writer.write(deploymentElement.softwareSystem.toMacroString(deploymentElement.id, stringIdent))
                 }
+
                 is InfrastructureNode -> {
                     writer.write(deploymentElement.toMacroString(stringIdent))
                 }
@@ -256,6 +265,7 @@ class ExtendedC4PlantUmlWriter : C4PlantUMLWriter() {
                 }
                 relationshipMacro = "${relationshipMacro}_${direction.macro()}"
             }
+
             else -> relationshipMacro = "Rel_$relationshipMacro"
         }
         val description = relationship.description.ifEmpty { " " }
@@ -271,7 +281,7 @@ class ExtendedC4PlantUmlWriter : C4PlantUMLWriter() {
             relMacro += linkString(relationship.link)
         }
         if (relationship.interactionStyle == InteractionStyle.Asynchronous) {
-            relMacro += """, ${'$'}tags="async""""
+            relMacro += """, ${'$'}tags="$ASYNC_REL_TAG_NAME""""
         }
         writer.write("$relMacro)$separator")
     }
@@ -445,7 +455,8 @@ class ExtendedC4PlantUmlWriter : C4PlantUMLWriter() {
 
     private fun writeAsyncRelTag(writer: Writer) {
         writer.write(
-            """AddRelTag("async", ${'$'}lineStyle = DashedLine())"""
+            """AddRelTag("$ASYNC_REL_TAG_NAME", ${'$'}textColor="${'$'}ARROW_COLOR", 
+                |${'$'}lineColor="${'$'}ARROW_COLOR", ${'$'}lineStyle = DashedLine())""".trimMargin()
         )
         writer.write(separator + separator)
     }

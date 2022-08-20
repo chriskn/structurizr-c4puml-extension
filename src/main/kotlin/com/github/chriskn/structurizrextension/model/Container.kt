@@ -37,7 +37,6 @@ fun Container.component(
     uses: List<Dependency<StaticStructureElement>> = listOf(),
     usedBy: List<Dependency<StaticStructureElement>> = listOf()
 ): Component {
-
     val component = this.addComponent(name, description, technology)
     component.c4Type = c4Type
     component.configure(icon, link, tags, properties, uses, usedBy)

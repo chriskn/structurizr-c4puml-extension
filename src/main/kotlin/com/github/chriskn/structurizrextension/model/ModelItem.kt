@@ -7,7 +7,7 @@ private const val C4_PROPERTY_HEADER_PREFIX = "additionalPropertyHeader"
 private const val ICON_PROPERTY = "icon"
 private const val LINK_PROPERTY = "link"
 
-fun ModelItem.configure(
+internal fun ModelItem.configure(
     icon: String?,
     link: String?,
     tags: List<String>,

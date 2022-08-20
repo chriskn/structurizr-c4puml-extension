@@ -6,6 +6,8 @@ import com.github.chriskn.structurizrextension.model.Dependency
 import com.github.chriskn.structurizrextension.model.component
 import com.github.chriskn.structurizrextension.model.container
 import com.github.chriskn.structurizrextension.model.person
+import com.github.chriskn.structurizrextension.model.usedBy
+import com.github.chriskn.structurizrextension.model.uses
 import com.github.chriskn.structurizrextension.plantuml.layout.C4PlantUmlLayout
 import com.github.chriskn.structurizrextension.plantuml.layout.Layout
 import com.github.chriskn.structurizrextension.plantuml.layout.LineType
@@ -31,9 +33,9 @@ class ComponentViewTest {
         val restController = backendApplication.component(
             "MyRestController",
             "Provides data via rest",
-            technology = "REST",
-            usedBy = listOf(Dependency(user, "Website", "REST"))
+            technology = "REST"
         )
+        restController.usedBy(user, "Website", "REST")
         val repository = backendApplication.component(
             "MyRepo",
             "Provides CRUD operations for data",
@@ -48,8 +50,8 @@ class ComponentViewTest {
             technology = "",
             icon = "kotlin",
             usedBy = listOf(Dependency(restController, "calls")),
-            uses = listOf(Dependency(repository, "gets notified", interactionStyle = InteractionStyle.Asynchronous))
         )
+        service.uses(repository, "gets notified", interactionStyle = InteractionStyle.Asynchronous)
         backendApplication.component(
             "Cache",
             "In Memory DB",
