@@ -4,7 +4,12 @@
 
 Structurizr C4-PlantUML extension aims to bridge the gab between the [structurizr java library](https://github.com/structurizr/java) and [C4-PlantUML](https://github.com/plantuml-stdlib/C4-PlantUML) by extending the structurizr model and providing an extended C4-PlantUML writer. It is written in Kotlin.   
 
-## Example diagram
+## Table of contents
+  * [Example](#example)
+  * [How to use it](#how-to-use-it)
+  * [Related resources](#related-resources)
+
+## Example
 
 The following example container diagram shows the additional features the Structurizr C4-PlantUML extension provides: 
 
@@ -151,3 +156,7 @@ dependencies {
     implementation("io.github.chriskn:structurizr-c4puml-extension:$currentVersion")
 } 
 ```
+
+## Related resources
+
+* [Architecture documentation as code with Structurizr and Asciidoctor. Part 1: Workflow and tooling (Blog post)](https://blog.codecentric.de/en/2022/08/architecture-documentation-docs-as-code-structurizr-asciidoctor)
