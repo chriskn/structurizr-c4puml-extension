@@ -9,19 +9,22 @@ import com.github.chriskn.structurizrextension.plantuml.layout.Legend
 import com.github.chriskn.structurizrextension.plantuml.layout.Mode
 import com.structurizr.Workspace
 import com.structurizr.model.Model
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-class DependencyTest {
+class DependencyLayoutTest {
 
     private val workspace = Workspace("My Workspace", "Some Description")
     private val model: Model = workspace.model
-    private val a = model.softwareSystem(
-        "A", "A"
-    )
-    private val b = model.softwareSystem("B", "B", uses = listOf(Dependency(a, "uses")))
-    private val c = model.softwareSystem("C", "C", uses = listOf(Dependency(a, "uses")))
-    private val d = model.softwareSystem("D", "C", usedBy = listOf(Dependency(a, "uses")))
-    private val e = model.softwareSystem("E", "E", uses = listOf(Dependency(a, "")))
+    private val a = model.softwareSystem("A", "A")
+
+    @BeforeEach
+    fun setUpModel() {
+        model.softwareSystem("B", "B", uses = listOf(Dependency(a, "uses")))
+        model.softwareSystem("C", "C", uses = listOf(Dependency(a, "uses")))
+        model.softwareSystem("D", "C", usedBy = listOf(Dependency(a, "uses")))
+        model.softwareSystem("E", "E", uses = listOf(Dependency(a, "")))
+    }
 
     @Test
     fun `position is applied`() {

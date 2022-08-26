@@ -9,7 +9,7 @@ caption Test component view
 SHOW_PERSON_OUTLINE()
 LAYOUT_LEFT_RIGHT()
 
-AddRelTag("async", $lineStyle = DashedLine())
+AddRelTag("async relationship", $textColor="$ARROW_COLOR", $lineColor="$ARROW_COLOR", $lineStyle = DashedLine())
 
 ContainerDb(12, "Database", "postgres", "some database", "postgresql")
 Person(14, "Maintainer", "some employee", "")
@@ -26,7 +26,7 @@ Rel_D(14, 4, "Admin UI", "REST")
 Rel_D(6, 12, "gets data from")
 Rel_D(4, 7, "calls")
 Rel_D(7, 10, "uses")
-Rel_D(7, 6, "gets notified", $tags="async")
+Rel_D(7, 6, "gets notified", $tags="async relationship")
 Rel_D(3, 4, "Website", "REST")
 
 skinparam linetype ortho

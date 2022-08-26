@@ -15,7 +15,7 @@ caption A deployment diagram showing the environment.
 SHOW_PERSON_OUTLINE()
 LAYOUT_LEFT_RIGHT()
 
-AddRelTag("async", $lineStyle = DashedLine())
+AddRelTag("async relationship", $textColor="$ARROW_COLOR", $lineColor="$ARROW_COLOR", $lineStyle = DashedLine())
 
 SetPropertyHeader("Property", "Value", "Description")
 AddProperty("Property1", "Value1", "Description1")
@@ -53,7 +53,7 @@ Rel_D(23, 25, "requests data from")
 Rel_R(11, 10, "replicates data to")
 SetPropertyHeader("key", "value")
 AddProperty("ip", "10.234.12.13")
-Rel_D(18, 20, "writes traces to", $sprite=kafka, $link="https://www.jaegertracing.io/", $tags="async")
+Rel_D(18, 20, "writes traces to", $sprite=kafka, $link="https://www.jaegertracing.io/", $tags="async relationship")
 Rel_R(25, 15, "forwards requests to")
 Rel_D(16, 11, "stores data in", "JDBC")
 
