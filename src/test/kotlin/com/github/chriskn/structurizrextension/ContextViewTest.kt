@@ -7,6 +7,8 @@ import com.github.chriskn.structurizrextension.model.softwareSystem
 import com.github.chriskn.structurizrextension.plantuml.layout.C4PlantUmlLayout
 import com.github.chriskn.structurizrextension.plantuml.layout.Layout
 import com.github.chriskn.structurizrextension.plantuml.layout.Legend
+import com.github.chriskn.structurizrextension.view.systemContextView
+import com.github.chriskn.structurizrextension.view.systemLandscapeView
 import com.structurizr.Workspace
 import com.structurizr.model.Enterprise
 import com.structurizr.model.Location

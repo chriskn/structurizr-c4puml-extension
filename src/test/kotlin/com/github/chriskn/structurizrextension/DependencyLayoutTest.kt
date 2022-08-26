@@ -7,6 +7,7 @@ import com.github.chriskn.structurizrextension.plantuml.layout.DependencyConfigu
 import com.github.chriskn.structurizrextension.plantuml.layout.Direction
 import com.github.chriskn.structurizrextension.plantuml.layout.Legend
 import com.github.chriskn.structurizrextension.plantuml.layout.Mode
+import com.github.chriskn.structurizrextension.view.systemLandscapeView
 import com.structurizr.Workspace
 import com.structurizr.model.Model
 import org.junit.jupiter.api.BeforeEach

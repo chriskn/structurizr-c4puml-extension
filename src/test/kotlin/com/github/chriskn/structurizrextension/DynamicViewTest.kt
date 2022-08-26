@@ -7,6 +7,7 @@ import com.github.chriskn.structurizrextension.model.container
 import com.github.chriskn.structurizrextension.model.softwareSystem
 import com.github.chriskn.structurizrextension.plantuml.layout.C4PlantUmlLayout
 import com.github.chriskn.structurizrextension.plantuml.layout.Legend
+import com.github.chriskn.structurizrextension.view.dynamicView
 import com.structurizr.Workspace
 import com.structurizr.model.Container
 import com.structurizr.view.DynamicView

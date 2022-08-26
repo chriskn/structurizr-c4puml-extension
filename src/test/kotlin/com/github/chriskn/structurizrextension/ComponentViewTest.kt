@@ -11,6 +11,7 @@ import com.github.chriskn.structurizrextension.model.uses
 import com.github.chriskn.structurizrextension.plantuml.layout.C4PlantUmlLayout
 import com.github.chriskn.structurizrextension.plantuml.layout.Layout
 import com.github.chriskn.structurizrextension.plantuml.layout.LineType
+import com.github.chriskn.structurizrextension.view.componentView
 import com.structurizr.Workspace
 import com.structurizr.model.InteractionStyle
 import com.structurizr.model.Location

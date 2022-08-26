@@ -13,6 +13,7 @@ import com.github.chriskn.structurizrextension.plantuml.layout.C4PlantUmlLayout
 import com.github.chriskn.structurizrextension.plantuml.layout.DependencyConfiguration
 import com.github.chriskn.structurizrextension.plantuml.layout.Direction
 import com.github.chriskn.structurizrextension.plantuml.layout.Layout
+import com.github.chriskn.structurizrextension.view.deploymentView
 import com.structurizr.Workspace
 import com.structurizr.model.Container
 import com.structurizr.model.InteractionStyle

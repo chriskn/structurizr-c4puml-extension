@@ -12,6 +12,7 @@ import com.github.chriskn.structurizrextension.plantuml.layout.Direction
 import com.github.chriskn.structurizrextension.plantuml.layout.Layout
 import com.github.chriskn.structurizrextension.plantuml.layout.Legend
 import com.github.chriskn.structurizrextension.plantuml.layout.LineType
+import com.github.chriskn.structurizrextension.view.containerView
 import com.structurizr.Workspace
 import com.structurizr.model.InteractionStyle
 import com.structurizr.model.Location
