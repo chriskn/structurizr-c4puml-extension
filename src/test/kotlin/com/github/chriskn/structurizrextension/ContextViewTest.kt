@@ -4,9 +4,9 @@ import com.github.chriskn.structurizrextension.model.C4Properties
 import com.github.chriskn.structurizrextension.model.Dependency
 import com.github.chriskn.structurizrextension.model.person
 import com.github.chriskn.structurizrextension.model.softwareSystem
-import com.github.chriskn.structurizrextension.plantuml.layout.C4PlantUmlLayout
-import com.github.chriskn.structurizrextension.plantuml.layout.Layout
-import com.github.chriskn.structurizrextension.plantuml.layout.Legend
+import com.github.chriskn.structurizrextension.plantuml.C4PlantUmlLayout
+import com.github.chriskn.structurizrextension.plantuml.Layout
+import com.github.chriskn.structurizrextension.plantuml.Legend
 import com.github.chriskn.structurizrextension.view.systemContextView
 import com.github.chriskn.structurizrextension.view.systemLandscapeView
 import com.structurizr.Workspace

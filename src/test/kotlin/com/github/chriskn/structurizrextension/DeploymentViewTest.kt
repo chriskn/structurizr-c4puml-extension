@@ -9,10 +9,10 @@ import com.github.chriskn.structurizrextension.model.deploymentNode
 import com.github.chriskn.structurizrextension.model.icon
 import com.github.chriskn.structurizrextension.model.infrastructureNode
 import com.github.chriskn.structurizrextension.model.softwareSystem
-import com.github.chriskn.structurizrextension.plantuml.layout.C4PlantUmlLayout
-import com.github.chriskn.structurizrextension.plantuml.layout.DependencyConfiguration
-import com.github.chriskn.structurizrextension.plantuml.layout.Direction
-import com.github.chriskn.structurizrextension.plantuml.layout.Layout
+import com.github.chriskn.structurizrextension.plantuml.C4PlantUmlLayout
+import com.github.chriskn.structurizrextension.plantuml.DependencyConfiguration
+import com.github.chriskn.structurizrextension.plantuml.Direction
+import com.github.chriskn.structurizrextension.plantuml.Layout
 import com.github.chriskn.structurizrextension.view.deploymentView
 import com.structurizr.Workspace
 import com.structurizr.model.Container

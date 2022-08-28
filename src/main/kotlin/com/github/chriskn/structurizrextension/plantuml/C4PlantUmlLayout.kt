@@ -1,22 +1,22 @@
-package com.github.chriskn.structurizrextension.plantuml.layout
+package com.github.chriskn.structurizrextension.plantuml
 
-import com.github.chriskn.structurizrextension.plantuml.layout.Direction.Down
-import com.github.chriskn.structurizrextension.plantuml.layout.Direction.Left
-import com.github.chriskn.structurizrextension.plantuml.layout.Direction.Right
-import com.github.chriskn.structurizrextension.plantuml.layout.Direction.Up
-import com.github.chriskn.structurizrextension.plantuml.layout.Layout.Landscape
-import com.github.chriskn.structurizrextension.plantuml.layout.Layout.LeftToRight
-import com.github.chriskn.structurizrextension.plantuml.layout.Layout.TopDown
-import com.github.chriskn.structurizrextension.plantuml.layout.Legend.None
-import com.github.chriskn.structurizrextension.plantuml.layout.Legend.ShowFloatingLegend
-import com.github.chriskn.structurizrextension.plantuml.layout.Legend.ShowLegend
-import com.github.chriskn.structurizrextension.plantuml.layout.Legend.ShowStaticLegend
-import com.github.chriskn.structurizrextension.plantuml.layout.LineType.Ortho
-import com.github.chriskn.structurizrextension.plantuml.layout.LineType.Polyline
-import com.github.chriskn.structurizrextension.plantuml.layout.Mode.Back
-import com.github.chriskn.structurizrextension.plantuml.layout.Mode.BackNeighbor
-import com.github.chriskn.structurizrextension.plantuml.layout.Mode.Neighbor
-import com.github.chriskn.structurizrextension.plantuml.layout.Mode.Rel
+import com.github.chriskn.structurizrextension.plantuml.Direction.Down
+import com.github.chriskn.structurizrextension.plantuml.Direction.Left
+import com.github.chriskn.structurizrextension.plantuml.Direction.Right
+import com.github.chriskn.structurizrextension.plantuml.Direction.Up
+import com.github.chriskn.structurizrextension.plantuml.Layout.Landscape
+import com.github.chriskn.structurizrextension.plantuml.Layout.LeftToRight
+import com.github.chriskn.structurizrextension.plantuml.Layout.TopDown
+import com.github.chriskn.structurizrextension.plantuml.Legend.None
+import com.github.chriskn.structurizrextension.plantuml.Legend.ShowFloatingLegend
+import com.github.chriskn.structurizrextension.plantuml.Legend.ShowLegend
+import com.github.chriskn.structurizrextension.plantuml.Legend.ShowStaticLegend
+import com.github.chriskn.structurizrextension.plantuml.LineType.Ortho
+import com.github.chriskn.structurizrextension.plantuml.LineType.Polyline
+import com.github.chriskn.structurizrextension.plantuml.Mode.Back
+import com.github.chriskn.structurizrextension.plantuml.Mode.BackNeighbor
+import com.github.chriskn.structurizrextension.plantuml.Mode.Neighbor
+import com.github.chriskn.structurizrextension.plantuml.Mode.Rel
 import com.structurizr.model.Relationship
 
 /**

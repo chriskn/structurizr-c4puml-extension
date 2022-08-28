@@ -27,11 +27,8 @@ fun <T : StaticStructureElement> StaticStructureElement.uses(
     tags: List<String> = listOf(),
     properties: C4Properties? = null,
 ) {
-    when (destination) {
-        is Person -> throw IllegalArgumentException("${this::class.java.name} can't use Person")
-        else -> this.uses(destination, description, technology, interactionStyle)
-            ?.configure(icon, link, tags, properties)
-    }
+    Dependency(destination, description, technology, interactionStyle, icon, link, tags, properties)
+        .addRelationshipFromNonPerson(this)
 }
 
 /**
@@ -70,12 +67,7 @@ internal fun StaticStructureElement.configure(
     usedBy: List<Dependency<StaticStructureElement>>
 ) {
     this.configure(icon, link, tags, properties)
-    uses.forEach { dep ->
-        when (dep.destination) {
-            is Person -> throw IllegalArgumentException("${this::class.java.name} can't use Person")
-            else -> dep.addRelationShipFrom(this)
-        }
-    }
+    uses.forEach { dep -> dep.addRelationshipFromNonPerson(this) }
     usedBy.forEach { dep -> dep.addRelationShipTo(this) }
 }
 
@@ -87,4 +79,11 @@ private fun Dependency<StaticStructureElement>.addRelationShipTo(target: StaticS
 internal fun Dependency<StaticStructureElement>.addRelationShipFrom(source: StaticStructureElement) {
     source.uses(this.destination, this.description, this.technology, this.interactionStyle)
         ?.configure(this.icon, this.link, this.tags, this.properties)
+}
+
+private fun Dependency<StaticStructureElement>.addRelationshipFromNonPerson(source: StaticStructureElement) {
+    when (this.destination) {
+        is Person -> throw IllegalArgumentException("${this::class.java.name} can't use Person")
+        else -> this.addRelationShipFrom(source)
+    }
 }

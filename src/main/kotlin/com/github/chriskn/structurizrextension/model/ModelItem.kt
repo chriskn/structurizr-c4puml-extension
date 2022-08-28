@@ -66,10 +66,10 @@ var ModelItem.icon: String?
      */
     get() = this.properties[ICON_PROPERTY]
     /**
-     * Sets the icon.
+     * Sets the icon if not null or blank.
      */
     set(icon) {
-        if (icon != null) {
+        if (!icon.isNullOrBlank()) {
             this.addProperty(ICON_PROPERTY, icon)
         }
     }
@@ -80,10 +80,10 @@ var ModelItem.link: String?
      */
     get() = this.properties[LINK_PROPERTY]
     /**
-     * Sets the link.
+     * Sets the link if not null or blank.
      */
     set(link) {
-        if (link != null) {
+        if (!link.isNullOrBlank()) {
             this.addProperty(LINK_PROPERTY, link)
         }
     }

@@ -5,8 +5,8 @@ import com.github.chriskn.structurizrextension.model.Dependency
 import com.github.chriskn.structurizrextension.model.component
 import com.github.chriskn.structurizrextension.model.container
 import com.github.chriskn.structurizrextension.model.softwareSystem
-import com.github.chriskn.structurizrextension.plantuml.layout.C4PlantUmlLayout
-import com.github.chriskn.structurizrextension.plantuml.layout.Legend
+import com.github.chriskn.structurizrextension.plantuml.C4PlantUmlLayout
+import com.github.chriskn.structurizrextension.plantuml.Legend
 import com.github.chriskn.structurizrextension.view.dynamicView
 import com.structurizr.Workspace
 import com.structurizr.model.Container
@@ -94,7 +94,7 @@ class DynamicViewTest {
             system1,
             diagramKey,
             "description",
-            C4PlantUmlLayout(legend = Legend.ShowFloatingLegend)
+            C4PlantUmlLayout(legend = Legend.None)
         )
         dynamicView.add(singlePageApplication, "gets data from", apiApplication)
         dynamicView.add(apiApplication, "stores data to", database)

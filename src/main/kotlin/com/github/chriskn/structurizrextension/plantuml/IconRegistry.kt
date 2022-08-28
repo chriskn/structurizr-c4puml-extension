@@ -1,38 +1,59 @@
 package com.github.chriskn.structurizrextension.plantuml
 
-private const val GILBARBARA_ICON_URL = "https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/"
-const val AWS_ICON_URL = "https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/v11.1/dist/"
-const val AWS_ICON_COMMONS = "${AWS_ICON_URL}AWSCommon.puml"
+import java.net.MalformedURLException
+import java.net.URL
+
+internal const val AWS_ICON_URL = "https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/v11.1/dist/"
+internal const val AWS_ICON_COMMONS = "${AWS_ICON_URL}AWSCommon.puml"
 
 /**
  * Registry containing the available icons.
  */
 object IconRegistry {
 
-    private val iconNameToIconUrl = mutableMapOf<String, String>()
+    private const val GILBARBARA_ICON_URL =
+        "https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/"
+    private const val PUML_FILE_EXTENSION = ".puml"
+
+    private val iconNameToIconUrl = mutableMapOf<String, URL>()
 
     /**
-     * Returns the URL of an icon with the given name or null if no icon with the given name exists.
+     * @return The URL of an icon with the given name or null if no icon with the given name exists.
      */
-    fun iconUrlFor(name: String): String? = iconNameToIconUrl[name.lowercase()]
+    internal fun iconUrlFor(name: String): String? = iconNameToIconUrl[name.lowercase()]?.toString()
 
     /**
-     * Returns the file name of an icon with the given name or null if no icon with the given name exists.
+     * @return The file name of an icon with the given name or null if no icon with the given name exists.
      */
-    fun iconFileNameFor(name: String) = iconNameToIconUrl[name.lowercase()]?.split("/")
-        ?.last()
-        ?.replace(".puml", "")
-        ?: ""
+    internal fun iconFileNameFor(name: String?): String? {
+        return if (name == null || !exists(name)) {
+            null
+        } else {
+            iconNameToIconUrl[name.lowercase()]
+                .toString()
+                .split("/")
+                .last()
+                .replace(PUML_FILE_EXTENSION, "")
+        }
+    }
 
     /**
      * Adds a new icon with the given name and URL to the registry.
+     *
+     * @throws IllegalArgumentException if url does not point to puml file
+     * @throws MalformedURLException if url is invalid
      */
-    fun addIcon(name: String, url: String) = iconNameToIconUrl.put(name, url)
+    fun addIcon(name: String, url: String) {
+        require(url.endsWith(PUML_FILE_EXTENSION)) {
+            "Icon URL needs to point to .puml file"
+        }
+        iconNameToIconUrl[name.lowercase()] = URL(url)
+    }
 
     /**
-     * Returns true if an icon with the given name exists, false otherwise.
+     * @return True if an icon with the given name exists, false otherwise.
      */
-    fun exists(name: String) = iconNameToIconUrl.containsKey(name)
+    fun exists(name: String): Boolean = iconNameToIconUrl.containsKey(name.lowercase())
 
     private val commonIcons = mapOf(
         "kotlin" to "${GILBARBARA_ICON_URL}kotlin.puml",
@@ -387,7 +408,7 @@ object IconRegistry {
     )
 
     init {
-        iconNameToIconUrl.putAll(commonIcons)
-        iconNameToIconUrl.putAll(awsIcons)
+        iconNameToIconUrl.putAll(commonIcons.mapValues { URL(it.value) })
+        iconNameToIconUrl.putAll(awsIcons.mapValues { URL(it.value) })
     }
 }

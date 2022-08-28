@@ -16,6 +16,6 @@ Rel_D(2, 1, "uses")
 Rel_D(4, 1, "uses")
 Rel_D(8, 1, " ")
 
-SHOW_LEGEND(true)
+LAYOUT_WITH_LEGEND()
 
 @enduml

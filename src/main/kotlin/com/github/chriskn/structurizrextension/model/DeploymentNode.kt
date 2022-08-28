@@ -72,11 +72,11 @@ fun DeploymentNode.infrastructureNode(
     node.configure(icon, link, tags, properties)
     uses.forEach { dep ->
         node.uses(dep.destination, dep.description, dep.technology, dep.interactionStyle)
-            ?.configure(dep.icon, dep.link, dep.tags, dep.properties)
+            .configure(dep.icon, dep.link, dep.tags, dep.properties)
     }
     usedBy.forEach { dep ->
         dep.destination.uses(node, dep.description, dep.technology, dep.interactionStyle)
-            ?.configure(dep.icon, dep.link, dep.tags, dep.properties)
+            .configure(dep.icon, dep.link, dep.tags, dep.properties)
     }
     return node
 }
@@ -98,18 +98,18 @@ fun DeploymentNode.configure(
     uses.forEach { dep ->
         when (dep.destination) {
             is DeploymentNode -> this.uses(dep.destination, dep.description, dep.technology, dep.interactionStyle)
-                ?.configure(dep.icon, dep.link, dep.tags, dep.properties)
+                .configure(dep.icon, dep.link, dep.tags, dep.properties)
             is InfrastructureNode -> this.uses(dep.destination, dep.description, dep.technology, dep.interactionStyle)
-                ?.configure(dep.icon, dep.link, dep.tags, dep.properties)
+                .configure(dep.icon, dep.link, dep.tags, dep.properties)
             else -> throw IllegalArgumentException("DeploymentNode cant use ${dep.destination::class.java.name}")
         }
     }
     usedBy.forEach { dep ->
         when (dep.destination) {
             is DeploymentNode -> dep.destination.uses(this, dep.description, dep.technology, dep.interactionStyle)
-                ?.configure(dep.icon, dep.link, dep.tags, dep.properties)
+                .configure(dep.icon, dep.link, dep.tags, dep.properties)
             is InfrastructureNode -> dep.destination.uses(this, dep.description, dep.technology, dep.interactionStyle)
-                ?.configure(dep.icon, dep.link, dep.tags, dep.properties)
+                .configure(dep.icon, dep.link, dep.tags, dep.properties)
             else -> throw IllegalArgumentException("DeploymentNode cant be use by ${dep.destination::class.java.name}")
         }
     }

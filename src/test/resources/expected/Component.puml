@@ -9,7 +9,7 @@ caption Test component view
 SHOW_PERSON_OUTLINE()
 LAYOUT_LEFT_RIGHT()
 
-AddRelTag("async relationship", $textColor="$ARROW_COLOR", $lineColor="$ARROW_COLOR", $lineStyle = DashedLine())
+AddRelTag("async relationship", $textColor="$ARROW_COLOR",$lineColor="$ARROW_COLOR", $lineStyle = DashedLine())
 
 ContainerDb(12, "Database", "postgres", "some database", "postgresql")
 Person(14, "Maintainer", "some employee", "")

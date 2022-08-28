@@ -8,9 +8,9 @@ import com.github.chriskn.structurizrextension.model.container
 import com.github.chriskn.structurizrextension.model.person
 import com.github.chriskn.structurizrextension.model.usedBy
 import com.github.chriskn.structurizrextension.model.uses
-import com.github.chriskn.structurizrextension.plantuml.layout.C4PlantUmlLayout
-import com.github.chriskn.structurizrextension.plantuml.layout.Layout
-import com.github.chriskn.structurizrextension.plantuml.layout.LineType
+import com.github.chriskn.structurizrextension.plantuml.C4PlantUmlLayout
+import com.github.chriskn.structurizrextension.plantuml.Layout
+import com.github.chriskn.structurizrextension.plantuml.LineType
 import com.github.chriskn.structurizrextension.view.componentView
 import com.structurizr.Workspace
 import com.structurizr.model.InteractionStyle
@@ -52,16 +52,20 @@ class ComponentViewTest {
             icon = "kotlin",
             usedBy = listOf(Dependency(restController, "calls")),
         )
-        service.uses(repository, "gets notified", interactionStyle = InteractionStyle.Asynchronous)
-        backendApplication.component(
+        service.uses(
+            repository,
+            "gets notified",
+            interactionStyle = InteractionStyle.Asynchronous,
+        )
+        val backendApp = backendApplication.component(
             "Cache",
             "In Memory DB",
             link = "https://google.de",
             technology = "RocksDB",
             icon = "rocksdb",
             c4Type = C4Type.DATABASE,
-            usedBy = listOf(Dependency(service, "uses")),
         )
+        backendApp.usedBy(service, "uses", link = "")
         softwareSystem.container(
             "Database",
             "some database",
@@ -70,12 +74,12 @@ class ComponentViewTest {
             icon = "postgresql",
             usedBy = listOf(Dependency(backendApplication.components.first { it.hasTag("repo") }, "gets data from"))
         )
-        model.person(
+        val maintainer = model.person(
             "Maintainer",
             "some employee",
             location = Location.Internal
-        ).uses(restController, "Admin UI", "REST")
-
+        )
+        maintainer.uses(restController, "Admin UI", "REST", icon = "empty")
         val componentView = workspace.views.componentView(
             backendApplication,
             diagramKey,

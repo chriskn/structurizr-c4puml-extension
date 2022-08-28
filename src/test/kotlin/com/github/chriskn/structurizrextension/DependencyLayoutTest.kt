@@ -2,11 +2,11 @@ package com.github.chriskn.structurizrextension
 
 import com.github.chriskn.structurizrextension.model.Dependency
 import com.github.chriskn.structurizrextension.model.softwareSystem
-import com.github.chriskn.structurizrextension.plantuml.layout.C4PlantUmlLayout
-import com.github.chriskn.structurizrextension.plantuml.layout.DependencyConfiguration
-import com.github.chriskn.structurizrextension.plantuml.layout.Direction
-import com.github.chriskn.structurizrextension.plantuml.layout.Legend
-import com.github.chriskn.structurizrextension.plantuml.layout.Mode
+import com.github.chriskn.structurizrextension.plantuml.C4PlantUmlLayout
+import com.github.chriskn.structurizrextension.plantuml.DependencyConfiguration
+import com.github.chriskn.structurizrextension.plantuml.Direction
+import com.github.chriskn.structurizrextension.plantuml.Legend
+import com.github.chriskn.structurizrextension.plantuml.Mode
 import com.github.chriskn.structurizrextension.view.systemLandscapeView
 import com.structurizr.Workspace
 import com.structurizr.model.Model
@@ -58,7 +58,8 @@ class DependencyLayoutTest {
             C4PlantUmlLayout(
                 dependencyConfigurations = listOf(
                     DependencyConfiguration(filter = { it.source == a }, mode = Mode.Neighbor)
-                )
+                ),
+                legend = Legend.ShowStaticLegend
             )
         )
         contextView.addDefaultElements()
