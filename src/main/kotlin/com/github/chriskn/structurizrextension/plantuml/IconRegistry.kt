@@ -8,6 +8,9 @@ internal const val AWS_ICON_COMMONS = "${AWS_ICON_URL}AWSCommon.puml"
 
 /**
  * Registry containing the available icons.
+ *
+ * Allows to register icon url by icon name (case-insensitive) and to access icon url by name.
+ * Urls have to be well-formed and need to point to .puml files.
  */
 object IconRegistry {
 
@@ -18,12 +21,12 @@ object IconRegistry {
     private val iconNameToIconUrl = mutableMapOf<String, URL>()
 
     /**
-     * @return The URL of an icon with the given name or null if no icon with the given name exists.
+     * @return The URL of an icon with the given name (case-insensitive) or null if no icon with the given name exists.
      */
     internal fun iconUrlFor(name: String): String? = iconNameToIconUrl[name.lowercase()]?.toString()
 
     /**
-     * @return The file name of an icon with the given name or null if no icon with the given name exists.
+     * @return The file name of an icon with the given name (case-insensitive) or null if no icon with the given name exists.
      */
     internal fun iconFileNameFor(name: String?): String? {
         return if (name == null || !exists(name)) {
@@ -38,7 +41,7 @@ object IconRegistry {
     }
 
     /**
-     * Adds a new icon with the given name and URL to the registry.
+     * Adds a new icon with the given name (case-insensitive) and URL to the registry.
      *
      * @throws IllegalArgumentException if url does not point to puml file
      * @throws MalformedURLException if url is invalid
@@ -51,7 +54,7 @@ object IconRegistry {
     }
 
     /**
-     * @return True if an icon with the given name exists, false otherwise.
+     * @return True if an icon with the given name (case-insensitive) exists, false otherwise.
      */
     fun exists(name: String): Boolean = iconNameToIconUrl.containsKey(name.lowercase())
 
