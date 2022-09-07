@@ -451,11 +451,10 @@ class ExtendedC4PlantUmlWriter : C4PlantUMLWriter() {
     override fun writeFooter(writer: Writer) {
     }
 
+    @Suppress("MaxLineLength")
     private fun writeAsyncRelTag(writer: Writer) {
         writer.write(
-            """AddRelTag("$ASYNC_REL_TAG_NAME", ${'$'}textColor="${'$'}ARROW_COLOR", 
-                |${'$'}lineColor="${'$'}ARROW_COLOR", ${'$'}lineStyle = DashedLine())
-            """.trimMargin()
+            """AddRelTag("$ASYNC_REL_TAG_NAME", ${'$'}textColor="${'$'}ARROW_COLOR", ${'$'}lineColor="${'$'}ARROW_COLOR", ${'$'}lineStyle = DashedLine())"""
         )
         writer.write(separator + separator)
     }
