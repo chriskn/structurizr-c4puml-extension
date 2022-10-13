@@ -159,4 +159,11 @@ dependencies {
 
 ## Related resources
 
-* [Architecture documentation as code with Structurizr and Asciidoctor. Part 1: Workflow and tooling (Blog post)](https://blog.codecentric.de/en/2022/08/architecture-documentation-docs-as-code-structurizr-asciidoctor)
+### Blog posts
+
+* [Architecture documentation as code with Structurizr and Asciidoctor. Part 1: Workflow and tooling](https://blog.codecentric.de/en/2022/08/architecture-documentation-docs-as-code-structurizr-asciidoctor)
+* [Architecture documentation as code with Structurizr and Asciidoctor. Part 2: Asciidoctor](https://blog.codecentric.de/architecture-documentation-as-code-with-structurizr-and-asciidoctor-part-2-asciidoctor)
+
+### Example project
+
+An example project using this library can be found [on GitHub](https://github.com/chriskn/arch-docs-as-code-example/).
