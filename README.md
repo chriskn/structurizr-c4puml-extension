@@ -163,6 +163,7 @@ dependencies {
 
 * [Architecture documentation as code with Structurizr and Asciidoctor. Part 1: Workflow and tooling](https://blog.codecentric.de/en/2022/08/architecture-documentation-docs-as-code-structurizr-asciidoctor)
 * [Architecture documentation as code with Structurizr and Asciidoctor. Part 2: Asciidoctor](https://blog.codecentric.de/architecture-documentation-as-code-with-structurizr-and-asciidoctor-part-2-asciidoctor)
+* [Architecture documentation as code with Structurizr and Asciidoctor. Part 3: Structurizr](https://blog.codecentric.de/architecture-documentation-as-code-with-structurizr-and-asciidoctor-part-3-structurizr)
 
 ### Example project
 
