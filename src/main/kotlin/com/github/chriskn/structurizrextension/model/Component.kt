@@ -12,6 +12,7 @@ var Component.c4Type: C4Type?
     } else {
         null
     }
+
     /**
      * Sets the [C4Type] of the component.
      */

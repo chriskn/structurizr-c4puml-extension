@@ -52,6 +52,7 @@ var Container.c4Type: C4Type?
     } else {
         null
     }
+
     /**
      * Sets the [C4Type] of the container.
      */
@@ -66,6 +67,7 @@ var Container.location: Location
      * Returns the [Location] of the container.
      */
     get() = Location.valueOf(this.properties.getValue(LOCATION_PROPERTY))
+
     /**
      * Sets the [Location] of the container.
      */

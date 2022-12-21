@@ -16,5 +16,7 @@ fun assertExpectedDiagramWasWrittenForView(
     Assertions.assertThat(diagramFolder.isDirectory).isTrue
     val actualDiagramFile = File(diagramFolder, "$diagramKey.puml")
     Assertions.assertThat(actualDiagramFile.isFile).isTrue
-    Assertions.assertThat(actualDiagramFile.readText(Charsets.UTF_8)).isEqualToIgnoringWhitespace(expectedDiagramContent)
+    Assertions.assertThat(actualDiagramFile.readText(Charsets.UTF_8)).isEqualToIgnoringWhitespace(
+        expectedDiagramContent
+    )
 }
