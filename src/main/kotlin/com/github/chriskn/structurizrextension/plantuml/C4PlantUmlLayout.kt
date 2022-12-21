@@ -87,6 +87,12 @@ enum class Direction {
     Up, Down, Right, Left;
 
     fun macro() = this.name.first()
+    fun inverse(): Direction = when (this) {
+        Up -> Down
+        Down -> Up
+        Left -> Right
+        Right -> Left
+    }
 }
 
 /**

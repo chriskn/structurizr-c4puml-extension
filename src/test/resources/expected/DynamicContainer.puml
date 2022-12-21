@@ -11,12 +11,12 @@ Container(2, "Single-Page Application", "JavaScript and Angular", "Provides all 
 Component(7, "Sign In Controller", "Spring MVC Rest Controller", "Allows users to sign in.", "")
 Component(9, "Security Component", "Spring Bean", "Provides functionality related to signing in, changing passwords, etc.", "")
 ContainerDb(5, "Database", "Oracle Database Schema", "Stores user registration information", "")
-2 -[#707070]> 7 : 1. Submits credentials to
-7 -[#707070]> 9 : 2. Validates credentials using
-9 -[#707070]> 5 : 3. select * from users where username = ?
-5 -[#707070]-> 9 : 4. Returns user data to
-9 -[#707070]-> 7 : 5. Returns true if the hashed password matches
-7 -[#707070]-> 2 : 6. Sends back an authentication token to
+Rel_R(2, 7, "Submits credentials to")
+Rel_D(7, 9, "Validates credentials using")
+Rel_L(9, 5, "select * from users where username = ?")
+Rel_R(5, 9, "Returns user data to")
+Rel_D(9, 7, "Returns true if the hashed password matches")
+Rel_L(7, 2, "Sends back an authentication token to")
 
 SHOW_FLOATING_LEGEND(LEGEND, true)
 

@@ -10,7 +10,10 @@ LAYOUT_TOP_DOWN()
 Container(2, "Single-Page Application", "JavaScript and Angular", "Provides all of the functionality to customers via their web browser.", "docker-icon")
 Container(3, "API Application", "Java and Spring MVC", "Provides functionality via a JSON/HTTPS API.", "")
 ContainerDb(5, "Database", "Oracle Database Schema", "Stores user registration information", "")
-2 -[#707070]> 3 : 1. gets data from
-3 -[#707070]> 5 : 2. stores data to
+Rel_D(2, 3, "gets data from")
+Rel_R(3, 5, "stores data to")
+Rel_L(5, 3, "returns data")
+
+
 
 @enduml

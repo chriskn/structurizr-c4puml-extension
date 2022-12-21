@@ -215,25 +215,32 @@ class ExtendedC4PlantUmlWriter : C4PlantUMLWriter() {
     override fun writeRelationships(view: View, writer: Writer) {
         val dependencyConfigurations = LayoutRegistry.layoutForKey(view.key).dependencyConfigurations
         dependencyConfigurations.forEach { conf ->
-            view.relationships.filter { conf.filter(it.relationship) }.map { relationshipView ->
-                relationshipView.apply(conf)
-            }
+            view.relationships
+                .filter { conf.filter(it.relationship) }
+                .map { relationshipView -> relationshipView.apply(conf) }
         }
-        view.relationships
-            .sortedBy { rv: RelationshipView ->
-                rv.relationship.source.name + rv.relationship.destination.name
+        val sorted = if (view is DynamicView) {
+            view.relationships.sortedBy { rv: RelationshipView ->
+                rv.order
             }
-            .forEach { rv: RelationshipView -> writeRelationship(view, rv, writer) }
+        } else {
+            view.relationships
+                .sortedBy { rv: RelationshipView ->
+                    rv.relationship.source.name + rv.relationship.destination.name
+                }
+        }
+
+        sorted.forEach { rv: RelationshipView -> writeRelationship(view, rv, writer) }
     }
 
     private fun RelationshipView.apply(
         conf: DependencyConfiguration
     ): Relationship {
         val rel = this.relationship
-        val position = conf.direction
+        val direction = conf.direction
         val mode = conf.mode
-        if (position != null) {
-            rel.addProperty(C4_LAYOUT_DIRECTION, position.name)
+        if (direction != null) {
+            rel.addProperty(C4_LAYOUT_DIRECTION, direction.name)
         }
         if (mode != null) {
             rel.addProperty(C4_LAYOUT_MODE, mode.name)
@@ -247,7 +254,7 @@ class ExtendedC4PlantUmlWriter : C4PlantUMLWriter() {
         val relationship = relationshipView.relationship
         var source = relationship.source
         var destination = relationship.destination
-        if (relationshipView.isResponse != null && relationshipView.isResponse) {
+        if (relationshipView.isResponse == true) {
             source = relationship.destination
             destination = relationship.source
         }
@@ -262,13 +269,21 @@ class ExtendedC4PlantUmlWriter : C4PlantUMLWriter() {
                 var direction = Direction.Down
                 if (relationship.properties.containsKey(C4_LAYOUT_DIRECTION)) {
                     direction = Direction.valueOf(relationship.properties[C4_LAYOUT_DIRECTION]!!)
+                    if (relationshipView.isResponse == true) {
+                        direction = direction.inverse()
+                    }
                 }
                 relationshipMacro = "${relationshipMacro}_${direction.macro()}"
             }
 
             else -> relationshipMacro = "Rel_$relationshipMacro"
         }
-        val description = relationship.description.ifEmpty { " " }
+        val description = if (view is DynamicView) {
+            relationshipView.description
+        } else {
+            relationship.description
+        }.ifEmpty { " " }
+
         var relMacro = """$relationshipMacro(${source.id}, ${destination.id}, "$description""""
         if (relationship.technology != null) {
             relMacro += """, "${relationship.technology}""""
@@ -353,7 +368,15 @@ class ExtendedC4PlantUmlWriter : C4PlantUMLWriter() {
     }
 
     override fun write(view: DynamicView, writer: Writer) {
-        super.write(view, writer)
+        writeHeader(view, writer)
+        val elements: MutableSet<Element> = LinkedHashSet()
+        for (relationshipView in view.relationships) {
+            elements.add(relationshipView.relationship.source)
+            elements.add(relationshipView.relationship.destination)
+        }
+        elements.forEach { write(view, it, writer, false) }
+
+        writeRelationships(view, writer)
         writeFooter(view, writer)
     }
 
@@ -377,7 +400,7 @@ class ExtendedC4PlantUmlWriter : C4PlantUMLWriter() {
         val children: List<DeploymentNode> = deploymentNode
             .children
             .toList()
-            .sortedBy { obj: DeploymentNode -> obj.name }
+            .sortedBy { node: DeploymentNode -> node.name }
         for (child in children) {
             if (view.isElementInView(child)) {
                 write(view, child, writer, indent + 1)
@@ -386,7 +409,7 @@ class ExtendedC4PlantUmlWriter : C4PlantUMLWriter() {
         val infrastructureNodes: List<InfrastructureNode> = deploymentNode
             .infrastructureNodes
             .toList()
-            .sortedBy { obj: InfrastructureNode -> obj.name }
+            .sortedBy { node: InfrastructureNode -> node.name }
         for (infrastructureNode in infrastructureNodes) {
             if (view.isElementInView(infrastructureNode)) {
                 write(view, infrastructureNode, writer, indent + 1)

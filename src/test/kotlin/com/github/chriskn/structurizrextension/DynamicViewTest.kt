@@ -6,6 +6,8 @@ import com.github.chriskn.structurizrextension.model.component
 import com.github.chriskn.structurizrextension.model.container
 import com.github.chriskn.structurizrextension.model.softwareSystem
 import com.github.chriskn.structurizrextension.plantuml.C4PlantUmlLayout
+import com.github.chriskn.structurizrextension.plantuml.DependencyConfiguration
+import com.github.chriskn.structurizrextension.plantuml.Direction
 import com.github.chriskn.structurizrextension.plantuml.Legend
 import com.github.chriskn.structurizrextension.view.dynamicView
 import com.structurizr.Workspace
@@ -31,7 +33,9 @@ class DynamicViewTest {
         "API Application",
         "Provides functionality via a JSON/HTTPS API.",
         technology = "Java and Spring MVC",
-        usedBy = listOf(Dependency(singlePageApplication, "gets data from"))
+        usedBy = listOf(
+            Dependency(singlePageApplication, "gets data from")
+        )
     )
     private val database: Container = system1.container(
         "Database",
@@ -40,7 +44,7 @@ class DynamicViewTest {
         c4Type = C4Type.DATABASE,
         usedBy = listOf(Dependency(apiApplication, "stores data to"))
     )
-    private val loginController = apiApplication.component(
+    private val singInController = apiApplication.component(
         "Sign In Controller",
         "Allows users to sign in.",
         technology = "Spring MVC Rest Controller",
@@ -53,21 +57,12 @@ class DynamicViewTest {
         "Provides functionality related to signing in, changing passwords, etc.",
         technology = "Spring Bean",
         usedBy = listOf(
-            Dependency(loginController, ""),
+            Dependency(singInController, ""),
         ),
         uses = listOf(
             Dependency(database, ""),
         )
     )
-
-    private fun addElements(dynamicView: DynamicView) {
-        dynamicView.add(singlePageApplication, "Submits credentials to", loginController)
-        dynamicView.add(loginController, "Validates credentials using", securityComponent)
-        dynamicView.add(securityComponent, "select * from users where username = ?", database)
-        dynamicView.add(database, "Returns user data to", securityComponent)
-        dynamicView.add(securityComponent, "Returns true if the hashed password matches", loginController)
-        dynamicView.add(loginController, "Sends back an authentication token to", singlePageApplication)
-    }
 
     @Test
     fun `test interaction diagram for container is written to plant uml as expected`() {
@@ -76,9 +71,34 @@ class DynamicViewTest {
             apiApplication,
             diagramKey,
             "description",
-            C4PlantUmlLayout(legend = Legend.ShowFloatingLegend)
+            C4PlantUmlLayout(
+                legend = Legend.ShowFloatingLegend,
+                dependencyConfigurations = listOf(
+                    DependencyConfiguration(
+                        filter = { it.destination == singInController },
+                        direction = Direction.Right
+                    ),
+                    DependencyConfiguration(
+                        filter = { it.source == singInController && it.destination != securityComponent },
+                        direction = Direction.Left
+                    ),
+                    DependencyConfiguration(
+                        filter = { it.destination == database },
+                        direction = Direction.Left
+                    ),
+                    DependencyConfiguration(
+                        filter = { it.source == database },
+                        direction = Direction.Right
+                    )
+                )
+            )
         )
-        addElements(dynamicView)
+        dynamicView.add(singlePageApplication, "Submits credentials to", singInController)
+        dynamicView.add(singInController, "Validates credentials using", securityComponent)
+        dynamicView.add(securityComponent, "select * from users where username = ?", database)
+        dynamicView.add(database, "Returns user data to", securityComponent)
+        dynamicView.add(securityComponent, "Returns true if the hashed password matches", singInController)
+        dynamicView.add(singInController, "Sends back an authentication token to", singlePageApplication)
 
         assertExpectedDiagramWasWrittenForView(workspace, diagramKey)
     }
@@ -90,10 +110,23 @@ class DynamicViewTest {
             system1,
             diagramKey,
             "description",
-            C4PlantUmlLayout(legend = Legend.None)
+            C4PlantUmlLayout(
+                legend = Legend.None,
+                dependencyConfigurations = listOf(
+                    DependencyConfiguration(
+                        filter = { it.destination == database },
+                        direction = Direction.Right
+                    ),
+                    DependencyConfiguration(
+                        filter = { it.source == database },
+                        direction = Direction.Left
+                    )
+                )
+            )
         )
         dynamicView.add(singlePageApplication, "gets data from", apiApplication)
         dynamicView.add(apiApplication, "stores data to", database)
+        dynamicView.add(database, "returns data", apiApplication)
 
         assertExpectedDiagramWasWrittenForView(workspace, diagramKey)
     }
