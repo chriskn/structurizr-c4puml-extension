@@ -30,8 +30,6 @@ class DependencyLayoutTest {
     @Test
     fun `position is applied`() {
         val diagramKey = "DependencyPosition"
-        val expectedDiagramContent =
-            this::class.java.getResource("/expected/$diagramKey.puml")!!.readText(Charsets.UTF_8)
         val contextView = workspace.views.systemLandscapeView(
             diagramKey,
             "Dependency Test",
@@ -44,14 +42,12 @@ class DependencyLayoutTest {
         )
         contextView.addDefaultElements()
 
-        assertExpectedDiagramWasWrittenForView(workspace, diagramKey, expectedDiagramContent)
+        assertExpectedDiagramWasWrittenForView(workspace, diagramKey)
     }
 
     @Test
     fun `mode is applied`() {
         val diagramKey = "DependencyMode"
-        val expectedDiagramContent =
-            this::class.java.getResource("/expected/$diagramKey.puml")!!.readText(Charsets.UTF_8)
         val contextView = workspace.views.systemLandscapeView(
             diagramKey,
             "Dependency Test",
@@ -64,14 +60,12 @@ class DependencyLayoutTest {
         )
         contextView.addDefaultElements()
 
-        assertExpectedDiagramWasWrittenForView(workspace, diagramKey, expectedDiagramContent)
+        assertExpectedDiagramWasWrittenForView(workspace, diagramKey)
     }
 
     @Test
     fun `position is ignored when mode is overridden`() {
         val diagramKey = "DependencyPositionMode"
-        val expectedDiagramContent =
-            this::class.java.getResource("/expected/$diagramKey.puml")!!.readText(Charsets.UTF_8)
         val contextView = workspace.views.systemLandscapeView(
             diagramKey,
             "Dependency Test",
@@ -84,6 +78,6 @@ class DependencyLayoutTest {
         )
         contextView.addDefaultElements()
 
-        assertExpectedDiagramWasWrittenForView(workspace, diagramKey, expectedDiagramContent)
+        assertExpectedDiagramWasWrittenForView(workspace, diagramKey)
     }
 }

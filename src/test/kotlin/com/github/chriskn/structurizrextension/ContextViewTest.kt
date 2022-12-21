@@ -84,8 +84,6 @@ class ContextViewTest {
     @Test
     fun `landscape diagram is written as expected`() {
         val diagramKey = "SystemLandscape"
-        val expectedDiagramContent =
-            this::class.java.getResource("/expected/$diagramKey.puml")!!.readText(Charsets.UTF_8)
         val landscapeView = workspace.views.systemLandscapeView(
             diagramKey,
             "A test Landscape",
@@ -93,14 +91,12 @@ class ContextViewTest {
         )
         landscapeView.addAllElements()
 
-        assertExpectedDiagramWasWrittenForView(workspace, diagramKey, expectedDiagramContent)
+        assertExpectedDiagramWasWrittenForView(workspace, diagramKey)
     }
 
     @Test
     fun `context diagram is written as expected`() {
         val diagramKey = "Context"
-        val expectedDiagramContent =
-            this::class.java.getResource("/expected/$diagramKey.puml")!!.readText(Charsets.UTF_8)
         val contextView = workspace.views.systemContextView(
             system1,
             diagramKey,
@@ -113,6 +109,6 @@ class ContextViewTest {
         )
         contextView.addDefaultElements()
 
-        assertExpectedDiagramWasWrittenForView(workspace, diagramKey, expectedDiagramContent)
+        assertExpectedDiagramWasWrittenForView(workspace, diagramKey)
     }
 }

@@ -108,8 +108,6 @@ class ContainerViewTest {
     @Test
     fun `container diagram is written as expected with external boundary`() {
         val diagramKey = "ContainerWithBoundary"
-        val expectedDiagramContent =
-            this::class.java.getResource("/expected/$diagramKey.puml")!!.readText(Charsets.UTF_8)
         val containerView = workspace.views.containerView(
             softwareSystem,
             diagramKey,
@@ -135,14 +133,12 @@ class ContainerViewTest {
         containerView.addDependentSoftwareSystems()
         containerView.addAllPeople()
 
-        assertExpectedDiagramWasWrittenForView(workspace, diagramKey, expectedDiagramContent)
+        assertExpectedDiagramWasWrittenForView(workspace, diagramKey)
     }
 
     @Test
     fun `container diagram is written as expected without external boundary`() {
         val diagramKey = "ContainerWithoutBoundary"
-        val expectedDiagramContent =
-            this::class.java.getResource("/expected/$diagramKey.puml")!!.readText(Charsets.UTF_8)
         val containerView = workspace.views.containerView(
             softwareSystem,
             diagramKey,
@@ -165,6 +161,6 @@ class ContainerViewTest {
         containerView.addDependentSoftwareSystems()
         containerView.addAllPeople()
 
-        assertExpectedDiagramWasWrittenForView(workspace, diagramKey, expectedDiagramContent)
+        assertExpectedDiagramWasWrittenForView(workspace, diagramKey)
     }
 }

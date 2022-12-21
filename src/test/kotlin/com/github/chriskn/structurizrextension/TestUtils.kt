@@ -7,9 +7,10 @@ import java.nio.file.Files.createTempDirectory
 
 fun assertExpectedDiagramWasWrittenForView(
     workspace: Workspace,
-    diagramKey: String,
-    expectedDiagramContent: String,
+    diagramKey: String
 ) {
+    val expectedDiagramContent =
+        object{}::class.java.getResource("/expected/$diagramKey.puml")!!.readText(Charsets.UTF_8)
     val diagramFolder = createTempDirectory("diagram").toFile()
     workspace.writeDiagrams(diagramFolder)
 

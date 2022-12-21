@@ -72,8 +72,6 @@ class DynamicViewTest {
     @Test
     fun `test interaction diagram for container is written to plant uml as expected`() {
         val diagramKey = "DynamicContainer"
-        val expectedDiagramContent =
-            this::class.java.getResource("/expected/$diagramKey.puml")!!.readText(Charsets.UTF_8)
         val dynamicView: DynamicView = workspace.views.dynamicView(
             apiApplication,
             diagramKey,
@@ -82,14 +80,12 @@ class DynamicViewTest {
         )
         addElements(dynamicView)
 
-        assertExpectedDiagramWasWrittenForView(workspace, diagramKey, expectedDiagramContent)
+        assertExpectedDiagramWasWrittenForView(workspace, diagramKey)
     }
 
     @Test
     fun `test interaction diagram for system is written to plant uml as expected`() {
         val diagramKey = "DynamicSystem"
-        val expectedDiagramContent =
-            this::class.java.getResource("/expected/$diagramKey.puml")!!.readText(Charsets.UTF_8)
         val dynamicView: DynamicView = workspace.views.dynamicView(
             system1,
             diagramKey,
@@ -99,6 +95,6 @@ class DynamicViewTest {
         dynamicView.add(singlePageApplication, "gets data from", apiApplication)
         dynamicView.add(apiApplication, "stores data to", database)
 
-        assertExpectedDiagramWasWrittenForView(workspace, diagramKey, expectedDiagramContent)
+        assertExpectedDiagramWasWrittenForView(workspace, diagramKey)
     }
 }

@@ -22,10 +22,7 @@ import org.junit.jupiter.api.Test
 
 class DeploymentViewTest {
 
-    private val diagramName = "Deployment"
-
-    private val expectedDiagramContent =
-        this::class.java.getResource("/expected/$diagramName.puml")!!.readText(Charsets.UTF_8)
+    private val diagramKey = "Deployment"
 
     @Test
     fun `deployment diagram is written as expected`() {
@@ -146,7 +143,7 @@ class DeploymentViewTest {
         val deploymentView =
             views.deploymentView(
                 mySystem,
-                diagramName,
+                diagramKey,
                 "A deployment diagram showing the environment.",
                 C4PlantUmlLayout(
                     nodeSep = 50,
@@ -165,6 +162,6 @@ class DeploymentViewTest {
             )
         deploymentView.addDefaultElements()
 
-        assertExpectedDiagramWasWrittenForView(workspace, deploymentView.key, expectedDiagramContent)
+        assertExpectedDiagramWasWrittenForView(workspace, diagramKey)
     }
 }

@@ -37,6 +37,7 @@ var ModelItem.c4Properties: C4Properties?
                 val split = it.first.split(":")
                 split[split.size - 2]
             }
+            .toSortedMap()
             .map { columnsByRow ->
                 columnsByRow.value
                     .sortedBy { it.first.split(":").last() }

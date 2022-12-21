@@ -21,9 +21,6 @@ class ComponentViewTest {
 
     private val diagramKey = "Component"
 
-    private val expectedDiagramContent =
-        this::class.java.getResource("/expected/$diagramKey.puml")!!.readText(Charsets.UTF_8)
-
     @Test
     fun `component diagram is written as expected`() {
         val workspace = Workspace("My Workspace", "")
@@ -93,6 +90,6 @@ class ComponentViewTest {
         )
         componentView.addAllElements()
 
-        assertExpectedDiagramWasWrittenForView(workspace, diagramKey, expectedDiagramContent)
+        assertExpectedDiagramWasWrittenForView(workspace, diagramKey)
     }
 }
