@@ -2,12 +2,10 @@ package com.github.chriskn.structurizrextension.model
 
 import com.github.chriskn.structurizrextension.assertExpectedDiagramWasWrittenForView
 import com.github.chriskn.structurizrextension.view.systemContextView
-import com.github.chriskn.structurizrextension.writeDiagrams
 import com.structurizr.Workspace
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
-import java.io.File
 
 class C4PropertiesTest {
 

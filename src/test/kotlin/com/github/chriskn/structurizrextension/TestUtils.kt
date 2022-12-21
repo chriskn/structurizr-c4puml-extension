@@ -10,7 +10,7 @@ fun assertExpectedDiagramWasWrittenForView(
     diagramKey: String
 ) {
     val expectedDiagramContent =
-        object{}::class.java.getResource("/expected/$diagramKey.puml")!!.readText(Charsets.UTF_8)
+        object {}::class.java.getResource("/expected/$diagramKey.puml")!!.readText(Charsets.UTF_8)
     val diagramFolder = createTempDirectory("diagram").toFile()
     workspace.writeDiagrams(diagramFolder)
 
