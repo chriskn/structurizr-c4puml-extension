@@ -20,7 +20,7 @@ val structurizrVersion = "1.16.1"
 val structurizrPlantUmlVersion = "1.6.3"
 val junitVersion = "5.9.1"
 val assertJVersion = "3.23.1"
-val detektVersion = "1.21.0"
+val detektVersion = "1.22.0"
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))

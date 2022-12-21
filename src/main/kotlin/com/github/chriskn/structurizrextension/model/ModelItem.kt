@@ -44,6 +44,7 @@ var ModelItem.c4Properties: C4Properties?
             }
         return if (headers.isNullOrEmpty() && values.isEmpty()) null else C4Properties(headers, values)
     }
+
     /**
      * Sets the [C4Properties].
      */
@@ -65,6 +66,7 @@ var ModelItem.icon: String?
      * Returns the icon or null if not set.
      */
     get() = this.properties[ICON_PROPERTY]
+
     /**
      * Sets the icon if not null or blank.
      */
@@ -79,6 +81,7 @@ var ModelItem.link: String?
      * Returns the link or null if not set.
      */
     get() = this.properties[LINK_PROPERTY]
+
     /**
      * Sets the link if not null or blank.
      */
