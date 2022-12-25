@@ -334,7 +334,7 @@ class ExtendedC4PlantUmlWriter : C4PlantUMLWriter() {
                 .groupBy { it.parent }
                 .filter { it.key != view.softwareSystem }
             externalContainerBySystems.forEach {
-                writeContainersForSoftwareSystem(it.key as SoftwareSystem, it.value, view, writer)
+                writeChildrenInParentBoundary(it.key as SoftwareSystem, it.value, view, writer)
             }
         } else {
             val externalContainers = elements
@@ -349,17 +349,72 @@ class ExtendedC4PlantUmlWriter : C4PlantUMLWriter() {
         writeFooter(view, writer)
     }
 
-    private fun writeContainersForSoftwareSystem(
-        system: SoftwareSystem,
-        containers: List<Container>,
+    private fun writeChildrenInParentBoundary(
+        parent: Element,
+        children: List<Element>,
+        view: View,
+        writer: Writer,
+        initialIdent: Int = 0
+    ) {
+        val boundaryType = when (parent) {
+            is SoftwareSystem -> "System_Boundary"
+            is Container -> "Container_Boundary"
+            else -> "Boundary"
+        }
+        val strIdent = calculateIndent(initialIdent)
+        writer.write("$strIdent$boundaryType(${parent.id}_boundary, ${parent.name}) {")
+        writer.write(separator)
+        children.forEach { write(view, it, writer, initialIdent + 1) }
+        writer.write("$strIdent}")
+        writer.write(separator)
+    }
+
+    private fun writeChildrenInParentBoundaries(
+        elements: Set<Element>,
         view: View,
         writer: Writer
     ) {
-        writer.write("System_Boundary(${system.id}_boundary, ${system.name}) {")
-        writer.write(separator)
-        containers.forEach { write(view, it, writer, true) }
-        writer.write("}")
-        writer.write(separator)
+        val hierarchy: Map<SoftwareSystem, Map<Container, List<Component>>> = buildElementHierarchy(elements)
+        hierarchy.forEach { (system, containerToComponents) ->
+            writer.write("System_Boundary(${system.id}_boundary, ${system.name}) {")
+            writer.write(separator)
+            containerToComponents.forEach { (container, components) ->
+                if (components.isEmpty()) {
+                    write(view, container, writer, true)
+                } else {
+                    writeChildrenInParentBoundary(container, components, view, writer, initialIdent = 1)
+                }
+            }
+            writer.write("}")
+            writer.write(separator)
+        }
+    }
+
+    private fun buildElementHierarchy(
+        elements: Set<Element>
+    ): MutableMap<SoftwareSystem, MutableMap<Container, List<Component>>> {
+        val externalElementsByParent = elements
+            .groupBy { it.parent }
+        val containerGroups = externalElementsByParent.filterKeys { it is Container }
+            as Map<Container, List<Component>>
+        val systemGroups = externalElementsByParent
+            .filterKeys { it is SoftwareSystem }
+            as Map<SoftwareSystem, List<Container>>
+        val hierarchy: MutableMap<SoftwareSystem, MutableMap<Container, List<Component>>> = mutableMapOf()
+        systemGroups.forEach { (system, containers) ->
+            hierarchy[system] = containers
+                .associateWith { containerGroups.getOrDefault(it, emptyList()) }
+                .toMutableMap()
+        }
+        containerGroups.forEach { (container, components) ->
+            val system = container.softwareSystem
+            if (hierarchy.containsKey(system)) {
+                hierarchy[system] = hierarchy[system]!!.plus(container to components).toMutableMap()
+            } else {
+                hierarchy[system] = mutableMapOf(container to components)
+            }
+        }
+        return hierarchy
     }
 
     override fun write(view: ComponentView, writer: Writer) {
@@ -374,7 +429,14 @@ class ExtendedC4PlantUmlWriter : C4PlantUMLWriter() {
             elements.add(relationshipView.relationship.source)
             elements.add(relationshipView.relationship.destination)
         }
-        elements.forEach { write(view, it, writer, false) }
+        if (view.externalBoundariesVisible) {
+            writeChildrenInParentBoundaries(elements, view, writer)
+            elements
+                .filter { it.parent == null }
+                .forEach { write(view, it, writer, false) }
+        } else {
+            elements.forEach { write(view, it, writer, false) }
+        }
 
         writeRelationships(view, writer)
         writeFooter(view, writer)

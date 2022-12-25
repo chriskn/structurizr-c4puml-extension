@@ -1,0 +1,34 @@
+@startuml(id=DynamicWithAllElements)
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Dynamic.puml
+title API Application - Dynamic
+caption description
+
+SHOW_PERSON_OUTLINE()
+LAYOUT_TOP_DOWN()
+
+System_Boundary(1_boundary, Software System 1) {
+  ContainerDb(8, "Database", "Oracle Database Schema", "Stores user registration information", "")
+  Container_Boundary(6_boundary, API Application) {
+    Component(10, "Sign In Controller", "Spring MVC Rest Controller", "Allows users to sign in.", "")
+    Component(15, "Security Component", "Spring Bean", "Provides functionality related to signing in, changing passwords, etc.", "")
+  }
+  Container_Boundary(5_boundary, Single-Page Application) {
+    Component(12, "Login Dialog", "REACT", "Prompts for user credentials.", "")
+  }
+}
+System_Boundary(2_boundary, Reporting System) {
+  ContainerDb(4, "Reporting Database", "Postgres", "Reporting Database", "")
+}
+System(3, "Software System 3", "Description 3", "")
+Rel_R(12, 10, "Submits credentials to")
+Rel_D(10, 15, "Validates credentials using")
+Rel_L(15, 8, "select * from users where username = ?")
+Rel_R(8, 15, "Returns user data to")
+Rel_D(15, 10, "Returns true if the hashed password matches")
+Rel_D(15, 3, "Does something")
+Rel_L(10, 12, "Triggers redirect")
+Rel_D(12, 4, "Reports to")
+
+SHOW_FLOATING_LEGEND(LEGEND, true)
+
+@enduml
