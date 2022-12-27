@@ -1,0 +1,19 @@
+@startuml(id=DynamicWithComponents)
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Dynamic.puml
+title API Application - Dynamic
+caption description
+
+SHOW_PERSON_OUTLINE()
+LAYOUT_TOP_DOWN()
+
+Component(10, "Sign In Controller", "Spring MVC Rest Controller", "Allows users to sign in.", "")
+Component(12, "Login Dialog", "REACT", "Prompts for user credentials.", "")
+Component(15, "Security Component", "Spring Bean", "Provides functionality related to signing in, changing passwords, etc.", "")
+RelIndex_D(1,12, 10, "Submits credentials to")
+RelIndex_D(2,10, 12, "Triggers redirect")
+RelIndex_D(3,10, 15, "Validates credentials using")
+RelIndex_D(4,15, 10, "Returns true if the hashed password matches")
+
+SHOW_LEGEND(true)
+
+@enduml

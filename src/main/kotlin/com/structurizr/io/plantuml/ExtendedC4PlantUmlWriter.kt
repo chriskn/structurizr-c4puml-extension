@@ -215,25 +215,31 @@ class ExtendedC4PlantUmlWriter : C4PlantUMLWriter() {
     override fun writeRelationships(view: View, writer: Writer) {
         val dependencyConfigurations = LayoutRegistry.layoutForKey(view.key).dependencyConfigurations
         dependencyConfigurations.forEach { conf ->
-            view.relationships.filter { conf.filter(it.relationship) }.map { relationshipView ->
-                relationshipView.apply(conf)
-            }
+            view.relationships
+                .filter { conf.filter(it.relationship) }
+                .map { relationshipView -> relationshipView.apply(conf) }
         }
-        view.relationships
-            .sortedBy { rv: RelationshipView ->
-                rv.relationship.source.name + rv.relationship.destination.name
+        val sorted = if (view is DynamicView) {
+            view.relationships.sortedBy { rv: RelationshipView ->
+                rv.order
             }
-            .forEach { rv: RelationshipView -> writeRelationship(view, rv, writer) }
+        } else {
+            view.relationships
+                .sortedBy { rv: RelationshipView ->
+                    rv.relationship.source.name + rv.relationship.destination.name
+                }
+        }
+        sorted.forEach { rv: RelationshipView -> writeRelationship(view, rv, writer) }
     }
 
     private fun RelationshipView.apply(
         conf: DependencyConfiguration
     ): Relationship {
         val rel = this.relationship
-        val position = conf.direction
+        val direction = conf.direction
         val mode = conf.mode
-        if (position != null) {
-            rel.addProperty(C4_LAYOUT_DIRECTION, position.name)
+        if (direction != null) {
+            rel.addProperty(C4_LAYOUT_DIRECTION, direction.name)
         }
         if (mode != null) {
             rel.addProperty(C4_LAYOUT_MODE, mode.name)
@@ -241,35 +247,49 @@ class ExtendedC4PlantUmlWriter : C4PlantUMLWriter() {
         return rel
     }
 
-    override fun writeRelationship(view: View?, relationshipView: RelationshipView, writer: Writer) {
+    override fun writeRelationship(view: View, relationshipView: RelationshipView, writer: Writer) {
         writeProperties(relationshipView.relationship, "", writer)
 
         val relationship = relationshipView.relationship
         var source = relationship.source
         var destination = relationship.destination
-        if (relationshipView.isResponse != null && relationshipView.isResponse) {
+        if (relationshipView.isResponse == true) {
             source = relationship.destination
             destination = relationship.source
         }
-        val mode = if (relationship.properties.containsKey(C4_LAYOUT_MODE)) {
-            Mode.valueOf(relationship.properties[C4_LAYOUT_MODE]!!)
-        } else {
-            Mode.Rel
+        val mode = when {
+            relationship.properties.containsKey(C4_LAYOUT_MODE) -> {
+                Mode.valueOf(relationship.properties[C4_LAYOUT_MODE]!!)
+            }
+            view is DynamicView -> Mode.RelIndex
+            else -> Mode.Rel
         }
         var relationshipMacro = mode.macro
         when (mode) {
-            Mode.Rel -> {
+            Mode.Rel, Mode.RelIndex -> {
                 var direction = Direction.Down
                 if (relationship.properties.containsKey(C4_LAYOUT_DIRECTION)) {
                     direction = Direction.valueOf(relationship.properties[C4_LAYOUT_DIRECTION]!!)
+                    if (relationshipView.isResponse == true) {
+                        direction = direction.inverse()
+                    }
                 }
                 relationshipMacro = "${relationshipMacro}_${direction.macro()}"
             }
 
             else -> relationshipMacro = "Rel_$relationshipMacro"
         }
-        val description = relationship.description.ifEmpty { " " }
-        var relMacro = """$relationshipMacro(${source.id}, ${destination.id}, "$description""""
+        val description = if (view is DynamicView) {
+            relationshipView.description
+        } else {
+            relationship.description
+        }.ifEmpty { " " }
+
+        var relMacro = if (view is DynamicView) {
+            """$relationshipMacro(${relationshipView.order},${source.id}, ${destination.id}, "$description""""
+        } else {
+            """$relationshipMacro(${source.id}, ${destination.id}, "$description""""
+        }
         if (relationship.technology != null) {
             relMacro += """, "${relationship.technology}""""
         }
@@ -319,7 +339,7 @@ class ExtendedC4PlantUmlWriter : C4PlantUMLWriter() {
                 .groupBy { it.parent }
                 .filter { it.key != view.softwareSystem }
             externalContainerBySystems.forEach {
-                writeContainersForSoftwareSystem(it.key as SoftwareSystem, it.value, view, writer)
+                writeChildrenInParentBoundary(it.key as SoftwareSystem, it.value, view, writer)
             }
         } else {
             val externalContainers = elements
@@ -334,17 +354,68 @@ class ExtendedC4PlantUmlWriter : C4PlantUMLWriter() {
         writeFooter(view, writer)
     }
 
-    private fun writeContainersForSoftwareSystem(
-        system: SoftwareSystem,
-        containers: List<Container>,
+    private fun writeChildrenInParentBoundary(
+        parent: Element,
+        children: List<Element>,
+        view: View,
+        writer: Writer,
+        initialIdent: Int = 0
+    ) {
+        val boundaryType = when (parent) {
+            is SoftwareSystem -> "System_Boundary"
+            is Container -> "Container_Boundary"
+            else -> "Boundary"
+        }
+        val strIdent = calculateIndent(initialIdent)
+        writer.write("$strIdent$boundaryType(${parent.id}_boundary, ${parent.name}) {")
+        writer.write(separator)
+        children.forEach { write(view, it, writer, initialIdent + 1) }
+        writer.write("$strIdent}")
+        writer.write(separator)
+    }
+
+    private fun writeChildrenInParentBoundaries(
+        elements: Set<Element>,
         view: View,
         writer: Writer
     ) {
-        writer.write("System_Boundary(${system.id}_boundary, ${system.name}) {")
-        writer.write(separator)
-        containers.forEach { write(view, it, writer, true) }
-        writer.write("}")
-        writer.write(separator)
+        val hierarchy: Map<SoftwareSystem, Map<Container, List<Component>>> = buildElementHierarchy(elements)
+        hierarchy.forEach { (system, containerToComponents) ->
+            writer.write("System_Boundary(${system.id}_boundary, ${system.name}) {")
+            writer.write(separator)
+            containerToComponents.forEach { (container, components) ->
+                if (components.isEmpty()) {
+                    write(view, container, writer, true)
+                } else {
+                    writeChildrenInParentBoundary(container, components, view, writer, initialIdent = 1)
+                }
+            }
+            writer.write("}")
+            writer.write(separator)
+        }
+    }
+
+    private fun buildElementHierarchy(
+        elements: Set<Element>
+    ): Map<SoftwareSystem, Map<Container, List<Component>>> {
+        val elementsByParent = elements.groupBy { it.parent }
+        val containerGroups = elementsByParent.filterKeys { it is Container } as Map<Container, List<Component>>
+        val systemGroups = elementsByParent.filterKeys { it is SoftwareSystem } as Map<SoftwareSystem, List<Container>>
+        val hierarchy: MutableMap<SoftwareSystem, MutableMap<Container, List<Component>>> = mutableMapOf()
+        systemGroups.forEach { (system, containers) ->
+            hierarchy[system] = containers
+                .associateWith { container -> containerGroups.getOrDefault(container, emptyList()) }
+                .toMutableMap()
+        }
+        containerGroups.forEach { (container, components) ->
+            val system = container.softwareSystem
+            if (hierarchy.containsKey(system)) {
+                hierarchy[system] = hierarchy[system]!!.plus(container to components).toMutableMap()
+            } else {
+                hierarchy[system] = mutableMapOf(container to components)
+            }
+        }
+        return hierarchy
     }
 
     override fun write(view: ComponentView, writer: Writer) {
@@ -353,7 +424,22 @@ class ExtendedC4PlantUmlWriter : C4PlantUMLWriter() {
     }
 
     override fun write(view: DynamicView, writer: Writer) {
-        super.write(view, writer)
+        writeHeader(view, writer)
+        val elements: MutableSet<Element> = LinkedHashSet()
+        for (relationshipView in view.relationships) {
+            elements.add(relationshipView.relationship.source)
+            elements.add(relationshipView.relationship.destination)
+        }
+        if (view.externalBoundariesVisible) {
+            writeChildrenInParentBoundaries(elements, view, writer)
+            elements
+                .filter { it.parent == null }
+                .forEach { write(view, it, writer, false) }
+        } else {
+            elements.forEach { write(view, it, writer, false) }
+        }
+
+        writeRelationships(view, writer)
         writeFooter(view, writer)
     }
 
@@ -377,7 +463,7 @@ class ExtendedC4PlantUmlWriter : C4PlantUMLWriter() {
         val children: List<DeploymentNode> = deploymentNode
             .children
             .toList()
-            .sortedBy { obj: DeploymentNode -> obj.name }
+            .sortedBy { node: DeploymentNode -> node.name }
         for (child in children) {
             if (view.isElementInView(child)) {
                 write(view, child, writer, indent + 1)
@@ -386,7 +472,7 @@ class ExtendedC4PlantUmlWriter : C4PlantUMLWriter() {
         val infrastructureNodes: List<InfrastructureNode> = deploymentNode
             .infrastructureNodes
             .toList()
-            .sortedBy { obj: InfrastructureNode -> obj.name }
+            .sortedBy { node: InfrastructureNode -> node.name }
         for (infrastructureNode in infrastructureNodes) {
             if (view.isElementInView(infrastructureNode)) {
                 write(view, infrastructureNode, writer, indent + 1)

@@ -1,0 +1,21 @@
+@startuml(id=DynamicWithContainers)
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/docker-icon.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Dynamic.puml
+title Software System 1 - Dynamic
+caption description
+
+SHOW_PERSON_OUTLINE()
+LAYOUT_TOP_DOWN()
+
+System_Boundary(1_boundary, Software System 1) {
+  Container(5, "Single-Page Application", "JavaScript and Angular", "Provides all of the functionality to customers via their web browser.", "docker-icon")
+  Container(6, "API Application", "Java and Spring MVC", "Provides functionality via a JSON/HTTPS API.", "")
+  ContainerDb(8, "Database", "Oracle Database Schema", "Stores user registration information", "")
+}
+RelIndex_D(1,5, 6, "gets data from")
+RelIndex_R(2,6, 8, "stores data to")
+RelIndex_L(3,8, 6, "returns data")
+
+
+
+@enduml
