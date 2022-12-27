@@ -397,18 +397,14 @@ class ExtendedC4PlantUmlWriter : C4PlantUMLWriter() {
 
     private fun buildElementHierarchy(
         elements: Set<Element>
-    ): MutableMap<SoftwareSystem, MutableMap<Container, List<Component>>> {
-        val externalElementsByParent = elements
-            .groupBy { it.parent }
-        val containerGroups = externalElementsByParent.filterKeys { it is Container }
-            as Map<Container, List<Component>>
-        val systemGroups = externalElementsByParent
-            .filterKeys { it is SoftwareSystem }
-            as Map<SoftwareSystem, List<Container>>
+    ): Map<SoftwareSystem, Map<Container, List<Component>>> {
+        val elementsByParent = elements.groupBy { it.parent }
+        val containerGroups = elementsByParent.filterKeys { it is Container } as Map<Container, List<Component>>
+        val systemGroups = elementsByParent.filterKeys { it is SoftwareSystem } as Map<SoftwareSystem, List<Container>>
         val hierarchy: MutableMap<SoftwareSystem, MutableMap<Container, List<Component>>> = mutableMapOf()
         systemGroups.forEach { (system, containers) ->
             hierarchy[system] = containers
-                .associateWith { containerGroups.getOrDefault(it, emptyList()) }
+                .associateWith { container -> containerGroups.getOrDefault(container, emptyList()) }
                 .toMutableMap()
         }
         containerGroups.forEach { (container, components) ->
