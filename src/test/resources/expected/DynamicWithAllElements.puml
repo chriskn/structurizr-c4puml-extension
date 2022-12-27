@@ -20,14 +20,14 @@ System_Boundary(2_boundary, Reporting System) {
   ContainerDb(4, "Reporting Database", "Postgres", "Reporting Database", "")
 }
 System(3, "Software System 3", "Description 3", "")
-Rel_R(12, 10, "Submits credentials to")
-Rel_D(10, 15, "Validates credentials using")
-Rel_L(15, 8, "select * from users where username = ?")
-Rel_R(8, 15, "Returns user data to")
-Rel_D(15, 10, "Returns true if the hashed password matches")
-Rel_D(15, 3, "Does something")
-Rel_L(10, 12, "Triggers redirect")
-Rel_D(12, 4, "Reports to")
+RelIndex_R(1,12, 10, "Submits credentials to")
+RelIndex_D(2,10, 15, "Validates credentials using")
+RelIndex_L(3,15, 8, "select * from users where username = ?")
+RelIndex_R(4,8, 15, "Returns user data to")
+RelIndex_D(5,15, 10, "Returns true if the hashed password matches")
+RelIndex_D(6,15, 3, "Does something")
+RelIndex_L(7,10, 12, "Triggers redirect")
+RelIndex_D(8,12, 4, "Reports to")
 
 SHOW_FLOATING_LEGEND(LEGEND, true)
 

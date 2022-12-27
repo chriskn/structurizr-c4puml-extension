@@ -65,12 +65,14 @@ enum class Legend(val macro: String) {
  * * [Back]         dependency direction will be inverted
  * * [BackNeighbor] elements of the dependency will be placed adjacent with inverted dependency direction
  * * [Rel]          default dependency layout
+ * * [RelIndex]     only used for DynamicView
  */
 enum class Mode(val macro: String) {
     Neighbor("Neighbor"),
     Back("Back"),
     BackNeighbor("Back_Neighbor"),
-    Rel("Rel")
+    Rel("Rel"),
+    RelIndex("RelIndex")
 }
 
 /**

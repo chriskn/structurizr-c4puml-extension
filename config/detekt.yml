@@ -13,3 +13,5 @@ complexity:
     excludes: "**/*Test.kt, **/test/**"
   LongParameterList:
     functionThreshold: 8
+  CyclomaticComplexMethod:
+    threshold: 20

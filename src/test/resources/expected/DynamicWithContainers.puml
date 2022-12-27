@@ -12,9 +12,9 @@ System_Boundary(1_boundary, Software System 1) {
   Container(6, "API Application", "Java and Spring MVC", "Provides functionality via a JSON/HTTPS API.", "")
   ContainerDb(8, "Database", "Oracle Database Schema", "Stores user registration information", "")
 }
-Rel_D(5, 6, "gets data from")
-Rel_R(6, 8, "stores data to")
-Rel_L(8, 6, "returns data")
+RelIndex_D(1,5, 6, "gets data from")
+RelIndex_R(2,6, 8, "stores data to")
+RelIndex_L(3,8, 6, "returns data")
 
 
 

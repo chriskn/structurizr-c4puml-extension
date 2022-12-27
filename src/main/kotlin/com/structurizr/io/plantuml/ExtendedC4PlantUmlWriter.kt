@@ -229,7 +229,6 @@ class ExtendedC4PlantUmlWriter : C4PlantUMLWriter() {
                     rv.relationship.source.name + rv.relationship.destination.name
                 }
         }
-
         sorted.forEach { rv: RelationshipView -> writeRelationship(view, rv, writer) }
     }
 
@@ -248,7 +247,7 @@ class ExtendedC4PlantUmlWriter : C4PlantUMLWriter() {
         return rel
     }
 
-    override fun writeRelationship(view: View?, relationshipView: RelationshipView, writer: Writer) {
+    override fun writeRelationship(view: View, relationshipView: RelationshipView, writer: Writer) {
         writeProperties(relationshipView.relationship, "", writer)
 
         val relationship = relationshipView.relationship
@@ -258,14 +257,16 @@ class ExtendedC4PlantUmlWriter : C4PlantUMLWriter() {
             source = relationship.destination
             destination = relationship.source
         }
-        val mode = if (relationship.properties.containsKey(C4_LAYOUT_MODE)) {
-            Mode.valueOf(relationship.properties[C4_LAYOUT_MODE]!!)
-        } else {
-            Mode.Rel
+        val mode = when {
+            relationship.properties.containsKey(C4_LAYOUT_MODE) -> {
+                Mode.valueOf(relationship.properties[C4_LAYOUT_MODE]!!)
+            }
+            view is DynamicView -> Mode.RelIndex
+            else -> Mode.Rel
         }
         var relationshipMacro = mode.macro
         when (mode) {
-            Mode.Rel -> {
+            Mode.Rel, Mode.RelIndex -> {
                 var direction = Direction.Down
                 if (relationship.properties.containsKey(C4_LAYOUT_DIRECTION)) {
                     direction = Direction.valueOf(relationship.properties[C4_LAYOUT_DIRECTION]!!)
@@ -284,7 +285,11 @@ class ExtendedC4PlantUmlWriter : C4PlantUMLWriter() {
             relationship.description
         }.ifEmpty { " " }
 
-        var relMacro = """$relationshipMacro(${source.id}, ${destination.id}, "$description""""
+        var relMacro = if (view is DynamicView) {
+            """$relationshipMacro(${relationshipView.order},${source.id}, ${destination.id}, "$description""""
+        } else {
+            """$relationshipMacro(${source.id}, ${destination.id}, "$description""""
+        }
         if (relationship.technology != null) {
             relMacro += """, "${relationship.technology}""""
         }

@@ -10,6 +10,7 @@ import com.github.chriskn.structurizrextension.plantuml.DependencyConfiguration
 import com.github.chriskn.structurizrextension.plantuml.Direction
 import com.github.chriskn.structurizrextension.plantuml.Legend
 import com.github.chriskn.structurizrextension.view.dynamicView
+import com.github.chriskn.structurizrextension.view.parallelSequence
 import com.structurizr.Workspace
 import com.structurizr.model.Container
 import com.structurizr.view.DynamicView
@@ -123,7 +124,6 @@ class DynamicViewTest {
         dynamicView.add(database, "Returns user data to", securityComponent)
         dynamicView.add(securityComponent, "Returns true if the hashed password matches", singInController)
         dynamicView.add(securityComponent, "Does something", system3)
-
         dynamicView.add(singInController, "Triggers redirect", loginDialog)
         dynamicView.add(loginDialog, "Reports to", reportingDatabase)
 
@@ -168,12 +168,29 @@ class DynamicViewTest {
             diagramKey,
             "description"
         )
-        // dynamicView.externalBoundariesVisible = true
-
         dynamicView.add(loginDialog, "Submits credentials to", singInController)
+        dynamicView.add(singInController, "Triggers redirect", loginDialog)
         dynamicView.add(singInController, "Validates credentials using", securityComponent)
         dynamicView.add(securityComponent, "Returns true if the hashed password matches", singInController)
-        dynamicView.add(singInController, "Triggers redirect", loginDialog)
+
+        assertExpectedDiagramWasWrittenForView(workspace, diagramKey)
+    }
+
+    @Test
+    fun `test interaction diagram with parallel sequence is written to plant uml as expected`() {
+        val diagramKey = "DynamicWithParallelSequence"
+        val dynamicView: DynamicView = workspace.views.dynamicView(
+            apiApplication,
+            diagramKey,
+            "description"
+        )
+
+        dynamicView.add(loginDialog, "Submits credentials to", singInController)
+        dynamicView.parallelSequence(
+            { dynamicView.add(singInController, "Triggers redirect", loginDialog) },
+            { dynamicView.add(singInController, "Validates credentials using", securityComponent) }
+        )
+        dynamicView.add(securityComponent, "Returns true if the hashed password matches", singInController)
 
         assertExpectedDiagramWasWrittenForView(workspace, diagramKey)
     }
