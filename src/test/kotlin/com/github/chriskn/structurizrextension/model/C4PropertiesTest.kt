@@ -60,23 +60,28 @@ class C4PropertiesTest {
     @Test
     fun `should retain property order`() {
         val diagramKey = "C4PropertiesOrderTest"
+        val workspace = Workspace("My Workspace", "Some Description")
         val values = listOf(
             listOf("b", "x", "y"),
             listOf("a", "x", "y"),
             listOf("c", "x", "y"),
             listOf("1", "x", "y")
         )
-        val workspace = Workspace("My Workspace", "Some Description")
+        val propertiesAsc = C4Properties(values = values.sortedBy { it.first() })
+        val propertiesDesc = C4Properties(values = values.sortedBy { it.first() }.reversed())
         val systemAsc = workspace.model.softwareSystem(
             "test asc",
             "test asc",
-            properties = C4Properties(values = values.sortedBy { it.first() })
+            properties = propertiesAsc
         )
         val systemDesc = workspace.model.softwareSystem(
             "test desc",
             "test desc",
-            properties = C4Properties(values = values.sortedBy { it.first() }.reversed())
+            properties = propertiesDesc
         )
+        systemAsc.uses(systemDesc, "Asc", properties = propertiesAsc)
+        systemDesc.uses(systemAsc, "Desc", properties = propertiesDesc)
+
         workspace.views.systemContextView(
             systemAsc,
             diagramKey,

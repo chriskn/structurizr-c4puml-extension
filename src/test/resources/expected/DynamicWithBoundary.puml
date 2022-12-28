@@ -1,0 +1,19 @@
+@startuml(id=DynamicWithBoundary)
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Dynamic.puml
+title Reporting Service - Dynamic
+caption This diagram shows what happens when a customer updates their details
+
+SHOW_PERSON_OUTLINE()
+LAYOUT_TOP_DOWN()
+
+System_Boundary(2_boundary, Customer Information System) {
+  Container_Boundary(13_boundary, Reporting Service) {
+    Component(21, "Reporting Controller", "REST", "Reporting Controller", "")
+    Component(22, "Reporting Repository", "JDBC", "Reporting repository", "")
+  }
+}
+RelIndex_D(1,21, 22, "Stores entity")
+
+SHOW_LEGEND(true)
+
+@enduml

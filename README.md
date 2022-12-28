@@ -5,20 +5,25 @@
 Structurizr C4-PlantUML extension aims to bridge the gab between the [structurizr java library](https://github.com/structurizr/java) and [C4-PlantUML](https://github.com/plantuml-stdlib/C4-PlantUML) by extending the structurizr model and providing an extended C4-PlantUML writer. It is written in Kotlin.   
 
 ## Table of contents
-  * [Example](#example)
+  * [Examples](#example)
   * [How to use it](#how-to-use-it)
   * [Related resources](#related-resources)
 
-## Example
+## Examples
 
-The following example container diagram shows the additional features the Structurizr C4-PlantUML extension provides: 
+The following examples diagrams demonstrate the additional features the Structurizr C4-PlantUML extension provides: 
 
 * links, icons and properties for elements and relationships
 * external containers 
 * visualization for system and container boundaries
 * database and queue shapes
 * differentiation between synchronous and asynchronous relationships
+* nested numbered parallel sequences for dynamic diagrams
 * advanced layout configuration for C4-PlantUML diagrams
+
+More examples can be found under `src/test/kotlin`
+
+### Core diagrams 
 
 ![Example container diagram](./docs/container_example.svg)
 
@@ -138,8 +143,32 @@ fun createAndWriteContainerView(){
     workspace.writeDiagrams(File("diagrams/"))
 }
 ```
+### Dynamic diagrams
 
-More examples can be found under `src/test/kotlin`
+As the following example shows, the C4-PlantUML extension provides, in addition to the parallel sequences provided by structurizr library, nested numbered parallel sequences for dynamic diagrams. 
+
+![Example dynamic diagram](./docs/dynamic_example_nested.svg)
+
+```kotlin
+dynamicView.add(customer, customerFrontend, "Uses")
+dynamicView.add(customerFrontend, customerService, "Updates customer information using")
+dynamicView.add(customerService, customerDatabase, "Stores data in")
+dynamicView.add(customerService, messageBus, "Sends customer update events to")
+with(dynamicView.startNestedParallelSequence()) {
+    add(messageBus, reportingService, "Sends customer update events to")
+    with(this.startNestedParallelSequence()) {
+        add(reportingService, reportingDatabase, "Stores data in")
+        endParallelSequence()
+    }
+    add(messageBus, auditingService, "Sends customer update events to")
+    with(this.startNestedParallelSequence()) {
+        add(auditingService, auditStore, "Stores events in")
+        endParallelSequence()
+    }
+    add(customerService, customerFrontend, "Confirms update to")
+    endParallelSequence()
+}
+```
 
 ## How to use it 
 

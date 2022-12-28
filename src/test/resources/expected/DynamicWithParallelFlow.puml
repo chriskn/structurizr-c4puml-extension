@@ -1,0 +1,35 @@
+@startuml(id=DynamicWithParallelFlow)
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/mysql.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Dynamic.puml
+title Customer Information System - Dynamic
+caption This diagram shows what happens when a customer updates their details
+
+SHOW_PERSON_OUTLINE()
+LAYOUT_TOP_DOWN()
+
+AddRelTag("async relationship", $textColor="$ARROW_COLOR", $lineColor="$ARROW_COLOR", $lineStyle = DashedLine())
+
+Person(1, "Customer", "A costumer", "")
+Container(4, "Customer Frontend Application", "Angular", "Allows customers to manage their profile", "")
+Container(6, "Customer Service", "Java and Spring Boot", "The point of access for customer information.", "")
+ContainerDb(9, "Customer Database", "Oracle", "Stores customer information", "")
+ContainerQueue(11, "Message Bus", "RabbitMQ", "Transport for business events.", "")
+Container(17, "Auditing Service", "C#, Net", "Provides organisation-wide auditing facilities.", "")
+Container(13, "Reporting Service", "Ruby", "Creates normalised data for reporting purposes.", "")
+ContainerDb(15, "Reporting Database", "MySql", "Stores a normalised version of all business data for ad hoc reporting purposes", "")
+ContainerDb(19, "Audit Store", "Event Store", "Stores information about events that have happened", "")
+RelIndex_D(1,1, 4, "Uses")
+RelIndex_D(2,4, 6, "Updates customer information using", "JSON/HTTPS")
+RelIndex_D(3,6, 9, "Stores data in", "JDBC", $link="www.google.com")
+SetPropertyHeader("field", "value")
+AddProperty("Event Type", "create")
+RelIndex_D(4,6, 11, "Sends customer update events to", $tags="async relationship")
+RelIndex_D(5,11, 17, "Sends customer update events to", $tags="async relationship")
+RelIndex_D(5,11, 13, "Sends customer update events to", $tags="async relationship")
+RelIndex_D(5,6, 4, "Confirms update to", "WebSocket", $link="www.bing.com", $tags="async relationship")
+RelIndex_D(6,13, 15, "Stores data in", $sprite=mysql)
+RelIndex_D(6,17, 19, "Stores events in")
+
+SHOW_LEGEND(true)
+
+@enduml

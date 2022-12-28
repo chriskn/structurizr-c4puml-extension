@@ -217,7 +217,7 @@ class ExtendedC4PlantUmlWriter : C4PlantUMLWriter() {
         dependencyConfigurations.forEach { conf ->
             view.relationships
                 .filter { conf.filter(it.relationship) }
-                .map { relationshipView -> relationshipView.apply(conf) }
+                .map { relationshipView -> relationshipView.apply(conf, view) }
         }
         val sorted = if (view is DynamicView) {
             view.relationships.sortedBy { rv: RelationshipView ->
@@ -233,7 +233,8 @@ class ExtendedC4PlantUmlWriter : C4PlantUMLWriter() {
     }
 
     private fun RelationshipView.apply(
-        conf: DependencyConfiguration
+        conf: DependencyConfiguration,
+        view: View
     ): Relationship {
         val rel = this.relationship
         val direction = conf.direction
@@ -242,6 +243,9 @@ class ExtendedC4PlantUmlWriter : C4PlantUMLWriter() {
             rel.addProperty(C4_LAYOUT_DIRECTION, direction.name)
         }
         if (mode != null) {
+            require(view !is DynamicView) {
+                "Setting the dependency mode is not supported fot dynamic views"
+            }
             rel.addProperty(C4_LAYOUT_MODE, mode.name)
         }
         return rel

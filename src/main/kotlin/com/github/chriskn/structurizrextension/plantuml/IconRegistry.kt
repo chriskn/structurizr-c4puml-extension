@@ -250,6 +250,7 @@ object IconRegistry {
         "awsaurorapostgresqlinstance" to "${AWS_ICON_URL}Database/AuroraPostgreSQLInstance.puml",
         "awsaurorapostgresqlinstancealternate" to "${AWS_ICON_URL}Database/AuroraPostgreSQLInstanceAlternate.puml",
         "awsaurorasqlserverinstance" to "${AWS_ICON_URL}Database/AuroraSQLServerInstance.puml",
+        "awsaurorasqlserverinstance" to "${AWS_ICON_URL}Database/AuroraSQLServerInstance.puml",
         "awsaurorasqlserverinstancealternate" to "${AWS_ICON_URL}Database/AuroraSQLServerInstanceAlternate.puml",
         "awsdatabase" to "${AWS_ICON_URL}Database/Database.puml",
         "awsdatabasemigrationservice" to "${AWS_ICON_URL}Database/DatabaseMigrationService.puml",

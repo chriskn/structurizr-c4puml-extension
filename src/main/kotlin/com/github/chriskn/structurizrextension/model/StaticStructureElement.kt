@@ -34,7 +34,7 @@ fun <T : StaticStructureElement> StaticStructureElement.uses(
 /**
  * Adds a relationship from [source] with the given properties
  *
- * @param source       the destination of the dependency
+ * @param source            the source of the dependency
  * @param description       the description of the dependency
  * @param technology        the technology of the dependency
  * @param interactionStyle  the [InteractionStyle] of the dependency

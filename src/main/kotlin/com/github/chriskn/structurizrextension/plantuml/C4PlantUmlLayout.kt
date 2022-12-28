@@ -107,7 +107,7 @@ enum class Direction {
  * @param direction the [Direction] that should be applied for the filtered relationships
  */
 data class DependencyConfiguration(
-    val filter: (predicate: Relationship) -> Boolean,
+    val filter: (relationship: Relationship) -> Boolean,
     val mode: Mode? = null,
     val direction: Direction? = null
 )

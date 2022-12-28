@@ -7,7 +7,6 @@ import com.structurizr.view.ComponentView
 import com.structurizr.view.ContainerView
 import com.structurizr.view.DeploymentView
 import com.structurizr.view.DynamicView
-import com.structurizr.view.RelationshipView
 import com.structurizr.view.SystemContextView
 import com.structurizr.view.SystemLandscapeView
 import com.structurizr.view.ViewSet
@@ -128,23 +127,6 @@ fun ViewSet.dynamicView(
 ): DynamicView {
     layout?.let { LayoutRegistry.registerLayoutForKey(key, layout) }
     return this.createDynamicView(system, key, description)
-}
-
-/**
- * Enables basic support for parallel sequences with nested step ordering and step numbers
- */
-fun DynamicView.parallelSequence(vararg relationShipFunctions: () -> RelationshipView) {
-    var nestedCounter = 0
-    val functionsIter = relationShipFunctions.iterator()
-    var lastRelationshipView = functionsIter.next()()
-    this.startParallelSequence()
-    val counter = lastRelationshipView.order
-    lastRelationshipView.order = "$counter.${++nestedCounter}"
-    while (functionsIter.hasNext()) {
-        lastRelationshipView = functionsIter.next()()
-        lastRelationshipView.order = "$counter.${++nestedCounter}"
-    }
-    this.endParallelSequence()
 }
 
 /**

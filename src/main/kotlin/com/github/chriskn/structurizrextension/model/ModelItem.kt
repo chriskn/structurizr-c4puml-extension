@@ -47,7 +47,7 @@ var ModelItem.c4Properties: C4Properties?
     }
 
     /**
-     * Sets the [C4Properties].
+     * Sets the [C4Properties]. Properties are added to the existing properties.
      */
     set(properties) {
         if (properties != null) {
