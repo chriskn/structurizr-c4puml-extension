@@ -145,7 +145,7 @@ fun createAndWriteContainerView(){
 ```
 ### Dynamic diagrams
 
-As the following example shows, the C4-PlantUML extension provides, in addition to the parallel sequences provided by structurizr library, nested numbered parallel sequences for dynamic diagrams. 
+As the following example shows, the C4-PlantUML extension provides, in addition to the parallel sequences provided by the Structurizr library, nested numbered parallel sequences for dynamic diagrams. 
 
 ![Example dynamic diagram](./docs/dynamic_example_nested.svg)
 
