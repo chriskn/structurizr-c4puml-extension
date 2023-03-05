@@ -6,15 +6,16 @@ caption Dependency Test
 SHOW_PERSON_OUTLINE()
 LAYOUT_TOP_DOWN()
 
-System(1, "A", "A", "")
-System(2, "B", "B", "")
-System(4, "C", "C", "")
-System(6, "D", "C", "")
-System(8, "E", "E", "")
-Rel_Neighbor(1, 6, "uses")
-Rel_D(2, 1, "uses")
-Rel_D(4, 1, "uses")
-Rel_D(8, 1, " ")
+System(A, "A", "A", "")
+System(B, "B", "B", "")
+System(C, "C", "C", "")
+System(D, "D", "C", "")
+System(E, "E", "E", "")
+
+Rel_Neighbor(A, D, "uses")
+Rel_D(B, A, "uses")
+Rel_D(C, A, "uses")
+Rel_D(E, A, " ")
 
 LAYOUT_WITH_LEGEND()
 

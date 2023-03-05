@@ -1,8 +1,8 @@
 package com.github.chriskn.structurizrextension
 
+import com.github.chriskn.structurizrextension.export.ExtendedC4PlantUMLExporter
 import com.structurizr.Workspace
-import com.structurizr.io.plantuml.ExtendedC4PlantUmlWriter
-import com.structurizr.io.plantuml.PlantUMLDiagram
+import com.structurizr.export.Diagram
 import java.io.BufferedWriter
 import java.io.File
 import java.io.FileWriter
@@ -16,14 +16,13 @@ import java.io.FileWriter
  */
 fun Workspace.writeDiagrams(outputFolder: File) {
     outputFolder.mkdirs()
-    val plantUMLWriter = ExtendedC4PlantUmlWriter()
-    val diagrams = plantUMLWriter.toPlantUMLDiagrams(this)
+    val diagrams = ExtendedC4PlantUMLExporter().export(this)
     for (diagram in diagrams) {
         writeDiagram(diagram, File(outputFolder, "${diagram.key}.puml"))
     }
 }
 
-private fun writeDiagram(diagram: PlantUMLDiagram, out: File) {
+private fun writeDiagram(diagram: Diagram, out: File) {
     val writer = BufferedWriter(FileWriter(out))
     writer.write(diagram.definition)
     writer.close()

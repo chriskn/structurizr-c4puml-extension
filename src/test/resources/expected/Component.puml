@@ -9,25 +9,27 @@ caption Test component view
 SHOW_PERSON_OUTLINE()
 LAYOUT_LEFT_RIGHT()
 
-AddRelTag("async relationship", $textColor="$ARROW_COLOR",$lineColor="$ARROW_COLOR", $lineStyle = DashedLine())
+AddRelTag("async relationship", $textColor="$ARROW_COLOR", $lineColor="$ARROW_COLOR", $lineStyle = DashedLine())
 
-ContainerDb(12, "Database", "postgres", "some database", "postgresql")
-Person(14, "Maintainer", "some employee", "")
-Person_Ext(3, "User", "A user", "")
-Container_Boundary(2_boundary, Backend App) {
-  ComponentDb(10, "Cache", "RocksDB", "In Memory DB", "rocksdb", $link="https://google.de")
+ContainerDb(MySoftwareSystem.Database, "Database", "postgres", "some database", "postgresql")
+Person_Ext(User, "User", "A user", "")
+Person(Maintainer, "Maintainer", "some employee", "")
+
+Container_Boundary("MySoftwareSystem.BackendApp_boundary", "Backend App") {
+  ComponentDb(MySoftwareSystem.BackendApp.Cache, "Cache", "RocksDB", "In Memory DB", "rocksdb", $link="https://google.de")
+  Component(MySoftwareSystem.BackendApp.MyRestController, "MyRestController", "REST", "Provides data via rest", "")
   WithoutPropertyHeader()
   AddProperty("jdbcUrl", "someurl")
-  Component(6, "MyRepo", "Kotlin, JDBC", "Provides CRUD operations for data", "")
-  Component(4, "MyRestController", "REST", "Provides data via rest", "")
-  Component(7, "MyService", "", "Does implement some logic", "kotlin", $link="https://google.de")
+  Component(MySoftwareSystem.BackendApp.MyRepo, "MyRepo", "Kotlin, JDBC", "Provides CRUD operations for data", "")
+  Component(MySoftwareSystem.BackendApp.MyService, "MyService", "", "Does implement some logic", "kotlin", $link="https://google.de")
 }
-Rel_D(14, 4, "Admin UI", "REST")
-Rel_D(6, 12, "gets data from")
-Rel_D(4, 7, "calls")
-Rel_D(7, 10, "uses")
-Rel_D(7, 6, "gets notified", $tags="async relationship")
-Rel_D(3, 4, "Website", "REST")
+
+Rel_D(Maintainer, MySoftwareSystem.BackendApp.MyRestController, "Admin UI", "REST")
+Rel_D(MySoftwareSystem.BackendApp.MyRepo, MySoftwareSystem.Database, "gets data from")
+Rel_D(MySoftwareSystem.BackendApp.MyRestController, MySoftwareSystem.BackendApp.MyService, "calls")
+Rel_D(MySoftwareSystem.BackendApp.MyService, MySoftwareSystem.BackendApp.Cache, "uses")
+Rel_D(MySoftwareSystem.BackendApp.MyService, MySoftwareSystem.BackendApp.MyRepo, "gets notified", $tags="async relationship")
+Rel_D(User, MySoftwareSystem.BackendApp.MyRestController, "Website", "REST")
 
 skinparam linetype ortho
 skinparam nodesep 100

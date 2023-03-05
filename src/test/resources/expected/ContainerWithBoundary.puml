@@ -13,31 +13,35 @@ LAYOUT_TOP_DOWN()
 
 AddRelTag("async relationship", $textColor="$ARROW_COLOR", $lineColor="$ARROW_COLOR", $lineStyle = DashedLine())
 
-Person_Ext(17, "Android User", "some Android user", "android-icon")
 WithoutPropertyHeader()
 AddProperty("prop 1", "value 1")
-Person(6, "Maintainer", "some employee", "", $link="https://www.google.de")
-System_Boundary(1_boundary, My Software System) {
-  Container(3, "App", "Android", "android app", "android-icon")
+Person(Maintainer, "Maintainer", "some employee", "", $link="https://www.google.de")
+Person_Ext(AndroidUser, "Android User", "some Android user", "android-icon")
+
+System_Boundary(MySoftwareSystem, My Software System) {
   WithoutPropertyHeader()
   AddProperty("prop 1", "value 1")
-  Container(2, "Backend App", "Kotlin", "some backend app", "docker-icon", $link="https://www.google.de")
-  ContainerDb(4, "Database", "postgres", "some database", "postgresql")
+  Container(MySoftwareSystem.BackendApp, "Backend App", "Kotlin", "some backend app", "docker-icon", $link="https://www.google.de")
+  Container(MySoftwareSystem.App, "App", "Android", "android app", "android-icon")
+  ContainerDb(MySoftwareSystem.Database, "Database", "postgres", "some database", "postgresql")
 }
-System_Boundary(11_boundary, GraphQL) {
-  Container(12, "Internal Schema", "", "Schema provided by our app", "")
-  Container_Ext(15, "External Schema", "", "Schema provided by another team", "")
+
+System_Boundary(GraphQL, GraphQL) {
+  Container(GraphQL.InternalSchema, "Internal Schema", "", "Schema provided by our app", "")
+  Container_Ext(GraphQL.ExternalSchema, "External Schema", "", "Schema provided by another team", "")
 }
-System_Boundary(8_boundary, Broker) {
-  ContainerQueue_Ext(9, "my.topic", "", "external topic", "kafka")
+
+System_Boundary(Broker, Broker) {
+  ContainerQueue_Ext(Broker.mytopic, "my.topic", "", "external topic", "kafka")
 }
-Rel_D(17, 3, "uses app")
-Rel_D(3, 12, "reuqest data using", "GraphQL", $sprite=graphql, $link="https://graphql.org/")
-Rel_R(2, 4, "CRUD", "JPA")
-Rel_D(2, 12, "provides subgraph to")
-Rel_U(2, 9, "reads topic", "Avro", $tags="async relationship")
-Rel_D(15, 12, "extends schema")
-Rel_D(6, 2, "Admin UI", "REST")
+
+Rel_D(AndroidUser, MySoftwareSystem.App, "uses app")
+Rel_D(MySoftwareSystem.App, GraphQL.InternalSchema, "reuqest data using", "GraphQL", $sprite=graphql, $link="https://graphql.org/")
+Rel_R(MySoftwareSystem.BackendApp, MySoftwareSystem.Database, "CRUD", "JPA")
+Rel_D(MySoftwareSystem.BackendApp, GraphQL.InternalSchema, "provides subgraph to")
+Rel_U(MySoftwareSystem.BackendApp, Broker.mytopic, "reads topic", "Avro", $tags="async relationship")
+Rel_D(GraphQL.ExternalSchema, GraphQL.InternalSchema, "extends schema")
+Rel_D(Maintainer, MySoftwareSystem.BackendApp, "Admin UI", "REST")
 
 skinparam linetype ortho
 skinparam nodesep 100

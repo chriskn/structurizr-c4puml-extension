@@ -1,6 +1,6 @@
 package com.github.chriskn.structurizrextension.model
 
-import com.structurizr.io.plantuml.C4PlantUMLWriter
+import com.structurizr.export.plantuml.C4PlantUMLExporter
 import com.structurizr.model.Component
 import com.structurizr.model.Container
 import com.structurizr.model.Location
@@ -47,8 +47,8 @@ var Container.c4Type: C4Type?
     /**
      * Returns the [C4Type] of the container.
      */
-    get() = if (this.properties.containsKey(C4PlantUMLWriter.C4_ELEMENT_TYPE)) {
-        C4Type.fromC4Type(this.properties.getValue(C4PlantUMLWriter.C4_ELEMENT_TYPE))
+    get() = if (this.properties.containsKey(C4PlantUMLExporter.C4PLANTUML_SPRITE)) {
+        C4Type.fromC4Type(this.properties.getValue(C4PlantUMLExporter.C4PLANTUML_SPRITE))
     } else {
         null
     }
@@ -58,7 +58,7 @@ var Container.c4Type: C4Type?
      */
     set(value) {
         if (value != null) {
-            this.addProperty(C4PlantUMLWriter.C4_ELEMENT_TYPE, value.c4Type)
+            this.addProperty(C4PlantUMLExporter.C4PLANTUML_SPRITE, value.c4Type)
         }
     }
 

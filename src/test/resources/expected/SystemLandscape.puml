@@ -9,24 +9,26 @@ caption A test Landscape
 SHOW_PERSON_OUTLINE()
 LAYOUT_LEFT_RIGHT()
 
-WithoutPropertyHeader()
-AddProperty("prop 1", "value 1")
-Person(6, "Actor", "", "", $link="https://www.google.de")
-System_Ext(1, "Software System 0", "Description 0", "")
-System(2, "Software System 1", "Description 1", "android-icon", $link="https://www.android.com")
-package "My Enterprise" {
+Enterprise_Boundary(enterprise, My Enterprise) {
   SetPropertyHeader("Property", "Value")
   AddProperty("prop key0", "prop value0")
   AddProperty("prop key1", "prop value1")
   AddProperty("prop key2", "prop value2")
-  System(4, "Software System 2", "Description 2", "docker-icon", $link="https://www.docker.com/")
+  System(SoftwareSystem2, "Software System 2", "Description 2", "docker-icon", $link="https://www.docker.com/")
 }
-Rel_D(6, 1, "deletes", "gRPC")
+
+System_Ext(SoftwareSystem0, "Software System 0", "Description 0", "")
+System(SoftwareSystem1, "Software System 1", "Description 1", "android-icon", $link="https://www.android.com")
+WithoutPropertyHeader()
+AddProperty("prop 1", "value 1")
+Person(Actor, "Actor", "", "", $link="https://www.google.de")
+
+Rel_D(Actor, SoftwareSystem0, "deletes", "gRPC")
 WithoutPropertyHeader()
 AddProperty("prop", "val")
-Rel_D(6, 2, "creates", "HTTP", $sprite=html-5, $link="https://de.wikipedia.org/wiki/Hypertext_Transfer_Protocol")
-Rel_D(1, 2, "0 used by 1")
-Rel_D(4, 1, "2 uses 1")
+Rel_D(Actor, SoftwareSystem1, "creates", "HTTP", $sprite=html-5, $link="https://de.wikipedia.org/wiki/Hypertext_Transfer_Protocol")
+Rel_D(SoftwareSystem0, SoftwareSystem1, "0 used by 1")
+Rel_D(SoftwareSystem2, SoftwareSystem0, "2 uses 1")
 
 SHOW_FLOATING_LEGEND(LEGEND, true)
 

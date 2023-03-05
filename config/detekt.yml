@@ -15,3 +15,8 @@ complexity:
     functionThreshold: 8
   CyclomaticComplexMethod:
     threshold: 20
+  TooManyFunctions:
+    thresholdInClasses: 12
+    thresholdInFiles: 12
+    thresholdInObjects: 12
+    thresholdInInterfaces: 12

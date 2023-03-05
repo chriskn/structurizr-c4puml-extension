@@ -6,13 +6,13 @@ caption This diagram shows what happens when a customer updates their details
 SHOW_PERSON_OUTLINE()
 LAYOUT_TOP_DOWN()
 
-System_Boundary(2_boundary, Customer Information System) {
-  Container_Boundary(13_boundary, Reporting Service) {
-    Component(21, "Reporting Controller", "REST", "Reporting Controller", "")
-    Component(22, "Reporting Repository", "JDBC", "Reporting repository", "")
+System_Boundary(CustomerInformationSystem, Customer Information System) {
+  Container_Boundary("CustomerInformationSystem.ReportingService_boundary", "Reporting Service") {
+    Component(CustomerInformationSystem.ReportingService.ReportingController, "Reporting Controller", "REST", "Reporting Controller", "")
+    Component(CustomerInformationSystem.ReportingService.ReportingRepository, "Reporting Repository", "JDBC", "Reporting repository", "")
   }
 }
-RelIndex_D(1,21, 22, "Stores entity")
+RelIndex_D(1,CustomerInformationSystem.ReportingService.ReportingController, CustomerInformationSystem.ReportingService.ReportingRepository, "Stores entity")
 
 SHOW_LEGEND(true)
 

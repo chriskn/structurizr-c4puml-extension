@@ -133,4 +133,6 @@ data class C4PlantUmlLayout(
     val showPersonOutline: Boolean = true,
     val hideStereotypes: Boolean = true,
     val dependencyConfigurations: List<DependencyConfiguration> = listOf()
-)
+) {
+    fun hasPostamble(): Boolean = nodeSep != null || rankSep != null || lineType != null || legend != None
+}

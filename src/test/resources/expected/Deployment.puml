@@ -20,42 +20,42 @@ AddRelTag("async relationship", $textColor="$ARROW_COLOR", $lineColor="$ARROW_CO
 SetPropertyHeader("Property", "Value", "Description")
 AddProperty("Property1", "Value1", "Description1")
 AddProperty("Property2", "Value2", "Description2")
-Node(8, "AWS", "", "Production AWS environment", "Cloudalt"){
-  Node(9, "AWS RDS", "", "", ""){
+Node(Default.AWS, "AWS", "", "Production AWS environment", "Cloudalt"){
+  Node(Default.AWS.AWSRDS, "AWS RDS", "", "", ""){
     WithoutPropertyHeader()
     AddProperty("region", "eu-central-1")
-    ContainerDb(11, "Database", "PostgreSql", "Stores data", "postgresql")
+    ContainerDb(Default.AWS.AWSRDS.Database_1, "Database", "PostgreSql", "Stores data", "postgresql")
     WithoutPropertyHeader()
     AddProperty("region", "eu-west-1")
-    ContainerDb(10, "Failover Database", "PostgreSql", "Stores data", "postgresql")
+    ContainerDb(Default.AWS.AWSRDS.FailoverDatabase_1, "Failover Database", "PostgreSql", "Stores data", "postgresql")
   }
-  Node(13, "EKS cluster", "", "", "EKSCloud"){
-    Node(14, "my.web.app", "", "Web App POD", ""){
-      Node(15, "Web App container", "", "", "docker-icon"){
-        Node(18, "Jaeger Sidecar", "", "Jaeger sidecar sending Traces", "")
-        Container(16, "Web Application", "Java and Spring MVC", "Spring Boot web application", "spring")
+  Node(Default.AWS.EKScluster, "EKS cluster", "", "", "EKSCloud"){
+    Node(Default.AWS.EKScluster.mywebapp, "my.web.app", "", "Web App POD", ""){
+      Node(Default.AWS.EKScluster.mywebapp.WebAppcontainer, "Web App container", "", "", "docker-icon"){
+        Node(Default.AWS.EKScluster.mywebapp.WebAppcontainer.JaegerSidecar, "Jaeger Sidecar", "", "Jaeger sidecar sending Traces", "")
+        Container(Default.AWS.EKScluster.mywebapp.WebAppcontainer.WebApplication_1, "Web Application", "Java and Spring MVC", "Spring Boot web application", "spring")
       }
     }
     SetPropertyHeader("Property", "value")
     AddProperty("IP", "10.234.234.132")
-    Node(25, "Load Balancer", "nginx", "Nginx Load Balancer", "nginx", $link="https://www.google.de")
+    Node(Default.AWS.EKScluster.LoadBalancer, "Load Balancer", "nginx", "Nginx Load Balancer", "nginx", $link="https://www.google.de")
   }
 }
-Node(19, "Another AWS Account", "", "", "Cloudalt"){
-  Node(20, "Jaeger Container", "", "", ""){
-    Node(22, "Jaeger", "", "", "")
+Node(Default.AnotherAWSAccount, "Another AWS Account", "", "", "Cloudalt"){
+  Node(Default.AnotherAWSAccount.JaegerContainer, "Jaeger Container", "", "", ""){
+    Node(Default.AnotherAWSAccount.JaegerContainer.Jaeger, "Jaeger", "", "", "")
   }
 }
-Node(23, "Apple Device", "", "", "apple"){
-  System_Ext(24, "iOS App", "iOS Application", "")
+Node(Default.AppleDevice, "Apple Device", "", "", "apple"){
+  System_Ext(Default.AppleDevice.iOSApp_1, "iOS App", "iOS Application", "")
 }
-Rel_D(23, 25, "requests data from")
-Rel_R(11, 10, "replicates data to")
+Rel_D(Default.AppleDevice, Default.AWS.EKScluster.LoadBalancer, "requests data from")
+Rel_R(Default.AWS.AWSRDS.Database_1, Default.AWS.AWSRDS.FailoverDatabase_1, "replicates data to")
 SetPropertyHeader("key", "value")
 AddProperty("ip", "10.234.12.13")
-Rel_D(18, 20, "writes traces to", $sprite=kafka, $link="https://www.jaegertracing.io/", $tags="async relationship")
-Rel_R(25, 15, "forwards requests to")
-Rel_D(16, 11, "stores data in", "JDBC")
+Rel_D(Default.AWS.EKScluster.mywebapp.WebAppcontainer.JaegerSidecar, Default.AnotherAWSAccount.JaegerContainer, "writes traces to", $sprite=kafka, $link="https://www.jaegertracing.io/", $tags="async relationship")
+Rel_R(Default.AWS.EKScluster.LoadBalancer, Default.AWS.EKScluster.mywebapp.WebAppcontainer, "forwards requests to")
+Rel_D(Default.AWS.EKScluster.mywebapp.WebAppcontainer.WebApplication_1, Default.AWS.AWSRDS.Database_1, "stores data in", "JDBC")
 
 skinparam nodesep 50
 skinparam ranksep 50
