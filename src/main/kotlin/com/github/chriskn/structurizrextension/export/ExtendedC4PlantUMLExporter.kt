@@ -1,5 +1,6 @@
 package com.github.chriskn.structurizrextension.export
 
+import com.github.chriskn.structurizrextension.export.exporter.ContainerViewExporter
 import com.github.chriskn.structurizrextension.export.exporter.DeploymentViewExporter
 import com.github.chriskn.structurizrextension.export.exporter.DynamicViewExporter
 import com.github.chriskn.structurizrextension.export.writer.BoundaryWriter
@@ -15,6 +16,7 @@ import com.structurizr.model.Container
 import com.structurizr.model.DeploymentNode
 import com.structurizr.model.Element
 import com.structurizr.model.SoftwareSystem
+import com.structurizr.view.ContainerView
 import com.structurizr.view.DeploymentView
 import com.structurizr.view.DynamicView
 import com.structurizr.view.ModelView
@@ -38,6 +40,13 @@ class ExtendedC4PlantUMLExporter : AbstractDiagramExporter() {
         relationshipWriter
     )
     private val dynamicViewExporter = DynamicViewExporter(
+        boundaryWriter,
+        footerWriter,
+        headerWriter,
+        elementWriter,
+        relationshipWriter
+    )
+    private val componentViewExporter = ContainerViewExporter(
         boundaryWriter,
         footerWriter,
         headerWriter,
@@ -68,6 +77,8 @@ class ExtendedC4PlantUMLExporter : AbstractDiagramExporter() {
     override fun export(view: DynamicView, order: String?): Diagram = dynamicViewExporter.exportDynamicView(view)
 
     override fun export(view: DeploymentView): Diagram = deploymentViewExporter.exportDeploymentView(view)
+
+    override fun export(view: ContainerView): Diagram = componentViewExporter.exportContainerView(view)
 
     override fun createDiagram(view: ModelView, definition: String): Diagram = createC4Diagram(view, definition)
 
