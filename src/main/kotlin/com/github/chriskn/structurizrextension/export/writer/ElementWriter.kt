@@ -68,39 +68,41 @@ class ElementWriter(
 
     private fun InfrastructureNode.toMacro() =
         """Node(${idOf(this)}, "$name", "${technology ?: ""}", "${description ?: ""}", "${
-        IconRegistry.iconFileNameFor(
-            icon
-        ) ?: ""
+            IconRegistry.iconFileNameFor(
+                icon
+            ) ?: ""
         }"${linkString(link)})"""
 
     private fun SoftwareSystem.toMacro(id: String) =
         """System${this.c4Type?.c4Type ?: ""}${this.location.toPlantUmlString()}($id, "$name", "${description ?: ""}", "${
-        IconRegistry.iconFileNameFor(
-            icon
-        ) ?: ""
+            IconRegistry.iconFileNameFor(
+                icon
+            ) ?: ""
         }"${linkString(link)})"""
 
     private fun Container.toMacro(id: String): String =
         """Container${this.c4Type?.c4Type ?: ""}${this.location.toPlantUmlString()}($id, "$name", "$technology", "${description ?: ""}", "${
-        IconRegistry.iconFileNameFor(
-            icon
-        ) ?: ""
+            IconRegistry.iconFileNameFor(
+                icon
+            ) ?: ""
         }"${linkString(link)})"""
 
     private fun Person.toMacro(): String {
         val externalMarker = this.location.toPlantUmlString()
         return """Person$externalMarker(${idOf(this)}, "$name", "${description ?: ""}", "${
-        IconRegistry.iconFileNameFor(
-            icon
-        ) ?: ""
+            IconRegistry.iconFileNameFor(
+                icon
+            ) ?: ""
         }"${linkString(link)})"""
     }
 
     private fun Component.toMacro(): String {
-        return """Component${this.c4Type?.c4Type ?: ""}(${idOf(this)}, "$name", "$technology", "${description ?: ""}", "${
-        IconRegistry.iconFileNameFor(
-            icon
-        ) ?: ""
+        return """Component${this.c4Type?.c4Type ?: ""}(${idOf(
+            this
+        )}, "$name", "$technology", "${description ?: ""}", "${
+            IconRegistry.iconFileNameFor(
+                icon
+            ) ?: ""
         }"${linkString(link)})"""
     }
 

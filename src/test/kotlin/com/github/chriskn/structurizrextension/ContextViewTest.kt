@@ -36,6 +36,8 @@ class ContextViewTest {
             Dependency(system0, "0 used by 1")
         ),
     )
+
+    @Suppress("UnusedPrivateProperty")
     private val system2 = model.softwareSystem(
         "Software System 2",
         "Description 2",
