@@ -73,8 +73,8 @@ object BoundaryWriter {
 
     private fun DeploymentNode.toMacro() =
         """Node(${idOf(this)}, "$name", "${technology ?: ""}", "${description ?: ""}", "${
-        IconRegistry.iconFileNameFor(
-            icon
-        ) ?: ""
+            IconRegistry.iconFileNameFor(
+                icon
+            ) ?: ""
         }"${linkString(link)}){"""
 }

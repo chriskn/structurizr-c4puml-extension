@@ -1,6 +1,6 @@
 plugins {
     kotlin("jvm") version "1.9.10"
-    id("io.gitlab.arturbosch.detekt") version "1.22.0"
+    id("io.gitlab.arturbosch.detekt") version "1.23.1"
     id("com.adarshr.test-logger") version "3.2.0"
     jacoco
 
@@ -21,7 +21,7 @@ val structurizrVersion = "1.24.0"
 val structurizrExportVersion = "1.14.0"
 val junitVersion = "5.10.0"
 val assertJVersion = "3.24.2"
-val detektVersion = "1.22.0"
+val detektVersion = "1.23.1"
 val kotlinLoggingVersion = "3.0.5"
 
 dependencies {
