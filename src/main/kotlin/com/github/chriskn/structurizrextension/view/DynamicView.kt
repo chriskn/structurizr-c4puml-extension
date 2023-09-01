@@ -3,6 +3,7 @@ package com.github.chriskn.structurizrextension.view
 import com.structurizr.model.StaticStructureElement
 import com.structurizr.view.DynamicView
 import com.structurizr.view.RelationshipView
+import com.structurizr.view.publicOrder
 
 /**
  * Adds a dependency to the [NestedParallelSequenceContext] from [source] to [destination] with the given properties
@@ -23,7 +24,7 @@ fun DynamicView.add(
     technology: String? = null,
 ): RelationshipView {
     val relationshipView = this.add(source, description, technology, destination)
-    relationshipView.order = (relationshipView.order.toInt() + this.numberOfEndedParallelFlows).toString()
+    relationshipView.publicOrder = (relationshipView.order.toInt() + this.numberOfEndedParallelFlows).toString()
     return relationshipView
 }
 

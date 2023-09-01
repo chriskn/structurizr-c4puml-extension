@@ -3,6 +3,7 @@ package com.github.chriskn.structurizrextension.view
 import com.structurizr.model.StaticStructureElement
 import com.structurizr.view.DynamicView
 import com.structurizr.view.RelationshipView
+import com.structurizr.view.publicOrder
 
 /**
  * Wrapper around [DynamicView] to manage nested numbering for parallel sequences.
@@ -44,7 +45,7 @@ data class NestedParallelSequenceContext(
             description = description,
             technology = technology
         )
-        view.order = getNextOder()
+        view.publicOrder = getNextOder()
 
         return view
     }
