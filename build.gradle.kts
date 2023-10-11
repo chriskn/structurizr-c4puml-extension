@@ -1,7 +1,7 @@
 plugins {
     kotlin("jvm") version "1.9.10"
     id("io.gitlab.arturbosch.detekt") version "1.23.1"
-    id("com.adarshr.test-logger") version "3.2.0"
+    id("com.adarshr.test-logger") version "4.0.0"
     jacoco
 
     `java-library`
