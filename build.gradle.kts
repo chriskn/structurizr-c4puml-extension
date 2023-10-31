@@ -1,6 +1,6 @@
 plugins {
     kotlin("jvm") version "1.9.20"
-    id("io.gitlab.arturbosch.detekt") version "1.23.2"
+    id("io.gitlab.arturbosch.detekt") version "1.23.3"
     id("com.adarshr.test-logger") version "4.0.0"
     jacoco
 
