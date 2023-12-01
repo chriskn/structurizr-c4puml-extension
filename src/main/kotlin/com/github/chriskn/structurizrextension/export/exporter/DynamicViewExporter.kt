@@ -51,7 +51,7 @@ class DynamicViewExporter(
     ) {
         val hierarchy: Map<SoftwareSystem, Map<Container, List<Component>>> = buildElementHierarchy(elements)
         hierarchy.forEach { (system, containerToComponents) ->
-            boundaryWriter.startSoftwareSystemBoundary(system, writer)
+            boundaryWriter.startSoftwareSystemBoundary(system, writer, view)
             containerToComponents.forEach { (container, components) ->
                 if (components.isEmpty()) {
                     elementWriter.writeElement(view, container, writer)
@@ -59,7 +59,7 @@ class DynamicViewExporter(
                     writeChildrenInParentBoundary(container, components, view, writer)
                 }
             }
-            boundaryWriter.endSoftwareSystemBoundary(writer)
+            boundaryWriter.endSoftwareSystemBoundary(writer, view)
         }
     }
 
@@ -70,18 +70,19 @@ class DynamicViewExporter(
         writer: IndentingWriter,
     ) {
         when (parent) {
-            is SoftwareSystem -> boundaryWriter.startSoftwareSystemBoundary(parent, writer)
-            is Container -> boundaryWriter.startContainerBoundary(parent, writer)
-            else -> boundaryWriter.startGroupBoundary(idOf(parent), writer)
+            is SoftwareSystem -> boundaryWriter.startSoftwareSystemBoundary(parent, writer, view)
+            is Container -> boundaryWriter.startContainerBoundary(parent, writer, view)
+            else -> boundaryWriter.startGroupBoundary(idOf(parent), writer, view)
         }
         children.forEach { elementWriter.writeElement(view, it, writer) }
         when (parent) {
-            is SoftwareSystem -> boundaryWriter.endSoftwareSystemBoundary(writer)
-            is Container -> boundaryWriter.endContainerBoundary(writer)
-            else -> boundaryWriter.endGroupBoundary(writer)
+            is SoftwareSystem -> boundaryWriter.endSoftwareSystemBoundary(writer, view)
+            is Container -> boundaryWriter.endContainerBoundary(writer, view)
+            else -> boundaryWriter.endGroupBoundary(writer, view)
         }
     }
 
+    @Suppress("UNCHECKED_CAST")
     private fun buildElementHierarchy(
         elements: Set<Element>
     ): Map<SoftwareSystem, Map<Container, List<Component>>> {

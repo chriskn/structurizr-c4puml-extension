@@ -5,6 +5,7 @@ import com.github.chriskn.structurizrextension.plantuml.AWS_ICON_COMMONS
 import com.github.chriskn.structurizrextension.plantuml.AWS_ICON_URL
 import com.github.chriskn.structurizrextension.plantuml.IconRegistry
 import com.github.chriskn.structurizrextension.view.LayoutRegistry
+import com.github.chriskn.structurizrextension.view.renderAsSequenceDiagram
 import com.structurizr.export.IndentingWriter
 import com.structurizr.model.DeploymentNode
 import com.structurizr.model.InteractionStyle
@@ -48,7 +49,10 @@ object HeaderWriter {
         if (layout.showPersonOutline) {
             writer.writeLine("SHOW_PERSON_OUTLINE()")
         }
-        writer.writeLine(layout.layout.macro)
+        // sequence diagrams do not support layout
+        if (!(view is DynamicView && view.renderAsSequenceDiagram)) {
+            writer.writeLine(layout.layout.macro)
+        }
         writer.writeLine()
         if (view.relationships.any { it.relationship.interactionStyle == InteractionStyle.Asynchronous }) {
             writeAsyncRelTag(writer)
@@ -75,7 +79,7 @@ object HeaderWriter {
             spriteIncludesForElements.add(0, AWS_ICON_COMMONS)
         }
         spriteIncludesForElements.forEach { includes.add(URI(it)) }
-        val c4PumlIncludeURI = URI("$C4_PLANT_UML_STDLIB_URL/${c4IncludeForView[view.javaClass]}")
+        val c4PumlIncludeURI = URI("$C4_PLANT_UML_STDLIB_URL/${includeForView(view)}")
         includes.add(c4PumlIncludeURI)
     }
 
@@ -98,12 +102,20 @@ object HeaderWriter {
         return elements
     }
 
-    private val c4IncludeForView = mapOf(
-        DynamicView::class.java to "C4_Dynamic.puml",
-        DeploymentView::class.java to "C4_Deployment.puml",
-        ComponentView::class.java to "C4_Component.puml",
-        ContainerView::class.java to "C4_Container.puml",
-        SystemLandscapeView::class.java to "C4_Context.puml",
-        SystemContextView::class.java to "C4_Context.puml"
-    )
+    private fun includeForView(view: View) = when (view) {
+        is DynamicView -> {
+            if (view.renderAsSequenceDiagram) {
+                "C4_Sequence.puml"
+            } else {
+                "C4_Dynamic.puml"
+            }
+        }
+
+        is DeploymentView -> "C4_Deployment.puml"
+        is ComponentView -> "C4_Component.puml"
+        is ContainerView -> "C4_Container.puml"
+        is SystemLandscapeView -> "C4_Context.puml"
+        is SystemContextView -> "C4_Context.puml"
+        else -> throw IllegalArgumentException("Unsupported view of class ${view::class.java.simpleName}")
+    }
 }

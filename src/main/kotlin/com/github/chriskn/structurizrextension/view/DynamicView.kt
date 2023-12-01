@@ -5,6 +5,9 @@ import com.structurizr.view.DynamicView
 import com.structurizr.view.RelationshipView
 import com.structurizr.view.publicOrder
 
+private const val NUMBER_OF_ENDED_PARALLEL_FLOWS = "NUMBER_OF_PARALLEL_ROOT_SEQUENCES"
+private const val AS_SEQUENCE_DIAGRAM = "plantuml.sequenceDiagram"
+
 /**
  * Adds a dependency to the [NestedParallelSequenceContext] from [source] to [destination] with the given properties
  * All dependency's of a [DynamicView] will be resolved based on their properties against the existing dependency's
@@ -42,7 +45,17 @@ fun DynamicView.startNestedParallelSequence(): NestedParallelSequenceContext {
 }
 
 var DynamicView.numberOfEndedParallelFlows: Int
-    get() = this.properties.getOrDefault("NUMBER_OF_PARALLEL_ROOT_SEQUENCES", "0").toInt()
+    get() {
+        return this.properties.getOrDefault(NUMBER_OF_ENDED_PARALLEL_FLOWS, "0").toInt()
+    }
     set(value) {
-        this.addProperty("NUMBER_OF_PARALLEL_ROOT_SEQUENCES", value.toString())
+        this.addProperty(NUMBER_OF_ENDED_PARALLEL_FLOWS, value.toString())
+    }
+
+var DynamicView.renderAsSequenceDiagram: Boolean
+    get() {
+        return this.properties.getOrDefault(AS_SEQUENCE_DIAGRAM, "false").toBoolean()
+    }
+    set(value) {
+        this.addProperty(AS_SEQUENCE_DIAGRAM, value.toString())
     }

@@ -28,7 +28,7 @@ class ComponentViewTest {
         val model = workspace.model
         val softwareSystem = model.softwareSystem("My Software System", "system description")
         val backendApplication = softwareSystem.container("Backend App", "some backend app", technology = "Kotlin")
-        val user = model.addPerson(Location.External, "User", "A user")
+        val user = model.person("User", "A user", Location.External)
         val restController = backendApplication.component(
             "MyRestController",
             "Provides data via rest",

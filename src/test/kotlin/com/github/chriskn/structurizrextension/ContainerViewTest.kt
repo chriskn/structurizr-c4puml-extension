@@ -13,6 +13,7 @@ import com.github.chriskn.structurizrextension.plantuml.Layout
 import com.github.chriskn.structurizrextension.plantuml.Legend
 import com.github.chriskn.structurizrextension.plantuml.LineType
 import com.github.chriskn.structurizrextension.view.containerView
+import com.github.chriskn.structurizrextension.view.showExternalSoftwareSystemBoundaries
 import com.structurizr.Workspace
 import com.structurizr.model.InteractionStyle
 import com.structurizr.model.Location
@@ -125,7 +126,7 @@ class ContainerViewTest {
             )
         )
         containerView.addAllContainers()
-        containerView.externalSoftwareSystemBoundariesVisible = true
+        containerView.showExternalSoftwareSystemBoundaries = true
         containerView.add(topic)
         containerView.add(internalSchema)
         containerView.add(externalSchema)

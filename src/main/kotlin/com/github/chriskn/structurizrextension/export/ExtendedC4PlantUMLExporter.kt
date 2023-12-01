@@ -83,35 +83,35 @@ class ExtendedC4PlantUMLExporter : AbstractDiagramExporter() {
     override fun createDiagram(view: ModelView, definition: String): Diagram = createC4Diagram(view, definition)
 
     override fun startEnterpriseBoundary(view: ModelView, enterpriseName: String, writer: IndentingWriter) {
-        boundaryWriter.startEnterpriseBoundary(enterpriseName, writer)
+        boundaryWriter.startEnterpriseBoundary(enterpriseName, writer, view)
     }
 
     override fun endEnterpriseBoundary(view: ModelView, writer: IndentingWriter) {
-        boundaryWriter.endEnterpriseBoundary(writer)
+        boundaryWriter.endEnterpriseBoundary(writer, view)
     }
 
-    override fun startGroupBoundary(view: ModelView?, group: String, writer: IndentingWriter) {
-        boundaryWriter.startGroupBoundary(group, writer)
+    override fun startGroupBoundary(view: ModelView, group: String, writer: IndentingWriter) {
+        boundaryWriter.startGroupBoundary(group, writer, view)
     }
 
-    override fun endGroupBoundary(view: ModelView?, writer: IndentingWriter) {
-        boundaryWriter.endGroupBoundary(writer)
+    override fun endGroupBoundary(view: ModelView, writer: IndentingWriter) {
+        boundaryWriter.endGroupBoundary(writer, view)
     }
 
     override fun startSoftwareSystemBoundary(view: ModelView, softwareSystem: SoftwareSystem, writer: IndentingWriter) {
-        boundaryWriter.startSoftwareSystemBoundary(softwareSystem, writer)
+        boundaryWriter.startSoftwareSystemBoundary(softwareSystem, writer, view)
     }
 
     override fun endSoftwareSystemBoundary(view: ModelView, writer: IndentingWriter) {
-        boundaryWriter.endSoftwareSystemBoundary(writer)
+        boundaryWriter.endSoftwareSystemBoundary(writer, view)
     }
 
     override fun startContainerBoundary(view: ModelView, container: Container, writer: IndentingWriter) {
-        boundaryWriter.startContainerBoundary(container, writer)
+        boundaryWriter.startContainerBoundary(container, writer, view)
     }
 
     override fun endContainerBoundary(view: ModelView, writer: IndentingWriter) {
-        boundaryWriter.endContainerBoundary(writer)
+        boundaryWriter.endContainerBoundary(writer, view)
     }
 
     override fun startDeploymentNodeBoundary(
@@ -119,10 +119,10 @@ class ExtendedC4PlantUMLExporter : AbstractDiagramExporter() {
         deploymentNode: DeploymentNode,
         writer: IndentingWriter
     ) {
-        boundaryWriter.startDeploymentNodeBoundary(deploymentNode, writer)
+        boundaryWriter.startDeploymentNodeBoundary(deploymentNode, writer, view)
     }
 
     override fun endDeploymentNodeBoundary(view: ModelView, writer: IndentingWriter) {
-        boundaryWriter.endDeploymentNodeBoundary(writer)
+        boundaryWriter.endDeploymentNodeBoundary(writer, view)
     }
 }

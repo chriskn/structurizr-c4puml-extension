@@ -48,7 +48,7 @@ class DeploymentViewExporter(
             return
         }
         propertyWriter.writeProperties(deploymentNode, writer)
-        boundaryWriter.startDeploymentNodeBoundary(deploymentNode, writer)
+        boundaryWriter.startDeploymentNodeBoundary(deploymentNode, writer, view)
         val children: List<DeploymentNode> = deploymentNode
             .children
             .toList()
@@ -85,6 +85,6 @@ class DeploymentViewExporter(
                 elementWriter.writeElement(view, containerInstance, writer)
             }
         }
-        boundaryWriter.endDeploymentNodeBoundary(writer)
+        boundaryWriter.endDeploymentNodeBoundary(writer, view)
     }
 }

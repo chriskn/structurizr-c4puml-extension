@@ -8,6 +8,7 @@ import com.github.chriskn.structurizrextension.plantuml.Direction
 import com.github.chriskn.structurizrextension.plantuml.IconRegistry
 import com.github.chriskn.structurizrextension.plantuml.Mode
 import com.github.chriskn.structurizrextension.view.LayoutRegistry
+import com.github.chriskn.structurizrextension.view.renderAsSequenceDiagram
 import com.structurizr.export.IndentingWriter
 import com.structurizr.model.InteractionStyle
 import com.structurizr.model.Relationship
@@ -45,8 +46,10 @@ class RelationshipWriter(
     }
 
     internal fun writeRelationship(view: ModelView, relationshipView: RelationshipView, writer: IndentingWriter) {
-        propertyWriter.writeProperties(relationshipView.relationship, writer)
-        val relationshipBuilder = StringBuilder()
+        if (view is DynamicView && view.renderAsSequenceDiagram) {
+            writeRelationshipSequenceDiagram(view, relationshipView, writer)
+            return
+        }
         val relationship = relationshipView.relationship
         var source = relationship.source
         var destination = relationship.destination
@@ -54,6 +57,7 @@ class RelationshipWriter(
             source = relationship.destination
             destination = relationship.source
         }
+        val relationshipBuilder = StringBuilder()
         val mode = determineMode(relationship, view)
         val relationshipType = determineType(mode, relationshipView)
         val description = determineDescription(view, relationshipView)
@@ -81,16 +85,55 @@ class RelationshipWriter(
             relationshipBuilder.append(""", ${'$'}tags="$ASYNC_REL_TAG_NAME"""")
         }
         relationshipBuilder.append(")")
+
+        propertyWriter.writeProperties(relationshipView.relationship, writer)
+        writer.writeLine(relationshipBuilder.toString())
+    }
+
+    private fun writeRelationshipSequenceDiagram(view: ModelView, relationshipView: RelationshipView, writer: IndentingWriter) {
+        // Rel($from, $to, $label, $techn="", $descr="", $sprite="", $tags="", $link="", $index="", $rel=""
+        val relationship = relationshipView.relationship
+        var source = relationship.source
+        var destination = relationship.destination
+        if (relationshipView.isResponse == true) {
+            source = relationship.destination
+            destination = relationship.source
+        }
+        val description = "${relationshipView.order} ${determineDescription(view, relationshipView)}"
+
+        val relationshipBuilder = StringBuilder()
+        relationshipBuilder.append("""${Mode.Rel.macro}(${idOf(source)}, ${idOf(destination)}, "$description" """)
+
+        if (relationship.technology != null) {
+            relationshipBuilder.append(""", ${'$'}techn="${relationship.technology}"""")
+        }
+
+        val sprite = IconRegistry.iconFileNameFor(relationship.icon ?: "")
+        if (!sprite.isNullOrBlank()) {
+            relationshipBuilder.append(""", ${'$'}sprite="$sprite"""")
+        }
+
+        if (relationship.interactionStyle == InteractionStyle.Asynchronous) {
+            relationshipBuilder.append(""", ${'$'}tags="$ASYNC_REL_TAG_NAME" """)
+        }
+
+        if (!relationship.link.isNullOrBlank()) {
+            relationshipBuilder.append(linkString(relationship.link))
+        }
+
+        relationshipBuilder.append(")")
+
+        propertyWriter.writeProperties(relationshipView.relationship, writer)
         writer.writeLine(relationshipBuilder.toString())
     }
 
     private fun determineMode(
         relationship: Relationship,
         view: ModelView
-    ) = when {
-        relationship.properties.containsKey(C4_LAYOUT_MODE) ->
-            Mode.valueOf(relationship.properties[C4_LAYOUT_MODE]!!)
-        view is DynamicView -> Mode.RelIndex
+    ): Mode = when {
+        relationship.properties.containsKey(C4_LAYOUT_MODE) -> Mode.valueOf(relationship.properties[C4_LAYOUT_MODE]!!)
+        // sequence diagrams need no order
+        view is DynamicView && !view.renderAsSequenceDiagram -> Mode.RelIndex
         else -> Mode.Rel
     }
 

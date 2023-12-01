@@ -1,0 +1,34 @@
+@startuml(id=DynamicWithParallelFlowSequence)
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/mysql.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Sequence.puml
+title Customer Information System - Dynamic
+caption This diagram shows what happens when a customer updates their details
+
+SHOW_PERSON_OUTLINE()
+
+AddRelTag("async relationship", $textColor="$ARROW_COLOR", $lineColor="$ARROW_COLOR", $lineStyle = DashedLine())
+
+Person(Customer, "Customer", "A costumer", "")
+Container(CustomerInformationSystem.CustomerFrontendApplication, "Customer Frontend Application", "Angular", "Allows customers to manage their profile", "")
+Container(CustomerInformationSystem.CustomerService, "Customer Service", "Java and Spring Boot", "The point of access for customer information.", "")
+ContainerDb(CustomerInformationSystem.CustomerDatabase, "Customer Database", "Oracle", "Stores customer information", "")
+ContainerQueue(CustomerInformationSystem.MessageBus, "Message Bus", "RabbitMQ", "Transport for business events.", "")
+Container(CustomerInformationSystem.AuditingService, "Auditing Service", "C#, Net", "Provides organisation-wide auditing facilities.", "")
+Container(CustomerInformationSystem.ReportingService, "Reporting Service", "Ruby", "Creates normalised data for reporting purposes.", "")
+ContainerDb(CustomerInformationSystem.ReportingDatabase, "Reporting Database", "MySql", "Stores a normalised version of all business data for ad hoc reporting purposes", "")
+ContainerDb(CustomerInformationSystem.AuditStore, "Audit Store", "Event Store", "Stores information about events that have happened", "")
+Rel(Customer, CustomerInformationSystem.CustomerFrontendApplication, "1 Uses" )
+Rel(CustomerInformationSystem.CustomerFrontendApplication, CustomerInformationSystem.CustomerService, "2 Updates customer information using" , $techn="JSON/HTTPS")
+Rel(CustomerInformationSystem.CustomerService, CustomerInformationSystem.CustomerDatabase, "3 Stores data in" , $techn="JDBC", $link="www.google.com")
+SetPropertyHeader("field", "value")
+AddProperty("Event Type", "create")
+Rel(CustomerInformationSystem.CustomerService, CustomerInformationSystem.MessageBus, "4 Sends customer update events to" , $tags="async relationship" )
+Rel(CustomerInformationSystem.MessageBus, CustomerInformationSystem.AuditingService, "5 Sends customer update events to" , $tags="async relationship" )
+Rel(CustomerInformationSystem.MessageBus, CustomerInformationSystem.ReportingService, "5 Sends customer update events to" , $tags="async relationship" )
+Rel(CustomerInformationSystem.CustomerService, CustomerInformationSystem.CustomerFrontendApplication, "5 Confirms update to" , $techn="WebSocket", $tags="async relationship" , $link="www.bing.com")
+Rel(CustomerInformationSystem.ReportingService, CustomerInformationSystem.ReportingDatabase, "6 Stores data in" , $sprite="mysql")
+Rel(CustomerInformationSystem.AuditingService, CustomerInformationSystem.AuditStore, "6 Stores events in" )
+
+SHOW_LEGEND(true)
+
+@enduml

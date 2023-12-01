@@ -13,6 +13,8 @@ import com.github.chriskn.structurizrextension.plantuml.Direction
 import com.github.chriskn.structurizrextension.plantuml.Mode
 import com.github.chriskn.structurizrextension.view.add
 import com.github.chriskn.structurizrextension.view.dynamicView
+import com.github.chriskn.structurizrextension.view.renderAsSequenceDiagram
+import com.github.chriskn.structurizrextension.view.showExternalBoundaries
 import com.github.chriskn.structurizrextension.view.startNestedParallelSequence
 import com.structurizr.Workspace
 import com.structurizr.model.InteractionStyle.Asynchronous
@@ -22,13 +24,17 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.ValueSource
 import java.io.File
 
 class DynamicViewTest {
 
-    @Test
-    fun `test interaction is with parallel flow is written to plant uml as expected`() {
-        val diagramKey = "DynamicWithParallelFlow"
+    @ParameterizedTest(name = "{index} asSequenceDiagram = {0}")
+    @ValueSource(booleans = [true, false])
+    fun `DynamicWithParallelFlow is written to plant uml as expected`(asSequenceDiagram: Boolean) {
+        val diagramKey = determineDiagramPath("DynamicWithParallelFlow", asSequenceDiagram)
+
         val dynamicView: DynamicView = workspace.views.dynamicView(
             customerInformationSystem,
             diagramKey,
@@ -36,13 +42,15 @@ class DynamicViewTest {
         )
 
         configureWithParallelNumbering(dynamicView)
+        dynamicView.renderAsSequenceDiagram = asSequenceDiagram
 
         assertExpectedDiagramWasWrittenForView(workspace, diagramKey)
     }
 
-    @Test
-    fun `test interaction with nested parallel flow is written to plant uml as expected`() {
-        val diagramKey = "DynamicWithNestedParallelFlow"
+    @ParameterizedTest(name = "{index} asSequenceDiagram = {0}")
+    @ValueSource(booleans = [true, false])
+    fun `DynamicWithNestedParallelFlow is written to plant uml as expected`(asSequenceDiagram: Boolean) {
+        val diagramKey = determineDiagramPath("DynamicWithNestedParallelFlow", asSequenceDiagram)
         val dynamicView: DynamicView = workspace.views.createDynamicView(
             customerInformationSystem,
             diagramKey,
@@ -50,13 +58,15 @@ class DynamicViewTest {
         )
 
         configureWithNestedParallelNumbering(dynamicView)
+        dynamicView.renderAsSequenceDiagram = asSequenceDiagram
 
         assertExpectedDiagramWasWrittenForView(workspace, diagramKey)
     }
 
-    @Test
-    fun `test dynamic diagram with boundaries is written to plant uml as expected`() {
-        val diagramKey = "DynamicWithBoundary"
+    @ParameterizedTest(name = "{index} asSequenceDiagram = {0}")
+    @ValueSource(booleans = [true, false])
+    fun `DynamicWithBoundary with boundaries is written to plant uml as expected`(asSequenceDiagram: Boolean) {
+        val diagramKey = determineDiagramPath("DynamicWithBoundary", asSequenceDiagram)
         val reportingController = reportingService.component(
             "Reporting Controller",
             "Reporting Controller",
@@ -75,14 +85,16 @@ class DynamicViewTest {
         )
         dynamicView.add(reportingController, reportingRepository, "Stores entity")
 
-        dynamicView.externalBoundariesVisible = true
+        dynamicView.showExternalBoundaries = true
+        dynamicView.renderAsSequenceDiagram = asSequenceDiagram
 
         assertExpectedDiagramWasWrittenForView(workspace, diagramKey)
     }
 
-    @Test
-    fun `test dynamic diagram with layout is written to plant uml as expected`() {
-        val diagramKey = "DynamicWithLayout"
+    @ParameterizedTest(name = "{index} asSequenceDiagram = {0}")
+    @ValueSource(booleans = [true, false])
+    fun `DynamicWithLayout is written to plant uml as expected`(asSequenceDiagram: Boolean) {
+        val diagramKey = determineDiagramPath("DynamicWithLayout", asSequenceDiagram)
         val dynamicView: DynamicView = workspace.views.dynamicView(
             customerInformationSystem,
             diagramKey,
@@ -102,12 +114,13 @@ class DynamicViewTest {
         )
 
         configureWithNestedParallelNumbering(dynamicView)
+        dynamicView.renderAsSequenceDiagram = asSequenceDiagram
 
         assertExpectedDiagramWasWrittenForView(workspace, diagramKey)
     }
 
     @Test
-    fun `test parallelSequence does not throw Exception if no steps added`() {
+    fun `parallelSequence does not throw Exception if no steps added`() {
         val dynamicView: DynamicView = workspace.views.dynamicView(customerInformationSystem, "key", "desc")
 
         assertDoesNotThrow {
@@ -118,7 +131,7 @@ class DynamicViewTest {
     }
 
     @Test
-    fun `test setting the mode for dependencies in dynamic views throws exception`() {
+    fun `setting the mode for dependencies in dynamic views throws exception`() {
         val dynamicView: DynamicView = workspace.views.dynamicView(
             customerInformationSystem,
             "key",
@@ -141,7 +154,7 @@ class DynamicViewTest {
     }
 
     @Test
-    fun `test NestedParallelSequence starts with 1 dot 1`() {
+    fun `NestedParallelSequence starts with 1 dot 1`() {
         val dynamicView: DynamicView = workspace.views.dynamicView(customerInformationSystem, "key", "desc")
 
         val parallelSequence = dynamicView.startNestedParallelSequence()
@@ -150,6 +163,12 @@ class DynamicViewTest {
 
         assertThat(dynamicView.relationships).hasSize(1)
         assertThat(dynamicView.relationships.last().order).isEqualTo("1.1")
+    }
+
+    private fun determineDiagramPath(base: String, asSequenceDiagram: Boolean) = if (!asSequenceDiagram) {
+        base
+    } else {
+        "${base}Sequence"
     }
 
     private fun configureWithNestedParallelNumbering(dynamicView: DynamicView) {

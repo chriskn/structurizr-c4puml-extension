@@ -42,7 +42,7 @@ class ContainerViewExporter(
             val showSoftwareSystemBoundary =
                 softwareSystem == view.softwareSystem || view.externalSoftwareSystemBoundariesVisible
             if (showSoftwareSystemBoundary) {
-                boundaryWriter.startSoftwareSystemBoundary(softwareSystem, writer)
+                boundaryWriter.startSoftwareSystemBoundary(softwareSystem, writer, view)
             }
             for (elementView in view.elements) {
                 if (elementView.element.parent === softwareSystem) {
@@ -50,7 +50,7 @@ class ContainerViewExporter(
                 }
             }
             if (showSoftwareSystemBoundary) {
-                boundaryWriter.endSoftwareSystemBoundary(writer)
+                boundaryWriter.endSoftwareSystemBoundary(writer, view)
             } else {
                 writer.writeLine()
             }
