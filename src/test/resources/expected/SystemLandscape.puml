@@ -23,12 +23,12 @@ WithoutPropertyHeader()
 AddProperty("prop 1", "value 1")
 Person(Actor, "Actor", "", "", $link="https://www.google.de")
 
-Rel_D(Actor, SoftwareSystem0, "deletes", "gRPC")
+Rel(Actor, SoftwareSystem0, "deletes", "gRPC")
 WithoutPropertyHeader()
 AddProperty("prop", "val")
-Rel_D(Actor, SoftwareSystem1, "creates", "HTTP", $sprite=html-5, $link="https://de.wikipedia.org/wiki/Hypertext_Transfer_Protocol")
-Rel_D(SoftwareSystem0, SoftwareSystem1, "0 used by 1")
-Rel_D(SoftwareSystem2, SoftwareSystem0, "2 uses 1")
+Rel(Actor, SoftwareSystem1, "creates", "HTTP", $sprite=html-5, $link="https://de.wikipedia.org/wiki/Hypertext_Transfer_Protocol")
+Rel(SoftwareSystem0, SoftwareSystem1, "0 used by 1")
+Rel(SoftwareSystem2, SoftwareSystem0, "2 uses 1")
 
 SHOW_FLOATING_LEGEND(LEGEND, true)
 

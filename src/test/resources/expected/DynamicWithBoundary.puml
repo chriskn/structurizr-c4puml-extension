@@ -12,7 +12,7 @@ System_Boundary(CustomerInformationSystem, Customer Information System) {
     Component(CustomerInformationSystem.ReportingService.ReportingRepository, "Reporting Repository", "JDBC", "Reporting repository", "")
   }
 }
-RelIndex_D(1,CustomerInformationSystem.ReportingService.ReportingController, CustomerInformationSystem.ReportingService.ReportingRepository, "Stores entity")
+RelIndex(1,CustomerInformationSystem.ReportingService.ReportingController, CustomerInformationSystem.ReportingService.ReportingRepository, "Stores entity")
 
 SHOW_LEGEND(true)
 

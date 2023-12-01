@@ -1,7 +1,7 @@
 package com.github.chriskn.structurizrextension
 
-import com.github.chriskn.structurizrextension.model.Dependency
 import com.github.chriskn.structurizrextension.model.softwareSystem
+import com.github.chriskn.structurizrextension.model.usedBy
 import com.github.chriskn.structurizrextension.plantuml.C4PlantUmlLayout
 import com.github.chriskn.structurizrextension.plantuml.DependencyConfiguration
 import com.github.chriskn.structurizrextension.plantuml.Direction
@@ -18,13 +18,17 @@ class DependencyLayoutTest {
     private val workspace = Workspace("My Workspace", "Some Description")
     private val model: Model = workspace.model
     private val a = model.softwareSystem("A", "A")
+    private val b = model.softwareSystem("B", "B")
+    private val c = model.softwareSystem("C", "C")
+    private val d = model.softwareSystem("D", "D")
+    private val e = model.softwareSystem("E", "E")
 
     @BeforeEach
     fun setUpModel() {
-        model.softwareSystem("B", "B", uses = listOf(Dependency(a, "uses")))
-        model.softwareSystem("C", "C", uses = listOf(Dependency(a, "uses")))
-        model.softwareSystem("D", "C", usedBy = listOf(Dependency(a, "uses")))
-        model.softwareSystem("E", "E", uses = listOf(Dependency(a, "")))
+        b.uses(a, "uses")
+        c.uses(a, "uses")
+        d.usedBy(a, "uses")
+        e.uses(a, "uses")
     }
 
     @Test
@@ -35,8 +39,10 @@ class DependencyLayoutTest {
             "Dependency Test",
             C4PlantUmlLayout(
                 dependencyConfigurations = listOf(
-                    DependencyConfiguration(filter = { it.destination == a }, direction = Direction.Left),
-                    DependencyConfiguration(filter = { it.source == a }, direction = Direction.Up)
+                    DependencyConfiguration(filter = { it.source == b }, direction = Direction.Up),
+                    DependencyConfiguration(filter = { it.source == c }, direction = Direction.Right),
+                    DependencyConfiguration(filter = { it.source == a }, direction = Direction.Down),
+                    DependencyConfiguration(filter = { it.source == e }, direction = Direction.Left),
                 )
             )
         )

@@ -24,20 +24,16 @@ System_Boundary(MySoftwareSystem, My Software System) {
   Container(MySoftwareSystem.App, "App", "Android", "android app", "android-icon")
   ContainerDb(MySoftwareSystem.Database, "Database", "postgres", "some database", "postgresql")
 }
-
 Container(GraphQL.InternalSchema, "Internal Schema", "", "Schema provided by our app", "")
 Container_Ext(GraphQL.ExternalSchema, "External Schema", "", "Schema provided by another team", "")
 
 ContainerQueue_Ext(Broker.mytopic, "my.topic", "", "external topic", "kafka")
 
-Rel_D(AndroidUser, MySoftwareSystem.App, "uses app")
-Rel_D(MySoftwareSystem.App, GraphQL.InternalSchema, "reuqest data using", "GraphQL", $sprite=graphql, $link="https://graphql.org/")
+Rel(AndroidUser, MySoftwareSystem.App, "uses app")
+Rel(MySoftwareSystem.App, GraphQL.InternalSchema, "reuqest data using", "GraphQL", $sprite=graphql, $link="https://graphql.org/")
 Rel_R(MySoftwareSystem.BackendApp, MySoftwareSystem.Database, "CRUD", "JPA")
-Rel_D(MySoftwareSystem.BackendApp, GraphQL.InternalSchema, "provides subgraph to")
-Rel_D(MySoftwareSystem.BackendApp, Broker.mytopic, "reads topic", "Avro", $tags="async relationship")
+Rel(MySoftwareSystem.BackendApp, GraphQL.InternalSchema, "provides subgraph to")
+Rel(MySoftwareSystem.BackendApp, Broker.mytopic, "reads topic", "Avro", $tags="async relationship")
 Rel_U(GraphQL.ExternalSchema, GraphQL.InternalSchema, "extends schema")
-Rel_D(Maintainer, MySoftwareSystem.BackendApp, "Admin UI", "REST")
-
-
-
+Rel(Maintainer, MySoftwareSystem.BackendApp, "Admin UI", "REST")
 @enduml

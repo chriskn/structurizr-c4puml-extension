@@ -97,7 +97,6 @@ class DynamicViewTest {
                         filter = { it.source == customerService && it.destination == customerFrontend },
                         direction = Direction.Left
                     )
-
                 )
             )
         )

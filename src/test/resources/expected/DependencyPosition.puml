@@ -9,13 +9,13 @@ LAYOUT_TOP_DOWN()
 System(A, "A", "A", "")
 System(B, "B", "B", "")
 System(C, "C", "C", "")
-System(D, "D", "C", "")
+System(D, "D", "D", "")
 System(E, "E", "E", "")
 
-Rel_U(A, D, "uses")
-Rel_L(B, A, "uses")
-Rel_L(C, A, "uses")
-Rel_L(E, A, " ")
+Rel_D(A, D, "uses")
+Rel_U(B, A, "uses")
+Rel_R(C, A, "uses")
+Rel_L(E, A, "uses")
 
 SHOW_LEGEND(true)
 

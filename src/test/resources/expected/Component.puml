@@ -24,12 +24,12 @@ Container_Boundary("MySoftwareSystem.BackendApp_boundary", "Backend App") {
   Component(MySoftwareSystem.BackendApp.MyService, "MyService", "", "Does implement some logic", "kotlin", $link="https://google.de")
 }
 
-Rel_D(Maintainer, MySoftwareSystem.BackendApp.MyRestController, "Admin UI", "REST")
-Rel_D(MySoftwareSystem.BackendApp.MyRepo, MySoftwareSystem.Database, "gets data from")
-Rel_D(MySoftwareSystem.BackendApp.MyRestController, MySoftwareSystem.BackendApp.MyService, "calls")
-Rel_D(MySoftwareSystem.BackendApp.MyService, MySoftwareSystem.BackendApp.Cache, "uses")
-Rel_D(MySoftwareSystem.BackendApp.MyService, MySoftwareSystem.BackendApp.MyRepo, "gets notified", $tags="async relationship")
-Rel_D(User, MySoftwareSystem.BackendApp.MyRestController, "Website", "REST")
+Rel(Maintainer, MySoftwareSystem.BackendApp.MyRestController, "Admin UI", "REST")
+Rel(MySoftwareSystem.BackendApp.MyRepo, MySoftwareSystem.Database, "gets data from")
+Rel(MySoftwareSystem.BackendApp.MyRestController, MySoftwareSystem.BackendApp.MyService, "calls")
+Rel(MySoftwareSystem.BackendApp.MyService, MySoftwareSystem.BackendApp.Cache, "uses")
+Rel(MySoftwareSystem.BackendApp.MyService, MySoftwareSystem.BackendApp.MyRepo, "gets notified", $tags="async relationship")
+Rel(User, MySoftwareSystem.BackendApp.MyRestController, "Website", "REST")
 
 skinparam linetype ortho
 skinparam nodesep 100

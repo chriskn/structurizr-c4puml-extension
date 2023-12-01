@@ -49,13 +49,13 @@ Node(Default.AnotherAWSAccount, "Another AWS Account", "", "", "Cloudalt"){
 Node(Default.AppleDevice, "Apple Device", "", "", "apple"){
   System_Ext(Default.AppleDevice.iOSApp_1, "iOS App", "iOS Application", "")
 }
-Rel_D(Default.AppleDevice, Default.AWS.EKScluster.LoadBalancer, "requests data from")
+Rel(Default.AppleDevice, Default.AWS.EKScluster.LoadBalancer, "requests data from")
 Rel_R(Default.AWS.AWSRDS.Database_1, Default.AWS.AWSRDS.FailoverDatabase_1, "replicates data to")
 SetPropertyHeader("key", "value")
 AddProperty("ip", "10.234.12.13")
-Rel_D(Default.AWS.EKScluster.mywebapp.WebAppcontainer.JaegerSidecar, Default.AnotherAWSAccount.JaegerContainer, "writes traces to", $sprite=kafka, $link="https://www.jaegertracing.io/", $tags="async relationship")
+Rel(Default.AWS.EKScluster.mywebapp.WebAppcontainer.JaegerSidecar, Default.AnotherAWSAccount.JaegerContainer, "writes traces to", $sprite=kafka, $link="https://www.jaegertracing.io/", $tags="async relationship")
 Rel_R(Default.AWS.EKScluster.LoadBalancer, Default.AWS.EKScluster.mywebapp.WebAppcontainer, "forwards requests to")
-Rel_D(Default.AWS.EKScluster.mywebapp.WebAppcontainer.WebApplication_1, Default.AWS.AWSRDS.Database_1, "stores data in", "JDBC")
+Rel(Default.AWS.EKScluster.mywebapp.WebAppcontainer.WebApplication_1, Default.AWS.AWSRDS.Database_1, "stores data in", "JDBC")
 
 skinparam nodesep 50
 skinparam ranksep 50

@@ -46,7 +46,7 @@ class RelationshipWriter(
 
     internal fun writeRelationship(view: ModelView, relationshipView: RelationshipView, writer: IndentingWriter) {
         propertyWriter.writeProperties(relationshipView.relationship, writer)
-
+        val relationshipBuilder = StringBuilder()
         val relationship = relationshipView.relationship
         var source = relationship.source
         var destination = relationship.destination
@@ -54,54 +54,78 @@ class RelationshipWriter(
             source = relationship.destination
             destination = relationship.source
         }
-        val mode = when {
-            relationship.properties.containsKey(C4_LAYOUT_MODE) -> {
-                Mode.valueOf(relationship.properties[C4_LAYOUT_MODE]!!)
-            }
+        val mode = determineMode(relationship, view)
+        val relationshipType = determineType(mode, relationshipView)
+        val description = determineDescription(view, relationshipView)
 
-            view is DynamicView -> Mode.RelIndex
-            else -> Mode.Rel
-        }
-        var relationshipMacro = mode.macro
-        when (mode) {
-            Mode.Rel, Mode.RelIndex -> {
-                var direction = Direction.Down
-                if (relationship.properties.containsKey(C4_LAYOUT_DIRECTION)) {
-                    direction = Direction.valueOf(relationship.properties[C4_LAYOUT_DIRECTION]!!)
-                    if (relationshipView.isResponse == true) {
-                        direction = direction.inverse()
-                    }
-                }
-                relationshipMacro = "${relationshipMacro}_${direction.macro()}"
-            }
-
-            else -> relationshipMacro = "Rel_$relationshipMacro"
-        }
-        val description = if (view is DynamicView) {
-            relationshipView.description
+        if (view is DynamicView) {
+            relationshipBuilder.append(
+                """$relationshipType(${relationshipView.order},${idOf(source)}, ${idOf(destination)}, "$description""""
+            )
         } else {
-            relationship.description
-        }.ifEmpty { " " }
-
-        var relMacro = if (view is DynamicView) {
-            """$relationshipMacro(${relationshipView.order},${idOf(source)}, ${idOf(destination)}, "$description""""
-        } else {
-            """$relationshipMacro(${idOf(source)}, ${idOf(destination)}, "$description""""
+            relationshipBuilder.append(
+                """$relationshipType(${idOf(source)}, ${idOf(destination)}, "$description""""
+            )
         }
         if (relationship.technology != null) {
-            relMacro += """, "${relationship.technology}""""
+            relationshipBuilder.append(""", "${relationship.technology}"""")
         }
         val sprite = IconRegistry.iconFileNameFor(relationship.icon ?: "")
         if (!sprite.isNullOrBlank()) {
-            relMacro += """, ${'$'}sprite=$sprite"""
+            relationshipBuilder.append(""", ${'$'}sprite=$sprite""")
         }
         if (!relationship.link.isNullOrBlank()) {
-            relMacro += linkString(relationship.link)
+            relationshipBuilder.append(linkString(relationship.link))
         }
         if (relationship.interactionStyle == InteractionStyle.Asynchronous) {
-            relMacro += """, ${'$'}tags="$ASYNC_REL_TAG_NAME""""
+            relationshipBuilder.append(""", ${'$'}tags="$ASYNC_REL_TAG_NAME"""")
         }
-        writer.writeLine("$relMacro)")
+        relationshipBuilder.append(")")
+        writer.writeLine(relationshipBuilder.toString())
+    }
+
+    private fun determineMode(
+        relationship: Relationship,
+        view: ModelView
+    ) = when {
+        relationship.properties.containsKey(C4_LAYOUT_MODE) ->
+            Mode.valueOf(relationship.properties[C4_LAYOUT_MODE]!!)
+        view is DynamicView -> Mode.RelIndex
+        else -> Mode.Rel
+    }
+
+    private fun determineDescription(
+        view: ModelView,
+        relationshipView: RelationshipView,
+    ): String = if (view is DynamicView) {
+        relationshipView.description
+    } else {
+        relationshipView.relationship.description
+    }.ifEmpty { " " }
+
+    private fun determineType(
+        mode: Mode,
+        relationshipView: RelationshipView,
+    ): String = when (mode) {
+        Mode.Rel, Mode.RelIndex -> {
+            if (relationshipView.relationship.properties.containsKey(C4_LAYOUT_DIRECTION)) {
+                val direction = determineDirection(relationshipView)
+                "${mode.macro}_${direction.macro()}"
+            } else {
+                mode.macro
+            }
+        }
+        else -> "Rel_${mode.macro}"
+    }
+
+    private fun determineDirection(
+        relationshipView: RelationshipView,
+    ): Direction {
+        val direction = Direction.valueOf(relationshipView.relationship.properties[C4_LAYOUT_DIRECTION]!!)
+        if (relationshipView.isResponse == true) {
+            return direction.inverse()
+        }
+        return direction
     }
 
     private fun RelationshipView.apply(
