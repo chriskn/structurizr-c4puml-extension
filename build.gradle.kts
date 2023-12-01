@@ -11,7 +11,7 @@ plugins {
 
 group = "io.github.chriskn"
 version = "0.9.0"
-java.sourceCompatibility = JavaVersion.VERSION_11
+java.sourceCompatibility = JavaVersion.VERSION_17
 
 repositories {
     mavenCentral()
@@ -40,10 +40,10 @@ dependencies {
 
 tasks {
     compileKotlin {
-        kotlinOptions.jvmTarget = "11"
+        kotlinOptions.jvmTarget = "17"
     }
     compileTestKotlin {
-        kotlinOptions.jvmTarget = "11"
+        kotlinOptions.jvmTarget = "17"
     }
     test {
         useJUnitPlatform()
@@ -52,7 +52,7 @@ tasks {
 
 detekt {
     buildUponDefaultConfig = true
-    config = files("$projectDir/config/detekt.yml")
+    config.setFrom(files("$projectDir/config/detekt.yml"))
     parallel = true
     autoCorrect = true
 }
