@@ -6,6 +6,7 @@ import com.github.chriskn.structurizrextension.model.Dependency
 import com.github.chriskn.structurizrextension.model.component
 import com.github.chriskn.structurizrextension.model.container
 import com.github.chriskn.structurizrextension.model.person
+import com.github.chriskn.structurizrextension.model.softwareSystem
 import com.github.chriskn.structurizrextension.model.usedBy
 import com.github.chriskn.structurizrextension.model.uses
 import com.github.chriskn.structurizrextension.plantuml.C4PlantUmlLayout
@@ -25,8 +26,8 @@ class ComponentViewTest {
     fun `component diagram is written as expected`() {
         val workspace = Workspace("My Workspace", "")
         val model = workspace.model
-        val softwareSystem = model.addSoftwareSystem("My Software System", "system description")
-        val backendApplication = softwareSystem.addContainer("Backend App", "some backend app", "Kotlin")
+        val softwareSystem = model.softwareSystem("My Software System", "system description")
+        val backendApplication = softwareSystem.container("Backend App", "some backend app", technology = "Kotlin")
         val user = model.addPerson(Location.External, "User", "A user")
         val restController = backendApplication.component(
             "MyRestController",
