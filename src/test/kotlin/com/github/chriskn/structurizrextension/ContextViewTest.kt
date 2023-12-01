@@ -2,6 +2,7 @@ package com.github.chriskn.structurizrextension
 
 import com.github.chriskn.structurizrextension.model.C4Properties
 import com.github.chriskn.structurizrextension.model.Dependency
+import com.github.chriskn.structurizrextension.model.enterprise
 import com.github.chriskn.structurizrextension.model.person
 import com.github.chriskn.structurizrextension.model.softwareSystem
 import com.github.chriskn.structurizrextension.plantuml.C4PlantUmlLayout
@@ -10,7 +11,6 @@ import com.github.chriskn.structurizrextension.plantuml.Legend
 import com.github.chriskn.structurizrextension.view.systemContextView
 import com.github.chriskn.structurizrextension.view.systemLandscapeView
 import com.structurizr.Workspace
-import com.structurizr.model.Enterprise
 import com.structurizr.model.Location
 import com.structurizr.model.Model
 import org.junit.jupiter.api.BeforeEach
@@ -80,7 +80,7 @@ class ContextViewTest {
 
     @BeforeEach
     fun beforeEach() {
-        model.enterprise = Enterprise("My Enterprise")
+        model.enterprise("My Enterprise")
     }
 
     @Test

@@ -33,10 +33,10 @@ class DeploymentViewTest {
         val model = workspace.model
         val views = workspace.views
 
-        val mySystem = model.addSoftwareSystem(
-            Location.Internal,
+        val mySystem = model.softwareSystem(
             "System container",
-            "Example System"
+            "Example System",
+            Location.Internal
         )
         val iosApp = model.softwareSystem(
             location = Location.External,
