@@ -17,7 +17,7 @@ repositories {
     mavenCentral()
 }
 
-val structurizrVersion = "1.28.1"
+val structurizrVersion = "1.29.0"
 val structurizrExportVersion = "1.18.0"
 val junitVersion = "5.10.1"
 val assertJVersion = "3.24.2"
