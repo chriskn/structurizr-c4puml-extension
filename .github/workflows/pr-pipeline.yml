@@ -26,11 +26,11 @@ jobs:
           java-version: ${{ matrix.jdk }}
           distribution: 'temurin'
       - name: Detekt
-        uses: gradle/gradle-build-action@fdcea9a1bd0ddacf64a442506f0b7259c52f84b9
+        uses: gradle/gradle-build-action@11693a116929fecdfa454db8361883532c7723d2
         with:
           arguments: detekt
       - name: Test
-        uses: gradle/gradle-build-action@fdcea9a1bd0ddacf64a442506f0b7259c52f84b9
+        uses: gradle/gradle-build-action@11693a116929fecdfa454db8361883532c7723d2
         with:
           arguments: test
 
