@@ -174,6 +174,137 @@ Dynamic diagrams can also be rendered as sequence diagram by setting the propert
 
 ![Example dynamic sequence diagram](./docs/dynamic_example_nested_as_sequence.svg)
 
+### Deployment diagrams
+
+As the following example demonstrates how to model deployments and create deployment diagrams using the C4-PlantUML extension.
+
+![Example deployment diagram](./docs/deployment_example.svg)
+
+```kotlin
+val mySystem = model.softwareSystem(
+    "System container",
+    "Example System",
+    Location.Internal
+)
+val iosApp = model.softwareSystem(
+    location = Location.External,
+    name = "iOS App",
+    description = "iOS Application"
+)
+val webApplication: Container = mySystem.container(
+    "Web Application",
+    "Spring Boot web application",
+    technology = "Java and Spring MVC",
+    icon = "springboot"
+)
+val database: Container = mySystem.container(
+    "Database",
+    "Stores data",
+    technology = "PostgreSql",
+    icon = "postgresql",
+    c4Type = C4Type.DATABASE,
+    properties = C4Properties(values = listOf(listOf("region", "eu-central-1"))),
+    usedBy = listOf(Dependency(webApplication, "stores data in", "JDBC"))
+)
+val failoverDatabase: Container = mySystem.container(
+    "Failover Database",
+    database.description,
+    technology = database.technology,
+    icon = database.icon,
+    c4Type = database.c4Type,
+    properties = C4Properties(values = listOf(listOf("region", "eu-west-1"))),
+    usedBy = listOf(Dependency(database, "replicates data to"))
+)
+val aws = model.deploymentNode(
+    "AWS",
+    "Production AWS environment",
+    icon = "aws",
+    properties = C4Properties(
+        header = listOf("Property", "Value", "Description"),
+        values = listOf(
+            listOf("Property1", "Value1", "Description1"),
+            listOf("Property2", "Value2", "Description2"),
+        )
+    )
+)
+aws.deploymentNode(
+    "AWS RDS",
+    icon = "rds",
+    hostsContainers = listOf(failoverDatabase, database)
+)
+val eks = aws.deploymentNode(
+    "EKS cluster",
+    icon = "awsEKSCloud",
+)
+
+val webAppPod = eks.deploymentNode(
+    "my.web.app",
+    "Web App POD"
+).deploymentNode(
+    "Web App container",
+    icon = "docker",
+    hostsContainers = listOf(webApplication)
+)
+val jaegerSidecar = webAppPod.infrastructureNode(
+    "Jaeger Sidecar",
+    "Jaeger sidecar sending Traces"
+)
+model.deploymentNode(
+    "Another AWS Account",
+    icon = "aws"
+).deploymentNode(
+    "Jaeger Container",
+    usedBy = listOf(
+        Dependency(
+            jaegerSidecar,
+            "writes traces to",
+            interactionStyle = InteractionStyle.Asynchronous,
+            link = "https://www.jaegertracing.io/",
+        )
+    )
+).infrastructureNode("Jaeger")
+val appleDevice = model.deploymentNode(
+    "Apple Device",
+    icon = "apple",
+    hostsSystems = listOf(iosApp)
+)
+
+val loadBalancer = eks.infrastructureNode(
+    name = "Load Balancer",
+    description = "Nginx Load Balancer",
+    technology = "nginx",
+    icon = "nginx",
+    link = "https://www.google.de",
+    uses = listOf(Dependency(webAppPod, "forwards requests to")),
+    usedBy = listOf(Dependency(appleDevice, "requests data from")),
+    properties = C4Properties(
+        header = listOf("Property", "value"),
+        values = listOf(listOf("IP", "10.234.234.132"))
+    )
+)
+
+val deploymentView = views.deploymentView(
+        mySystem,
+        "Deployment",
+        "A deployment diagram showing the environment.",
+        C4PlantUmlLayout(
+            nodeSep = 50,
+            rankSep = 50,
+            layout = Layout.LeftToRight,
+            dependencyConfigurations =
+            listOf(
+                DependencyConfiguration(
+                    filter = {
+                        it.source == loadBalancer || it.destination.name == failoverDatabase.name
+                    },
+                    direction = Direction.Left
+                )
+            )
+        )
+    )
+deploymentView.addDefaultElements()
+```
+
 ## How to use it 
 
 Structurizr C4-PlantUML extension is available in maven central. 
