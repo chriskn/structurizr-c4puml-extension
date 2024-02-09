@@ -170,6 +170,10 @@ with(dynamicView.startNestedParallelSequence()) {
 }
 ```
 
+Dynamic diagrams can also be rendered as sequence diagram by setting the property `DynamicView.renderAsSequenceDiagram` to true.
+
+![Example dynamic sequence diagram](./docs/dynamic_example_nested_as_sequence.svg)
+
 ## How to use it 
 
 Structurizr C4-PlantUML extension is available in maven central. 
