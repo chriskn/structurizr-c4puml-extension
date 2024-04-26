@@ -8,13 +8,13 @@ import com.github.chriskn.structurizrextension.export.writer.HeaderWriter
 import com.github.chriskn.structurizrextension.export.writer.RelationshipWriter
 import com.structurizr.export.Diagram
 import com.structurizr.export.IndentingWriter
+import com.structurizr.model.Component
 import com.structurizr.model.Container
-import com.structurizr.model.SoftwareSystem
-import com.structurizr.view.ContainerView
+import com.structurizr.view.ComponentView
 import com.structurizr.view.ElementView
 import com.structurizr.view.ModelView
 
-class ContainerViewExporter(
+class ComponentViewExporter(
     private val boundaryWriter: BoundaryWriter,
     private val footerWriter: FooterWriter,
     private val headerWriter: HeaderWriter,
@@ -22,13 +22,13 @@ class ContainerViewExporter(
     private val relationshipWriter: RelationshipWriter
 ) {
 
-    internal fun exportContainerView(view: ContainerView): Diagram {
+    internal fun exportComponentView(view: ComponentView): Diagram {
         val writer = IndentingWriter()
         headerWriter.writeHeader(view, writer)
 
         var elementsWritten = false
         for (elementView in view.elements) {
-            if (elementView.element !is Container) {
+            if (elementView.element !is Component) {
                 elementWriter.writeElement(view, elementView.element, writer)
                 elementsWritten = true
             }
@@ -37,19 +37,19 @@ class ContainerViewExporter(
             writer.writeLine()
         }
 
-        val softwareSystems: List<SoftwareSystem> = getBoundarySoftwareSystems(view)
-        for (softwareSystem in softwareSystems) {
-            val showSoftwareSystemBoundary = view.externalSoftwareSystemBoundariesVisible
-            if (showSoftwareSystemBoundary) {
-                boundaryWriter.startSoftwareSystemBoundary(softwareSystem, writer, view)
+        val containers: List<Container> = getBoundaryContainer(view)
+        for (container in containers) {
+            val showContainerBoundary = view.externalContainerBoundariesVisible
+            if (showContainerBoundary) {
+                boundaryWriter.startContainerBoundary(container, writer, view)
             }
             for (elementView in view.elements) {
-                if (elementView.element.parent === softwareSystem) {
+                if (elementView.element.parent === container) {
                     elementWriter.writeElement(view, elementView.element, writer)
                 }
             }
-            if (showSoftwareSystemBoundary) {
-                boundaryWriter.endSoftwareSystemBoundary(writer, view)
+            if (showContainerBoundary) {
+                boundaryWriter.endContainerBoundary(writer, view)
             } else {
                 writer.writeLine()
             }
@@ -62,12 +62,12 @@ class ContainerViewExporter(
         return createC4Diagram(view, writer.toString())
     }
 
-    private fun getBoundarySoftwareSystems(view: ModelView): List<SoftwareSystem> = view.elements
-        .asSequence()
-        .map { obj: ElementView -> obj.element }
-        .filterIsInstance<Container>()
-        .map { it.softwareSystem }
-        .toSet()
-        .sortedBy { it.id }
-        .toList()
+    private fun getBoundaryContainer(view: ModelView): List<Container> =
+        view.elements
+            .asSequence()
+            .map { obj: ElementView -> obj.element }
+            .filterIsInstance<Component>()
+            .map { it.container }
+            .toSet()
+            .toList()
 }

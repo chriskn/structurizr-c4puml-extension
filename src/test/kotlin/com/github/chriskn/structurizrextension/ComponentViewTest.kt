@@ -7,12 +7,12 @@ import com.github.chriskn.structurizrextension.model.component
 import com.github.chriskn.structurizrextension.model.container
 import com.github.chriskn.structurizrextension.model.person
 import com.github.chriskn.structurizrextension.model.softwareSystem
-import com.github.chriskn.structurizrextension.model.usedBy
 import com.github.chriskn.structurizrextension.model.uses
 import com.github.chriskn.structurizrextension.plantuml.C4PlantUmlLayout
 import com.github.chriskn.structurizrextension.plantuml.Layout
 import com.github.chriskn.structurizrextension.plantuml.LineType
 import com.github.chriskn.structurizrextension.view.componentView
+import com.github.chriskn.structurizrextension.view.showExternalContainerBoundaries
 import com.structurizr.Workspace
 import com.structurizr.model.InteractionStyle
 import com.structurizr.model.Location
@@ -20,21 +20,19 @@ import org.junit.jupiter.api.Test
 
 class ComponentViewTest {
 
-    private val diagramKey = "Component"
+    private val workspace = Workspace("My Workspace", "")
+    private val model = workspace.model
+    private val softwareSystem = model.softwareSystem("My Software System", "system description")
+    private val backendApplication = softwareSystem.container("Backend App", "some backend app", technology = "Kotlin")
 
-    @Test
-    fun `component diagram is written as expected`() {
-        val workspace = Workspace("My Workspace", "")
-        val model = workspace.model
-        val softwareSystem = model.softwareSystem("My Software System", "system description")
-        val backendApplication = softwareSystem.container("Backend App", "some backend app", technology = "Kotlin")
+    init {
         val user = model.person("User", "A user", Location.External)
         val restController = backendApplication.component(
             "MyRestController",
             "Provides data via rest",
-            technology = "REST"
+            technology = "REST",
+            usedBy = listOf(Dependency(user, "Website", "REST"))
         )
-        restController.usedBy(user, "Website", "REST")
         val repository = backendApplication.component(
             "MyRepo",
             "Provides CRUD operations for data",
@@ -49,21 +47,23 @@ class ComponentViewTest {
             technology = "",
             icon = "kotlin",
             usedBy = listOf(Dependency(restController, "calls")),
+            uses = listOf(
+                Dependency(
+                    repository,
+                    "gets notified",
+                    interactionStyle = InteractionStyle.Asynchronous,
+                )
+            )
         )
-        service.uses(
-            repository,
-            "gets notified",
-            interactionStyle = InteractionStyle.Asynchronous,
-        )
-        val backendApp = backendApplication.component(
+        backendApplication.component(
             "Cache",
             "In Memory DB",
             link = "https://google.de",
             technology = "RocksDB",
             icon = "rocksdb",
             c4Type = C4Type.DATABASE,
+            usedBy = listOf(Dependency(service, "uses", link = ""))
         )
-        backendApp.usedBy(service, "uses", link = "")
         softwareSystem.container(
             "Database",
             "some database",
@@ -72,12 +72,17 @@ class ComponentViewTest {
             icon = "postgresql",
             usedBy = listOf(Dependency(backendApplication.components.first { it.hasTag("repo") }, "gets data from"))
         )
-        val maintainer = model.person(
+        model.person(
             "Maintainer",
             "some employee",
-            location = Location.Internal
+            location = Location.Internal,
+            uses = listOf(Dependency(restController, "Admin UI", "REST", icon = "empty"))
         )
-        maintainer.uses(restController, "Admin UI", "REST", icon = "empty")
+    }
+
+    @Test
+    fun `component diagram is written without boundary if it contains only components`() {
+        val diagramKey = "ComponentWithoutBoundary"
         val componentView = workspace.views.componentView(
             backendApplication,
             diagramKey,
@@ -89,7 +94,68 @@ class ComponentViewTest {
                 layout = Layout.LeftToRight
             )
         )
-        componentView.addAllElements()
+        componentView.addAllComponents()
+
+        assertExpectedDiagramWasWrittenForView(workspace, diagramKey)
+    }
+
+    @Test
+    fun `component diagram is written with boundary if container boundaries are visible`() {
+        val diagramKey = "ComponentWithBoundary"
+        val componentView = workspace.views.componentView(
+            backendApplication,
+            diagramKey,
+            "Test component view",
+            C4PlantUmlLayout(
+                nodeSep = 100,
+                rankSep = 150,
+                lineType = LineType.Ortho,
+                layout = Layout.LeftToRight
+            )
+        )
+        componentView.addAllComponents()
+        componentView.showExternalContainerBoundaries = true
+
+        assertExpectedDiagramWasWrittenForView(workspace, diagramKey)
+    }
+
+    @Test
+    fun `component diagram is written without boundary if containers are added and boundaries not visible`() {
+        val diagramKey = "ComponentWithContainers"
+        val componentView = workspace.views.componentView(
+            backendApplication,
+            diagramKey,
+            "Test component view",
+            C4PlantUmlLayout(
+                nodeSep = 100,
+                rankSep = 150,
+                lineType = LineType.Ortho,
+                layout = Layout.LeftToRight
+            )
+        )
+        componentView.addAllComponents()
+        componentView.addAllContainers()
+
+        assertExpectedDiagramWasWrittenForView(workspace, diagramKey)
+    }
+
+    @Test
+    fun `component diagram is written with boundary if containers are added and  container boundaries are visible`() {
+        val diagramKey = "ComponentWithContainersAndBoundaries"
+        val componentView = workspace.views.componentView(
+            backendApplication,
+            diagramKey,
+            "Test component view",
+            C4PlantUmlLayout(
+                nodeSep = 100,
+                rankSep = 150,
+                lineType = LineType.Ortho,
+                layout = Layout.LeftToRight
+            )
+        )
+        componentView.addAllComponents()
+        componentView.addAllContainers()
+        componentView.showExternalContainerBoundaries = true
 
         assertExpectedDiagramWasWrittenForView(workspace, diagramKey)
     }

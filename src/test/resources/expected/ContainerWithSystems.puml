@@ -1,4 +1,4 @@
-@startuml(id=ContainerWithoutBoundary)
+@startuml(id=ContainerWithSystems)
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/android-icon.puml
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/docker-icon.puml
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/graphql.puml
@@ -16,6 +16,7 @@ WithoutPropertyHeader()
 AddProperty("prop 1", "value 1")
 Person(Maintainer, "Maintainer", "some employee", "", $link="https://www.google.de")
 Person_Ext(AndroidUser, "Android User", "some Android user", "android-icon")
+System_Ext(ThridPartySystem, "Thrid Party System", "External System", "")
 
 WithoutPropertyHeader()
 AddProperty("prop 1", "value 1")
@@ -32,6 +33,7 @@ Rel(AndroidUser, MySoftwareSystem.App, "uses app")
 Rel(MySoftwareSystem.App, GraphQL.InternalSchema, "reuqest data using", "GraphQL", $sprite=graphql, $link="https://graphql.org/")
 Rel_R(MySoftwareSystem.BackendApp, MySoftwareSystem.Database, "CRUD", "JPA")
 Rel(MySoftwareSystem.BackendApp, GraphQL.InternalSchema, "provides subgraph to")
+Rel(MySoftwareSystem.BackendApp, ThridPartySystem, "uses")
 Rel(MySoftwareSystem.BackendApp, Broker.mytopic, "reads topic", "Avro", $tags="async relationship")
 Rel_U(GraphQL.ExternalSchema, GraphQL.InternalSchema, "extends schema")
 Rel(Maintainer, MySoftwareSystem.BackendApp, "Admin UI", "REST")

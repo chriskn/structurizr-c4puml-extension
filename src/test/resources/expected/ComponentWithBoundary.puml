@@ -1,0 +1,30 @@
+@startuml(id=ComponentWithBoundary)
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/kotlin.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/rocksdb.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+title My Software System - Backend App - Components
+caption Test component view
+
+SHOW_PERSON_OUTLINE()
+LAYOUT_LEFT_RIGHT()
+
+AddRelTag("async relationship", $textColor="$ARROW_COLOR", $lineColor="$ARROW_COLOR", $lineStyle = DashedLine())
+
+Container_Boundary("MySoftwareSystem.BackendApp_boundary", "Backend App") {
+  Component(MySoftwareSystem.BackendApp.MyRestController, "MyRestController", "REST", "Provides data via rest", "")
+  WithoutPropertyHeader()
+  AddProperty("jdbcUrl", "someurl")
+  Component(MySoftwareSystem.BackendApp.MyRepo, "MyRepo", "Kotlin, JDBC", "Provides CRUD operations for data", "")
+  Component(MySoftwareSystem.BackendApp.MyService, "MyService", "", "Does implement some logic", "kotlin", $link="https://google.de")
+  ComponentDb(MySoftwareSystem.BackendApp.Cache, "Cache", "RocksDB", "In Memory DB", "rocksdb", $link="https://google.de")
+}
+Rel(MySoftwareSystem.BackendApp.MyRestController, MySoftwareSystem.BackendApp.MyService, "calls")
+Rel(MySoftwareSystem.BackendApp.MyService, MySoftwareSystem.BackendApp.Cache, "uses")
+Rel(MySoftwareSystem.BackendApp.MyService, MySoftwareSystem.BackendApp.MyRepo, "gets notified", $tags="async relationship")
+
+skinparam linetype ortho
+skinparam nodesep 100
+skinparam ranksep 150
+SHOW_LEGEND(true)
+
+@enduml

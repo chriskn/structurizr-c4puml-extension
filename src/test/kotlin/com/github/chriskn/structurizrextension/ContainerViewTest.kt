@@ -105,9 +105,42 @@ class ContainerViewTest {
         icon = "android",
         uses = listOf(Dependency(app, "uses app"))
     )
+    val thirdPartySystem = model.softwareSystem(
+        name = "Thrid Party System",
+        description = "External System",
+        location = Location.External,
+        usedBy = listOf(Dependency(backendApplication, "uses"))
+    )
 
     @Test
-    fun `container diagram is written as expected with external boundary`() {
+    fun `container diagram is written without boundary if it contains only containers`() {
+        val diagramKey = "ContainerWithoutBoundary"
+        val containerView = workspace.views.containerView(
+            softwareSystem,
+            diagramKey,
+            "Test container view",
+            C4PlantUmlLayout(
+                legend = Legend.None,
+                layout = Layout.TopDown,
+                showPersonOutline = false,
+                dependencyConfigurations = listOf(
+                    DependencyConfiguration(filter = { it.destination == database }, direction = Direction.Right),
+                    DependencyConfiguration(filter = { it.source == externalSchema }, direction = Direction.Up)
+                )
+            )
+        )
+
+        containerView.addAllContainers()
+        containerView.add(topic)
+        containerView.add(internalSchema)
+        containerView.add(externalSchema)
+        containerView.addAllPeople()
+
+        assertExpectedDiagramWasWrittenForView(workspace, diagramKey)
+    }
+
+    @Test
+    fun `container diagram is written with boundary if system boundaries are visible`() {
         val diagramKey = "ContainerWithBoundary"
         val containerView = workspace.views.containerView(
             softwareSystem,
@@ -125,21 +158,22 @@ class ContainerViewTest {
                 )
             )
         )
+
         containerView.addAllContainers()
-        containerView.showExternalSoftwareSystemBoundaries = true
         containerView.add(topic)
         containerView.add(internalSchema)
         containerView.add(externalSchema)
-
-        containerView.addDependentSoftwareSystems()
+        containerView.addAllSoftwareSystems()
         containerView.addAllPeople()
+
+        containerView.showExternalSoftwareSystemBoundaries = true
 
         assertExpectedDiagramWasWrittenForView(workspace, diagramKey)
     }
 
     @Test
-    fun `container diagram is written as expected without external boundary`() {
-        val diagramKey = "ContainerWithoutBoundary"
+    fun `container diagram is written without boundary if systems are added and boundaries not visible`() {
+        val diagramKey = "ContainerWithSystems"
         val containerView = workspace.views.containerView(
             softwareSystem,
             diagramKey,
@@ -158,9 +192,39 @@ class ContainerViewTest {
         containerView.add(topic)
         containerView.add(internalSchema)
         containerView.add(externalSchema)
-
-        containerView.addDependentSoftwareSystems()
+        containerView.addAllSoftwareSystems()
         containerView.addAllPeople()
+
+        assertExpectedDiagramWasWrittenForView(workspace, diagramKey)
+    }
+
+    @Test
+    fun `container diagram is written with boundary if systems are added and system boundaries are visible`() {
+        val diagramKey = "ContainerWithSystemsAndBoundaries"
+        val containerView = workspace.views.containerView(
+            softwareSystem,
+            diagramKey,
+            "Example container view",
+            C4PlantUmlLayout(
+                legend = Legend.ShowLegend,
+                layout = Layout.TopDown,
+                lineType = LineType.Ortho,
+                nodeSep = 100,
+                rankSep = 130,
+                dependencyConfigurations = listOf(
+                    DependencyConfiguration(filter = { it.destination == database }, direction = Direction.Right),
+                    DependencyConfiguration(filter = { it.destination == topic }, direction = Direction.Up)
+                )
+            )
+        )
+        containerView.addAllContainers()
+        containerView.add(topic)
+        containerView.add(internalSchema)
+        containerView.add(externalSchema)
+        containerView.addAllSoftwareSystems()
+        containerView.addAllPeople()
+
+        containerView.showExternalSoftwareSystemBoundaries = true
 
         assertExpectedDiagramWasWrittenForView(workspace, diagramKey)
     }

@@ -1,4 +1,4 @@
-@startuml(id=ContainerWithoutBoundary)
+@startuml(id=ContainerWithSystemsAndBoundaries)
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/android-icon.puml
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/docker-icon.puml
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/graphql.puml
@@ -6,8 +6,9 @@
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/postgresql.puml
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 title My Software System - Containers
-caption Test container view
+caption Example container view
 
+SHOW_PERSON_OUTLINE()
 LAYOUT_TOP_DOWN()
 
 AddRelTag("async relationship", $textColor="$ARROW_COLOR", $lineColor="$ARROW_COLOR", $lineStyle = DashedLine())
@@ -16,23 +17,34 @@ WithoutPropertyHeader()
 AddProperty("prop 1", "value 1")
 Person(Maintainer, "Maintainer", "some employee", "", $link="https://www.google.de")
 Person_Ext(AndroidUser, "Android User", "some Android user", "android-icon")
+System_Ext(ThridPartySystem, "Thrid Party System", "External System", "")
 
-WithoutPropertyHeader()
-AddProperty("prop 1", "value 1")
-Container(MySoftwareSystem.BackendApp, "Backend App", "Kotlin", "some backend app", "docker-icon", $link="https://www.google.de")
-Container(MySoftwareSystem.App, "App", "Android", "android app", "android-icon")
-ContainerDb(MySoftwareSystem.Database, "Database", "postgres", "some database", "postgresql")
-
-Container(GraphQL.InternalSchema, "Internal Schema", "", "Schema provided by our app", "")
-Container_Ext(GraphQL.ExternalSchema, "External Schema", "", "Schema provided by another team", "")
-
-ContainerQueue_Ext(Broker.mytopic, "my.topic", "", "external topic", "kafka")
-
+System_Boundary(MySoftwareSystem, My Software System) {
+  WithoutPropertyHeader()
+  AddProperty("prop 1", "value 1")
+  Container(MySoftwareSystem.BackendApp, "Backend App", "Kotlin", "some backend app", "docker-icon", $link="https://www.google.de")
+  Container(MySoftwareSystem.App, "App", "Android", "android app", "android-icon")
+  ContainerDb(MySoftwareSystem.Database, "Database", "postgres", "some database", "postgresql")
+}
+System_Boundary(GraphQL, GraphQL) {
+  Container(GraphQL.InternalSchema, "Internal Schema", "", "Schema provided by our app", "")
+  Container_Ext(GraphQL.ExternalSchema, "External Schema", "", "Schema provided by another team", "")
+}
+System_Boundary(Broker, Broker) {
+  ContainerQueue_Ext(Broker.mytopic, "my.topic", "", "external topic", "kafka")
+}
 Rel(AndroidUser, MySoftwareSystem.App, "uses app")
 Rel(MySoftwareSystem.App, GraphQL.InternalSchema, "reuqest data using", "GraphQL", $sprite=graphql, $link="https://graphql.org/")
 Rel_R(MySoftwareSystem.BackendApp, MySoftwareSystem.Database, "CRUD", "JPA")
 Rel(MySoftwareSystem.BackendApp, GraphQL.InternalSchema, "provides subgraph to")
-Rel(MySoftwareSystem.BackendApp, Broker.mytopic, "reads topic", "Avro", $tags="async relationship")
-Rel_U(GraphQL.ExternalSchema, GraphQL.InternalSchema, "extends schema")
+Rel(MySoftwareSystem.BackendApp, ThridPartySystem, "uses")
+Rel_U(MySoftwareSystem.BackendApp, Broker.mytopic, "reads topic", "Avro", $tags="async relationship")
+Rel(GraphQL.ExternalSchema, GraphQL.InternalSchema, "extends schema")
 Rel(Maintainer, MySoftwareSystem.BackendApp, "Admin UI", "REST")
+
+skinparam linetype ortho
+skinparam nodesep 100
+skinparam ranksep 130
+SHOW_LEGEND(true)
+
 @enduml
