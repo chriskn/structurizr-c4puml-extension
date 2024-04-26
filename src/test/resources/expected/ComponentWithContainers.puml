@@ -1,4 +1,4 @@
-@startuml(id=Component)
+@startuml(id=ComponentWithContainers)
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/kotlin.puml
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/postgresql.puml
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/rocksdb.puml
@@ -12,24 +12,18 @@ LAYOUT_LEFT_RIGHT()
 AddRelTag("async relationship", $textColor="$ARROW_COLOR", $lineColor="$ARROW_COLOR", $lineStyle = DashedLine())
 
 ContainerDb(MySoftwareSystem.Database, "Database", "postgres", "some database", "postgresql")
-Person_Ext(User, "User", "A user", "")
-Person(Maintainer, "Maintainer", "some employee", "")
 
-Container_Boundary("MySoftwareSystem.BackendApp_boundary", "Backend App") {
-  ComponentDb(MySoftwareSystem.BackendApp.Cache, "Cache", "RocksDB", "In Memory DB", "rocksdb", $link="https://google.de")
-  Component(MySoftwareSystem.BackendApp.MyRestController, "MyRestController", "REST", "Provides data via rest", "")
-  WithoutPropertyHeader()
-  AddProperty("jdbcUrl", "someurl")
-  Component(MySoftwareSystem.BackendApp.MyRepo, "MyRepo", "Kotlin, JDBC", "Provides CRUD operations for data", "")
-  Component(MySoftwareSystem.BackendApp.MyService, "MyService", "", "Does implement some logic", "kotlin", $link="https://google.de")
-}
+Component(MySoftwareSystem.BackendApp.MyRestController, "MyRestController", "REST", "Provides data via rest", "")
+WithoutPropertyHeader()
+AddProperty("jdbcUrl", "someurl")
+Component(MySoftwareSystem.BackendApp.MyRepo, "MyRepo", "Kotlin, JDBC", "Provides CRUD operations for data", "")
+Component(MySoftwareSystem.BackendApp.MyService, "MyService", "", "Does implement some logic", "kotlin", $link="https://google.de")
+ComponentDb(MySoftwareSystem.BackendApp.Cache, "Cache", "RocksDB", "In Memory DB", "rocksdb", $link="https://google.de")
 
-Rel(Maintainer, MySoftwareSystem.BackendApp.MyRestController, "Admin UI", "REST")
 Rel(MySoftwareSystem.BackendApp.MyRepo, MySoftwareSystem.Database, "gets data from")
 Rel(MySoftwareSystem.BackendApp.MyRestController, MySoftwareSystem.BackendApp.MyService, "calls")
 Rel(MySoftwareSystem.BackendApp.MyService, MySoftwareSystem.BackendApp.Cache, "uses")
 Rel(MySoftwareSystem.BackendApp.MyService, MySoftwareSystem.BackendApp.MyRepo, "gets notified", $tags="async relationship")
-Rel(User, MySoftwareSystem.BackendApp.MyRestController, "Website", "REST")
 
 skinparam linetype ortho
 skinparam nodesep 100

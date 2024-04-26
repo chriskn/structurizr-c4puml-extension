@@ -1,5 +1,6 @@
 package com.github.chriskn.structurizrextension.view
 
+import com.structurizr.view.ComponentView
 import com.structurizr.view.ContainerView
 import com.structurizr.view.DynamicView
 
@@ -15,4 +16,12 @@ var ContainerView.showExternalSoftwareSystemBoundaries: Boolean
     set(value) {
         @Suppress("DEPRECATION")
         this.externalSoftwareSystemBoundariesVisible = value
+    }
+
+var ComponentView.showExternalContainerBoundaries: Boolean
+    // naming bug in structurizr
+    get() = this.externalContainerBoundariesVisible
+    set(value) {
+        @Suppress("DEPRECATION")
+        this.setExternalSoftwareSystemBoundariesVisible(value)
     }
