@@ -39,8 +39,7 @@ class ComponentViewExporter(
 
         val containers: List<Container> = getBoundaryContainer(view)
         for (container in containers) {
-            val showContainerBoundary =
-                container == view.container && view.externalContainerBoundariesVisible
+            val showContainerBoundary = view.externalContainerBoundariesVisible
             if (showContainerBoundary) {
                 boundaryWriter.startContainerBoundary(container, writer, view)
             }

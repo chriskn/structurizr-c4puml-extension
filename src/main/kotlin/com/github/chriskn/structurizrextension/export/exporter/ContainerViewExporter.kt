@@ -39,8 +39,7 @@ class ContainerViewExporter(
 
         val softwareSystems: List<SoftwareSystem> = getBoundarySoftwareSystems(view)
         for (softwareSystem in softwareSystems) {
-            val showSoftwareSystemBoundary =
-                softwareSystem == view.softwareSystem || view.externalSoftwareSystemBoundariesVisible
+            val showSoftwareSystemBoundary = view.externalSoftwareSystemBoundariesVisible
             if (showSoftwareSystemBoundary) {
                 boundaryWriter.startSoftwareSystemBoundary(softwareSystem, writer, view)
             }
@@ -63,12 +62,12 @@ class ContainerViewExporter(
         return createC4Diagram(view, writer.toString())
     }
 
-    private fun getBoundarySoftwareSystems(view: ModelView): List<SoftwareSystem> {
-        val softwareSystems = view.elements
-            .map { obj: ElementView -> obj.element }
-            .filterIsInstance<Container>()
-            .map { it.softwareSystem }
-            .toSet()
-        return softwareSystems.sortedBy { it.id }
-    }
+    private fun getBoundarySoftwareSystems(view: ModelView): List<SoftwareSystem> = view.elements
+        .asSequence()
+        .map { obj: ElementView -> obj.element }
+        .filterIsInstance<Container>()
+        .map { it.softwareSystem }
+        .toSet()
+        .sortedBy { it.id }
+        .toList()
 }

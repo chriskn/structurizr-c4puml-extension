@@ -120,7 +120,7 @@ class ComponentViewTest {
     }
 
     @Test
-    fun `component diagram is written without boundary if containers are added`() {
+    fun `component diagram is written without boundary if containers are added and boundaries not visible`() {
         val diagramKey = "ComponentWithContainers"
         val componentView = workspace.views.componentView(
             backendApplication,
