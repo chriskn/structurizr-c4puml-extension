@@ -1,5 +1,6 @@
-package com.github.chriskn.structurizrextension
+package com.github.chriskn.structurizrextension.view
 
+import com.github.chriskn.structurizrextension.assertExpectedDiagramWasWrittenForView
 import com.github.chriskn.structurizrextension.model.C4Properties
 import com.github.chriskn.structurizrextension.model.C4Type
 import com.github.chriskn.structurizrextension.model.Dependency
@@ -11,11 +12,7 @@ import com.github.chriskn.structurizrextension.plantuml.C4PlantUmlLayout
 import com.github.chriskn.structurizrextension.plantuml.DependencyConfiguration
 import com.github.chriskn.structurizrextension.plantuml.Direction
 import com.github.chriskn.structurizrextension.plantuml.Mode
-import com.github.chriskn.structurizrextension.view.add
-import com.github.chriskn.structurizrextension.view.dynamicView
-import com.github.chriskn.structurizrextension.view.renderAsSequenceDiagram
-import com.github.chriskn.structurizrextension.view.showExternalBoundaries
-import com.github.chriskn.structurizrextension.view.startNestedParallelSequence
+import com.github.chriskn.structurizrextension.writeDiagrams
 import com.structurizr.Workspace
 import com.structurizr.model.InteractionStyle.Asynchronous
 import com.structurizr.model.Model
@@ -29,6 +26,8 @@ import org.junit.jupiter.params.provider.ValueSource
 import java.io.File
 
 class DynamicViewTest {
+
+    private val pathToExpectedDiagrams = "view/dynamic"
 
     @ParameterizedTest(name = "{index} asSequenceDiagram = {0}")
     @ValueSource(booleans = [true, false])
@@ -44,7 +43,7 @@ class DynamicViewTest {
         configureWithParallelNumbering(dynamicView)
         dynamicView.renderAsSequenceDiagram = asSequenceDiagram
 
-        assertExpectedDiagramWasWrittenForView(workspace, diagramKey)
+        assertExpectedDiagramWasWrittenForView(workspace, pathToExpectedDiagrams, diagramKey)
     }
 
     @ParameterizedTest(name = "{index} asSequenceDiagram = {0}")
@@ -60,7 +59,7 @@ class DynamicViewTest {
         configureWithNestedParallelNumbering(dynamicView)
         dynamicView.renderAsSequenceDiagram = asSequenceDiagram
 
-        assertExpectedDiagramWasWrittenForView(workspace, diagramKey)
+        assertExpectedDiagramWasWrittenForView(workspace, pathToExpectedDiagrams, diagramKey)
     }
 
     @ParameterizedTest(name = "{index} asSequenceDiagram = {0}")
@@ -88,7 +87,7 @@ class DynamicViewTest {
         dynamicView.showExternalBoundaries = true
         dynamicView.renderAsSequenceDiagram = asSequenceDiagram
 
-        assertExpectedDiagramWasWrittenForView(workspace, diagramKey)
+        assertExpectedDiagramWasWrittenForView(workspace, pathToExpectedDiagrams, diagramKey)
     }
 
     @ParameterizedTest(name = "{index} asSequenceDiagram = {0}")
@@ -116,7 +115,7 @@ class DynamicViewTest {
         configureWithNestedParallelNumbering(dynamicView)
         dynamicView.renderAsSequenceDiagram = asSequenceDiagram
 
-        assertExpectedDiagramWasWrittenForView(workspace, diagramKey)
+        assertExpectedDiagramWasWrittenForView(workspace, pathToExpectedDiagrams, diagramKey)
     }
 
     @Test

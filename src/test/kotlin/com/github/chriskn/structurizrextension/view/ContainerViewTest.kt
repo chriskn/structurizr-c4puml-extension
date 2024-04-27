@@ -1,5 +1,6 @@
-package com.github.chriskn.structurizrextension
+package com.github.chriskn.structurizrextension.view
 
+import com.github.chriskn.structurizrextension.assertExpectedDiagramWasWrittenForView
 import com.github.chriskn.structurizrextension.model.C4Properties
 import com.github.chriskn.structurizrextension.model.C4Type
 import com.github.chriskn.structurizrextension.model.Dependency
@@ -12,14 +13,14 @@ import com.github.chriskn.structurizrextension.plantuml.Direction
 import com.github.chriskn.structurizrextension.plantuml.Layout
 import com.github.chriskn.structurizrextension.plantuml.Legend
 import com.github.chriskn.structurizrextension.plantuml.LineType
-import com.github.chriskn.structurizrextension.view.containerView
-import com.github.chriskn.structurizrextension.view.showExternalSoftwareSystemBoundaries
 import com.structurizr.Workspace
 import com.structurizr.model.InteractionStyle
 import com.structurizr.model.Location
 import org.junit.jupiter.api.Test
 
 class ContainerViewTest {
+
+    private val pathToExpectedDiagrams = "view/container"
 
     val workspace = Workspace("My Workspace", "")
     val model = workspace.model
@@ -136,7 +137,7 @@ class ContainerViewTest {
         containerView.add(externalSchema)
         containerView.addAllPeople()
 
-        assertExpectedDiagramWasWrittenForView(workspace, diagramKey)
+        assertExpectedDiagramWasWrittenForView(workspace, pathToExpectedDiagrams, diagramKey)
     }
 
     @Test
@@ -168,7 +169,7 @@ class ContainerViewTest {
 
         containerView.showExternalSoftwareSystemBoundaries = true
 
-        assertExpectedDiagramWasWrittenForView(workspace, diagramKey)
+        assertExpectedDiagramWasWrittenForView(workspace, pathToExpectedDiagrams, diagramKey)
     }
 
     @Test
@@ -195,7 +196,7 @@ class ContainerViewTest {
         containerView.addAllSoftwareSystems()
         containerView.addAllPeople()
 
-        assertExpectedDiagramWasWrittenForView(workspace, diagramKey)
+        assertExpectedDiagramWasWrittenForView(workspace, pathToExpectedDiagrams, diagramKey)
     }
 
     @Test
@@ -226,6 +227,6 @@ class ContainerViewTest {
 
         containerView.showExternalSoftwareSystemBoundaries = true
 
-        assertExpectedDiagramWasWrittenForView(workspace, diagramKey)
+        assertExpectedDiagramWasWrittenForView(workspace, pathToExpectedDiagrams, diagramKey)
     }
 }

@@ -1,5 +1,6 @@
-package com.github.chriskn.structurizrextension
+package com.github.chriskn.structurizrextension.view
 
+import com.github.chriskn.structurizrextension.assertExpectedDiagramWasWrittenForView
 import com.github.chriskn.structurizrextension.model.C4Properties
 import com.github.chriskn.structurizrextension.model.C4Type
 import com.github.chriskn.structurizrextension.model.Dependency
@@ -7,18 +8,17 @@ import com.github.chriskn.structurizrextension.model.component
 import com.github.chriskn.structurizrextension.model.container
 import com.github.chriskn.structurizrextension.model.person
 import com.github.chriskn.structurizrextension.model.softwareSystem
-import com.github.chriskn.structurizrextension.model.uses
 import com.github.chriskn.structurizrextension.plantuml.C4PlantUmlLayout
 import com.github.chriskn.structurizrextension.plantuml.Layout
 import com.github.chriskn.structurizrextension.plantuml.LineType
-import com.github.chriskn.structurizrextension.view.componentView
-import com.github.chriskn.structurizrextension.view.showExternalContainerBoundaries
 import com.structurizr.Workspace
 import com.structurizr.model.InteractionStyle
 import com.structurizr.model.Location
 import org.junit.jupiter.api.Test
 
 class ComponentViewTest {
+
+    private val pathToExpectedDiagrams = "view/component"
 
     private val workspace = Workspace("My Workspace", "")
     private val model = workspace.model
@@ -96,7 +96,7 @@ class ComponentViewTest {
         )
         componentView.addAllComponents()
 
-        assertExpectedDiagramWasWrittenForView(workspace, diagramKey)
+        assertExpectedDiagramWasWrittenForView(workspace, pathToExpectedDiagrams, diagramKey)
     }
 
     @Test
@@ -116,7 +116,7 @@ class ComponentViewTest {
         componentView.addAllComponents()
         componentView.showExternalContainerBoundaries = true
 
-        assertExpectedDiagramWasWrittenForView(workspace, diagramKey)
+        assertExpectedDiagramWasWrittenForView(workspace, pathToExpectedDiagrams, diagramKey)
     }
 
     @Test
@@ -136,7 +136,7 @@ class ComponentViewTest {
         componentView.addAllComponents()
         componentView.addAllContainers()
 
-        assertExpectedDiagramWasWrittenForView(workspace, diagramKey)
+        assertExpectedDiagramWasWrittenForView(workspace, pathToExpectedDiagrams, diagramKey)
     }
 
     @Test
@@ -157,6 +157,6 @@ class ComponentViewTest {
         componentView.addAllContainers()
         componentView.showExternalContainerBoundaries = true
 
-        assertExpectedDiagramWasWrittenForView(workspace, diagramKey)
+        assertExpectedDiagramWasWrittenForView(workspace, pathToExpectedDiagrams, diagramKey)
     }
 }
