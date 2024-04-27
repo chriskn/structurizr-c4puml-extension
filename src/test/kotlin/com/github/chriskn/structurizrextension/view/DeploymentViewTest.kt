@@ -1,5 +1,6 @@
-package com.github.chriskn.structurizrextension
+package com.github.chriskn.structurizrextension.view
 
+import com.github.chriskn.structurizrextension.assertExpectedDiagramWasWrittenForView
 import com.github.chriskn.structurizrextension.model.C4Properties
 import com.github.chriskn.structurizrextension.model.C4Type
 import com.github.chriskn.structurizrextension.model.Dependency
@@ -13,7 +14,6 @@ import com.github.chriskn.structurizrextension.plantuml.C4PlantUmlLayout
 import com.github.chriskn.structurizrextension.plantuml.DependencyConfiguration
 import com.github.chriskn.structurizrextension.plantuml.Direction
 import com.github.chriskn.structurizrextension.plantuml.Layout
-import com.github.chriskn.structurizrextension.view.deploymentView
 import com.structurizr.Workspace
 import com.structurizr.model.Container
 import com.structurizr.model.InteractionStyle
@@ -22,6 +22,7 @@ import org.junit.jupiter.api.Test
 
 class DeploymentViewTest {
 
+    private val pathToExpectedDiagrams = "view/deployment"
     private val diagramKey = "Deployment"
 
     @Test
@@ -162,6 +163,6 @@ class DeploymentViewTest {
             )
         deploymentView.addDefaultElements()
 
-        assertExpectedDiagramWasWrittenForView(workspace, diagramKey)
+        assertExpectedDiagramWasWrittenForView(workspace, pathToExpectedDiagrams, diagramKey)
     }
 }

@@ -1,5 +1,6 @@
-package com.github.chriskn.structurizrextension
+package com.github.chriskn.structurizrextension.view
 
+import com.github.chriskn.structurizrextension.assertExpectedDiagramWasWrittenForView
 import com.github.chriskn.structurizrextension.model.C4Properties
 import com.github.chriskn.structurizrextension.model.Dependency
 import com.github.chriskn.structurizrextension.model.enterprise
@@ -8,8 +9,6 @@ import com.github.chriskn.structurizrextension.model.softwareSystem
 import com.github.chriskn.structurizrextension.plantuml.C4PlantUmlLayout
 import com.github.chriskn.structurizrextension.plantuml.Layout
 import com.github.chriskn.structurizrextension.plantuml.Legend
-import com.github.chriskn.structurizrextension.view.systemContextView
-import com.github.chriskn.structurizrextension.view.systemLandscapeView
 import com.structurizr.Workspace
 import com.structurizr.model.Location
 import com.structurizr.model.Model
@@ -17,6 +16,8 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 class ContextViewTest {
+
+    private val pathToExpectedDiagrams = "view/context"
 
     private val workspace = Workspace("My Workspace", "Some Description")
     private val model: Model = workspace.model
@@ -93,7 +94,7 @@ class ContextViewTest {
         )
         landscapeView.addAllElements()
 
-        assertExpectedDiagramWasWrittenForView(workspace, diagramKey)
+        assertExpectedDiagramWasWrittenForView(workspace, pathToExpectedDiagrams, diagramKey)
     }
 
     @Test
@@ -111,6 +112,6 @@ class ContextViewTest {
         )
         contextView.addDefaultElements()
 
-        assertExpectedDiagramWasWrittenForView(workspace, diagramKey)
+        assertExpectedDiagramWasWrittenForView(workspace, pathToExpectedDiagrams, diagramKey)
     }
 }

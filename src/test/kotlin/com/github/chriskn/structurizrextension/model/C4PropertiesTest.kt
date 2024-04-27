@@ -88,6 +88,6 @@ class C4PropertiesTest {
             "properties should retain order"
         ).addAllSoftwareSystems()
 
-        assertExpectedDiagramWasWrittenForView(workspace, diagramKey)
+        assertExpectedDiagramWasWrittenForView(workspace, "model", diagramKey)
     }
 }

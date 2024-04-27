@@ -7,9 +7,10 @@ import java.nio.file.Files.createTempDirectory
 
 fun assertExpectedDiagramWasWrittenForView(
     workspace: Workspace,
+    pathToExpectedDiagram: String,
     diagramKey: String
 ) {
-    val expectedDiagram = object {}::class.java.getResource("/expected/$diagramKey.puml")
+    val expectedDiagram = object {}::class.java.getResource("/expected/$pathToExpectedDiagram/$diagramKey.puml")
         ?: throw IllegalArgumentException("expected diagram file $diagramKey.puml not found")
     val expectedDiagramContent = expectedDiagram.readText(Charsets.UTF_8)
     val diagramFolder = createTempDirectory("diagram").toFile()

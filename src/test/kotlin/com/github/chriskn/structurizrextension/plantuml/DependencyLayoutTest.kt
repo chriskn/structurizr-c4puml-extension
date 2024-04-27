@@ -1,12 +1,8 @@
-package com.github.chriskn.structurizrextension
+package com.github.chriskn.structurizrextension.plantuml
 
+import com.github.chriskn.structurizrextension.assertExpectedDiagramWasWrittenForView
 import com.github.chriskn.structurizrextension.model.softwareSystem
 import com.github.chriskn.structurizrextension.model.usedBy
-import com.github.chriskn.structurizrextension.plantuml.C4PlantUmlLayout
-import com.github.chriskn.structurizrextension.plantuml.DependencyConfiguration
-import com.github.chriskn.structurizrextension.plantuml.Direction
-import com.github.chriskn.structurizrextension.plantuml.Legend
-import com.github.chriskn.structurizrextension.plantuml.Mode
 import com.github.chriskn.structurizrextension.view.systemLandscapeView
 import com.structurizr.Workspace
 import com.structurizr.model.Model
@@ -14,6 +10,8 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 class DependencyLayoutTest {
+
+    private val pathToExpectedDiagrams = "plantuml"
 
     private val workspace = Workspace("My Workspace", "Some Description")
     private val model: Model = workspace.model
@@ -48,7 +46,7 @@ class DependencyLayoutTest {
         )
         contextView.addDefaultElements()
 
-        assertExpectedDiagramWasWrittenForView(workspace, diagramKey)
+        assertExpectedDiagramWasWrittenForView(workspace, pathToExpectedDiagrams, diagramKey)
     }
 
     @Test
@@ -66,7 +64,7 @@ class DependencyLayoutTest {
         )
         contextView.addDefaultElements()
 
-        assertExpectedDiagramWasWrittenForView(workspace, diagramKey)
+        assertExpectedDiagramWasWrittenForView(workspace, pathToExpectedDiagrams, diagramKey)
     }
 
     @Test
@@ -84,6 +82,6 @@ class DependencyLayoutTest {
         )
         contextView.addDefaultElements()
 
-        assertExpectedDiagramWasWrittenForView(workspace, diagramKey)
+        assertExpectedDiagramWasWrittenForView(workspace, pathToExpectedDiagrams, diagramKey)
     }
 }
