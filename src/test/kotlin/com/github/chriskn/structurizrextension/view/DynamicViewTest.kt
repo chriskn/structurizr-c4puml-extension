@@ -17,6 +17,7 @@ import com.structurizr.Workspace
 import com.structurizr.model.InteractionStyle.Asynchronous
 import com.structurizr.model.Model
 import com.structurizr.view.DynamicView
+import com.structurizr.view.showExternalBoundaries
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow

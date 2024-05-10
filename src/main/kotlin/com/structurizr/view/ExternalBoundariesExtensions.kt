@@ -1,27 +1,29 @@
-package com.github.chriskn.structurizrextension.view
-
-import com.structurizr.view.ComponentView
-import com.structurizr.view.ContainerView
-import com.structurizr.view.DynamicView
+package com.structurizr.view
 
 var DynamicView.showExternalBoundaries: Boolean
+    @Suppress("Deprecated")
     get() = this.externalBoundariesVisible
     set(value) {
-        @Suppress("DEPRECATION")
         this.externalBoundariesVisible = value
     }
 
 var ContainerView.showExternalSoftwareSystemBoundaries: Boolean
+    @Suppress("Deprecated")
     get() = this.externalSoftwareSystemBoundariesVisible
     set(value) {
-        @Suppress("DEPRECATION")
         this.externalSoftwareSystemBoundariesVisible = value
     }
 
 var ComponentView.showExternalContainerBoundaries: Boolean
-    // naming bug in structurizr
+    @Suppress("Deprecated")
     get() = this.externalContainerBoundariesVisible
     set(value) {
-        @Suppress("DEPRECATION")
         this.setExternalSoftwareSystemBoundariesVisible(value)
+    }
+
+var SystemLandscapeView.showEnterpriseBoundary: Boolean
+    @Suppress("Deprecated")
+    get() = this.isEnterpriseBoundaryVisible
+    set(value) {
+        this.setEnterpriseBoundaryVisible(value)
     }

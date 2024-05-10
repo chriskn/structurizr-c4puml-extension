@@ -3,7 +3,6 @@ package com.github.chriskn.structurizrextension.model
 import com.structurizr.model.Container
 import com.structurizr.model.DeploymentElement
 import com.structurizr.model.DeploymentNode
-import com.structurizr.model.Enterprise
 import com.structurizr.model.Location
 import com.structurizr.model.Model
 import com.structurizr.model.Person
@@ -36,7 +35,8 @@ fun Model.person(
     uses: List<Dependency<StaticStructureElement>> = listOf(),
 ): Person {
     @Suppress("DEPRECATION")
-    val person = this.addPerson(location, name, description)
+    val person = this.addPerson(name, description)
+    person.c4Location = location
     person.configure(icon, link, tags, properties)
     uses.forEach { dep -> dep.addRelationShipFrom(person) }
     return person
@@ -71,9 +71,9 @@ fun Model.softwareSystem(
     uses: List<Dependency<StaticStructureElement>> = listOf(),
     usedBy: List<Dependency<StaticStructureElement>> = listOf()
 ): SoftwareSystem {
-    @Suppress("DEPRECATION")
-    val softwareSystem = this.addSoftwareSystem(location, name, description)
+    val softwareSystem = this.addSoftwareSystem(name, description)
     softwareSystem.c4Type = c4Type
+    softwareSystem.c4Location = location
     softwareSystem.configure(icon, link, tags, properties, uses, usedBy)
     return softwareSystem
 }
@@ -113,9 +113,4 @@ fun Model.deploymentNode(
     val node = this.addDeploymentNode(environment, name, description, technology)
     node.configure(icon, link, tags, properties, hostsSystems, hostsContainers, uses, usedBy)
     return node
-}
-
-fun Model.enterprise(name: String) {
-    @Suppress("DEPRECATION")
-    this.enterprise = Enterprise(name)
 }

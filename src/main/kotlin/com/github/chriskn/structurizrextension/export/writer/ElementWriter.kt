@@ -1,10 +1,10 @@
 package com.github.chriskn.structurizrextension.export.writer
 
 import com.github.chriskn.structurizrextension.export.idOf
+import com.github.chriskn.structurizrextension.model.c4Location
 import com.github.chriskn.structurizrextension.model.c4Type
 import com.github.chriskn.structurizrextension.model.icon
 import com.github.chriskn.structurizrextension.model.link
-import com.github.chriskn.structurizrextension.model.location
 import com.github.chriskn.structurizrextension.plantuml.IconRegistry
 import com.structurizr.export.IndentingWriter
 import com.structurizr.model.Component
@@ -74,21 +74,21 @@ class ElementWriter(
         }"${linkString(link)})"""
 
     private fun SoftwareSystem.toMacro(id: String) =
-        """System${this.c4Type?.c4Type ?: ""}${this.location.toPlantUmlString()}($id, "$name", "${description ?: ""}", "${
+        """System${this.c4Type?.c4Type ?: ""}${this.c4Location.toPlantUmlString()}($id, "$name", "${description ?: ""}", "${
             IconRegistry.iconFileNameFor(
                 icon
             ) ?: ""
         }"${linkString(link)})"""
 
     private fun Container.toMacro(id: String): String =
-        """Container${this.c4Type?.c4Type ?: ""}${this.location.toPlantUmlString()}($id, "$name", "$technology", "${description ?: ""}", "${
+        """Container${this.c4Type?.c4Type ?: ""}${this.c4Location.toPlantUmlString()}($id, "$name", "$technology", "${description ?: ""}", "${
             IconRegistry.iconFileNameFor(
                 icon
             ) ?: ""
         }"${linkString(link)})"""
 
     private fun Person.toMacro(): String {
-        val externalMarker = this.location.toPlantUmlString()
+        val externalMarker = this.c4Location.toPlantUmlString()
         return """Person$externalMarker(${idOf(this)}, "$name", "${description ?: ""}", "${
             IconRegistry.iconFileNameFor(
                 icon

@@ -27,8 +27,8 @@ data class C4Properties(
             "Number of rows should not exceed $MAX_ROW_SIZE or number of header rows"
         }
         // Not supported. Issue: https://github.com/plantuml-stdlib/C4-PlantUML/issues/355
-        require(values.all { it.size > 1 } && header?.size?.let { it > 1 } == true) {
-            "C4PlantUml does not support single row properties"
+        require(values.all { it.size > 1 } && (header == null || header.size > 1)) {
+            "C4PlantUml does not support single row properties or property header"
         }
     }
 }

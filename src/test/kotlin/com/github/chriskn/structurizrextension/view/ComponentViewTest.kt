@@ -14,6 +14,7 @@ import com.github.chriskn.structurizrextension.plantuml.LineType
 import com.structurizr.Workspace
 import com.structurizr.model.InteractionStyle
 import com.structurizr.model.Location
+import com.structurizr.view.showExternalContainerBoundaries
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 

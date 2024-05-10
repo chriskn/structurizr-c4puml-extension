@@ -4,6 +4,7 @@ import com.github.chriskn.structurizrextension.export.exporter.ComponentViewExpo
 import com.github.chriskn.structurizrextension.export.exporter.ContainerViewExporter
 import com.github.chriskn.structurizrextension.export.exporter.DeploymentViewExporter
 import com.github.chriskn.structurizrextension.export.exporter.DynamicViewExporter
+import com.github.chriskn.structurizrextension.export.exporter.LandscapeViewExporter
 import com.github.chriskn.structurizrextension.export.writer.BoundaryWriter
 import com.github.chriskn.structurizrextension.export.writer.ElementWriter
 import com.github.chriskn.structurizrextension.export.writer.FooterWriter
@@ -23,6 +24,7 @@ import com.structurizr.view.DeploymentView
 import com.structurizr.view.DynamicView
 import com.structurizr.view.ModelView
 import com.structurizr.view.RelationshipView
+import com.structurizr.view.SystemLandscapeView
 
 @Suppress("TooManyFunctions")
 class ExtendedC4PlantUMLExporter : AbstractDiagramExporter() {
@@ -62,6 +64,13 @@ class ExtendedC4PlantUMLExporter : AbstractDiagramExporter() {
         elementWriter,
         relationshipWriter
     )
+    private val contextViewExporter = LandscapeViewExporter(
+        boundaryWriter,
+        footerWriter,
+        headerWriter,
+        elementWriter,
+        relationshipWriter
+    )
 
     override fun writeHeader(view: ModelView, writer: IndentingWriter) {
         headerWriter.writeHeader(view, writer)
@@ -90,6 +99,8 @@ class ExtendedC4PlantUMLExporter : AbstractDiagramExporter() {
     override fun export(view: ContainerView): Diagram = containerViewExporter.exportContainerView(view)
 
     override fun export(view: ComponentView): Diagram = componentViewExporter.exportComponentView(view)
+
+    override fun export(view: SystemLandscapeView): Diagram = contextViewExporter.exportLandscapeView(view)
 
     override fun createDiagram(view: ModelView, definition: String): Diagram = createC4Diagram(view, definition)
 
