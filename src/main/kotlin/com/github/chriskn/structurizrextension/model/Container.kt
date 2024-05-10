@@ -1,12 +1,8 @@
 package com.github.chriskn.structurizrextension.model
 
-import com.structurizr.export.plantuml.C4PlantUMLExporter
 import com.structurizr.model.Component
 import com.structurizr.model.Container
-import com.structurizr.model.Location
 import com.structurizr.model.StaticStructureElement
-
-const val LOCATION_PROPERTY = "c4location"
 
 /**
  * Adds a component to this container.
@@ -42,35 +38,3 @@ fun Container.component(
     component.configure(icon, link, tags, properties, uses, usedBy)
     return component
 }
-
-var Container.c4Type: C4Type?
-    /**
-     * Returns the [C4Type] of the container.
-     */
-    get() = if (this.properties.containsKey(C4PlantUMLExporter.C4PLANTUML_SPRITE)) {
-        C4Type.fromC4Type(this.properties.getValue(C4PlantUMLExporter.C4PLANTUML_SPRITE))
-    } else {
-        null
-    }
-
-    /**
-     * Sets the [C4Type] of the container.
-     */
-    set(value) {
-        if (value != null) {
-            this.addProperty(C4PlantUMLExporter.C4PLANTUML_SPRITE, value.c4Type)
-        }
-    }
-
-var Container.location: Location
-    /**
-     * Returns the [Location] of the container.
-     */
-    get() = Location.valueOf(this.properties.getValue(LOCATION_PROPERTY))
-
-    /**
-     * Sets the [Location] of the container.
-     */
-    set(location) {
-        this.addProperty(LOCATION_PROPERTY, location.name)
-    }

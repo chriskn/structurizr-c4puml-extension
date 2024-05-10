@@ -7,18 +7,6 @@ private const val C4_PROPERTY_HEADER_PREFIX = "additionalPropertyHeader"
 private const val ICON_PROPERTY = "icon"
 private const val LINK_PROPERTY = "link"
 
-internal fun ModelItem.configure(
-    icon: String?,
-    link: String?,
-    tags: List<String>,
-    c4Properties: C4Properties?
-) {
-    this.icon = icon
-    this.link = link
-    tags.forEach { tag -> this.addTags(tag) }
-    this.c4Properties = c4Properties
-}
-
 var ModelItem.c4Properties: C4Properties?
     /**
      * Returns the [C4Properties] or null if not set.
@@ -91,3 +79,15 @@ var ModelItem.link: String?
             this.addProperty(LINK_PROPERTY, link)
         }
     }
+
+internal fun ModelItem.configure(
+    icon: String?,
+    link: String?,
+    tags: List<String>,
+    c4Properties: C4Properties?
+) {
+    this.icon = icon
+    this.link = link
+    tags.forEach { tag -> this.addTags(tag) }
+    this.c4Properties = c4Properties
+}

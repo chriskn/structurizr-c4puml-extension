@@ -51,8 +51,7 @@ class C4PropertiesTest {
             C4Properties(
                 header = listOf("1"),
                 values = listOf(
-                    listOf("1"),
-                    listOf("2")
+                    listOf("1", "2"),
                 )
             )
         }
@@ -62,10 +61,9 @@ class C4PropertiesTest {
     fun `should not throw exception if num rows equal or smaller header rows`() {
         assertDoesNotThrow {
             C4Properties(
-                header = listOf("", ""),
+                header = listOf("", "", ""),
                 values = listOf(
-                    listOf("", ""),
-                    listOf("")
+                    listOf("", "")
                 )
             )
         }

@@ -3,7 +3,6 @@ package com.github.chriskn.structurizrextension.view
 import com.github.chriskn.structurizrextension.assertExpectedDiagramWasWrittenForView
 import com.github.chriskn.structurizrextension.model.C4Properties
 import com.github.chriskn.structurizrextension.model.Dependency
-import com.github.chriskn.structurizrextension.model.enterprise
 import com.github.chriskn.structurizrextension.model.person
 import com.github.chriskn.structurizrextension.model.softwareSystem
 import com.github.chriskn.structurizrextension.plantuml.C4PlantUmlLayout
@@ -12,6 +11,8 @@ import com.github.chriskn.structurizrextension.plantuml.Legend
 import com.structurizr.Workspace
 import com.structurizr.model.Location
 import com.structurizr.model.Model
+import com.structurizr.model.enterprise
+import com.structurizr.view.showEnterpriseBoundary
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 
@@ -90,6 +91,7 @@ class ContextViewTest {
             C4PlantUmlLayout(layout = Layout.LeftToRight, legend = Legend.ShowFloatingLegend)
         )
         landscapeView.addAllElements()
+        landscapeView.showEnterpriseBoundary = true
 
         assertExpectedDiagramWasWrittenForView(workspace, pathToExpectedDiagrams, diagramKey)
     }

@@ -1,6 +1,5 @@
 package com.github.chriskn.structurizrextension.model
 
-import com.structurizr.export.plantuml.C4PlantUMLExporter
 import com.structurizr.model.Container
 import com.structurizr.model.Location
 import com.structurizr.model.SoftwareSystem
@@ -26,7 +25,7 @@ import com.structurizr.model.StaticStructureElement
 fun SoftwareSystem.container(
     name: String,
     description: String,
-    location: Location = this.location,
+    location: Location = this.c4Location,
     c4Type: C4Type? = null,
     icon: String? = null,
     link: String? = null,
@@ -38,19 +37,7 @@ fun SoftwareSystem.container(
 ): Container {
     val container = this.addContainer(name, description, technology)
     container.c4Type = c4Type
-    container.location = location
+    container.c4Location = location
     container.configure(icon, link, tags, properties, uses, usedBy)
     return container
 }
-
-var SoftwareSystem.c4Type: C4Type?
-    get() = if (this.properties.containsKey(C4PlantUMLExporter.C4PLANTUML_SPRITE)) {
-        C4Type.fromC4Type(this.properties.getValue(C4PlantUMLExporter.C4PLANTUML_SPRITE))
-    } else {
-        null
-    }
-    set(value) {
-        if (value != null) {
-            this.addProperty(C4PlantUMLExporter.C4PLANTUML_SPRITE, value.c4Type)
-        }
-    }
