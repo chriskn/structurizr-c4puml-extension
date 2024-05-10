@@ -12,6 +12,7 @@ import com.github.chriskn.structurizrextension.view.renderAsSequenceDiagram
 import com.structurizr.export.IndentingWriter
 import com.structurizr.model.InteractionStyle
 import com.structurizr.model.Relationship
+import com.structurizr.model.removeProperty
 import com.structurizr.view.DynamicView
 import com.structurizr.view.ModelView
 import com.structurizr.view.RelationshipView
@@ -26,6 +27,14 @@ class RelationshipWriter(
 ) {
 
     internal fun writeRelationships(view: ModelView, writer: IndentingWriter) {
+        // Relationship properties are bound to the ModelItem but c4 properties should only apply for Views.
+        // Thus, make sure only the configuration for this view is applied.
+        // In other words: Scope layout settings for Views instead for ModelItems
+        view.relationships.forEach { rel ->
+            rel.relationship.removeProperty(C4_LAYOUT_MODE)
+            rel.relationship.removeProperty(C4_LAYOUT_DIRECTION)
+        }
+
         val dependencyConfigurations = LayoutRegistry.layoutForKey(view.key).dependencyConfigurations
         dependencyConfigurations.forEach { conf ->
             view.relationships
@@ -178,6 +187,7 @@ class RelationshipWriter(
         val rel = this.relationship
         val direction = conf.direction
         val mode = conf.mode
+
         if (direction != null) {
             rel.addProperty(C4_LAYOUT_DIRECTION, direction.name)
         }

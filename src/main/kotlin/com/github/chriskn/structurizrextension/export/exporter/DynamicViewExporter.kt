@@ -26,11 +26,13 @@ class DynamicViewExporter(
     internal fun exportDynamicView(view: DynamicView): Diagram {
         val writer = IndentingWriter()
         headerWriter.writeHeader(view, writer)
-        val elements: MutableSet<Element> = LinkedHashSet()
-        for (relationshipView in view.relationships) {
-            elements.add(relationshipView.relationship.source)
-            elements.add(relationshipView.relationship.destination)
-        }
+        // collecting elements based on their relationships
+        // is needed to ensure order and therefore correctness in sequence diagrams
+        val elements = view.relationships
+            .map { listOf(it.relationship.source, it.relationship.destination) }
+            .flatten()
+            .toSet()
+
         if (view.externalBoundariesVisible) {
             writeChildrenInParentBoundaries(elements, view, writer)
             elements

@@ -66,17 +66,7 @@ class DynamicViewTest {
     @ValueSource(booleans = [true, false])
     fun `DynamicWithBoundary with boundaries is written to plant uml as expected`(asSequenceDiagram: Boolean) {
         val diagramKey = determineDiagramPath("DynamicWithBoundary", asSequenceDiagram)
-        val reportingController = reportingService.component(
-            "Reporting Controller",
-            "Reporting Controller",
-            technology = "REST"
-        )
-        val reportingRepository = reportingService.component(
-            "Reporting Repository",
-            "Reporting repository",
-            technology = "JDBC",
-            usedBy = listOf(Dependency(reportingController, ""))
-        )
+
         val dynamicView: DynamicView = workspace.views.dynamicView(
             reportingService,
             diagramKey,
@@ -120,7 +110,7 @@ class DynamicViewTest {
 
     @Test
     fun `parallelSequence does not throw Exception if no steps added`() {
-        val dynamicView: DynamicView = workspace.views.dynamicView(customerInformationSystem, "key", "desc")
+        val dynamicView: DynamicView = workspace.views.dynamicView(customerInformationSystem, "some_key", "desc")
 
         assertDoesNotThrow {
             dynamicView
@@ -131,9 +121,10 @@ class DynamicViewTest {
 
     @Test
     fun `setting the mode for dependencies in dynamic views throws exception`() {
+        val diagramKey = "view_with_mode"
         val dynamicView: DynamicView = workspace.views.dynamicView(
             customerInformationSystem,
-            "key",
+            diagramKey,
             "desc",
             layout = C4PlantUmlLayout(
                 dependencyConfigurations = listOf(
@@ -150,6 +141,9 @@ class DynamicViewTest {
         assertThrows<IllegalArgumentException> {
             workspace.writeDiagrams(File(""))
         }
+
+        // clean up: remove view to avoid exceptions while diagram is written in other test cases of this class
+        workspace.views.clear()
     }
 
     @Test
@@ -292,5 +286,16 @@ class DynamicViewTest {
         technology = "Event Store",
         c4Type = C4Type.DATABASE,
         usedBy = listOf(Dependency(auditingService, ""))
+    )
+    private val reportingController = reportingService.component(
+        "Reporting Controller",
+        "Reporting Controller",
+        technology = "REST"
+    )
+    private val reportingRepository = reportingService.component(
+        "Reporting Repository",
+        "Reporting repository",
+        technology = "JDBC",
+        usedBy = listOf(Dependency(reportingController, ""))
     )
 }

@@ -12,7 +12,7 @@ import com.github.chriskn.structurizrextension.plantuml.Legend
 import com.structurizr.Workspace
 import com.structurizr.model.Location
 import com.structurizr.model.Model
-import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 
 class ContextViewTest {
@@ -21,67 +21,64 @@ class ContextViewTest {
 
     private val workspace = Workspace("My Workspace", "Some Description")
     private val model: Model = workspace.model
-    private val system0 = model.softwareSystem(
-        "Software System 0",
-        "Description 0",
-        Location.External,
-        tags = listOf("tag1", "tag2")
-    )
+
     private val system1 = model.softwareSystem(
         "Software System 1",
         "Description 1",
         icon = "android",
         link = "https://www.android.com",
-        tags = listOf("tag1", "tag2"),
-        usedBy = listOf(
-            Dependency(system0, "0 used by 1")
-        ),
+        tags = listOf("tag1", "tag2")
     )
 
-    @Suppress("UnusedPrivateProperty")
-    private val system2 = model.softwareSystem(
-        "Software System 2",
-        "Description 2",
-        Location.Internal,
-        icon = "docker",
-        link = "https://www.docker.com/",
-        properties = C4Properties(
-            header = listOf("Property", "Value"),
-            values = listOf(
-                listOf("prop key0", "prop value0"),
-                listOf("prop key1", "prop value1"),
-                listOf("prop key2", "prop value2")
-            )
-        ),
-        uses = listOf(
-            Dependency(system0, "2 uses 1")
+    @BeforeAll
+    fun setUpModel() {
+        model.enterprise("My Enterprise")
+        val system0 = model.softwareSystem(
+            "Software System 0",
+            "Description 0",
+            Location.External,
+            tags = listOf("tag1", "tag2"),
+            uses = listOf(Dependency(system1, "0 used by 1"))
         )
-    )
-    private val person = model.person(
-        "Actor",
-        link = "https://www.google.de",
-        tags = listOf("human"),
-        uses = listOf(
-            Dependency(
-                system1,
-                "creates",
-                "HTTP",
-                link = "https://de.wikipedia.org/wiki/Hypertext_Transfer_Protocol",
-                icon = "html5",
-                properties = C4Properties(
-                    values = listOf(
-                        listOf("prop", "val")
-                    )
+        model.softwareSystem(
+            "Software System 2",
+            "Description 2",
+            Location.Internal,
+            icon = "docker",
+            link = "https://www.docker.com/",
+            properties = C4Properties(
+                header = listOf("Property", "Value"),
+                values = listOf(
+                    listOf("prop key0", "prop value0"),
+                    listOf("prop key1", "prop value1"),
+                    listOf("prop key2", "prop value2")
                 )
             ),
-            Dependency(system0, "deletes", "gRPC")
-        ),
-        properties = C4Properties(values = listOf(listOf("prop 1", "value 1")))
-    )
-
-    @BeforeEach
-    fun beforeEach() {
-        model.enterprise("My Enterprise")
+            uses = listOf(
+                Dependency(system0, "2 uses 1")
+            )
+        )
+        model.person(
+            "Actor",
+            link = "https://www.google.de",
+            tags = listOf("human"),
+            uses = listOf(
+                Dependency(
+                    system1,
+                    "creates",
+                    "HTTP",
+                    link = "https://de.wikipedia.org/wiki/Hypertext_Transfer_Protocol",
+                    icon = "html5",
+                    properties = C4Properties(
+                        values = listOf(
+                            listOf("prop", "val")
+                        )
+                    )
+                ),
+                Dependency(system0, "deletes", "gRPC")
+            ),
+            properties = C4Properties(values = listOf(listOf("prop 1", "value 1")))
+        )
     }
 
     @Test

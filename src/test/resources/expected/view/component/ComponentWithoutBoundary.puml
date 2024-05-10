@@ -10,12 +10,12 @@ LAYOUT_LEFT_RIGHT()
 
 AddRelTag("async relationship", $textColor="$ARROW_COLOR", $lineColor="$ARROW_COLOR", $lineStyle = DashedLine())
 
+ComponentDb(MySoftwareSystem.BackendApp.Cache, "Cache", "RocksDB", "In Memory DB", "rocksdb", $link="https://google.de")
 Component(MySoftwareSystem.BackendApp.MyRestController, "MyRestController", "REST", "Provides data via rest", "")
 WithoutPropertyHeader()
 AddProperty("jdbcUrl", "someurl")
 Component(MySoftwareSystem.BackendApp.MyRepo, "MyRepo", "Kotlin, JDBC", "Provides CRUD operations for data", "")
 Component(MySoftwareSystem.BackendApp.MyService, "MyService", "", "Does implement some logic", "kotlin", $link="https://google.de")
-ComponentDb(MySoftwareSystem.BackendApp.Cache, "Cache", "RocksDB", "In Memory DB", "rocksdb", $link="https://google.de")
 
 Rel(MySoftwareSystem.BackendApp.MyRestController, MySoftwareSystem.BackendApp.MyService, "calls")
 Rel(MySoftwareSystem.BackendApp.MyService, MySoftwareSystem.BackendApp.Cache, "uses")

@@ -6,7 +6,7 @@ import com.github.chriskn.structurizrextension.model.usedBy
 import com.github.chriskn.structurizrextension.view.systemLandscapeView
 import com.structurizr.Workspace
 import com.structurizr.model.Model
-import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 
 class DependencyLayoutTest {
@@ -21,7 +21,7 @@ class DependencyLayoutTest {
     private val d = model.softwareSystem("D", "D")
     private val e = model.softwareSystem("E", "E")
 
-    @BeforeEach
+    @BeforeAll
     fun setUpModel() {
         b.uses(a, "uses")
         c.uses(a, "uses")

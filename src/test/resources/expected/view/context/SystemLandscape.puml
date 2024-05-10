@@ -17,8 +17,8 @@ Enterprise_Boundary(enterprise, My Enterprise) {
   System(SoftwareSystem2, "Software System 2", "Description 2", "docker-icon", $link="https://www.docker.com/")
 }
 
-System_Ext(SoftwareSystem0, "Software System 0", "Description 0", "")
 System(SoftwareSystem1, "Software System 1", "Description 1", "android-icon", $link="https://www.android.com")
+System_Ext(SoftwareSystem0, "Software System 0", "Description 0", "")
 WithoutPropertyHeader()
 AddProperty("prop 1", "value 1")
 Person(Actor, "Actor", "", "", $link="https://www.google.de")

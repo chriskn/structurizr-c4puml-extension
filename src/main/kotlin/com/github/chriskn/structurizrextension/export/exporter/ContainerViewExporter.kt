@@ -27,7 +27,9 @@ class ContainerViewExporter(
         headerWriter.writeHeader(view, writer)
 
         var elementsWritten = false
-        for (elementView in view.elements) {
+        val sortedElements = view.elements.sortedBy { it.id }
+
+        for (elementView in sortedElements) {
             if (elementView.element !is Container) {
                 elementWriter.writeElement(view, elementView.element, writer)
                 elementsWritten = true
@@ -43,7 +45,7 @@ class ContainerViewExporter(
             if (showSoftwareSystemBoundary) {
                 boundaryWriter.startSoftwareSystemBoundary(softwareSystem, writer, view)
             }
-            for (elementView in view.elements) {
+            for (elementView in sortedElements) {
                 if (elementView.element.parent === softwareSystem) {
                     elementWriter.writeElement(view, elementView.element, writer)
                 }
@@ -69,5 +71,4 @@ class ContainerViewExporter(
         .map { it.softwareSystem }
         .toSet()
         .sortedBy { it.id }
-        .toList()
 }
