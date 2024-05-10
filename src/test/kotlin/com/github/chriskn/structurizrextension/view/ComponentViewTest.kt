@@ -14,6 +14,7 @@ import com.github.chriskn.structurizrextension.plantuml.LineType
 import com.structurizr.Workspace
 import com.structurizr.model.InteractionStyle
 import com.structurizr.model.Location
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 
 class ComponentViewTest {
@@ -22,10 +23,12 @@ class ComponentViewTest {
 
     private val workspace = Workspace("My Workspace", "")
     private val model = workspace.model
+
     private val softwareSystem = model.softwareSystem("My Software System", "system description")
     private val backendApplication = softwareSystem.container("Backend App", "some backend app", technology = "Kotlin")
 
-    init {
+    @BeforeAll
+    fun setUpModel() {
         val user = model.person("User", "A user", Location.External)
         val restController = backendApplication.component(
             "MyRestController",

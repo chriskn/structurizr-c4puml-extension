@@ -16,21 +16,23 @@ import com.github.chriskn.structurizrextension.plantuml.LineType
 import com.structurizr.Workspace
 import com.structurizr.model.InteractionStyle
 import com.structurizr.model.Location
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 
 class ContainerViewTest {
 
     private val pathToExpectedDiagrams = "view/container"
 
-    val workspace = Workspace("My Workspace", "")
-    val model = workspace.model
-    val properties = C4Properties(values = listOf(listOf("prop 1", "value 1")))
-    val softwareSystem = model.softwareSystem(
+    private val workspace = Workspace("My Workspace", "")
+    private val model = workspace.model
+
+    private val properties = C4Properties(values = listOf(listOf("prop 1", "value 1")))
+    private val softwareSystem = model.softwareSystem(
         name = "My Software System",
         description = "system description",
         link = "https://www.google.de"
     )
-    val backendApplication = softwareSystem.container(
+    private val backendApplication = softwareSystem.container(
         name = "Backend App",
         description = "some backend app",
         technology = "Kotlin",
@@ -39,53 +41,19 @@ class ContainerViewTest {
         link = "https://www.google.de",
         properties = properties
     )
-    val app = softwareSystem.container(
+    private val app = softwareSystem.container(
         name = "App",
         description = "android app",
         technology = "Android",
         icon = "android",
     )
-    val database = softwareSystem.container(
-        name = "Database",
-        description = "some database",
-        c4Type = C4Type.DATABASE,
-        technology = "postgres",
-        icon = "postgresql",
-        usedBy = listOf(Dependency(backendApplication, "CRUD", "JPA"))
-    )
-    val maintainer = model.person(
-        name = "Maintainer",
-        description = "some employee",
-        location = Location.Internal,
-        link = "https://www.google.de",
-        uses = listOf(
-            Dependency(backendApplication, "Admin UI", "REST")
-        ),
-        properties = properties
-    )
-    val broker = model.softwareSystem(
-        name = "Broker",
-        description = "Message Broker",
-        location = Location.External,
-        c4Type = C4Type.QUEUE,
-        icon = "kafka",
-    )
-    val topic = broker.container(
-        "my.topic",
-        "external topic",
-        c4Type = C4Type.QUEUE,
-        icon = "kafka",
-        usedBy = listOf(
-            Dependency(backendApplication, "reads topic", "Avro", interactionStyle = InteractionStyle.Asynchronous)
-        )
-    )
-    val graphql = model.softwareSystem(
+    private val graphql = model.softwareSystem(
         name = "GraphQL",
         description = "Federated GraphQL",
         location = Location.External,
         icon = "graphql"
     )
-    val internalSchema = graphql.container(
+    private val internalSchema = graphql.container(
         name = "Internal Schema",
         description = "Schema provided by our app",
         location = Location.Internal,
@@ -94,24 +62,62 @@ class ContainerViewTest {
             Dependency(app, "reuqest data using", "GraphQL", icon = "graphql", link = "https://graphql.org/")
         )
     )
-    val externalSchema = graphql.container(
+    private val externalSchema = graphql.container(
         name = "External Schema",
         description = "Schema provided by another team",
         uses = listOf(Dependency(internalSchema, "extends schema"))
     )
-    val androidUser = model.person(
-        name = "Android User",
-        description = "some Android user",
+    private val broker = model.softwareSystem(
+        name = "Broker",
+        description = "Message Broker",
         location = Location.External,
-        icon = "android",
-        uses = listOf(Dependency(app, "uses app"))
+        c4Type = C4Type.QUEUE,
+        icon = "kafka",
     )
-    val thirdPartySystem = model.softwareSystem(
-        name = "Thrid Party System",
-        description = "External System",
-        location = Location.External,
-        usedBy = listOf(Dependency(backendApplication, "uses"))
+    private val topic = broker.container(
+        "my.topic",
+        "external topic",
+        c4Type = C4Type.QUEUE,
+        icon = "kafka",
+        usedBy = listOf(
+            Dependency(backendApplication, "reads topic", "Avro", interactionStyle = InteractionStyle.Asynchronous)
+        )
     )
+    private val database = softwareSystem.container(
+        name = "Database",
+        description = "some database",
+        c4Type = C4Type.DATABASE,
+        technology = "postgres",
+        icon = "postgresql",
+        usedBy = listOf(Dependency(backendApplication, "CRUD", "JPA"))
+    )
+
+    @BeforeAll
+    fun finalizeModel() {
+        model.person(
+            name = "Maintainer",
+            description = "some employee",
+            location = Location.Internal,
+            link = "https://www.google.de",
+            uses = listOf(
+                Dependency(backendApplication, "Admin UI", "REST")
+            ),
+            properties = properties
+        )
+        model.person(
+            name = "Android User",
+            description = "some Android user",
+            location = Location.External,
+            icon = "android",
+            uses = listOf(Dependency(app, "uses app"))
+        )
+        model.softwareSystem(
+            name = "Thrid Party System",
+            description = "External System",
+            location = Location.External,
+            usedBy = listOf(Dependency(backendApplication, "uses"))
+        )
+    }
 
     @Test
     fun `container diagram is written without boundary if it contains only containers`() {

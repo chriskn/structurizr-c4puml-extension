@@ -27,7 +27,9 @@ class ComponentViewExporter(
         headerWriter.writeHeader(view, writer)
 
         var elementsWritten = false
-        for (elementView in view.elements) {
+        val sortedElements = view.elements.sortedBy { it.id }
+
+        for (elementView in sortedElements) {
             if (elementView.element !is Component) {
                 elementWriter.writeElement(view, elementView.element, writer)
                 elementsWritten = true
@@ -37,13 +39,13 @@ class ComponentViewExporter(
             writer.writeLine()
         }
 
-        val containers: List<Container> = getBoundaryContainer(view)
+        val containers = getBoundaryContainer(view)
         for (container in containers) {
             val showContainerBoundary = view.externalContainerBoundariesVisible
             if (showContainerBoundary) {
                 boundaryWriter.startContainerBoundary(container, writer, view)
             }
-            for (elementView in view.elements) {
+            for (elementView in sortedElements) {
                 if (elementView.element.parent === container) {
                     elementWriter.writeElement(view, elementView.element, writer)
                 }
@@ -69,5 +71,5 @@ class ComponentViewExporter(
             .filterIsInstance<Component>()
             .map { it.container }
             .toSet()
-            .toList()
+            .sortedBy { it.id }
 }
