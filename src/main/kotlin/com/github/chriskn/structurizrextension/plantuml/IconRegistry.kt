@@ -53,6 +53,12 @@ object IconRegistry {
         iconNameToIconUrl[name.lowercase()] = URL(url)
     }
 
+    internal fun reset() {
+        iconNameToIconUrl.clear()
+        iconNameToIconUrl.putAll(commonIcons.mapValues { URL(it.value) })
+        iconNameToIconUrl.putAll(awsIcons.mapValues { URL(it.value) })
+    }
+
     /**
      * @return True if an icon with the given name (case-insensitive) exists, false otherwise.
      */
@@ -412,7 +418,6 @@ object IconRegistry {
     )
 
     init {
-        iconNameToIconUrl.putAll(commonIcons.mapValues { URL(it.value) })
-        iconNameToIconUrl.putAll(awsIcons.mapValues { URL(it.value) })
+        reset()
     }
 }

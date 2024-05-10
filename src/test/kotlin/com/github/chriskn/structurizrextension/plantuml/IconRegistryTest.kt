@@ -1,6 +1,7 @@
 package com.github.chriskn.structurizrextension.plantuml
 
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import java.net.MalformedURLException
@@ -45,5 +46,10 @@ class IconRegistryTest {
     @Test
     fun `iconFileNameFor return null if no icon file exists for name`() {
         assertThat(IconRegistry.iconFileNameFor("iDoNotExist")).isNull()
+    }
+
+    @AfterEach
+    fun resetIconRegistry() {
+        IconRegistry.reset()
     }
 }
