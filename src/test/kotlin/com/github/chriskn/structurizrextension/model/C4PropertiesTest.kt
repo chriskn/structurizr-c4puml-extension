@@ -34,6 +34,31 @@ class C4PropertiesTest {
     }
 
     @Test
+    fun `should throw exception if value num rows smaller 2`() {
+        assertThrows<IllegalArgumentException> {
+            C4Properties(
+                values = listOf(
+                    listOf("1"),
+                    listOf("2")
+                )
+            )
+        }
+    }
+
+    @Test
+    fun `should throw exception if header num rows smaller 2`() {
+        assertThrows<IllegalArgumentException> {
+            C4Properties(
+                header = listOf("1"),
+                values = listOf(
+                    listOf("1"),
+                    listOf("2")
+                )
+            )
+        }
+    }
+
+    @Test
     fun `should not throw exception if num rows equal or smaller header rows`() {
         assertDoesNotThrow {
             C4Properties(

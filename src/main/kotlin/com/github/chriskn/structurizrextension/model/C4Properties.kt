@@ -8,7 +8,8 @@ private const val MAX_ROW_SIZE = 4
  * They will be rendered as table and can be used to document detailed concepts like deployments.
  * By default, no (table) header is added (WithoutPropertyHeader() in C4-PlantUML).
  * The header must have at least the number of columns of the longest row.
- * Max row size is [MAX_ROW_SIZE]
+ * Number rows should not exceed [MAX_ROW_SIZE] or number of header rows
+ * C4PlantUml does not support single row properties.
  */
 data class C4Properties(
     /**
@@ -23,7 +24,11 @@ data class C4Properties(
 
     init {
         require(values.all { it.size <= MAX_ROW_SIZE && (header == null || it.size <= header.size) }) {
-            "Number of values per column should no exceed $MAX_ROW_SIZE and number of header rows"
+            "Number of rows should not exceed $MAX_ROW_SIZE or number of header rows"
+        }
+        // Not supported. Issue: https://github.com/plantuml-stdlib/C4-PlantUML/issues/355
+        require(values.all { it.size > 1 } && header?.size?.let { it > 1 } == true) {
+            "C4PlantUml does not support single row properties"
         }
     }
 }
