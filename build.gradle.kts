@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     kotlin("jvm") version "1.9.24"
     id("io.gitlab.arturbosch.detekt") version "1.23.6"
@@ -38,13 +40,14 @@ dependencies {
     testImplementation("org.assertj:assertj-core:$assertJVersion")
 }
 
+
+kotlin {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_17)
+    }
+}
+
 tasks {
-    compileKotlin {
-        kotlinOptions.jvmTarget = "17"
-    }
-    compileTestKotlin {
-        kotlinOptions.jvmTarget = "17"
-    }
     test {
         useJUnitPlatform()
     }

@@ -1,6 +1,7 @@
 package com.github.chriskn.structurizrextension.plantuml
 
 import java.net.MalformedURLException
+import java.net.URI
 import java.net.URL
 
 internal const val AWS_ICON_URL = "https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/v11.1/dist/"
@@ -50,13 +51,13 @@ object IconRegistry {
         require(url.endsWith(PUML_FILE_EXTENSION)) {
             "Icon URL needs to point to .puml file"
         }
-        iconNameToIconUrl[name.lowercase()] = URL(url)
+        iconNameToIconUrl[name.lowercase()] = URI(url).toURL()
     }
 
     internal fun reset() {
         iconNameToIconUrl.clear()
-        iconNameToIconUrl.putAll(commonIcons.mapValues { URL(it.value) })
-        iconNameToIconUrl.putAll(awsIcons.mapValues { URL(it.value) })
+        iconNameToIconUrl.putAll(commonIcons.mapValues { URI(it.value).toURL() })
+        iconNameToIconUrl.putAll(awsIcons.mapValues { URI(it.value).toURL() })
     }
 
     /**

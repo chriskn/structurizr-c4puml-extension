@@ -13,6 +13,7 @@ import com.structurizr.model.SoftwareSystem
 import com.structurizr.view.ContainerView
 import com.structurizr.view.ElementView
 import com.structurizr.view.ModelView
+import com.structurizr.view.showExternalSoftwareSystemBoundaries
 
 class ContainerViewExporter(
     private val boundaryWriter: BoundaryWriter,
@@ -41,7 +42,7 @@ class ContainerViewExporter(
 
         val softwareSystems: List<SoftwareSystem> = getBoundarySoftwareSystems(view)
         for (softwareSystem in softwareSystems) {
-            val showSoftwareSystemBoundary = view.externalSoftwareSystemBoundariesVisible
+            val showSoftwareSystemBoundary = view.showExternalSoftwareSystemBoundaries
             if (showSoftwareSystemBoundary) {
                 boundaryWriter.startSoftwareSystemBoundary(softwareSystem, writer, view)
             }

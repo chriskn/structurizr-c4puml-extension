@@ -26,7 +26,7 @@ class IconRegistryTest {
 
     @Test
     fun `throws MalformedURLException if invalid url is added`() {
-        assertThrows<MalformedURLException> {
+        assertThrows<IllegalArgumentException> {
             IconRegistry.addIcon("kotlin", "invalidURl.puml")
         }
     }
