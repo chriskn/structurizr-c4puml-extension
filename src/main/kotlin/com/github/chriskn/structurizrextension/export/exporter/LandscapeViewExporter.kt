@@ -13,6 +13,7 @@ import com.structurizr.model.Element
 import com.structurizr.model.Location
 import com.structurizr.model.Person
 import com.structurizr.model.SoftwareSystem
+import com.structurizr.model.enterprise
 import com.structurizr.view.ModelView
 import com.structurizr.view.SystemLandscapeView
 import com.structurizr.view.showEnterpriseBoundary
@@ -34,7 +35,7 @@ class LandscapeViewExporter(
         for (systemInEnterprise in systemsInEnterprise) {
             val showEnterpriseBoundary = view.showEnterpriseBoundary
             if (showEnterpriseBoundary) {
-                val enterpriseName = view.elements.map { it.element }.first().model.enterprise.name
+                val enterpriseName = view.elements.map { it.element }.first().model.enterprise().name
                 boundaryWriter.startEnterpriseBoundary(enterpriseName, writer, view)
             }
             for (elementView in sortedElements) {

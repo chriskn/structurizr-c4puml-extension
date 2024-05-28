@@ -13,6 +13,7 @@ import com.structurizr.model.Container
 import com.structurizr.view.ComponentView
 import com.structurizr.view.ElementView
 import com.structurizr.view.ModelView
+import com.structurizr.view.showExternalContainerBoundaries
 
 class ComponentViewExporter(
     private val boundaryWriter: BoundaryWriter,
@@ -41,7 +42,7 @@ class ComponentViewExporter(
 
         val containers = getBoundaryContainer(view)
         for (container in containers) {
-            val showContainerBoundary = view.externalContainerBoundariesVisible
+            val showContainerBoundary = view.showExternalContainerBoundaries
             if (showContainerBoundary) {
                 boundaryWriter.startContainerBoundary(container, writer, view)
             }

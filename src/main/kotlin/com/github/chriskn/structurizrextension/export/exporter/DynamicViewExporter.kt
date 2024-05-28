@@ -15,6 +15,7 @@ import com.structurizr.model.Element
 import com.structurizr.model.SoftwareSystem
 import com.structurizr.view.DynamicView
 import com.structurizr.view.ModelView
+import com.structurizr.view.showExternalBoundaries
 
 class DynamicViewExporter(
     private val boundaryWriter: BoundaryWriter,
@@ -33,7 +34,7 @@ class DynamicViewExporter(
             .flatten()
             .toSet()
 
-        if (view.externalBoundariesVisible) {
+        if (view.showExternalBoundaries) {
             writeChildrenInParentBoundaries(elements, view, writer)
             elements
                 .filter { it.parent == null }
