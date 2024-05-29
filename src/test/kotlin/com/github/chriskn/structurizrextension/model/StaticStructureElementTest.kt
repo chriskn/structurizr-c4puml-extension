@@ -17,10 +17,10 @@ class StaticStructureElementTest {
     private lateinit var container: Container
 
     @BeforeAll
-    fun setUp(){
+    fun setUp() {
         model = Workspace("", "").model
         person = model.person("test", "")
-        system =  model.softwareSystem("test system", "")
+        system = model.softwareSystem("test system", "")
         container = system.container("test container", "")
     }
 
@@ -32,7 +32,6 @@ class StaticStructureElementTest {
         }
     }
 
-
     @Test
     fun `throws IllegalArgumentException if Container uses person`() {
         assertThrows<IllegalArgumentException> {
@@ -42,7 +41,7 @@ class StaticStructureElementTest {
 
     @Test
     fun `throws IllegalArgumentException if Component uses person`() {
-            assertThrows<IllegalArgumentException> {
+        assertThrows<IllegalArgumentException> {
             container.component("component", "", uses = listOf(Dependency(person, "invalid")))
         }
     }
