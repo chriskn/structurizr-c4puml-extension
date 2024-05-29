@@ -1,14 +1,14 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    kotlin("jvm") version "1.9.24"
+    kotlin("jvm") version "2.0.0"
     id("io.gitlab.arturbosch.detekt") version "1.23.6"
     id("com.adarshr.test-logger") version "4.0.0"
     jacoco
 
     `java-library`
     `maven-publish`
-     signing
+    signing
 }
 
 group = "io.github.chriskn"
@@ -40,7 +40,6 @@ dependencies {
     testImplementation("org.assertj:assertj-core:$assertJVersion")
 }
 
-
 kotlin {
     compilerOptions {
         jvmTarget.set(JvmTarget.JVM_17)
@@ -51,6 +50,11 @@ tasks {
     test {
         useJUnitPlatform()
     }
+    javadoc {
+        if (JavaVersion.current().isJava9Compatible) {
+            (options as StandardJavadocDocletOptions).addBooleanOption("html5", true)
+        }
+    }
 }
 
 detekt {
@@ -58,6 +62,16 @@ detekt {
     config.setFrom(files("$projectDir/config/detekt.yml"))
     parallel = true
     autoCorrect = true
+}
+
+// Force detekt to use a compatible Kotlin version.
+// See https://github.com/detekt/detekt/issues/7304
+configurations.matching { it.name == "detekt" }.all {
+    resolutionStrategy.eachDependency {
+        if (requested.group == "org.jetbrains.kotlin") {
+            useVersion(io.gitlab.arturbosch.detekt.getSupportedKotlinVersion())
+        }
+    }
 }
 
 java {
@@ -121,10 +135,4 @@ publishing {
 
 signing {
     sign(publishing.publications["mavenJava"])
-}
-
-tasks.javadoc {
-    if (JavaVersion.current().isJava9Compatible) {
-        (options as StandardJavadocDocletOptions).addBooleanOption("html5", true)
-    }
 }
