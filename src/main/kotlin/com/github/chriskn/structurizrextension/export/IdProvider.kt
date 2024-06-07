@@ -11,7 +11,6 @@ import com.structurizr.model.Person
 import com.structurizr.model.SoftwareSystem
 import com.structurizr.model.SoftwareSystemInstance
 
-
 fun idOf(modelItem: ModelItem): String {
     if (modelItem is Element) {
         val isRootModelItem = modelItem.parent == null
@@ -47,7 +46,7 @@ private fun id(softwareSystem: SoftwareSystem): String =
     escape(softwareSystem.name)
 
 private fun id(container: Container): String =
-   escape(container.name)
+    escape(container.name)
 
 private fun id(component: Component): String =
     escape(component.name)
@@ -67,4 +66,3 @@ private fun id(containerInstance: ContainerInstance): String =
 private val idEscapeRegex = "(?U)\\W".toRegex()
 
 private fun escape(s: String): String = s.replace(idEscapeRegex, "")
-

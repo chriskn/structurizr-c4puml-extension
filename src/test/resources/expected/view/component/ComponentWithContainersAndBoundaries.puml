@@ -11,8 +11,6 @@ LAYOUT_LEFT_RIGHT()
 
 AddRelTag("async relationship", $textColor="$ARROW_COLOR", $lineColor="$ARROW_COLOR", $lineStyle = DashedLine())
 
-ContainerDb(MySoftwareSystem.Database, "Database", "postgres", "some database", "postgresql")
-
 Container_Boundary("MySoftwareSystem.BackendApp_boundary", "Backend App") {
   ComponentDb(MySoftwareSystem.BackendApp.Cache, "Cache", "RocksDB", "In Memory DB", "rocksdb", $link="https://google.de")
   Component(MySoftwareSystem.BackendApp.MyRestController, "MyRestController", "REST", "Provides data via rest", "")
@@ -21,6 +19,7 @@ Container_Boundary("MySoftwareSystem.BackendApp_boundary", "Backend App") {
   Component(MySoftwareSystem.BackendApp.MyRepo, "MyRepo", "Kotlin, JDBC", "Provides CRUD operations for data", "")
   Component(MySoftwareSystem.BackendApp.MyService, "MyService", "", "Does implement some logic", "kotlin", $link="https://google.de")
 }
+ContainerDb(MySoftwareSystem.Database, "Database", "postgres", "some database", "postgresql")
 Rel(MySoftwareSystem.BackendApp.MyRepo, MySoftwareSystem.Database, "gets data from")
 Rel(MySoftwareSystem.BackendApp.MyRestController, MySoftwareSystem.BackendApp.MyService, "calls")
 Rel(MySoftwareSystem.BackendApp.MyService, MySoftwareSystem.BackendApp.Cache, "uses")

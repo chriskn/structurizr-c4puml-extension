@@ -27,42 +27,56 @@ class ComponentViewExporter(
         val writer = IndentingWriter()
         headerWriter.writeHeader(view, writer)
 
-        var elementsWritten = false
         val sortedElements = view.elements.sortedBy { it.id }
 
-        for (elementView in sortedElements) {
-            if (elementView.element !is Component) {
-                elementWriter.writeElement(view, elementView.element, writer)
-                elementsWritten = true
-            }
-        }
-        if (elementsWritten) {
-            writer.writeLine()
+        val boundaryContainers: List<ElementView> = if (view.showExternalContainerBoundaries) {
+            writeElementsInContainerBoundaries(view, writer, sortedElements)
+        } else {
+            emptyList()
         }
 
-        val containers = getBoundaryContainer(view)
-        for (container in containers) {
-            val showContainerBoundary = view.showExternalContainerBoundaries
-            if (showContainerBoundary) {
-                boundaryWriter.startContainerBoundary(container, writer, view)
-            }
+        writeElementsOutsideBoundaries(
+            elementsOutsideBoundaries = sortedElements - boundaryContainers.toSet(),
+            view,
+            writer
+        )
+
+        relationshipWriter.writeRelationships(view, writer)
+        footerWriter.writeFooter(view, writer)
+
+        return createC4Diagram(view, writer.toString())
+    }
+
+    private fun writeElementsOutsideBoundaries(
+        elementsOutsideBoundaries: List<ElementView>,
+        view: ComponentView,
+        writer: IndentingWriter
+    ) {
+        for (elementView in elementsOutsideBoundaries) {
+            elementWriter.writeElement(view, elementView.element, writer)
+        }
+        if (elementsOutsideBoundaries.isEmpty()) {
+            writer.writeLine()
+        }
+    }
+
+    private fun writeElementsInContainerBoundaries(
+        view: ComponentView,
+        writer: IndentingWriter,
+        sortedElements: List<ElementView>
+    ): List<ElementView> {
+        val boundaryContainers = getBoundaryContainer(view)
+        for (container in boundaryContainers) {
+            boundaryWriter.startContainerBoundary(container, writer, view)
+
             for (elementView in sortedElements) {
                 if (elementView.element.parent === container) {
                     elementWriter.writeElement(view, elementView.element, writer)
                 }
             }
-            if (showContainerBoundary) {
-                boundaryWriter.endContainerBoundary(writer, view)
-            } else {
-                writer.writeLine()
-            }
+            boundaryWriter.endContainerBoundary(writer, view)
         }
-
-        relationshipWriter.writeRelationships(view, writer)
-
-        footerWriter.writeFooter(view, writer)
-
-        return createC4Diagram(view, writer.toString())
+        return view.elements.filter { it.element.parent in boundaryContainers }
     }
 
     private fun getBoundaryContainer(view: ModelView): List<Container> =

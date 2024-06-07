@@ -164,6 +164,5 @@ class ContextViewTest {
 
             assertExpectedDiagramWasWrittenForView(workspace, pathToExpectedDiagrams, diagramKey)
         }
-
     }
 }

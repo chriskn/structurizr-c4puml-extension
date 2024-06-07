@@ -17,6 +17,7 @@ import com.github.chriskn.structurizrextension.plantuml.Mode.Back
 import com.github.chriskn.structurizrextension.plantuml.Mode.BackNeighbor
 import com.github.chriskn.structurizrextension.plantuml.Mode.Neighbor
 import com.github.chriskn.structurizrextension.plantuml.Mode.Rel
+import com.github.chriskn.structurizrextension.plantuml.Mode.RelIndex
 import com.structurizr.model.Relationship
 
 /**

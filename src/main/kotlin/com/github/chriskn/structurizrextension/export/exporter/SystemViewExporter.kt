@@ -13,7 +13,12 @@ import com.structurizr.model.Location
 import com.structurizr.model.Person
 import com.structurizr.model.SoftwareSystem
 import com.structurizr.model.enterprise
-import com.structurizr.view.*
+import com.structurizr.view.ElementView
+import com.structurizr.view.ModelView
+import com.structurizr.view.StaticView
+import com.structurizr.view.SystemContextView
+import com.structurizr.view.SystemLandscapeView
+import com.structurizr.view.showEnterpriseBoundary
 
 class SystemViewExporter(
     private val boundaryWriter: BoundaryWriter,
@@ -102,7 +107,7 @@ class SystemViewExporter(
             .filter {
                 val element = it.element
                 (element is SoftwareSystem && element.c4Location == Location.Internal) ||
-                        (element is Person && element.c4Location == Location.Internal)
+                    (element is Person && element.c4Location == Location.Internal)
             }
             .toSet()
             .sortedBy { it.element.id }
