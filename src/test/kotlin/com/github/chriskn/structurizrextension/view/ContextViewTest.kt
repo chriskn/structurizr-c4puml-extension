@@ -29,7 +29,8 @@ class ContextViewTest {
         "Description 1",
         icon = "android",
         link = "https://www.android.com",
-        tags = listOf("tag1", "tag2")
+        tags = listOf("tag1", "tag2"),
+        location = Location.Internal
     )
 
     @BeforeAll
@@ -45,7 +46,6 @@ class ContextViewTest {
         model.softwareSystem(
             "Software System 2",
             "Description 2",
-            Location.Internal,
             icon = "docker",
             link = "https://www.docker.com/",
             properties = C4Properties(
@@ -127,9 +127,29 @@ class ContextViewTest {
 
     @Nested
     inner class Context {
+
         @Test
-        fun `context diagram is written as expected`() {
-            val diagramKey = "Context"
+        fun `context diagram is written with boundaries`() {
+            val diagramKey = "ContextWithBoundary"
+            val contextView = workspace.views.systemContextView(
+                system1,
+                diagramKey,
+                "A test Landscape",
+                C4PlantUmlLayout(
+                    layout = Layout.LeftToRight,
+                    legend = Legend.ShowFloatingLegend,
+                    hideStereotypes = false
+                )
+            )
+            contextView.addDefaultElements()
+            contextView.showEnterpriseBoundary = true
+
+            assertExpectedDiagramWasWrittenForView(workspace, pathToExpectedDiagrams, diagramKey)
+        }
+
+        @Test
+        fun `context diagram is written with boundaries by default as expected`() {
+            val diagramKey = "ContextDefault"
             val contextView = workspace.views.systemContextView(
                 system1,
                 diagramKey,
@@ -144,5 +164,6 @@ class ContextViewTest {
 
             assertExpectedDiagramWasWrittenForView(workspace, pathToExpectedDiagrams, diagramKey)
         }
+
     }
 }

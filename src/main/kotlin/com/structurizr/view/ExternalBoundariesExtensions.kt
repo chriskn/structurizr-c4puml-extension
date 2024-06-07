@@ -27,3 +27,10 @@ var SystemLandscapeView.showEnterpriseBoundary: Boolean
     set(value) {
         this.isEnterpriseBoundaryVisible = value
     }
+
+@Suppress("DEPRECATION")
+var SystemContextView.showEnterpriseBoundary: Boolean
+    get() = this.isEnterpriseBoundaryVisible
+    set(value) {
+        this.isEnterpriseBoundaryVisible = value
+    }

@@ -1,4 +1,4 @@
-@startuml(id=Context)
+@startuml(id=ContextDefault)
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/android-icon.puml
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/html-5.puml
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml

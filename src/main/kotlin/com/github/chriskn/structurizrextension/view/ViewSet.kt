@@ -21,7 +21,7 @@ fun ViewSet.systemLandscapeView(
 ): SystemLandscapeView {
     layout?.let { LayoutRegistry.registerLayoutForKey(key, layout) }
     val view =  this.createSystemLandscapeView(key, description)
-    //default
+    // default
     view.showEnterpriseBoundary = false
     return view
 }
@@ -43,7 +43,10 @@ fun ViewSet.systemContextView(
     layout: C4PlantUmlLayout? = null
 ): SystemContextView {
     layout?.let { LayoutRegistry.registerLayoutForKey(key, layout) }
-    return this.createSystemContextView(softwareSystem, key, description)
+    val view = this.createSystemContextView(softwareSystem, key, description)
+    // default
+    view.showEnterpriseBoundary = false
+    return view
 }
 
 /**
