@@ -3,13 +3,7 @@ package com.github.chriskn.structurizrextension.view
 import com.github.chriskn.structurizrextension.plantuml.C4PlantUmlLayout
 import com.structurizr.model.Container
 import com.structurizr.model.SoftwareSystem
-import com.structurizr.view.ComponentView
-import com.structurizr.view.ContainerView
-import com.structurizr.view.DeploymentView
-import com.structurizr.view.DynamicView
-import com.structurizr.view.SystemContextView
-import com.structurizr.view.SystemLandscapeView
-import com.structurizr.view.ViewSet
+import com.structurizr.view.*
 
 /**
  * Creates a system landscape view.
@@ -26,7 +20,10 @@ fun ViewSet.systemLandscapeView(
     layout: C4PlantUmlLayout? = null
 ): SystemLandscapeView {
     layout?.let { LayoutRegistry.registerLayoutForKey(key, layout) }
-    return this.createSystemLandscapeView(key, description)
+    val view =  this.createSystemLandscapeView(key, description)
+    //default
+    view.showEnterpriseBoundary = false
+    return view
 }
 
 /**

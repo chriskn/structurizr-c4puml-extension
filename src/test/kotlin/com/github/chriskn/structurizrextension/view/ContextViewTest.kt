@@ -14,6 +14,7 @@ import com.structurizr.model.Model
 import com.structurizr.model.enterprise
 import com.structurizr.view.showEnterpriseBoundary
 import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
 class ContextViewTest {
@@ -82,35 +83,66 @@ class ContextViewTest {
         )
     }
 
-    @Test
-    fun `landscape diagram is written as expected`() {
-        val diagramKey = "SystemLandscape"
-        val landscapeView = workspace.views.systemLandscapeView(
-            diagramKey,
-            "A test Landscape",
-            C4PlantUmlLayout(layout = Layout.LeftToRight, legend = Legend.ShowFloatingLegend)
-        )
-        landscapeView.addAllElements()
-        landscapeView.showEnterpriseBoundary = true
+    @Nested
+    inner class Landscape {
 
-        assertExpectedDiagramWasWrittenForView(workspace, pathToExpectedDiagrams, diagramKey)
+        @Test
+        fun `landscape diagram is written as expected with enterprise boundaries`() {
+            val diagramKey = "SystemLandscapeWithBoundaries"
+            val landscapeView = workspace.views.systemLandscapeView(
+                diagramKey,
+                "A test Landscape",
+                C4PlantUmlLayout(layout = Layout.LeftToRight, legend = Legend.ShowFloatingLegend)
+            )
+            landscapeView.addAllElements()
+            landscapeView.showEnterpriseBoundary = true
+
+            assertExpectedDiagramWasWrittenForView(workspace, pathToExpectedDiagrams, diagramKey)
+        }
+
+        @Test
+        fun `landscape diagram is written as expected without enterprise boundaries`() {
+            val diagramKey = "SystemLandscapeWithoutBoundaries"
+            val landscapeView = workspace.views.systemLandscapeView(
+                diagramKey,
+                "A test Landscape"
+            )
+            landscapeView.addAllElements()
+
+            assertExpectedDiagramWasWrittenForView(workspace, pathToExpectedDiagrams, diagramKey)
+        }
+
+        @Test
+        fun `landscape diagram is written as expected without enterprise boundaries if showEnterpriseBoundary is not set`() {
+            val diagramKey = "SystemLandscapeDefault"
+            val landscapeView = workspace.views.systemLandscapeView(
+                diagramKey,
+                "A test Landscape"
+            )
+            landscapeView.addAllElements()
+
+            assertExpectedDiagramWasWrittenForView(workspace, pathToExpectedDiagrams, diagramKey)
+        }
     }
 
-    @Test
-    fun `context diagram is written as expected`() {
-        val diagramKey = "Context"
-        val contextView = workspace.views.systemContextView(
-            system1,
-            diagramKey,
-            "A test Landscape",
-            C4PlantUmlLayout(
-                layout = Layout.LeftToRight,
-                legend = Legend.ShowFloatingLegend,
-                hideStereotypes = false
+    @Nested
+    inner class Context {
+        @Test
+        fun `context diagram is written as expected`() {
+            val diagramKey = "Context"
+            val contextView = workspace.views.systemContextView(
+                system1,
+                diagramKey,
+                "A test Landscape",
+                C4PlantUmlLayout(
+                    layout = Layout.LeftToRight,
+                    legend = Legend.ShowFloatingLegend,
+                    hideStereotypes = false
+                )
             )
-        )
-        contextView.addDefaultElements()
+            contextView.addDefaultElements()
 
-        assertExpectedDiagramWasWrittenForView(workspace, pathToExpectedDiagrams, diagramKey)
+            assertExpectedDiagramWasWrittenForView(workspace, pathToExpectedDiagrams, diagramKey)
+        }
     }
 }
