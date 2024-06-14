@@ -3,7 +3,7 @@
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/postgresql.puml
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/rocksdb.puml
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
-title My Software System - Backend App - Components
+title My Software System - New Backend App - Components
 caption Test component view
 
 SHOW_PERSON_OUTLINE()
@@ -11,20 +11,23 @@ LAYOUT_LEFT_RIGHT()
 
 AddRelTag("async relationship", $textColor="$ARROW_COLOR", $lineColor="$ARROW_COLOR", $lineStyle = DashedLine())
 
-ContainerDb(MySoftwareSystem.Database, "Database", "postgres", "some database", "postgresql")
-
-Container_Boundary("MySoftwareSystem.BackendApp_boundary", "Backend App") {
-  ComponentDb(MySoftwareSystem.BackendApp.Cache, "Cache", "RocksDB", "In Memory DB", "rocksdb", $link="https://google.de")
-  Component(MySoftwareSystem.BackendApp.MyRestController, "MyRestController", "REST", "Provides data via rest", "")
+Container_Boundary("MySoftwareSystem.FrontendApp_boundary", "Frontend App") {
+  Component(MySoftwareSystem.FrontendApp.SPA, "SPA", "", "Single Page Application", "")
+}
+Container_Boundary("MySoftwareSystem.NewBackendApp_boundary", "New Backend App") {
+  ComponentDb(MySoftwareSystem.NewBackendApp.Cache, "Cache", "RocksDB", "In Memory DB", "rocksdb", $link="https://google.de")
   WithoutPropertyHeader()
   AddProperty("jdbcUrl", "someurl")
-  Component(MySoftwareSystem.BackendApp.MyRepo, "MyRepo", "Kotlin, JDBC", "Provides CRUD operations for data", "")
-  Component(MySoftwareSystem.BackendApp.MyService, "MyService", "", "Does implement some logic", "kotlin", $link="https://google.de")
+  Component(MySoftwareSystem.NewBackendApp.MyRepo, "MyRepo", "Kotlin, JDBC", "Provides CRUD operations for data", "")
+  Component(MySoftwareSystem.NewBackendApp.MyRestController, "MyRestController", "REST", "Provides data via rest", "")
+  Component(MySoftwareSystem.NewBackendApp.MyService, "MyService", "", "Does implement some logic", "kotlin", $link="https://google.de")
 }
-Rel(MySoftwareSystem.BackendApp.MyRepo, MySoftwareSystem.Database, "gets data from")
-Rel(MySoftwareSystem.BackendApp.MyRestController, MySoftwareSystem.BackendApp.MyService, "calls")
-Rel(MySoftwareSystem.BackendApp.MyService, MySoftwareSystem.BackendApp.Cache, "uses")
-Rel(MySoftwareSystem.BackendApp.MyService, MySoftwareSystem.BackendApp.MyRepo, "gets notified", $tags="async relationship")
+ContainerDb(MySoftwareSystem.Database, "Database", "postgres", "some database", "postgresql")
+Rel(MySoftwareSystem.NewBackendApp.MyRepo, MySoftwareSystem.Database, "gets data from")
+Rel(MySoftwareSystem.NewBackendApp.MyRestController, MySoftwareSystem.NewBackendApp.MyService, "calls")
+Rel(MySoftwareSystem.NewBackendApp.MyService, MySoftwareSystem.NewBackendApp.Cache, "uses")
+Rel(MySoftwareSystem.NewBackendApp.MyService, MySoftwareSystem.NewBackendApp.MyRepo, "gets notified", $tags="async relationship")
+Rel(MySoftwareSystem.FrontendApp.SPA, MySoftwareSystem.NewBackendApp.MyRestController, "gets data from")
 
 skinparam linetype ortho
 skinparam nodesep 100

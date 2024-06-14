@@ -1,6 +1,7 @@
 package com.github.chriskn.structurizrextension.export.exporter
 
 import com.github.chriskn.structurizrextension.export.createC4Diagram
+import com.github.chriskn.structurizrextension.export.idOf
 import com.github.chriskn.structurizrextension.export.writer.BoundaryWriter
 import com.github.chriskn.structurizrextension.export.writer.ElementWriter
 import com.github.chriskn.structurizrextension.export.writer.FooterWriter
@@ -27,49 +28,62 @@ class ContainerViewExporter(
         val writer = IndentingWriter()
         headerWriter.writeHeader(view, writer)
 
-        var elementsWritten = false
-        val sortedElements = view.elements.sortedBy { it.id }
+        val sortedElements = view.elements.sortedBy { idOf(it.element) }
 
-        for (elementView in sortedElements) {
-            if (elementView.element !is Container) {
-                elementWriter.writeElement(view, elementView.element, writer)
-                elementsWritten = true
-            }
-        }
-        if (elementsWritten) {
-            writer.writeLine()
+        val boundarySoftwareSystems: List<ElementView> = if (view.showExternalSoftwareSystemBoundaries) {
+            writeElementsInSoftwareSystemBoundaries(view, writer, sortedElements)
+        } else {
+            emptyList()
         }
 
-        val softwareSystems: List<SoftwareSystem> = getBoundarySoftwareSystems(view)
-        for (softwareSystem in softwareSystems) {
-            val showSoftwareSystemBoundary = view.showExternalSoftwareSystemBoundaries
-            if (showSoftwareSystemBoundary) {
-                boundaryWriter.startSoftwareSystemBoundary(softwareSystem, writer, view)
-            }
-            for (elementView in sortedElements) {
-                if (elementView.element.parent === softwareSystem) {
-                    elementWriter.writeElement(view, elementView.element, writer)
-                }
-            }
-            if (showSoftwareSystemBoundary) {
-                boundaryWriter.endSoftwareSystemBoundary(writer, view)
-            } else {
-                writer.writeLine()
-            }
-        }
+        writeElementsOutsideBoundaries(
+            elementsOutsideBoundaries = sortedElements - boundarySoftwareSystems.toSet(),
+            view,
+            writer
+        )
 
         relationshipWriter.writeRelationships(view, writer)
-
         footerWriter.writeFooter(view, writer)
 
         return createC4Diagram(view, writer.toString())
     }
 
-    private fun getBoundarySoftwareSystems(view: ModelView): List<SoftwareSystem> = view.elements
+    private fun writeElementsOutsideBoundaries(
+        elementsOutsideBoundaries: List<ElementView>,
+        view: ContainerView,
+        writer: IndentingWriter
+    ) {
+        for (elementView in elementsOutsideBoundaries) {
+            elementWriter.writeElement(view, elementView.element, writer)
+        }
+        if (elementsOutsideBoundaries.isNotEmpty()) {
+            writer.writeLine()
+        }
+    }
+
+    private fun writeElementsInSoftwareSystemBoundaries(
+        view: ContainerView,
+        writer: IndentingWriter,
+        sortedElements: List<ElementView>
+    ): List<ElementView> {
+        val boundarySoftwareSystems = getBoundarySoftwareSystemViews(view)
+        for (softwareSystem in boundarySoftwareSystems) {
+            boundaryWriter.startSoftwareSystemBoundary(softwareSystem, writer, view)
+            for (elementView in sortedElements) {
+                if (elementView.element.parent === softwareSystem) {
+                    elementWriter.writeElement(view, elementView.element, writer)
+                }
+            }
+            boundaryWriter.endSoftwareSystemBoundary(writer, view)
+        }
+        return view.elements.filter { it.element.parent in boundarySoftwareSystems }
+    }
+
+    private fun getBoundarySoftwareSystemViews(view: ModelView): List<SoftwareSystem> = view.elements
         .asSequence()
-        .map { obj: ElementView -> obj.element }
+        .map { it.element }
         .filterIsInstance<Container>()
         .map { it.softwareSystem }
         .toSet()
-        .sortedBy { it.id }
+        .sortedBy { idOf(it) }
 }

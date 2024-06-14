@@ -26,7 +26,12 @@ class ComponentViewTest {
     private val model = workspace.model
 
     private val softwareSystem = model.softwareSystem("My Software System", "system description")
-    private val backendApplication = softwareSystem.container("Backend App", "some backend app", technology = "Kotlin")
+    private val backendApplication = softwareSystem.container(
+        "New Backend App",
+        "some backend app",
+        technology = "Kotlin"
+    )
+    private val frontendApplication = softwareSystem.container("Frontend App", "some frontend", technology = "TS")
 
     @BeforeAll
     fun setUpModel() {
@@ -67,6 +72,11 @@ class ComponentViewTest {
             icon = "rocksdb",
             c4Type = C4Type.DATABASE,
             usedBy = listOf(Dependency(service, "uses", link = ""))
+        )
+        frontendApplication.component(
+            name = "SPA",
+            description = "Single Page Application",
+            uses = listOf(Dependency(restController, "gets data from"))
         )
         softwareSystem.container(
             "Database",
@@ -158,6 +168,7 @@ class ComponentViewTest {
             )
         )
         componentView.addAllComponents()
+        frontendApplication.components.forEach { componentView.add(it) }
         componentView.addAllContainers()
         componentView.showExternalContainerBoundaries = true
 

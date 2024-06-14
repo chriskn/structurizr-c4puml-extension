@@ -13,7 +13,8 @@ import com.structurizr.model.SoftwareSystemInstance
 
 fun idOf(modelItem: ModelItem): String {
     if (modelItem is Element) {
-        return if (modelItem.parent == null) {
+        val isRootModelItem = modelItem.parent == null
+        return if (isRootModelItem) {
             if (modelItem is DeploymentNode) {
                 escape(modelItem.environment) + "." + id(modelItem)
             } else {
@@ -38,38 +39,30 @@ private fun id(modelItem: ModelItem): String = when (modelItem) {
     else -> modelItem.id
 }
 
-private fun id(person: Person): String {
-    return escape(person.name)
-}
+private fun id(person: Person): String =
+    escape(person.name)
 
-private fun id(softwareSystem: SoftwareSystem): String {
-    return escape(softwareSystem.name)
-}
+private fun id(softwareSystem: SoftwareSystem): String =
+    escape(softwareSystem.name)
 
-private fun id(container: Container): String {
-    return escape(container.name)
-}
+private fun id(container: Container): String =
+    escape(container.name)
 
-private fun id(component: Component): String {
-    return escape(component.name)
-}
+private fun id(component: Component): String =
+    escape(component.name)
 
-private fun id(deploymentNode: DeploymentNode): String {
-    return escape(deploymentNode.name)
-}
+private fun id(deploymentNode: DeploymentNode): String =
+    escape(deploymentNode.name)
 
-private fun id(infrastructureNode: InfrastructureNode): String {
-    return escape(infrastructureNode.name)
-}
+private fun id(infrastructureNode: InfrastructureNode): String =
+    escape(infrastructureNode.name)
 
-private fun id(softwareSystemInstance: SoftwareSystemInstance): String {
-    return escape(softwareSystemInstance.name) + "_" + softwareSystemInstance.instanceId
-}
+private fun id(softwareSystemInstance: SoftwareSystemInstance): String =
+    escape(softwareSystemInstance.name) + "_" + softwareSystemInstance.instanceId
 
-private fun id(containerInstance: ContainerInstance): String {
-    return escape(containerInstance.name) + "_" + containerInstance.instanceId
-}
+private fun id(containerInstance: ContainerInstance): String =
+    escape(containerInstance.name) + "_" + containerInstance.instanceId
 
-private fun escape(s: String): String {
-    return s.replace("(?U)\\W".toRegex(), "")
-}
+private val idEscapeRegex = "(?U)\\W".toRegex()
+
+private fun escape(s: String): String = s.replace(idEscapeRegex, "")

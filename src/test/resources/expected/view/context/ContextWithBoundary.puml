@@ -1,0 +1,28 @@
+@startuml(id=ContextWithBoundary)
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/android-icon.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/html-5.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+title Software System 1 - System Context
+caption A test Landscape
+
+SHOW_PERSON_OUTLINE()
+LAYOUT_LEFT_RIGHT()
+
+Enterprise_Boundary(enterprise, My Enterprise) {
+  System(SoftwareSystem1, "Software System 1", "Description 1", "android-icon", $link="https://www.android.com")
+}
+
+WithoutPropertyHeader()
+AddProperty("prop 1", "value 1")
+Person(Actor, "Actor", "", "", $link="https://www.google.de")
+System_Ext(SoftwareSystem0, "Software System 0", "Description 0", "")
+
+Rel(Actor, SoftwareSystem0, "deletes", "gRPC")
+WithoutPropertyHeader()
+AddProperty("prop", "val")
+Rel(Actor, SoftwareSystem1, "creates", "HTTP", $sprite=html-5, $link="https://de.wikipedia.org/wiki/Hypertext_Transfer_Protocol")
+Rel(SoftwareSystem0, SoftwareSystem1, "0 used by 1")
+
+SHOW_FLOATING_LEGEND(LEGEND, false)
+
+@enduml

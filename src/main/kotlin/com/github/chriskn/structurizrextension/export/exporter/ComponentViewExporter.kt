@@ -1,6 +1,7 @@
 package com.github.chriskn.structurizrextension.export.exporter
 
 import com.github.chriskn.structurizrextension.export.createC4Diagram
+import com.github.chriskn.structurizrextension.export.idOf
 import com.github.chriskn.structurizrextension.export.writer.BoundaryWriter
 import com.github.chriskn.structurizrextension.export.writer.ElementWriter
 import com.github.chriskn.structurizrextension.export.writer.FooterWriter
@@ -27,42 +28,56 @@ class ComponentViewExporter(
         val writer = IndentingWriter()
         headerWriter.writeHeader(view, writer)
 
-        var elementsWritten = false
-        val sortedElements = view.elements.sortedBy { it.id }
+        val sortedElements = view.elements.sortedBy { idOf(it.element) }
 
-        for (elementView in sortedElements) {
-            if (elementView.element !is Component) {
-                elementWriter.writeElement(view, elementView.element, writer)
-                elementsWritten = true
-            }
+        val boundaryContainers: List<ElementView> = if (view.showExternalContainerBoundaries) {
+            writeElementsInContainerBoundaries(view, writer, sortedElements)
+        } else {
+            emptyList()
         }
-        if (elementsWritten) {
+
+        writeElementsOutsideBoundaries(
+            elementsOutsideBoundaries = sortedElements - boundaryContainers.toSet(),
+            view,
+            writer
+        )
+
+        relationshipWriter.writeRelationships(view, writer)
+        footerWriter.writeFooter(view, writer)
+
+        return createC4Diagram(view, writer.toString())
+    }
+
+    private fun writeElementsOutsideBoundaries(
+        elementsOutsideBoundaries: List<ElementView>,
+        view: ComponentView,
+        writer: IndentingWriter
+    ) {
+        for (elementView in elementsOutsideBoundaries) {
+            elementWriter.writeElement(view, elementView.element, writer)
+        }
+        if (elementsOutsideBoundaries.isEmpty()) {
             writer.writeLine()
         }
+    }
 
-        val containers = getBoundaryContainer(view)
-        for (container in containers) {
-            val showContainerBoundary = view.showExternalContainerBoundaries
-            if (showContainerBoundary) {
-                boundaryWriter.startContainerBoundary(container, writer, view)
-            }
+    private fun writeElementsInContainerBoundaries(
+        view: ComponentView,
+        writer: IndentingWriter,
+        sortedElements: List<ElementView>
+    ): List<ElementView> {
+        val boundaryContainers = getBoundaryContainer(view)
+        for (container in boundaryContainers) {
+            boundaryWriter.startContainerBoundary(container, writer, view)
+
             for (elementView in sortedElements) {
                 if (elementView.element.parent === container) {
                     elementWriter.writeElement(view, elementView.element, writer)
                 }
             }
-            if (showContainerBoundary) {
-                boundaryWriter.endContainerBoundary(writer, view)
-            } else {
-                writer.writeLine()
-            }
+            boundaryWriter.endContainerBoundary(writer, view)
         }
-
-        relationshipWriter.writeRelationships(view, writer)
-
-        footerWriter.writeFooter(view, writer)
-
-        return createC4Diagram(view, writer.toString())
+        return view.elements.filter { it.element.parent in boundaryContainers }
     }
 
     private fun getBoundaryContainer(view: ModelView): List<Container> =
@@ -72,5 +87,5 @@ class ComponentViewExporter(
             .filterIsInstance<Component>()
             .map { it.container }
             .toSet()
-            .sortedBy { it.id }
+            .sortedBy { idOf(it) }
 }

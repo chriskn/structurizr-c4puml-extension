@@ -13,26 +13,26 @@ LAYOUT_TOP_DOWN()
 
 AddRelTag("async relationship", $textColor="$ARROW_COLOR", $lineColor="$ARROW_COLOR", $lineStyle = DashedLine())
 
-WithoutPropertyHeader()
-AddProperty("prop 1", "value 1")
-Person(Maintainer, "Maintainer", "some employee", "", $link="https://www.google.de")
-Person_Ext(AndroidUser, "Android User", "some Android user", "android-icon")
-System_Ext(ThridPartySystem, "Thrid Party System", "External System", "")
-
-System_Boundary(MySoftwareSystem, My Software System) {
-  ContainerDb(MySoftwareSystem.Database, "Database", "postgres", "some database", "postgresql")
-  WithoutPropertyHeader()
-  AddProperty("prop 1", "value 1")
-  Container(MySoftwareSystem.BackendApp, "Backend App", "Kotlin", "some backend app", "docker-icon", $link="https://www.google.de")
-  Container(MySoftwareSystem.App, "App", "Android", "android app", "android-icon")
-}
 System_Boundary(Broker, Broker) {
   ContainerQueue_Ext(Broker.mytopic, "my.topic", "", "external topic", "kafka")
 }
 System_Boundary(GraphQL, GraphQL) {
-  Container(GraphQL.InternalSchema, "Internal Schema", "", "Schema provided by our app", "")
   Container_Ext(GraphQL.ExternalSchema, "External Schema", "", "Schema provided by another team", "")
+  Container(GraphQL.InternalSchema, "Internal Schema", "", "Schema provided by our app", "")
 }
+System_Boundary(MySoftwareSystem, My Software System) {
+  Container(MySoftwareSystem.App, "App", "Android", "android app", "android-icon")
+  WithoutPropertyHeader()
+  AddProperty("prop 1", "value 1")
+  Container(MySoftwareSystem.BackendApp, "Backend App", "Kotlin", "some backend app", "docker-icon", $link="https://www.google.de")
+  ContainerDb(MySoftwareSystem.Database, "Database", "postgres", "some database", "postgresql")
+}
+Person_Ext(AndroidUser, "Android User", "some Android user", "android-icon")
+WithoutPropertyHeader()
+AddProperty("prop 1", "value 1")
+Person(Maintainer, "Maintainer", "some employee", "", $link="https://www.google.de")
+System_Ext(ThridPartySystem, "Thrid Party System", "External System", "")
+
 Rel(AndroidUser, MySoftwareSystem.App, "uses app")
 Rel(MySoftwareSystem.App, GraphQL.InternalSchema, "reuqest data using", "GraphQL", $sprite=graphql, $link="https://graphql.org/")
 Rel_R(MySoftwareSystem.BackendApp, MySoftwareSystem.Database, "CRUD", "JPA")

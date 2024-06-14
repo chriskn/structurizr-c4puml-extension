@@ -27,13 +27,15 @@ class DeploymentViewExporter(
     internal fun exportDeploymentView(view: DeploymentView): Diagram {
         val writer = IndentingWriter()
         headerWriter.writeHeader(view, writer)
-        view.elements.stream()
+
+        view.elements
             .filter { ev: ElementView ->
                 ev.element is DeploymentNode && ev.element.parent == null
             }
             .map { ev: ElementView -> ev.element as DeploymentNode }
-            .sorted(Comparator.comparing { obj: DeploymentNode -> obj.name })
-            .forEach { e: DeploymentNode -> writeDeploymentNodeRecursive(view, e, writer) }
+            .sortedBy { it.name }
+            .forEach { writeDeploymentNodeRecursive(view, it, writer) }
+
         relationshipWriter.writeRelationships(view, writer)
         footerWriter.writeFooter(view, writer)
         return createC4Diagram(view, writer.toString())
