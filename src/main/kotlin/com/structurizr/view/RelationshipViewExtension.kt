@@ -1,5 +1,5 @@
 package com.structurizr.view
 
-var RelationshipView.publicOrder: String
+internal var RelationshipView.orderInternal: String
     get() = this.order
     set(order) { this.order = order }

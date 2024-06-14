@@ -1,18 +1,20 @@
 package com.github.chriskn.structurizrextension.view
 
+import com.github.chriskn.structurizrextension.api.model.C4Properties
+import com.github.chriskn.structurizrextension.api.model.Dependency
+import com.github.chriskn.structurizrextension.api.model.enterpriseName
+import com.github.chriskn.structurizrextension.api.model.person
+import com.github.chriskn.structurizrextension.api.model.softwareSystem
+import com.github.chriskn.structurizrextension.api.view.layout.C4PlantUmlLayout
+import com.github.chriskn.structurizrextension.api.view.layout.Layout.LeftToRight
+import com.github.chriskn.structurizrextension.api.view.layout.Legend.ShowFloatingLegend
+import com.github.chriskn.structurizrextension.api.view.showEnterpriseBoundary
+import com.github.chriskn.structurizrextension.api.view.systemContextView
+import com.github.chriskn.structurizrextension.api.view.systemLandscapeView
 import com.github.chriskn.structurizrextension.assertExpectedDiagramWasWrittenForView
-import com.github.chriskn.structurizrextension.model.C4Properties
-import com.github.chriskn.structurizrextension.model.Dependency
-import com.github.chriskn.structurizrextension.model.person
-import com.github.chriskn.structurizrextension.model.softwareSystem
-import com.github.chriskn.structurizrextension.plantuml.C4PlantUmlLayout
-import com.github.chriskn.structurizrextension.plantuml.Layout
-import com.github.chriskn.structurizrextension.plantuml.Legend
 import com.structurizr.Workspace
 import com.structurizr.model.Location
 import com.structurizr.model.Model
-import com.structurizr.model.enterprise
-import com.structurizr.view.showEnterpriseBoundary
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -35,7 +37,7 @@ class ContextViewTest {
 
     @BeforeAll
     fun setUpModel() {
-        model.enterprise("My Enterprise")
+        model.enterpriseName = "My Enterprise"
         val system0 = model.softwareSystem(
             "Software System 0",
             "Description 0",
@@ -92,7 +94,7 @@ class ContextViewTest {
             val landscapeView = workspace.views.systemLandscapeView(
                 diagramKey,
                 "A test Landscape",
-                C4PlantUmlLayout(layout = Layout.LeftToRight, legend = Legend.ShowFloatingLegend)
+                C4PlantUmlLayout(layout = LeftToRight, legend = ShowFloatingLegend)
             )
             landscapeView.addAllElements()
             landscapeView.showEnterpriseBoundary = true
@@ -136,8 +138,8 @@ class ContextViewTest {
                 diagramKey,
                 "A test Landscape",
                 C4PlantUmlLayout(
-                    layout = Layout.LeftToRight,
-                    legend = Legend.ShowFloatingLegend,
+                    layout = LeftToRight,
+                    legend = ShowFloatingLegend,
                     hideStereotypes = false
                 )
             )
@@ -155,8 +157,8 @@ class ContextViewTest {
                 diagramKey,
                 "A test Landscape",
                 C4PlantUmlLayout(
-                    layout = Layout.LeftToRight,
-                    legend = Legend.ShowFloatingLegend,
+                    layout = LeftToRight,
+                    legend = ShowFloatingLegend,
                     hideStereotypes = false
                 )
             )

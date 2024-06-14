@@ -1,5 +1,11 @@
 package com.github.chriskn.structurizrextension.model
 
+import com.github.chriskn.structurizrextension.api.model.Dependency
+import com.github.chriskn.structurizrextension.api.model.component
+import com.github.chriskn.structurizrextension.api.model.container
+import com.github.chriskn.structurizrextension.api.model.person
+import com.github.chriskn.structurizrextension.api.model.softwareSystem
+import com.github.chriskn.structurizrextension.api.model.uses
 import com.structurizr.Workspace
 import com.structurizr.model.Container
 import com.structurizr.model.Model

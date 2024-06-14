@@ -1,22 +1,23 @@
 package com.github.chriskn.structurizrextension.view
 
+import com.github.chriskn.structurizrextension.api.model.C4Properties
+import com.github.chriskn.structurizrextension.api.model.C4Type
+import com.github.chriskn.structurizrextension.api.model.Dependency
+import com.github.chriskn.structurizrextension.api.model.c4Type
+import com.github.chriskn.structurizrextension.api.model.container
+import com.github.chriskn.structurizrextension.api.model.deploymentNode
+import com.github.chriskn.structurizrextension.api.model.icon
+import com.github.chriskn.structurizrextension.api.model.infrastructureNode
+import com.github.chriskn.structurizrextension.api.model.softwareSystem
+import com.github.chriskn.structurizrextension.api.view.deploymentView
+import com.github.chriskn.structurizrextension.api.view.layout.C4PlantUmlLayout
+import com.github.chriskn.structurizrextension.api.view.layout.DependencyConfiguration
+import com.github.chriskn.structurizrextension.api.view.layout.Direction.Right
+import com.github.chriskn.structurizrextension.api.view.layout.Layout.LeftToRight
 import com.github.chriskn.structurizrextension.assertExpectedDiagramWasWrittenForView
-import com.github.chriskn.structurizrextension.model.C4Properties
-import com.github.chriskn.structurizrextension.model.C4Type
-import com.github.chriskn.structurizrextension.model.Dependency
-import com.github.chriskn.structurizrextension.model.c4Type
-import com.github.chriskn.structurizrextension.model.container
-import com.github.chriskn.structurizrextension.model.deploymentNode
-import com.github.chriskn.structurizrextension.model.icon
-import com.github.chriskn.structurizrextension.model.infrastructureNode
-import com.github.chriskn.structurizrextension.model.softwareSystem
-import com.github.chriskn.structurizrextension.plantuml.C4PlantUmlLayout
-import com.github.chriskn.structurizrextension.plantuml.DependencyConfiguration
-import com.github.chriskn.structurizrextension.plantuml.Direction
-import com.github.chriskn.structurizrextension.plantuml.Layout
 import com.structurizr.Workspace
 import com.structurizr.model.Container
-import com.structurizr.model.InteractionStyle
+import com.structurizr.model.InteractionStyle.Asynchronous
 import com.structurizr.model.Location
 import org.junit.jupiter.api.Test
 
@@ -111,7 +112,7 @@ class DeploymentViewTest {
                 Dependency(
                     jaegerSidecar,
                     "writes traces to",
-                    interactionStyle = InteractionStyle.Asynchronous,
+                    interactionStyle = Asynchronous,
                     icon = "kafka",
                     link = "https://www.jaegertracing.io/",
                     properties = C4Properties(
@@ -149,14 +150,14 @@ class DeploymentViewTest {
                 C4PlantUmlLayout(
                     nodeSep = 50,
                     rankSep = 50,
-                    layout = Layout.LeftToRight,
+                    layout = LeftToRight,
                     dependencyConfigurations =
                     listOf(
                         DependencyConfiguration(
                             filter = {
                                 it.source == loadBalancer || it.destination.name == failoverDatabase.name
                             },
-                            direction = Direction.Right
+                            direction = Right
                         )
                     )
                 )

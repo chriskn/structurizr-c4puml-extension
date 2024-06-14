@@ -1,5 +1,6 @@
 package com.github.chriskn.structurizrextension
 
+import com.github.chriskn.structurizrextension.api.writeDiagrams
 import com.structurizr.Workspace
 import org.assertj.core.api.Assertions.assertThat
 import java.io.File

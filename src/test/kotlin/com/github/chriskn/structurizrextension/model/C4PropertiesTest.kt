@@ -1,7 +1,10 @@
 package com.github.chriskn.structurizrextension.model
 
+import com.github.chriskn.structurizrextension.api.model.C4Properties
+import com.github.chriskn.structurizrextension.api.model.softwareSystem
+import com.github.chriskn.structurizrextension.api.model.uses
+import com.github.chriskn.structurizrextension.api.view.systemContextView
 import com.github.chriskn.structurizrextension.assertExpectedDiagramWasWrittenForView
-import com.github.chriskn.structurizrextension.view.systemContextView
 import com.structurizr.Workspace
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
