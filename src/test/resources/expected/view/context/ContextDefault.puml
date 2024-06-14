@@ -8,11 +8,11 @@ caption A test Landscape
 SHOW_PERSON_OUTLINE()
 LAYOUT_LEFT_RIGHT()
 
-System(SoftwareSystem1, "Software System 1", "Description 1", "android-icon", $link="https://www.android.com")
-System_Ext(SoftwareSystem0, "Software System 0", "Description 0", "")
 WithoutPropertyHeader()
 AddProperty("prop 1", "value 1")
 Person(Actor, "Actor", "", "", $link="https://www.google.de")
+System_Ext(SoftwareSystem0, "Software System 0", "Description 0", "")
+System(SoftwareSystem1, "Software System 1", "Description 1", "android-icon", $link="https://www.android.com")
 
 Rel(Actor, SoftwareSystem0, "deletes", "gRPC")
 WithoutPropertyHeader()

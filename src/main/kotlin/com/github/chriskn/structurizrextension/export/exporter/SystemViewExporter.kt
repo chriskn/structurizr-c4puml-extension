@@ -1,6 +1,7 @@
 package com.github.chriskn.structurizrextension.export.exporter
 
 import com.github.chriskn.structurizrextension.export.createC4Diagram
+import com.github.chriskn.structurizrextension.export.idOf
 import com.github.chriskn.structurizrextension.export.writer.BoundaryWriter
 import com.github.chriskn.structurizrextension.export.writer.ElementWriter
 import com.github.chriskn.structurizrextension.export.writer.FooterWriter
@@ -32,7 +33,7 @@ class SystemViewExporter(
         val writer = IndentingWriter()
         headerWriter.writeHeader(view, writer)
 
-        val elementsInView = view.elements.sortedBy { it.id }
+        val elementsInView = view.elements.sortedBy { idOf(it.element) }
 
         val systemsAndPersonsInEnterprise = if (view.showEnterpriseBoundary) {
             writeElementsInEnterprise(view, writer)
@@ -55,7 +56,7 @@ class SystemViewExporter(
         val writer = IndentingWriter()
         headerWriter.writeHeader(view, writer)
 
-        val elementsInView = view.elements.sortedBy { it.id }
+        val elementsInView = view.elements.sortedBy { idOf(it.element) }
 
         val systemsAndPersonsInEnterprise = if (view.showEnterpriseBoundary) {
             writeElementsInEnterprise(view, writer)
@@ -110,5 +111,5 @@ class SystemViewExporter(
                     (element is Person && element.c4Location == Location.Internal)
             }
             .toSet()
-            .sortedBy { it.element.id }
+            .sortedBy { idOf(it.element) }
 }

@@ -13,15 +13,15 @@ Enterprise_Boundary(enterprise, My Enterprise) {
   System(SoftwareSystem1, "Software System 1", "Description 1", "android-icon", $link="https://www.android.com")
 }
 
+WithoutPropertyHeader()
+AddProperty("prop 1", "value 1")
+Person(Actor, "Actor", "", "", $link="https://www.google.de")
 System_Ext(SoftwareSystem0, "Software System 0", "Description 0", "")
 SetPropertyHeader("Property", "Value")
 AddProperty("prop key0", "prop value0")
 AddProperty("prop key1", "prop value1")
 AddProperty("prop key2", "prop value2")
 System(SoftwareSystem2, "Software System 2", "Description 2", "docker-icon", $link="https://www.docker.com/")
-WithoutPropertyHeader()
-AddProperty("prop 1", "value 1")
-Person(Actor, "Actor", "", "", $link="https://www.google.de")
 
 Rel(Actor, SoftwareSystem0, "deletes", "gRPC")
 WithoutPropertyHeader()

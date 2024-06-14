@@ -1,6 +1,7 @@
 package com.github.chriskn.structurizrextension.export.exporter
 
 import com.github.chriskn.structurizrextension.export.createC4Diagram
+import com.github.chriskn.structurizrextension.export.idOf
 import com.github.chriskn.structurizrextension.export.writer.BoundaryWriter
 import com.github.chriskn.structurizrextension.export.writer.ElementWriter
 import com.github.chriskn.structurizrextension.export.writer.FooterWriter
@@ -27,7 +28,7 @@ class ComponentViewExporter(
         val writer = IndentingWriter()
         headerWriter.writeHeader(view, writer)
 
-        val sortedElements = view.elements.sortedBy { it.id }
+        val sortedElements = view.elements.sortedBy { idOf(it.element) }
 
         val boundaryContainers: List<ElementView> = if (view.showExternalContainerBoundaries) {
             writeElementsInContainerBoundaries(view, writer, sortedElements)
@@ -86,5 +87,5 @@ class ComponentViewExporter(
             .filterIsInstance<Component>()
             .map { it.container }
             .toSet()
-            .sortedBy { it.id }
+            .sortedBy { idOf(it) }
 }
