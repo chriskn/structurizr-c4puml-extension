@@ -1,23 +1,28 @@
 package com.github.chriskn.structurizrextension.view
 
+import com.github.chriskn.structurizrextension.api.model.C4Properties
+import com.github.chriskn.structurizrextension.api.model.C4Type
+import com.github.chriskn.structurizrextension.api.model.Dependency
+import com.github.chriskn.structurizrextension.api.model.component
+import com.github.chriskn.structurizrextension.api.model.container
+import com.github.chriskn.structurizrextension.api.model.person
+import com.github.chriskn.structurizrextension.api.model.softwareSystem
+import com.github.chriskn.structurizrextension.api.view.dynamic.add
+import com.github.chriskn.structurizrextension.api.view.dynamic.renderAsSequenceDiagram
+import com.github.chriskn.structurizrextension.api.view.dynamic.startNestedParallelSequence
+import com.github.chriskn.structurizrextension.api.view.dynamicView
+import com.github.chriskn.structurizrextension.api.view.layout.C4PlantUmlLayout
+import com.github.chriskn.structurizrextension.api.view.layout.DependencyConfiguration
+import com.github.chriskn.structurizrextension.api.view.layout.Direction.Left
+import com.github.chriskn.structurizrextension.api.view.layout.Direction.Right
+import com.github.chriskn.structurizrextension.api.view.layout.Mode.Neighbor
+import com.github.chriskn.structurizrextension.api.view.showExternalBoundaries
+import com.github.chriskn.structurizrextension.api.writeDiagrams
 import com.github.chriskn.structurizrextension.assertExpectedDiagramWasWrittenForView
-import com.github.chriskn.structurizrextension.model.C4Properties
-import com.github.chriskn.structurizrextension.model.C4Type
-import com.github.chriskn.structurizrextension.model.Dependency
-import com.github.chriskn.structurizrextension.model.component
-import com.github.chriskn.structurizrextension.model.container
-import com.github.chriskn.structurizrextension.model.person
-import com.github.chriskn.structurizrextension.model.softwareSystem
-import com.github.chriskn.structurizrextension.plantuml.C4PlantUmlLayout
-import com.github.chriskn.structurizrextension.plantuml.DependencyConfiguration
-import com.github.chriskn.structurizrextension.plantuml.Direction
-import com.github.chriskn.structurizrextension.plantuml.Mode
-import com.github.chriskn.structurizrextension.writeDiagrams
 import com.structurizr.Workspace
 import com.structurizr.model.InteractionStyle.Asynchronous
 import com.structurizr.model.Model
 import com.structurizr.view.DynamicView
-import com.structurizr.view.showExternalBoundaries
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
@@ -93,11 +98,11 @@ class DynamicViewTest {
                 dependencyConfigurations = listOf(
                     DependencyConfiguration(
                         filter = { it.source == customerFrontend || it.destination == messageBus },
-                        direction = Direction.Right
+                        direction = Right
                     ),
                     DependencyConfiguration(
                         filter = { it.source == customerService && it.destination == customerFrontend },
-                        direction = Direction.Left
+                        direction = Left
                     )
                 )
             )
@@ -131,7 +136,7 @@ class DynamicViewTest {
                 dependencyConfigurations = listOf(
                     DependencyConfiguration(
                         filter = { it.source == customer },
-                        mode = Mode.Neighbor
+                        mode = Neighbor
                     )
                 )
             )

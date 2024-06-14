@@ -1,22 +1,25 @@
 package com.github.chriskn.structurizrextension.view
 
+import com.github.chriskn.structurizrextension.api.model.C4Properties
+import com.github.chriskn.structurizrextension.api.model.C4Type
+import com.github.chriskn.structurizrextension.api.model.Dependency
+import com.github.chriskn.structurizrextension.api.model.container
+import com.github.chriskn.structurizrextension.api.model.person
+import com.github.chriskn.structurizrextension.api.model.softwareSystem
+import com.github.chriskn.structurizrextension.api.view.containerView
+import com.github.chriskn.structurizrextension.api.view.layout.C4PlantUmlLayout
+import com.github.chriskn.structurizrextension.api.view.layout.DependencyConfiguration
+import com.github.chriskn.structurizrextension.api.view.layout.Direction.Right
+import com.github.chriskn.structurizrextension.api.view.layout.Direction.Up
+import com.github.chriskn.structurizrextension.api.view.layout.Layout.TopDown
+import com.github.chriskn.structurizrextension.api.view.layout.Legend.None
+import com.github.chriskn.structurizrextension.api.view.layout.Legend.ShowLegend
+import com.github.chriskn.structurizrextension.api.view.layout.LineType.Ortho
+import com.github.chriskn.structurizrextension.api.view.showExternalSoftwareSystemBoundaries
 import com.github.chriskn.structurizrextension.assertExpectedDiagramWasWrittenForView
-import com.github.chriskn.structurizrextension.model.C4Properties
-import com.github.chriskn.structurizrextension.model.C4Type
-import com.github.chriskn.structurizrextension.model.Dependency
-import com.github.chriskn.structurizrextension.model.container
-import com.github.chriskn.structurizrextension.model.person
-import com.github.chriskn.structurizrextension.model.softwareSystem
-import com.github.chriskn.structurizrextension.plantuml.C4PlantUmlLayout
-import com.github.chriskn.structurizrextension.plantuml.DependencyConfiguration
-import com.github.chriskn.structurizrextension.plantuml.Direction
-import com.github.chriskn.structurizrextension.plantuml.Layout
-import com.github.chriskn.structurizrextension.plantuml.Legend
-import com.github.chriskn.structurizrextension.plantuml.LineType
 import com.structurizr.Workspace
-import com.structurizr.model.InteractionStyle
+import com.structurizr.model.InteractionStyle.Asynchronous
 import com.structurizr.model.Location
-import com.structurizr.view.showExternalSoftwareSystemBoundaries
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 
@@ -81,7 +84,7 @@ class ContainerViewTest {
         c4Type = C4Type.QUEUE,
         icon = "kafka",
         usedBy = listOf(
-            Dependency(backendApplication, "reads topic", "Avro", interactionStyle = InteractionStyle.Asynchronous)
+            Dependency(backendApplication, "reads topic", "Avro", interactionStyle = Asynchronous)
         )
     )
     private val database = softwareSystem.container(
@@ -128,12 +131,12 @@ class ContainerViewTest {
             diagramKey,
             "Test container view",
             C4PlantUmlLayout(
-                legend = Legend.None,
-                layout = Layout.TopDown,
+                legend = None,
+                layout = TopDown,
                 showPersonOutline = false,
                 dependencyConfigurations = listOf(
-                    DependencyConfiguration(filter = { it.destination == database }, direction = Direction.Right),
-                    DependencyConfiguration(filter = { it.source == externalSchema }, direction = Direction.Up)
+                    DependencyConfiguration(filter = { it.destination == database }, direction = Right),
+                    DependencyConfiguration(filter = { it.source == externalSchema }, direction = Up)
                 )
             )
         )
@@ -155,14 +158,14 @@ class ContainerViewTest {
             diagramKey,
             "Example container view",
             C4PlantUmlLayout(
-                legend = Legend.ShowLegend,
-                layout = Layout.TopDown,
-                lineType = LineType.Ortho,
+                legend = ShowLegend,
+                layout = TopDown,
+                lineType = Ortho,
                 nodeSep = 100,
                 rankSep = 130,
                 dependencyConfigurations = listOf(
-                    DependencyConfiguration(filter = { it.destination == database }, direction = Direction.Right),
-                    DependencyConfiguration(filter = { it.destination == topic }, direction = Direction.Up)
+                    DependencyConfiguration(filter = { it.destination == database }, direction = Right),
+                    DependencyConfiguration(filter = { it.destination == topic }, direction = Up)
                 )
             )
         )
@@ -187,12 +190,12 @@ class ContainerViewTest {
             diagramKey,
             "Test container view",
             C4PlantUmlLayout(
-                legend = Legend.None,
-                layout = Layout.TopDown,
+                legend = None,
+                layout = TopDown,
                 showPersonOutline = false,
                 dependencyConfigurations = listOf(
-                    DependencyConfiguration(filter = { it.destination == database }, direction = Direction.Right),
-                    DependencyConfiguration(filter = { it.source == externalSchema }, direction = Direction.Up)
+                    DependencyConfiguration(filter = { it.destination == database }, direction = Right),
+                    DependencyConfiguration(filter = { it.source == externalSchema }, direction = Up)
                 )
             )
         )
@@ -214,14 +217,14 @@ class ContainerViewTest {
             diagramKey,
             "Example container view",
             C4PlantUmlLayout(
-                legend = Legend.ShowLegend,
-                layout = Layout.TopDown,
-                lineType = LineType.Ortho,
+                legend = ShowLegend,
+                layout = TopDown,
+                lineType = Ortho,
                 nodeSep = 100,
                 rankSep = 130,
                 dependencyConfigurations = listOf(
-                    DependencyConfiguration(filter = { it.destination == database }, direction = Direction.Right),
-                    DependencyConfiguration(filter = { it.destination == topic }, direction = Direction.Up)
+                    DependencyConfiguration(filter = { it.destination == database }, direction = Right),
+                    DependencyConfiguration(filter = { it.destination == topic }, direction = Up)
                 )
             )
         )

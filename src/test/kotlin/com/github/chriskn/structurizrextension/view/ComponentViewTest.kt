@@ -1,20 +1,21 @@
 package com.github.chriskn.structurizrextension.view
 
+import com.github.chriskn.structurizrextension.api.model.C4Properties
+import com.github.chriskn.structurizrextension.api.model.C4Type
+import com.github.chriskn.structurizrextension.api.model.Dependency
+import com.github.chriskn.structurizrextension.api.model.component
+import com.github.chriskn.structurizrextension.api.model.container
+import com.github.chriskn.structurizrextension.api.model.person
+import com.github.chriskn.structurizrextension.api.model.softwareSystem
+import com.github.chriskn.structurizrextension.api.view.componentView
+import com.github.chriskn.structurizrextension.api.view.layout.C4PlantUmlLayout
+import com.github.chriskn.structurizrextension.api.view.layout.Layout.LeftToRight
+import com.github.chriskn.structurizrextension.api.view.layout.LineType.Ortho
+import com.github.chriskn.structurizrextension.api.view.showExternalContainerBoundaries
 import com.github.chriskn.structurizrextension.assertExpectedDiagramWasWrittenForView
-import com.github.chriskn.structurizrextension.model.C4Properties
-import com.github.chriskn.structurizrextension.model.C4Type
-import com.github.chriskn.structurizrextension.model.Dependency
-import com.github.chriskn.structurizrextension.model.component
-import com.github.chriskn.structurizrextension.model.container
-import com.github.chriskn.structurizrextension.model.person
-import com.github.chriskn.structurizrextension.model.softwareSystem
-import com.github.chriskn.structurizrextension.plantuml.C4PlantUmlLayout
-import com.github.chriskn.structurizrextension.plantuml.Layout
-import com.github.chriskn.structurizrextension.plantuml.LineType
 import com.structurizr.Workspace
-import com.structurizr.model.InteractionStyle
+import com.structurizr.model.InteractionStyle.Asynchronous
 import com.structurizr.model.Location
-import com.structurizr.view.showExternalContainerBoundaries
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 
@@ -60,7 +61,7 @@ class ComponentViewTest {
                 Dependency(
                     repository,
                     "gets notified",
-                    interactionStyle = InteractionStyle.Asynchronous,
+                    interactionStyle = Asynchronous,
                 )
             )
         )
@@ -104,8 +105,8 @@ class ComponentViewTest {
             C4PlantUmlLayout(
                 nodeSep = 100,
                 rankSep = 150,
-                lineType = LineType.Ortho,
-                layout = Layout.LeftToRight
+                lineType = Ortho,
+                layout = LeftToRight
             )
         )
         componentView.addAllComponents()
@@ -123,8 +124,8 @@ class ComponentViewTest {
             C4PlantUmlLayout(
                 nodeSep = 100,
                 rankSep = 150,
-                lineType = LineType.Ortho,
-                layout = Layout.LeftToRight
+                lineType = Ortho,
+                layout = LeftToRight
             )
         )
         componentView.addAllComponents()
@@ -143,8 +144,8 @@ class ComponentViewTest {
             C4PlantUmlLayout(
                 nodeSep = 100,
                 rankSep = 150,
-                lineType = LineType.Ortho,
-                layout = Layout.LeftToRight
+                lineType = Ortho,
+                layout = LeftToRight
             )
         )
         componentView.addAllComponents()
@@ -163,8 +164,8 @@ class ComponentViewTest {
             C4PlantUmlLayout(
                 nodeSep = 100,
                 rankSep = 150,
-                lineType = LineType.Ortho,
-                layout = Layout.LeftToRight
+                lineType = Ortho,
+                layout = LeftToRight
             )
         )
         componentView.addAllComponents()
