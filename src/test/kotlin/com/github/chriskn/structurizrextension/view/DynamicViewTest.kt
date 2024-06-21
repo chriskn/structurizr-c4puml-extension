@@ -17,7 +17,6 @@ import com.github.chriskn.structurizrextension.api.view.layout.Direction.Left
 import com.github.chriskn.structurizrextension.api.view.layout.Direction.Right
 import com.github.chriskn.structurizrextension.api.view.layout.Mode.Neighbor
 import com.github.chriskn.structurizrextension.api.view.showExternalBoundaries
-import com.github.chriskn.structurizrextension.api.writeDiagrams
 import com.github.chriskn.structurizrextension.assertExpectedDiagramWasWrittenForView
 import com.structurizr.Workspace
 import com.structurizr.model.InteractionStyle.Asynchronous
@@ -26,10 +25,8 @@ import com.structurizr.view.DynamicView
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
-import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource
-import java.io.File
 
 class DynamicViewTest {
 
@@ -126,8 +123,8 @@ class DynamicViewTest {
     }
 
     @Test
-    fun `setting the mode for dependencies in dynamic views throws exception`() {
-        val diagramKey = "view_with_mode"
+    fun `setting the mode for dependencies in dynamic views is ignored`() {
+        val diagramKey = "DynamicView"
         val dynamicView: DynamicView = workspace.views.dynamicView(
             customerInformationSystem,
             diagramKey,
@@ -144,12 +141,7 @@ class DynamicViewTest {
 
         configureWithNestedParallelNumbering(dynamicView)
 
-        assertThrows<IllegalArgumentException> {
-            workspace.writeDiagrams(File(""))
-        }
-
-        // clean up: remove view to avoid exceptions while diagram is written in other test cases of this class
-        workspace.views.clear()
+        assertExpectedDiagramWasWrittenForView(workspace, pathToExpectedDiagrams, diagramKey)
     }
 
     @Test

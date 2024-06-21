@@ -1,5 +1,6 @@
 package com.github.chriskn.structurizrextension.internal.export
 
+import com.github.chriskn.structurizrextension.api.view.layout.LayoutRegistry
 import com.github.chriskn.structurizrextension.internal.export.view.ComponentViewExporter
 import com.github.chriskn.structurizrextension.internal.export.view.ContainerViewExporter
 import com.github.chriskn.structurizrextension.internal.export.view.DeploymentViewExporter
@@ -56,7 +57,17 @@ internal class ExtendedC4PlantUMLExporter : AbstractDiagramExporter() {
     }
 
     override fun writeRelationship(view: ModelView, relationshipView: RelationshipView, writer: IndentingWriter) {
-        relationshipWriter.writeRelationship(view, relationshipView, writer)
+        val configurationsForRelationship = LayoutRegistry
+            .layoutForKey(view.key)
+            .dependencyConfigurations.filter {
+                it.filter(relationshipView.relationship)
+            }
+        relationshipWriter.writeRelationship(
+            view,
+            relationshipView,
+            configurationsForRelationship,
+            writer
+        )
     }
 
     public override fun writeFooter(view: ModelView, writer: IndentingWriter) {
@@ -96,7 +107,7 @@ internal class ExtendedC4PlantUMLExporter : AbstractDiagramExporter() {
     public override fun startSoftwareSystemBoundary(
         view: ModelView,
         softwareSystem: SoftwareSystem,
-        writer: IndentingWriter
+        writer: IndentingWriter,
     ) {
         boundaryWriter.startSoftwareSystemBoundary(view, softwareSystem, writer)
     }
@@ -116,7 +127,7 @@ internal class ExtendedC4PlantUMLExporter : AbstractDiagramExporter() {
     public override fun startDeploymentNodeBoundary(
         view: DeploymentView,
         deploymentNode: DeploymentNode,
-        writer: IndentingWriter
+        writer: IndentingWriter,
     ) {
         boundaryWriter.startDeploymentNodeBoundary(view, deploymentNode, writer)
     }
