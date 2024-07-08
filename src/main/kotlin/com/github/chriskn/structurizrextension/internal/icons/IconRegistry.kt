@@ -82,6 +82,7 @@ object IconRegistry {
         "postgresql" to "${GILBARBARA_ICON_URL}postgresql.puml",
         "react" to "${GILBARBARA_ICON_URL}react.puml",
         "redis" to "${GILBARBARA_ICON_URL}redis.puml",
+        "rabbitmq" to "${GILBARBARA_ICON_URL}rabbitmq.puml",
         "kafka" to "${GILBARBARA_ICON_URL}kafka.puml",
         "tomcat" to "${GILBARBARA_ICON_URL}tomcat.puml",
         "apple" to "${GILBARBARA_ICON_URL}apple.puml",
