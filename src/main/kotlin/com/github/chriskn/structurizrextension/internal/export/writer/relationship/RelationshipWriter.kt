@@ -1,4 +1,4 @@
-package com.github.chriskn.structurizrextension.internal.export.writer
+package com.github.chriskn.structurizrextension.internal.export.writer.relationship
 
 import com.github.chriskn.structurizrextension.api.model.icon
 import com.github.chriskn.structurizrextension.api.model.link
@@ -7,6 +7,8 @@ import com.github.chriskn.structurizrextension.api.view.layout.DependencyConfigu
 import com.github.chriskn.structurizrextension.api.view.layout.LayoutRegistry
 import com.github.chriskn.structurizrextension.api.view.layout.Mode
 import com.github.chriskn.structurizrextension.internal.export.idOf
+import com.github.chriskn.structurizrextension.internal.export.writer.PropertyWriter
+import com.github.chriskn.structurizrextension.internal.export.writer.linkString
 import com.github.chriskn.structurizrextension.internal.icons.IconRegistry
 import com.structurizr.export.IndentingWriter
 import com.structurizr.model.InteractionStyle
@@ -33,14 +35,11 @@ internal class RelationshipWriter(
             }
 
         val sorted = if (view is DynamicView) {
-            view.relationships.sortedBy { rv: RelationshipView ->
-                rv.order
-            }
+            view.relationships.sortedWith(DynamicViewRelationshipViewComparator())
         } else {
-            view.relationships.sortedBy { rv: RelationshipView ->
-                rv.relationship.source.name + rv.relationship.destination.name
-            }
+            view.relationships.sortedWith(RelationshipViewComparator())
         }
+
         sorted.forEach { rv: RelationshipView ->
             writeRelationship(
                 view,

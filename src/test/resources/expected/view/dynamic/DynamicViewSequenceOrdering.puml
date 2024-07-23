@@ -1,0 +1,27 @@
+@startuml(id=DynamicViewSequenceOrdering)
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Sequence.puml
+title Customer Information System - Dynamic
+caption More than 10 messages
+
+SHOW_PERSON_OUTLINE()
+
+Person(AdminCustomer, "Admin Customer", "An customer", "")
+Person(Admin, "Admin", "A System admin", "")
+Rel(AdminCustomer, Admin, "1 Step 1 request" )
+Rel(Admin, AdminCustomer, "2 Step 1 response" )
+Rel(AdminCustomer, Admin, "3 Step 2 request" )
+Rel(Admin, AdminCustomer, "4 Step 2 response" )
+Rel(AdminCustomer, Admin, "5 Step 3 request" )
+Rel(Admin, AdminCustomer, "6 Step 3 response" )
+Rel(AdminCustomer, Admin, "7 Step 4 request" )
+Rel(Admin, AdminCustomer, "8 Step 4 response" )
+Rel(AdminCustomer, Admin, "9 Step 5 request" )
+Rel(Admin, AdminCustomer, "10 Step 5 response" )
+Rel(AdminCustomer, Admin, "11 Step 6 request" )
+Rel(Admin, AdminCustomer, "12 Step 6 response" )
+Rel(AdminCustomer, Admin, "13 Step 7 request" )
+Rel(Admin, AdminCustomer, "14 Step 7 response" )
+
+SHOW_LEGEND(true)
+
+@enduml

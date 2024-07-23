@@ -11,7 +11,7 @@ import com.github.chriskn.structurizrextension.internal.export.writer.ElementWri
 import com.github.chriskn.structurizrextension.internal.export.writer.FooterWriter
 import com.github.chriskn.structurizrextension.internal.export.writer.HeaderWriter
 import com.github.chriskn.structurizrextension.internal.export.writer.PropertyWriter
-import com.github.chriskn.structurizrextension.internal.export.writer.RelationshipWriter
+import com.github.chriskn.structurizrextension.internal.export.writer.relationship.RelationshipWriter
 import com.structurizr.export.AbstractDiagramExporter
 import com.structurizr.export.Diagram
 import com.structurizr.export.IndentingWriter

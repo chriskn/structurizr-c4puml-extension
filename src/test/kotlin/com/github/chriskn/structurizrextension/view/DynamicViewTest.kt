@@ -156,6 +156,48 @@ class DynamicViewTest {
         assertThat(dynamicView.relationships.last().order).isEqualTo("1.1")
     }
 
+    @Test
+    fun `Sequence diagram is ordered correctly`() {
+        val diagramKey = "DynamicViewSequenceOrdering"
+
+        val admin = model.person(
+            name = "Admin",
+            description = "A System admin",
+        )
+        val customer = model.person(
+            name = "Admin Customer",
+            description = "An customer",
+            uses = listOf(
+                Dependency(
+                    destination = admin,
+                    description = "uses"
+                )
+            )
+        )
+
+        val dynamicView = workspace.views.dynamicView(
+            customerInformationSystem,
+            diagramKey,
+            "More than 10 messages",
+        )
+        (1..7).map {
+            dynamicView.add(
+                source = customer,
+                destination = admin,
+                description = "Step $it request"
+            )
+            dynamicView.add(
+                source = admin,
+                destination = customer,
+                description = "Step $it response"
+            )
+        }
+
+        dynamicView.renderAsSequenceDiagram = true
+
+        assertExpectedDiagramWasWrittenForView(workspace, pathToExpectedDiagrams, diagramKey)
+    }
+
     private fun determineDiagramPath(base: String, asSequenceDiagram: Boolean) = if (!asSequenceDiagram) {
         base
     } else {
