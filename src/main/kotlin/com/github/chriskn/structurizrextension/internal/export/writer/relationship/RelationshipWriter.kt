@@ -1,5 +1,6 @@
 package com.github.chriskn.structurizrextension.internal.export.writer.relationship
 
+import com.github.chriskn.structurizrextension.api.icons.IconRegistry
 import com.github.chriskn.structurizrextension.api.model.icon
 import com.github.chriskn.structurizrextension.api.model.link
 import com.github.chriskn.structurizrextension.api.view.dynamic.renderAsSequenceDiagram
@@ -9,7 +10,6 @@ import com.github.chriskn.structurizrextension.api.view.layout.Mode
 import com.github.chriskn.structurizrextension.internal.export.idOf
 import com.github.chriskn.structurizrextension.internal.export.writer.PropertyWriter
 import com.github.chriskn.structurizrextension.internal.export.writer.linkString
-import com.github.chriskn.structurizrextension.internal.icons.IconRegistry
 import com.structurizr.export.IndentingWriter
 import com.structurizr.model.InteractionStyle
 import com.structurizr.view.DynamicView
@@ -22,30 +22,31 @@ internal class RelationshipWriter(
     private val propertyWriter: PropertyWriter,
 ) {
 
+    private val relationshipViewComparator = RelationshipViewComparator()
+    private val dynamicViewRelationshipViewComparator = DynamicViewRelationshipViewComparator()
+
     fun writeRelationships(view: ModelView, writer: IndentingWriter) {
         val dependencyConfigurations = LayoutRegistry.layoutForKey(view.key).dependencyConfigurations
         val configurationsByRelationship: Map<RelationshipView, List<DependencyConfiguration>> = view
             .relationships
             .associateWith { relView ->
                 dependencyConfigurations.filter { depConf ->
-                    depConf.filter(
-                        relView.relationship
-                    )
+                    depConf.filter(relView.relationship)
                 }
             }
 
-        val sorted = if (view is DynamicView) {
-            view.relationships.sortedWith(DynamicViewRelationshipViewComparator())
+        val sortedRelViews = if (view is DynamicView) {
+            view.relationships.sortedWith(dynamicViewRelationshipViewComparator)
         } else {
-            view.relationships.sortedWith(RelationshipViewComparator())
+            view.relationships.sortedWith(relationshipViewComparator)
         }
 
-        sorted.forEach { rv: RelationshipView ->
+        sortedRelViews.forEach { relView: RelationshipView ->
             writeRelationship(
-                view,
-                rv,
-                configurationsByRelationship.getOrDefault(rv, emptyList()),
-                writer
+                view = view,
+                relationshipView = relView,
+                configurations = configurationsByRelationship.getOrDefault(relView, emptyList()),
+                writer = writer
             )
         }
     }

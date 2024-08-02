@@ -1,11 +1,11 @@
 package com.github.chriskn.structurizrextension.internal.export.writer
 
+import com.github.chriskn.structurizrextension.api.icons.AWS_ICON_COMMONS
+import com.github.chriskn.structurizrextension.api.icons.AWS_ICON_URL
+import com.github.chriskn.structurizrextension.api.icons.IconRegistry
 import com.github.chriskn.structurizrextension.api.model.icon
 import com.github.chriskn.structurizrextension.api.view.dynamic.renderAsSequenceDiagram
 import com.github.chriskn.structurizrextension.api.view.layout.LayoutRegistry
-import com.github.chriskn.structurizrextension.internal.icons.AWS_ICON_COMMONS
-import com.github.chriskn.structurizrextension.internal.icons.AWS_ICON_URL
-import com.github.chriskn.structurizrextension.internal.icons.IconRegistry
 import com.structurizr.export.IndentingWriter
 import com.structurizr.model.DeploymentNode
 import com.structurizr.model.InteractionStyle

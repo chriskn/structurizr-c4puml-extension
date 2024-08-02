@@ -1,4 +1,4 @@
-package com.github.chriskn.structurizrextension.internal.icons
+package com.github.chriskn.structurizrextension.api.icons
 
 import java.net.MalformedURLException
 import java.net.URI

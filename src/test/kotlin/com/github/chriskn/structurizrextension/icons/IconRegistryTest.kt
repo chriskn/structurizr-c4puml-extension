@@ -1,6 +1,6 @@
 package com.github.chriskn.structurizrextension.icons
 
-import com.github.chriskn.structurizrextension.internal.icons.IconRegistry
+import com.github.chriskn.structurizrextension.api.icons.IconRegistry
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test

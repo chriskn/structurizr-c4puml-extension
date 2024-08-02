@@ -12,7 +12,7 @@ plugins {
 }
 
 group = "io.github.chriskn"
-version = "0.11.1"
+version = "0.12.0"
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 repositories {
