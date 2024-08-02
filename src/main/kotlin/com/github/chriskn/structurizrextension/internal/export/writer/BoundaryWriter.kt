@@ -1,10 +1,10 @@
 package com.github.chriskn.structurizrextension.internal.export.writer
 
+import com.github.chriskn.structurizrextension.api.icons.IconRegistry
 import com.github.chriskn.structurizrextension.api.model.icon
 import com.github.chriskn.structurizrextension.api.model.link
 import com.github.chriskn.structurizrextension.api.view.dynamic.renderAsSequenceDiagram
 import com.github.chriskn.structurizrextension.internal.export.idOf
-import com.github.chriskn.structurizrextension.internal.icons.IconRegistry
 import com.structurizr.export.IndentingWriter
 import com.structurizr.model.Container
 import com.structurizr.model.DeploymentNode

@@ -1,11 +1,11 @@
 package com.github.chriskn.structurizrextension.internal.export.writer
 
+import com.github.chriskn.structurizrextension.api.icons.IconRegistry
 import com.github.chriskn.structurizrextension.api.model.c4Location
 import com.github.chriskn.structurizrextension.api.model.c4Type
 import com.github.chriskn.structurizrextension.api.model.icon
 import com.github.chriskn.structurizrextension.api.model.link
 import com.github.chriskn.structurizrextension.internal.export.idOf
-import com.github.chriskn.structurizrextension.internal.icons.IconRegistry
 import com.structurizr.export.IndentingWriter
 import com.structurizr.model.Component
 import com.structurizr.model.Container

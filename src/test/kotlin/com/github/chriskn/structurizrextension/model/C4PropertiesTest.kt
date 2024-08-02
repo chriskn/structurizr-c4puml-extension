@@ -13,7 +13,7 @@ import org.junit.jupiter.api.assertThrows
 class C4PropertiesTest {
 
     @Test
-    fun `throws exception if num rows greater max rows`() {
+    fun `throws exception if num columns greater max columns`() {
         assertThrows<IllegalArgumentException> {
             C4Properties(
                 values = listOf(
@@ -24,7 +24,7 @@ class C4PropertiesTest {
     }
 
     @Test
-    fun `should throw exception if num rows greater header rows`() {
+    fun `should throw exception if num columns greater header columns`() {
         assertThrows<IllegalArgumentException> {
             C4Properties(
                 header = listOf("", ""),
@@ -37,19 +37,7 @@ class C4PropertiesTest {
     }
 
     @Test
-    fun `should throw exception if value num rows smaller 2`() {
-        assertThrows<IllegalArgumentException> {
-            C4Properties(
-                values = listOf(
-                    listOf("1"),
-                    listOf("2")
-                )
-            )
-        }
-    }
-
-    @Test
-    fun `should throw exception if header num rows smaller 2`() {
+    fun `should throw exception if header num columns smaller values num columns`() {
         assertThrows<IllegalArgumentException> {
             C4Properties(
                 header = listOf("1"),
@@ -61,7 +49,7 @@ class C4PropertiesTest {
     }
 
     @Test
-    fun `should not throw exception if num rows equal or smaller header rows`() {
+    fun `should not throw exception if num columns equal or smaller header columns`() {
         assertDoesNotThrow {
             C4Properties(
                 header = listOf("", "", ""),
@@ -73,7 +61,7 @@ class C4PropertiesTest {
     }
 
     @Test
-    fun `should not throw exception if num rows equal max rows`() {
+    fun `should not throw exception if num columns equal max columns`() {
         assertDoesNotThrow {
             C4Properties(
                 values = listOf(
