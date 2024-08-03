@@ -1,5 +1,6 @@
 package com.github.chriskn.structurizrextension.api.model
 
+import com.github.chriskn.structurizrextension.api.icons.IconRegistry
 import com.structurizr.model.Component
 import com.structurizr.model.Container
 import com.structurizr.model.StaticStructureElement
@@ -10,7 +11,7 @@ import com.structurizr.model.StaticStructureElement
  * @param name          the name of the component
  * @param description   the description of the component
  * @param c4Type        the [C4Type] of the component
- * @param icon          the icon of the component. See IconRegistry for available icons or add your own
+ * @param icon          the icon of the component. See [IconRegistry] for available icons or add your own
  * @param link          the link of the component
  * @param technology    the technology of the component
  * @param tags          the list of tags of the component

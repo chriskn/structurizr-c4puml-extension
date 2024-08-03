@@ -6,13 +6,14 @@ import com.structurizr.export.Diagram
 import java.io.BufferedWriter
 import java.io.File
 import java.io.FileWriter
+import java.io.IOException
 
 /**
  * Writes all views of the workspace as C4PlantUML diagrams to the given output folder.
  *
  * Diagrams files are named after their diagram key
  *
- * @throws IOException if writing fails.
+ * @throws [IOException] if writing fails.
  */
 fun Workspace.writeDiagrams(outputFolder: File) {
     outputFolder.mkdirs()
