@@ -1,5 +1,6 @@
 package com.github.chriskn.structurizrextension.api.model
 
+import com.github.chriskn.structurizrextension.api.icons.IconRegistry
 import com.structurizr.model.Container
 import com.structurizr.model.Location
 import com.structurizr.model.SoftwareSystem
@@ -10,9 +11,9 @@ import com.structurizr.model.StaticStructureElement
  *
  * @param name          the name of the container
  * @param description   the description of the container
- * @param location      the [Location]] of the container
- * @param c4Type          the [C4Type] of the container
- * @param icon          the icon of the container. See IconRegistry for available icons or add your own
+ * @param location      the [Location] of the container
+ * @param c4Type        the [C4Type] of the container
+ * @param icon          the icon of the container. See [IconRegistry] for available icons or add your own
  * @param link          the link of the container
  * @param tags          the list of tags of the container
  * @param properties    the [C4Properties] of the container
