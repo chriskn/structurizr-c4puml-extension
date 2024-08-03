@@ -1,5 +1,6 @@
 package com.github.chriskn.structurizrextension.api.model
 
+import com.github.chriskn.structurizrextension.api.icons.IconRegistry
 import com.structurizr.model.Container
 import com.structurizr.model.DeploymentElement
 import com.structurizr.model.DeploymentNode
@@ -11,7 +12,7 @@ import com.structurizr.model.SoftwareSystem
  *
  * @param name              the name of the deployment node
  * @param description       the description of the deployment node
- * @param icon              the icon of the deployment node. See IconRegistry for available icons or add your own
+ * @param icon              the icon of the deployment node. See [IconRegistry] for available icons or add your own
  * @param link              the link of the deployment node
  * @param technology        the technology of the deployment node
  * @param tags              the list of tags of the deployment node
@@ -46,7 +47,7 @@ fun DeploymentNode.deploymentNode(
  *
  * @param name              the name of the infrastructure node
  * @param description       the description of the infrastructure node
- * @param icon              the icon of the infrastructure node. See IconRegistry for available icons or add your own
+ * @param icon              the icon of the infrastructure node. See [IconRegistry] for available icons or add your own
  * @param link              the link of the infrastructure node
  * @param technology        the technology of the infrastructure node
  * @param tags              the list of tags of the infrastructure node

@@ -1,5 +1,6 @@
 package com.github.chriskn.structurizrextension.api.model
 
+import com.github.chriskn.structurizrextension.api.icons.IconRegistry
 import com.structurizr.model.InteractionStyle
 import com.structurizr.model.Person
 import com.structurizr.model.StaticStructureElement
@@ -11,7 +12,7 @@ import com.structurizr.model.StaticStructureElement
  * @param description       the description of the dependency
  * @param technology        the technology of the dependency
  * @param interactionStyle  the [InteractionStyle] of the dependency
- * @param icon              the icon of the dependency. See IconRegistry for available icons or add your own
+ * @param icon              the icon of the dependency. See [IconRegistry] for available icons or add your own
  * @param link              the link of the dependency
  * @param tags              the list of tags of the dependency
  * @param properties        [C4Properties] of the dependency
@@ -38,7 +39,7 @@ fun <T : StaticStructureElement> StaticStructureElement.uses(
  * @param description       the description of the dependency
  * @param technology        the technology of the dependency
  * @param interactionStyle  the [InteractionStyle] of the dependency
- * @param icon              the icon of the dependency. See IconRegistry for available icons or add your own
+ * @param icon              the icon of the dependency. See [IconRegistry] for available icons or add your own
  * @param link              the link of the dependency
  * @param tags              the list of tags of the dependency
  * @param properties        [C4Properties] of the dependency
