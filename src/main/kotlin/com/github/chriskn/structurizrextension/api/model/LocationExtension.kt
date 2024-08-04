@@ -11,7 +11,7 @@ var SoftwareSystem.c4Location: Location
     /**
      * Returns the [Location] of the SoftwareSystem.
      */
-    get() = Location.valueOf(this.properties.getValue(LOCATION_PROPERTY))
+    get() = Location.valueOf(this.properties.getOrDefault(LOCATION_PROPERTY, Location.Unspecified.name))
 
     /**
      * Sets the [Location] of the SoftwareSystem.
@@ -24,7 +24,7 @@ var Container.c4Location: Location
     /**
      * Returns the [Location] of the container.
      */
-    get() = Location.valueOf(this.properties.getValue(LOCATION_PROPERTY))
+    get() = Location.valueOf(this.properties.getOrDefault(LOCATION_PROPERTY, Location.Unspecified.name))
 
     /**
      * Sets the [Location] of the container.
@@ -37,7 +37,7 @@ var Person.c4Location: Location
     /**
      * Returns the [Location] of the Component.
      */
-    get() = Location.valueOf(this.properties.getValue(LOCATION_PROPERTY))
+    get() = Location.valueOf(this.properties.getOrDefault(LOCATION_PROPERTY, Location.Unspecified.name))
 
     /**
      * Sets the [Location] of the Component.
