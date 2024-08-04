@@ -248,8 +248,8 @@ class DynamicViewTest {
         dynamicView.endParallelSequence()
     }
 
-    private var workspace = Workspace("My Workspace", "Some Description")
-    private var model: Model = workspace.model
+    private val workspace = Workspace("My Workspace", "Some Description")
+    private val model: Model = workspace.model
     private val customer = model.person("Customer", "A costumer")
     private val customerInformationSystem = model.softwareSystem(
         "Customer Information System",

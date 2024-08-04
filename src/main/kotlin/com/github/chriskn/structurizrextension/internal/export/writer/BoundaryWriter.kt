@@ -86,10 +86,8 @@ internal object BoundaryWriter {
     }
 
     private fun DeploymentNode.toMacro() =
-        """Node(${idOf(this)}, "$name", "${technology ?: ""}", "${description ?: ""}", "${
-            IconRegistry.iconFileNameFor(
-                icon
-            ) ?: ""
+        """Node(${idOf(this)}, "$name", "${technology.orEmpty()}", "${description.orEmpty()}", "${
+            IconRegistry.iconFileNameFor(icon).orEmpty()
         }"${linkString(link)})"""
 
     private fun determineBoundaryEndSymbol(view: View): String =

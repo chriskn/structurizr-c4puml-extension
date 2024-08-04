@@ -1,0 +1,19 @@
+@startuml(id=DeploymentView)
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Deployment.puml
+title Software System 1 - Deployment - Default
+caption A test Deployment View
+
+SHOW_PERSON_OUTLINE()
+LAYOUT_TOP_DOWN()
+
+Node(Default.Cloud, "Cloud", "", "", "") {
+  Node(Default.Cloud.ContainerRuntime, "Container Runtime", "Something", "Something that runs containers", "") {
+    Container(Default.Cloud.ContainerRuntime.Container1System1_1, "Container 1 System 1", "", "", "")
+  }
+  Node(Default.Cloud.LoadBalancer, "Load Balancer", "", "", "")
+}
+Rel(Default.Cloud.LoadBalancer, Default.Cloud.ContainerRuntime, "forwards requests to", "something")
+
+SHOW_LEGEND(true)
+
+@enduml

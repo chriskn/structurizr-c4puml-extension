@@ -1,0 +1,19 @@
+@startuml(id=ComponentView)
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+title Software System 1 - Container 1 System 1 - Components
+caption A test Component View
+
+SHOW_PERSON_OUTLINE()
+LAYOUT_TOP_DOWN()
+
+Container_Boundary("SoftwareSystem1.Container1System1_boundary", "Container 1 System 1") {
+  Component(SoftwareSystem1.Container1System1.Component1Container1, "Component 1 Container 1", "", "", "")
+  Component(SoftwareSystem1.Container1System1.Component2Container1, "Component 2 Container 1", "", "Some description", "")
+}
+Person(Actor, "Actor", "", "")
+Rel(Actor, SoftwareSystem1.Container1System1.Component2Container1, "Actor uses Component 2")
+Rel(SoftwareSystem1.Container1System1.Component2Container1, SoftwareSystem1.Container1System1.Component1Container1, "Component 2 uses Component 1")
+
+LAYOUT_WITH_LEGEND()
+
+@enduml

@@ -1,0 +1,20 @@
+@startuml(id=ContextView)
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+title Software System 1 - System Context
+caption A test Context View
+
+SHOW_PERSON_OUTLINE()
+LAYOUT_LEFT_RIGHT()
+
+Person(Actor, "Actor", "", "")
+System(SoftwareSystem1, "Software System 1", "", "")
+System(SoftwareSystem2, "Software System 2", "Description 2", "")
+System(SoftwareSystem3, "Software System 3", "Description 3", "")
+
+Rel(Actor, SoftwareSystem3, "Actor uses System 3")
+Rel(SoftwareSystem2, SoftwareSystem1, "System 2 uses System 1")
+Rel(SoftwareSystem3, SoftwareSystem2, "System 3 uses System 2")
+
+SHOW_FLOATING_LEGEND(LEGEND, false)
+
+@enduml
