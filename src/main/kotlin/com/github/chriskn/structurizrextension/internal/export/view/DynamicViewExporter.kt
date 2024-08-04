@@ -92,7 +92,7 @@ internal class DynamicViewExporter(
         containerGroups.forEach { (container, components) ->
             val system = container.softwareSystem
             if (hierarchy.containsKey(system)) {
-                hierarchy[system] = hierarchy[system]!!.plus(container to components).toMutableMap()
+                hierarchy[system] = hierarchy.getValue(system).plus(container to components).toMutableMap()
             } else {
                 hierarchy[system] = mutableMapOf(container to components)
             }

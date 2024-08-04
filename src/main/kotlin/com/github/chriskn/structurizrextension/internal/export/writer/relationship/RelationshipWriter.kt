@@ -85,7 +85,7 @@ internal class RelationshipWriter(
         if (relationship.technology != null) {
             relationshipBuilder.append(""", "${relationship.technology}"""")
         }
-        val sprite = IconRegistry.iconFileNameFor(relationship.icon ?: "")
+        val sprite = IconRegistry.iconFileNameFor(relationship.icon.orEmpty())
         if (!sprite.isNullOrBlank()) {
             relationshipBuilder.append(""", ${'$'}sprite=$sprite""")
         }
@@ -123,7 +123,7 @@ internal class RelationshipWriter(
             relationshipBuilder.append(""", ${'$'}techn="${relationship.technology}"""")
         }
 
-        val sprite = IconRegistry.iconFileNameFor(relationship.icon ?: "")
+        val sprite = IconRegistry.iconFileNameFor(relationship.icon.orEmpty())
         if (!sprite.isNullOrBlank()) {
             relationshipBuilder.append(""", ${'$'}sprite="$sprite"""")
         }

@@ -1,0 +1,20 @@
+@startuml(id=ContainerView)
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+title Software System 1 - Containers
+caption A test Container View
+
+SHOW_PERSON_OUTLINE()
+LAYOUT_TOP_DOWN()
+
+System_Boundary(SoftwareSystem1, Software System 1) {
+  Container(SoftwareSystem1.Container1System1, "Container 1 System 1", "", "", "")
+  Container(SoftwareSystem1.Container2System1, "Container 2 System 1", "", "Some description", "")
+}
+Person(Actor, "Actor", "", "")
+
+Rel(Actor, SoftwareSystem1.Container1System1, "Actor uses Container 1")
+Rel(SoftwareSystem1.Container1System1, SoftwareSystem1.Container2System1, "Container 1 uses Container 2")
+
+LAYOUT_WITH_LEGEND()
+
+@enduml

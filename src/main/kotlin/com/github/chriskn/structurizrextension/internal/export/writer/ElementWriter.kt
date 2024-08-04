@@ -67,44 +67,32 @@ internal class ElementWriter(
     }
 
     private fun InfrastructureNode.toMacro() =
-        """Node(${idOf(this)}, "$name", "${technology ?: ""}", "${description ?: ""}", "${
-            IconRegistry.iconFileNameFor(
-                icon
-            ) ?: ""
+        """Node(${idOf(this)}, "$name", "${technology.orEmpty()}", "${description.orEmpty()}", "${
+            IconRegistry.iconFileNameFor(icon).orEmpty()
         }"${linkString(link)})"""
 
     private fun SoftwareSystem.toMacro(id: String) =
-        """System${this.c4Type?.c4Type ?: ""}${this.c4Location.toPlantUmlString()}($id, "$name", "${description ?: ""}", "${
-            IconRegistry.iconFileNameFor(
-                icon
-            ) ?: ""
+        """System${this.c4Type?.c4Type.orEmpty()}${this.c4Location.toPlantUmlString()}($id, "$name", "${description.orEmpty()}", "${
+            IconRegistry.iconFileNameFor(icon).orEmpty()
         }"${linkString(link)})"""
 
     private fun Container.toMacro(id: String): String =
-        """Container${this.c4Type?.c4Type ?: ""}${this.c4Location.toPlantUmlString()}($id, "$name", "$technology", "${description ?: ""}", "${
-            IconRegistry.iconFileNameFor(
-                icon
-            ) ?: ""
+        """Container${this.c4Type?.c4Type.orEmpty()}${this.c4Location.toPlantUmlString()}($id, "$name", "$technology", "${description.orEmpty()}", "${
+            IconRegistry.iconFileNameFor(icon).orEmpty()
         }"${linkString(link)})"""
 
     private fun Person.toMacro(): String {
         val externalMarker = this.c4Location.toPlantUmlString()
-        return """Person$externalMarker(${idOf(this)}, "$name", "${description ?: ""}", "${
-            IconRegistry.iconFileNameFor(
-                icon
-            ) ?: ""
+        return """Person$externalMarker(${idOf(this)}, "$name", "${description.orEmpty()}", "${
+            IconRegistry.iconFileNameFor(icon).orEmpty()
         }"${linkString(link)})"""
     }
 
     private fun Component.toMacro(): String {
-        return """Component${this.c4Type?.c4Type ?: ""}(${
-            idOf(
-                this
-            )
-        }, "$name", "$technology", "${description ?: ""}", "${
-            IconRegistry.iconFileNameFor(
-                icon
-            ) ?: ""
+        return """Component${this.c4Type?.c4Type.orEmpty()}(${
+            idOf(this)
+        }, "$name", "${technology.orEmpty()}", "${description.orEmpty()}", "${
+            IconRegistry.iconFileNameFor(icon).orEmpty()
         }"${linkString(link)})"""
     }
 

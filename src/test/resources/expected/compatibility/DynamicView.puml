@@ -1,0 +1,18 @@
+@startuml(id=DynamicView)
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Dynamic.puml
+title Software System 1 - Dynamic
+caption A test Dynamic View
+
+SHOW_PERSON_OUTLINE()
+LAYOUT_TOP_DOWN()
+
+Container(SoftwareSystem1.Container1System1, "Container 1 System 1", "", "", "")
+Container(SoftwareSystem1.Container2System1, "Container 2 System 1", "", "Some description", "")
+Person(Actor, "Actor", "", "")
+RelIndex(1,SoftwareSystem1.Container1System1, SoftwareSystem1.Container2System1, "calls")
+RelIndex(2,SoftwareSystem1.Container2System1, SoftwareSystem1.Container1System1, "returns")
+RelIndex(3,SoftwareSystem1.Container1System1, Actor, "shows results")
+
+SHOW_LEGEND(true)
+
+@enduml

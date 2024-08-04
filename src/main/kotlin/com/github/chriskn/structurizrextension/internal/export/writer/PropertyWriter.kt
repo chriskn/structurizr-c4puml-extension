@@ -7,16 +7,14 @@ import com.structurizr.model.ModelItem
 internal object PropertyWriter {
 
     fun writeProperties(item: ModelItem, writer: IndentingWriter) {
-        if (item.c4Properties == null) {
-            return
-        }
-        val headers = item.c4Properties!!.header
+        val c4Properties = item.c4Properties ?: return
+        val headers = c4Properties.header
         if (!headers.isNullOrEmpty()) {
             writer.writeLine("""SetPropertyHeader(${headers.joinToString(", ") { """"$it"""" }})""")
         } else {
             writer.writeLine("""WithoutPropertyHeader()""")
         }
-        val values = item.c4Properties?.values ?: listOf()
+        val values = c4Properties.values
         values.forEach { row ->
             writer.writeLine("""AddProperty(${row.joinToString(", ") { value -> """"$value"""" }})""")
         }
