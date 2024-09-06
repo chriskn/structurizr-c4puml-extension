@@ -20,16 +20,19 @@ import com.structurizr.view.SystemLandscapeView
 import com.structurizr.view.View
 import java.net.URI
 
-internal object HeaderWriter {
+internal class HeaderWriter(val elementStyleWriter: ElementStyleWriter) {
 
-    private const val ASYNC_REL_TAG_NAME = "async relationship"
-    private const val C4_PLANT_UML_STDLIB_URL =
-        "https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master"
+    companion object {
+        private const val ASYNC_REL_TAG_NAME = "async relationship"
+        private const val C4_PLANT_UML_STDLIB_URL =
+            "https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master"
+    }
 
     private val includes = mutableSetOf<URI>()
 
     fun writeHeader(view: ModelView, writer: IndentingWriter) {
         includes.clear()
+        val elementsStyles = elementStyleWriter.collectElementStyles(view)
         addIncludeUrls(view)
         // Spaces in PlantUML ids can cause issues. Alternatively, id can be surrounded with double quotes
         writer.writeLine("@startuml(id=${view.key.replace(' ', '_')})")
@@ -57,10 +60,13 @@ internal object HeaderWriter {
         if (view.relationships.any { it.relationship.interactionStyle == InteractionStyle.Asynchronous }) {
             writeAsyncRelTag(writer)
         }
+        elementsStyles.forEach { style ->
+            elementStyleWriter.writeElementStyle(style, writer)
+        }
     }
 
-    private fun addIncludeUrls(view: View) {
-        val elements: MutableSet<ModelItem> = (view as ModelView).elements.map { it.element }.toMutableSet()
+    private fun addIncludeUrls(view: ModelView) {
+        val elements: MutableSet<ModelItem> = view.elements.map { it.element }.toMutableSet()
         if (view is DeploymentView) {
             val children = elements
                 .filterIsInstance<DeploymentNode>()
@@ -68,17 +74,17 @@ internal object HeaderWriter {
             elements.addAll(children)
         }
         elements += view.relationships.map { it.relationship }
-        val spriteIncludesForElements = elements
+        val iconsIncludesForElements = elements
             .asSequence()
             .mapNotNull { it.icon?.let { technology -> IconRegistry.iconUrlFor(technology) } }
             .toSet()
             .toList()
             .sorted()
             .toMutableList()
-        if (spriteIncludesForElements.any { it.startsWith(AWS_ICON_URL) }) {
-            spriteIncludesForElements.add(0, AWS_ICON_COMMONS)
+        if (iconsIncludesForElements.any { it.startsWith(AWS_ICON_URL) }) {
+            iconsIncludesForElements.add(0, AWS_ICON_COMMONS)
         }
-        spriteIncludesForElements.forEach { includes.add(URI(it)) }
+        iconsIncludesForElements.forEach { includes.add(URI(it)) }
         val c4PumlIncludeURI = URI("$C4_PLANT_UML_STDLIB_URL/${includeForView(view)}")
         includes.add(c4PumlIncludeURI)
     }
@@ -93,7 +99,7 @@ internal object HeaderWriter {
 
     private fun collectElements(
         deploymentNode: DeploymentNode,
-        elements: MutableSet<ModelItem>
+        elements: MutableSet<ModelItem>,
     ): MutableSet<ModelItem> {
         elements.addAll(deploymentNode.infrastructureNodes)
         elements.addAll(deploymentNode.softwareSystemInstances.map { it.softwareSystem })

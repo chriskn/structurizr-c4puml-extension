@@ -22,7 +22,7 @@ import com.structurizr.view.View
 import mu.KotlinLogging
 
 internal class ElementWriter(
-    private val propertyWriter: PropertyWriter
+    private val propertyWriter: PropertyWriter,
 ) {
 
     private val logger = KotlinLogging.logger {}
@@ -74,7 +74,7 @@ internal class ElementWriter(
     private fun SoftwareSystem.toMacro(id: String) =
         """System${this.c4Type?.c4Type.orEmpty()}${this.c4Location.toPlantUmlString()}($id, "$name", "${description.orEmpty()}", "${
             IconRegistry.iconFileNameFor(icon).orEmpty()
-        }"${linkString(link)})"""
+        }"${tagToPlantUmlSting(this.tags)}${linkString(link)})"""
 
     private fun Container.toMacro(id: String): String =
         """Container${this.c4Type?.c4Type.orEmpty()}${this.c4Location.toPlantUmlString()}($id, "$name", "$technology", "${description.orEmpty()}", "${
@@ -97,4 +97,10 @@ internal class ElementWriter(
     }
 
     private fun Location.toPlantUmlString() = if (this == Location.External) "_Ext" else ""
+
+    private fun tagToPlantUmlSting(tags: String) = if (tags.isBlank()) {
+        ""
+    } else {
+        """, ${'$'}tags="${tags.split(",").joinToString("+")}" """
+    }
 }
