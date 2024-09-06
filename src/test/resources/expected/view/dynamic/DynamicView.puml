@@ -7,7 +7,7 @@ caption desc
 SHOW_PERSON_OUTLINE()
 LAYOUT_TOP_DOWN()
 
-AddRelTag("async relationship", $textColor="$ARROW_COLOR", $lineColor="$ARROW_COLOR", $lineStyle = DashedLine())
+AddRelTag("async relationship", $lineStyle=DashedLine(), $legendText=async relationship (dashed))
 
 Person(Customer, "Customer", "A costumer", "")
 Container(CustomerInformationSystem.CustomerFrontendApplication, "Customer Frontend Application", "Angular", "Allows customers to manage their profile", "")

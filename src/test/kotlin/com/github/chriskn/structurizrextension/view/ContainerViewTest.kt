@@ -40,7 +40,6 @@ class ContainerViewTest {
         name = "Backend App",
         description = "some backend app",
         technology = "Kotlin",
-        tags = listOf("Tag2"),
         icon = "docker",
         link = "https://www.google.de",
         properties = properties

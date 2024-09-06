@@ -12,6 +12,7 @@ import com.github.chriskn.structurizrextension.internal.export.writer.PropertyWr
 import com.github.chriskn.structurizrextension.internal.export.writer.linkString
 import com.structurizr.export.IndentingWriter
 import com.structurizr.model.InteractionStyle
+import com.structurizr.model.Relationship
 import com.structurizr.view.DynamicView
 import com.structurizr.view.ModelView
 import com.structurizr.view.RelationshipView
@@ -92,9 +93,8 @@ internal class RelationshipWriter(
         if (!relationship.link.isNullOrBlank()) {
             relationshipBuilder.append(linkString(relationship.link))
         }
-        if (relationship.interactionStyle == InteractionStyle.Asynchronous) {
-            relationshipBuilder.append(""", ${'$'}tags="$ASYNC_REL_TAG_NAME"""")
-        }
+        relationshipBuilder.append(relationship.tagsToPlantUmlSting())
+
         relationshipBuilder.append(")")
 
         propertyWriter.writeProperties(relationshipView.relationship, writer)
@@ -128,9 +128,7 @@ internal class RelationshipWriter(
             relationshipBuilder.append(""", ${'$'}sprite="$sprite"""")
         }
 
-        if (relationship.interactionStyle == InteractionStyle.Asynchronous) {
-            relationshipBuilder.append(""", ${'$'}tags="$ASYNC_REL_TAG_NAME" """)
-        }
+        relationshipBuilder.append(relationship.tagsToPlantUmlSting())
 
         if (!relationship.link.isNullOrBlank()) {
             relationshipBuilder.append(linkString(relationship.link))
@@ -182,6 +180,19 @@ internal class RelationshipWriter(
             }
 
             else -> "Rel_${mode.macro}"
+        }
+    }
+
+    private fun Relationship.tagsToPlantUmlSting(): String {
+        // dont add structurizr default tags
+        val tagList = (this.tagsAsSet - this.defaultTags).toMutableSet()
+        if (this.interactionStyle == InteractionStyle.Asynchronous) {
+            tagList.add(ASYNC_REL_TAG_NAME)
+        }
+        return if (tagList.isEmpty()) {
+            ""
+        } else {
+            """, ${'$'}tags="${tagList.joinToString("+")}""""
         }
     }
 }

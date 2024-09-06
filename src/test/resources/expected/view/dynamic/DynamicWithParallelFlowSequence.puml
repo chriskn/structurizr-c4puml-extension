@@ -6,7 +6,7 @@ caption This diagram shows what happens when a customer updates their details
 
 SHOW_PERSON_OUTLINE()
 
-AddRelTag("async relationship", $textColor="$ARROW_COLOR", $lineColor="$ARROW_COLOR", $lineStyle = DashedLine())
+AddRelTag("async relationship", $lineStyle=DashedLine(), $legendText=async relationship (dashed))
 
 Person(Customer, "Customer", "A costumer", "")
 Container(CustomerInformationSystem.CustomerFrontendApplication, "Customer Frontend Application", "Angular", "Allows customers to manage their profile", "")
@@ -22,10 +22,10 @@ Rel(CustomerInformationSystem.CustomerFrontendApplication, CustomerInformationSy
 Rel(CustomerInformationSystem.CustomerService, CustomerInformationSystem.CustomerDatabase, "3 Stores data in" , $techn="JDBC", $link="www.google.com")
 SetPropertyHeader("field", "value")
 AddProperty("Event Type", "create")
-Rel(CustomerInformationSystem.CustomerService, CustomerInformationSystem.MessageBus, "4 Sends customer update events to" , $tags="async relationship" )
-Rel(CustomerInformationSystem.MessageBus, CustomerInformationSystem.ReportingService, "5 Sends customer update events to" , $tags="async relationship" )
-Rel(CustomerInformationSystem.MessageBus, CustomerInformationSystem.AuditingService, "5 Sends customer update events to" , $tags="async relationship" )
-Rel(CustomerInformationSystem.CustomerService, CustomerInformationSystem.CustomerFrontendApplication, "5 Confirms update to" , $techn="WebSocket", $tags="async relationship" , $link="www.bing.com")
+Rel(CustomerInformationSystem.CustomerService, CustomerInformationSystem.MessageBus, "4 Sends customer update events to" , $tags="async relationship")
+Rel(CustomerInformationSystem.MessageBus, CustomerInformationSystem.ReportingService, "5 Sends customer update events to" , $tags="async relationship")
+Rel(CustomerInformationSystem.MessageBus, CustomerInformationSystem.AuditingService, "5 Sends customer update events to" , $tags="async relationship")
+Rel(CustomerInformationSystem.CustomerService, CustomerInformationSystem.CustomerFrontendApplication, "5 Confirms update to" , $techn="WebSocket", $tags="async relationship", $link="www.bing.com")
 Rel(CustomerInformationSystem.ReportingService, CustomerInformationSystem.ReportingDatabase, "6 Stores data in" , $sprite="mysql")
 Rel(CustomerInformationSystem.AuditingService, CustomerInformationSystem.AuditStore, "6 Stores events in" )
 
