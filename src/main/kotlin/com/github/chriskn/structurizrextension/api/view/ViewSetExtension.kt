@@ -24,7 +24,7 @@ import com.structurizr.view.ViewSet
 fun ViewSet.systemLandscapeView(
     key: String,
     description: String,
-    layout: C4PlantUmlLayout? = null
+    layout: C4PlantUmlLayout? = null,
 ): SystemLandscapeView {
     layout?.let { LayoutRegistry.registerLayoutForKey(key, layout) }
     val view = this.createSystemLandscapeView(key, description)
@@ -39,7 +39,7 @@ fun ViewSet.systemLandscapeView(
  * @param softwareSystem    the SoftwareSystem object representing the scope of the view
  * @param key               the key for the view (must be unique)
  * @param description       a description of the view
- * @param layout        [C4PlantUmlLayout]
+ * @param layout            [C4PlantUmlLayout]
  * @return a SystemContextView object
  * @throws IllegalArgumentException if the software system is null or the key is not unique
  */
@@ -47,7 +47,7 @@ fun ViewSet.systemContextView(
     softwareSystem: SoftwareSystem,
     key: String,
     description: String,
-    layout: C4PlantUmlLayout? = null
+    layout: C4PlantUmlLayout? = null,
 ): SystemContextView {
     layout?.let { LayoutRegistry.registerLayoutForKey(key, layout) }
     val view = this.createSystemContextView(softwareSystem, key, description)
@@ -70,7 +70,7 @@ fun ViewSet.containerView(
     system: SoftwareSystem,
     key: String,
     description: String,
-    layout: C4PlantUmlLayout? = null
+    layout: C4PlantUmlLayout? = null,
 ): ContainerView {
     layout?.let { LayoutRegistry.registerLayoutForKey(key, layout) }
     return this.createContainerView(system, key, description)
@@ -90,7 +90,7 @@ fun ViewSet.componentView(
     container: Container,
     key: String,
     description: String,
-    layout: C4PlantUmlLayout? = null
+    layout: C4PlantUmlLayout? = null,
 ): ComponentView {
     layout?.let { LayoutRegistry.registerLayoutForKey(key, layout) }
     return this.createComponentView(container, key, description)
@@ -110,7 +110,7 @@ fun ViewSet.dynamicView(
     container: Container,
     key: String,
     description: String,
-    layout: C4PlantUmlLayout? = null
+    layout: C4PlantUmlLayout? = null,
 ): DynamicView {
     layout?.let { LayoutRegistry.registerLayoutForKey(key, layout) }
     return this.createDynamicView(container, key, description)
@@ -130,7 +130,7 @@ fun ViewSet.dynamicView(
     system: SoftwareSystem,
     key: String,
     description: String,
-    layout: C4PlantUmlLayout? = null
+    layout: C4PlantUmlLayout? = null,
 ): DynamicView {
     layout?.let { LayoutRegistry.registerLayoutForKey(key, layout) }
     return this.createDynamicView(system, key, description)
@@ -150,7 +150,7 @@ fun ViewSet.deploymentView(
     system: SoftwareSystem,
     key: String,
     description: String,
-    layout: C4PlantUmlLayout? = null
+    layout: C4PlantUmlLayout? = null,
 ): DeploymentView {
     layout?.let { LayoutRegistry.registerLayoutForKey(key, layout) }
     return this.createDeploymentView(system, key, description)

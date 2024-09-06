@@ -31,7 +31,6 @@ class ContextViewTest {
         "Description 1",
         icon = "android",
         link = "https://www.android.com",
-        tags = listOf("tag1", "tag2"),
         location = Location.Internal
     )
 
@@ -42,7 +41,6 @@ class ContextViewTest {
             "Software System 0",
             "Description 0",
             Location.External,
-            tags = listOf("tag1", "tag2"),
             uses = listOf(Dependency(system1, "0 used by 1"))
         )
         model.softwareSystem(
@@ -65,7 +63,6 @@ class ContextViewTest {
         model.person(
             "Actor",
             link = "https://www.google.de",
-            tags = listOf("human"),
             uses = listOf(
                 Dependency(
                     system1,

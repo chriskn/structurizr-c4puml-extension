@@ -5,11 +5,8 @@ import com.github.chriskn.structurizrextension.internal.export.ExtendedC4PlantUM
 import com.github.chriskn.structurizrextension.internal.export.idOf
 import com.structurizr.export.Diagram
 import com.structurizr.export.IndentingWriter
-import com.structurizr.model.Container
-import com.structurizr.model.SoftwareSystem
 import com.structurizr.view.ContainerView
 import com.structurizr.view.ElementView
-import com.structurizr.view.ModelView
 
 internal class ContainerViewExporter(
     private val c4PlantUMLExporter: ExtendedC4PlantUMLExporter,
@@ -21,14 +18,14 @@ internal class ContainerViewExporter(
 
         val sortedElements = view.elements.sortedBy { idOf(it.element) }
 
-        val boundarySoftwareSystems: List<ElementView> = if (view.showExternalSoftwareSystemBoundaries) {
+        val elementsInBoundaries: List<ElementView> = if (view.showExternalSoftwareSystemBoundaries) {
             writeElementsInSoftwareSystemBoundaries(view, writer, sortedElements)
         } else {
             emptyList()
         }
 
         writeElementsOutsideBoundaries(
-            elementsOutsideBoundaries = sortedElements - boundarySoftwareSystems.toSet(),
+            elementsOutsideBoundaries = sortedElements - elementsInBoundaries.toSet(),
             view,
             writer
         )
@@ -57,7 +54,7 @@ internal class ContainerViewExporter(
         writer: IndentingWriter,
         sortedElements: List<ElementView>
     ): List<ElementView> {
-        val boundarySoftwareSystems = getBoundarySoftwareSystemViews(view)
+        val boundarySoftwareSystems = view.getBoundarySystems()
         for (softwareSystem in boundarySoftwareSystems) {
             c4PlantUMLExporter.startSoftwareSystemBoundary(view, softwareSystem, writer)
             for (elementView in sortedElements) {
@@ -69,12 +66,4 @@ internal class ContainerViewExporter(
         }
         return view.elements.filter { it.element.parent in boundarySoftwareSystems }
     }
-
-    private fun getBoundarySoftwareSystemViews(view: ModelView): List<SoftwareSystem> = view.elements
-        .asSequence()
-        .map { it.element }
-        .filterIsInstance<Container>()
-        .map { it.softwareSystem }
-        .toSet()
-        .sortedBy { idOf(it) }
 }

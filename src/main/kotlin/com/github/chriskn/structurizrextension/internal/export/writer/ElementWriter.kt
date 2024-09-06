@@ -14,6 +14,7 @@ import com.structurizr.model.DeploymentElement
 import com.structurizr.model.Element
 import com.structurizr.model.InfrastructureNode
 import com.structurizr.model.Location
+import com.structurizr.model.ModelItem
 import com.structurizr.model.Person
 import com.structurizr.model.SoftwareSystem
 import com.structurizr.model.SoftwareSystemInstance
@@ -22,7 +23,7 @@ import com.structurizr.view.View
 import mu.KotlinLogging
 
 internal class ElementWriter(
-    private val propertyWriter: PropertyWriter
+    private val propertyWriter: PropertyWriter,
 ) {
 
     private val logger = KotlinLogging.logger {}
@@ -69,23 +70,23 @@ internal class ElementWriter(
     private fun InfrastructureNode.toMacro() =
         """Node(${idOf(this)}, "$name", "${technology.orEmpty()}", "${description.orEmpty()}", "${
             IconRegistry.iconFileNameFor(icon).orEmpty()
-        }"${linkString(link)})"""
+        }"${tagsToPlantUmlSting(this)}${linkString(link)})"""
 
     private fun SoftwareSystem.toMacro(id: String) =
         """System${this.c4Type?.c4Type.orEmpty()}${this.c4Location.toPlantUmlString()}($id, "$name", "${description.orEmpty()}", "${
             IconRegistry.iconFileNameFor(icon).orEmpty()
-        }"${linkString(link)})"""
+        }"${tagsToPlantUmlSting(this)}${linkString(link)})"""
 
     private fun Container.toMacro(id: String): String =
         """Container${this.c4Type?.c4Type.orEmpty()}${this.c4Location.toPlantUmlString()}($id, "$name", "$technology", "${description.orEmpty()}", "${
             IconRegistry.iconFileNameFor(icon).orEmpty()
-        }"${linkString(link)})"""
+        }"${tagsToPlantUmlSting(this)}${linkString(link)})"""
 
     private fun Person.toMacro(): String {
         val externalMarker = this.c4Location.toPlantUmlString()
         return """Person$externalMarker(${idOf(this)}, "$name", "${description.orEmpty()}", "${
             IconRegistry.iconFileNameFor(icon).orEmpty()
-        }"${linkString(link)})"""
+        }"${tagsToPlantUmlSting(this)}${linkString(link)})"""
     }
 
     private fun Component.toMacro(): String {
@@ -93,8 +94,18 @@ internal class ElementWriter(
             idOf(this)
         }, "$name", "${technology.orEmpty()}", "${description.orEmpty()}", "${
             IconRegistry.iconFileNameFor(icon).orEmpty()
-        }"${linkString(link)})"""
+        }"${tagsToPlantUmlSting(this)}${linkString(link)})"""
     }
 
     private fun Location.toPlantUmlString() = if (this == Location.External) "_Ext" else ""
+
+    private fun tagsToPlantUmlSting(modelItem: ModelItem): String {
+        // dont add structurizr default tags
+        val tagList = modelItem.tagsAsSet - modelItem.defaultTags
+        return if (tagList.isEmpty()) {
+            ""
+        } else {
+            """, ${'$'}tags="${tagList.joinToString("+")}""""
+        }
+    }
 }

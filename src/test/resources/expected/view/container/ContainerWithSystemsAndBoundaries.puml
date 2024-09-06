@@ -11,7 +11,7 @@ caption Example container view
 SHOW_PERSON_OUTLINE()
 LAYOUT_TOP_DOWN()
 
-AddRelTag("async relationship", $textColor="$ARROW_COLOR", $lineColor="$ARROW_COLOR", $lineStyle = DashedLine())
+AddRelTag("async relationship", $lineStyle=DashedLine(), $legendText=async relationship (dashed))
 
 System_Boundary(Broker, Broker) {
   ContainerQueue_Ext(Broker.mytopic, "my.topic", "", "external topic", "kafka")

@@ -1,0 +1,32 @@
+@startuml(id=DeploymentStyleTest)
+!includeurl https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/v11.1/dist/AWSCommon.puml
+!includeurl https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/v11.1/dist/GroupIcons/Cloudalt.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Deployment.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/android-icon.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/postgresql.puml
+title My Software System - Deployment - Default
+caption DeploymentStyleTest
+
+SHOW_PERSON_OUTLINE()
+LAYOUT_TOP_DOWN()
+
+AddRelTag("Dependency Style", $sprite="android-icon{scale=1.3,color=#008000}", $lineColor=#008000, $textColor=#aa9999, $techn=Android, $lineStyle=DottedLine(), $lineThickness=2, $legendSprite="android-icon{scale=0.3,color=#008000}", $legendText=Android user uses)
+AddElementTag("Container Style", $sprite="postgresql{scale=0.5,color=#008000}", $bgColor=#ffffff, $fontColor=#ff0000, $borderColor=#800080, $borderStyle=DottedLine(), $borderThickness=5, $shadowing=false, $shape=RoundedBoxShape(), $techn=REST, $legendSprite="&compass", $legendText=this is a legend container)
+AddElementTag("Deployment Node Tag", $bgColor=#00eeff, $borderThickness=4, $shadowing=false)
+AddElementTag("Infrastructure Node Tag", $bgColor=#bcaadd, $borderColor=#008000, $borderThickness=3, $shadowing=false)
+
+Node(Default.AWS, "AWS", "", "Production AWS environment", "Cloudalt") {
+  Node(Default.AWS.Nodewithstyle, "Node with style", "", "", "", $tags="Deployment Node Tag") {
+    Container(Default.AWS.Nodewithstyle.MyContainer_1, "My Container", "", "container", "", $tags="Container Style+Boundary Style")
+  }
+  Node(Default.AWS.Nodewithoutstyle, "Node without style", "", "", "") {
+    Container(Default.AWS.Nodewithoutstyle.SomeContainer_1, "Some Container", "", "", "")
+  }
+  Node(Default.AWS.SomeInfrastructureNode, "Some Infrastructure Node", "", "", "", $tags="Infrastructure Node Tag")
+}
+Rel(Default.AWS.Nodewithstyle, Default.AWS.SomeInfrastructureNode, "uses")
+Rel(Default.AWS.Nodewithoutstyle, Default.AWS.SomeInfrastructureNode, "uses", $tags="Dependency Style")
+
+SHOW_LEGEND(true)
+
+@enduml

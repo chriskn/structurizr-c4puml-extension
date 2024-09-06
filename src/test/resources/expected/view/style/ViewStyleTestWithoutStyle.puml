@@ -1,0 +1,16 @@
+@startuml(id=ViewStyleTestWithoutStyle)
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+title My Software System - Containers
+caption ViewStyleTestWithoutStyle
+
+SHOW_PERSON_OUTLINE()
+LAYOUT_TOP_DOWN()
+
+Container(MySoftwareSystem.MyContainer, "My Container", "", "container", "", $tags="Container Style+Boundary Style")
+Person(Person, "Person", "", "", $tags="Person Style")
+
+Rel(Person, MySoftwareSystem.MyContainer, "uses container", $tags="Dependency Style")
+
+SHOW_LEGEND(true)
+
+@enduml

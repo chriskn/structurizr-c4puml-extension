@@ -15,13 +15,13 @@ caption A deployment diagram showing the environment.
 SHOW_PERSON_OUTLINE()
 LAYOUT_LEFT_RIGHT()
 
-AddRelTag("async relationship", $textColor="$ARROW_COLOR", $lineColor="$ARROW_COLOR", $lineStyle = DashedLine())
+AddRelTag("async relationship", $lineStyle=DashedLine(), $legendText=async relationship (dashed))
 
 SetPropertyHeader("Property", "Value", "Description")
 AddProperty("Property1", "Value1", "Description1")
 AddProperty("Property2", "Value2", "Description2")
-Node(Default.AWS, "AWS", "", "Production AWS environment", "Cloudalt"){
-  Node(Default.AWS.AWSRDS, "AWS RDS", "", "", ""){
+Node(Default.AWS, "AWS", "", "Production AWS environment", "Cloudalt") {
+  Node(Default.AWS.AWSRDS, "AWS RDS", "", "", "") {
     WithoutPropertyHeader()
     AddProperty("region", "eu-central-1")
     ContainerDb(Default.AWS.AWSRDS.Database_1, "Database", "PostgreSql", "Stores data", "postgresql")
@@ -29,9 +29,9 @@ Node(Default.AWS, "AWS", "", "Production AWS environment", "Cloudalt"){
     AddProperty("region", "eu-west-1")
     ContainerDb(Default.AWS.AWSRDS.FailoverDatabase_1, "Failover Database", "PostgreSql", "Stores data", "postgresql")
   }
-  Node(Default.AWS.EKScluster, "EKS cluster", "", "", "EKSCloud"){
-    Node(Default.AWS.EKScluster.mywebapp, "my.web.app", "", "Web App POD", ""){
-      Node(Default.AWS.EKScluster.mywebapp.WebAppcontainer, "Web App container", "", "", "docker-icon"){
+  Node(Default.AWS.EKScluster, "EKS cluster", "", "", "EKSCloud") {
+    Node(Default.AWS.EKScluster.mywebapp, "my.web.app", "", "Web App POD", "") {
+      Node(Default.AWS.EKScluster.mywebapp.WebAppcontainer, "Web App container", "", "", "docker-icon") {
         Node(Default.AWS.EKScluster.mywebapp.WebAppcontainer.JaegerSidecar, "Jaeger Sidecar", "", "Jaeger sidecar sending Traces", "")
         Container(Default.AWS.EKScluster.mywebapp.WebAppcontainer.WebApplication_1, "Web Application", "Java and Spring MVC", "Spring Boot web application", "spring")
       }
@@ -41,12 +41,12 @@ Node(Default.AWS, "AWS", "", "Production AWS environment", "Cloudalt"){
     Node(Default.AWS.EKScluster.LoadBalancer, "Load Balancer", "nginx", "Nginx Load Balancer", "nginx", $link="https://www.google.de")
   }
 }
-Node(Default.AnotherAWSAccount, "Another AWS Account", "", "", "Cloudalt"){
-  Node(Default.AnotherAWSAccount.JaegerContainer, "Jaeger Container", "", "", ""){
+Node(Default.AnotherAWSAccount, "Another AWS Account", "", "", "Cloudalt") {
+  Node(Default.AnotherAWSAccount.JaegerContainer, "Jaeger Container", "", "", "") {
     Node(Default.AnotherAWSAccount.JaegerContainer.Jaeger, "Jaeger", "", "", "")
   }
 }
-Node(Default.AppleDevice, "Apple Device", "", "", "apple"){
+Node(Default.AppleDevice, "Apple Device", "", "", "apple") {
   System_Ext(Default.AppleDevice.iOSApp_1, "iOS App", "iOS Application", "")
 }
 Rel(Default.AppleDevice, Default.AWS.EKScluster.LoadBalancer, "requests data from")

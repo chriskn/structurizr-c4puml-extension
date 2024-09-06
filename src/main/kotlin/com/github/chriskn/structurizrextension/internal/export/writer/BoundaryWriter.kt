@@ -8,6 +8,7 @@ import com.github.chriskn.structurizrextension.internal.export.idOf
 import com.structurizr.export.IndentingWriter
 import com.structurizr.model.Container
 import com.structurizr.model.DeploymentNode
+import com.structurizr.model.ModelItem
 import com.structurizr.model.SoftwareSystem
 import com.structurizr.view.DynamicView
 import com.structurizr.view.View
@@ -45,7 +46,9 @@ internal object BoundaryWriter {
         writer: IndentingWriter
     ) {
         writer.writeLine(
-            "System_Boundary(${idOf(softwareSystem)}, ${softwareSystem.name}) ${determineBoundaryStartSymbol(view)}"
+            "System_Boundary(${idOf(
+                softwareSystem
+            )}, ${softwareSystem.name}${tagsToPlantUmlSting(softwareSystem)}) ${determineBoundaryStartSymbol(view)} "
         )
         writer.indent()
     }
@@ -58,10 +61,8 @@ internal object BoundaryWriter {
     fun startContainerBoundary(view: View, container: Container, writer: IndentingWriter) {
         writer.writeLine(
             """Container_Boundary("${
-                idOf(
-                    container
-                )
-            }_boundary", "${container.name}") ${determineBoundaryStartSymbol(view)}"""
+                idOf(container)
+            }_boundary", "${container.name}" ${tagsToPlantUmlSting(container)})${determineBoundaryStartSymbol(view)} """
         )
         writer.indent()
     }
@@ -88,7 +89,7 @@ internal object BoundaryWriter {
     private fun DeploymentNode.toMacro() =
         """Node(${idOf(this)}, "$name", "${technology.orEmpty()}", "${description.orEmpty()}", "${
             IconRegistry.iconFileNameFor(icon).orEmpty()
-        }"${linkString(link)})"""
+        }"${tagsToPlantUmlSting(this)}${linkString(link)})"""
 
     private fun determineBoundaryEndSymbol(view: View): String =
         if (view is DynamicView && view.renderAsSequenceDiagram) {
@@ -103,4 +104,14 @@ internal object BoundaryWriter {
         } else {
             "{"
         }
+
+    private fun tagsToPlantUmlSting(modelItem: ModelItem): String {
+        // dont add structurizr default tags
+        val tagList = modelItem.tagsAsSet - modelItem.defaultTags
+        return if (tagList.isEmpty()) {
+            ""
+        } else {
+            """, ${'$'}tags="${tagList.joinToString("+")}""""
+        }
+    }
 }

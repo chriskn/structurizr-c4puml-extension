@@ -7,6 +7,7 @@ import java.net.URL
 internal const val AWS_ICON_URL = "https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/v11.1/dist/"
 internal const val AWS_ICON_COMMONS = "${AWS_ICON_URL}AWSCommon.puml"
 
+// TODO deprecate
 /**
  * Registry containing the available icons.
  *
@@ -24,14 +25,19 @@ object IconRegistry {
     /**
      * Adds a new icon with the given name (case-insensitive) and URL to the registry.
      *
-     * @throws IllegalArgumentException if url does not point to puml file
+     * @throws IllegalArgumentException if url does not point to puml file or name is blank
      * @throws MalformedURLException if url is invalid
      */
     fun addIcon(name: String, url: String) {
-        require(url.endsWith(PUML_FILE_EXTENSION)) {
-            "Icon URL needs to point to .puml file"
-        }
+        validate(name, url)
         iconNameToIconUrl[name.lowercase()] = URI(url).toURL()
+    }
+
+    internal fun validate(name: String, url: String) {
+        require(name.isNotBlank()) { "Icon name cannot be blank" }
+        require(url.endsWith(PUML_FILE_EXTENSION)) {
+            "Icon URL needs to point to .puml file but was $url"
+        }
     }
 
     /**
