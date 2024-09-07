@@ -1,13 +1,13 @@
 package com.github.chriskn.structurizrextension.internal.export.writer
 
-import com.github.chriskn.structurizrextension.api.view.style.BORDER_COLOR_PROPERTY_NAME
-import com.github.chriskn.structurizrextension.api.view.style.LEGEND_SPRITE_PROPERTY_NAME
-import com.github.chriskn.structurizrextension.api.view.style.LEGEND_TEXT_PROPERTY_NAME
-import com.github.chriskn.structurizrextension.api.view.style.SHADOWING_PROPERTY_NAME
-import com.github.chriskn.structurizrextension.api.view.style.SHAPE_PROPERTY_NAME
-import com.github.chriskn.structurizrextension.api.view.style.SPRITE_PROPERTY_NAME
-import com.github.chriskn.structurizrextension.api.view.style.Shape
-import com.github.chriskn.structurizrextension.api.view.style.TECHNOLOGY_PROPERTY_NAME
+import com.github.chriskn.structurizrextension.api.view.style.C4Shape
+import com.github.chriskn.structurizrextension.api.view.style.borderColor
+import com.github.chriskn.structurizrextension.api.view.style.c4Shape
+import com.github.chriskn.structurizrextension.api.view.style.legendSprite
+import com.github.chriskn.structurizrextension.api.view.style.legendText
+import com.github.chriskn.structurizrextension.api.view.style.shadowing
+import com.github.chriskn.structurizrextension.api.view.style.sprite
+import com.github.chriskn.structurizrextension.api.view.style.technology
 import com.structurizr.export.IndentingWriter
 import com.structurizr.model.ModelItem
 import com.structurizr.view.Border.Dashed
@@ -29,7 +29,7 @@ internal object ElementStyleWriter {
         // AddElementTag(, ?techn, ?legendText, )
         val bgColor = elementStyle.background
         val fontColor = elementStyle.color
-        val borderColor = elementStyle.properties[BORDER_COLOR_PROPERTY_NAME]
+        val borderColor = elementStyle.borderColor
         val borderStyle = when (elementStyle.border) {
             Solid -> "SolidLine()"
             Dashed -> "DashedLine()"
@@ -37,17 +37,17 @@ internal object ElementStyleWriter {
             else -> null
         }
         val borderThickness = elementStyle.strokeWidth?.toString()
-        val shadow = elementStyle.properties[SHADOWING_PROPERTY_NAME]
-        val technology = elementStyle.properties[TECHNOLOGY_PROPERTY_NAME]
-        val shapeValue = elementStyle.properties[SHAPE_PROPERTY_NAME]?.let { Shape.valueOf(it) }
+        val shadow = elementStyle.shadowing
+        val technology = elementStyle.technology
+        val shapeValue = elementStyle.c4Shape
         val shape = when (shapeValue) {
-            Shape.EIGHT_SIDED -> "EightSidedShape()"
-            Shape.ROUNDED_BOX -> "RoundedBoxShape()"
+            C4Shape.EIGHT_SIDED -> "EightSidedShape()"
+            C4Shape.ROUNDED_BOX -> "RoundedBoxShape()"
             else -> null
         }
-        val sprite = elementStyle.properties[SPRITE_PROPERTY_NAME]
-        val legendSprite = elementStyle.properties[LEGEND_SPRITE_PROPERTY_NAME]
-        val legendText = elementStyle.properties[LEGEND_TEXT_PROPERTY_NAME]
+        val sprite = elementStyle.sprite
+        val legendSprite = elementStyle.legendSprite
+        val legendText = elementStyle.legendText
         writer.writeLine(
             """AddElementTag(${elementStyle.tag}${
                 addIfNotNull("bgColor", bgColor)

@@ -1,7 +1,7 @@
 package com.github.chriskn.structurizrextension.view.style
 
 import com.github.chriskn.structurizrextension.api.model.softwareSystem
-import com.github.chriskn.structurizrextension.api.view.style.Shape.EIGHT_SIDED
+import com.github.chriskn.structurizrextension.api.view.style.C4Shape.EIGHT_SIDED
 import com.github.chriskn.structurizrextension.api.view.style.Sprite
 import com.github.chriskn.structurizrextension.api.view.style.addElementStyle
 import com.github.chriskn.structurizrextension.api.view.style.createElementStyle
@@ -12,7 +12,7 @@ import com.structurizr.view.Border.Dashed
 import org.junit.jupiter.api.Test
 import java.net.URI
 
-class StyleTest {
+class ElementStyleTest {
 
     private val pathToExpectedDiagrams = "view/style"
 
@@ -21,10 +21,10 @@ class StyleTest {
     private val views = workspace.views
 
     @Test
-    fun addStyleTest() {
+    fun `element style is applied for software systems`() {
         val diagramKey = "BasicStyleTest"
 
-        val styleTag = "testTag"
+        val styleTag = "System Style"
 
         val system = model.softwareSystem("My Software System", "system", tags = listOf(styleTag))
         val contextView = workspace.views.systemContextView(system, diagramKey, "A test Landscape",)
@@ -33,15 +33,14 @@ class StyleTest {
         val legendSprite = Sprite("compass", 3.0)
         val elementStyle = createElementStyle(
             tag = styleTag,
-            background = "#000000",
+            backgroundColor = "#000000",
             border = Dashed,
             borderWith = 4,
             borderColor = "green",
             fontColor = "yellow",
-            fontSize = 20,
             shadowing = true,
             technology = "Kafka",
-            shape = EIGHT_SIDED,
+            c4Shape = EIGHT_SIDED,
             sprite = sprite,
             legendSprite = legendSprite,
             legendText = "this is a legend"

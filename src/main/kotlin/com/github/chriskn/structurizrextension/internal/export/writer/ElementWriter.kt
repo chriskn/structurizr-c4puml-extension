@@ -98,9 +98,13 @@ internal class ElementWriter(
 
     private fun Location.toPlantUmlString() = if (this == Location.External) "_Ext" else ""
 
-    private fun tagToPlantUmlSting(tags: String) = if (tags.isBlank()) {
-        ""
-    } else {
-        """, ${'$'}tags="${tags.split(",").joinToString("+")}" """
+    // TODO how to handle tags without element style? ignore?
+    private fun tagToPlantUmlSting(tags: String): String {
+        val tagList = tags.split(",")
+        return if (tagList.isEmpty()) {
+            ""
+        } else {
+            """, ${'$'}tags="${tagList.joinToString("+")}" """
+        }
     }
 }

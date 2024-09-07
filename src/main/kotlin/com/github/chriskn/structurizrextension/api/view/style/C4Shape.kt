@@ -1,5 +1,7 @@
 package com.github.chriskn.structurizrextension.api.view.style
 
-enum class Shape {
+// TODO doucment
+
+enum class C4Shape {
     ROUNDED_BOX, EIGHT_SIDED
 }
