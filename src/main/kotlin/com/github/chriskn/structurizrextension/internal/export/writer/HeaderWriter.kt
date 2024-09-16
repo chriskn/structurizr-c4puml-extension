@@ -7,24 +7,27 @@ import com.github.chriskn.structurizrextension.api.model.icon
 import com.github.chriskn.structurizrextension.api.view.dynamic.renderAsSequenceDiagram
 import com.github.chriskn.structurizrextension.api.view.layout.LayoutRegistry
 import com.structurizr.export.IndentingWriter
+import com.structurizr.export.plantuml.C4PlantUMLExporter.C4PLANTUML_SHADOW
+import com.structurizr.export.plantuml.C4PlantUMLExporter.C4PLANTUML_SPRITE
 import com.structurizr.model.DeploymentNode
 import com.structurizr.model.InteractionStyle
 import com.structurizr.model.ModelItem
-import com.structurizr.view.ComponentView
-import com.structurizr.view.ContainerView
-import com.structurizr.view.DeploymentView
-import com.structurizr.view.DynamicView
-import com.structurizr.view.ModelView
-import com.structurizr.view.SystemContextView
-import com.structurizr.view.SystemLandscapeView
-import com.structurizr.view.View
+import com.structurizr.util.StringUtils
+import com.structurizr.view.*
 import java.net.URI
+import java.net.URL
+import javax.imageio.IIOException
+import javax.imageio.ImageIO
+import kotlin.math.max
+
 
 internal object HeaderWriter {
 
     private const val ASYNC_REL_TAG_NAME = "async relationship"
     private const val C4_PLANT_UML_STDLIB_URL =
         "https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master"
+    private const val MAX_ICON_SIZE: Double = 30.0
+
 
     private val includes = mutableSetOf<URI>()
 
@@ -57,6 +60,94 @@ internal object HeaderWriter {
         if (view.relationships.any { it.relationship.interactionStyle == InteractionStyle.Asynchronous }) {
             writeAsyncRelTag(writer)
         }
+        val elementStyles = view.elements.map { view.viewSet.configuration.styles.findElementStyle(it.element) }
+            .associateBy { it.tag }
+        for (entry in elementStyles.entries) {
+            val elementStyle = entry.value
+            val tagList = entry.key.replaceFirst("Element,", "")
+            if (tagList.isNotEmpty()) {
+                var sprite: String? = ""
+                if (elementStyleHasSupportedIcon(elementStyle)) {
+                    val scale: Double = calculateIconScale(elementStyle.icon)
+                    sprite = ("img:" + elementStyle.icon).toString() + "{scale=" + scale + "}"
+                }
+                sprite = elementStyle.properties.getOrDefault(C4PLANTUML_SPRITE, sprite)
+
+                var borderThickness = 1
+                if (elementStyle.strokeWidth != null) {
+                    borderThickness = elementStyle.strokeWidth
+                }
+
+                var line = java.lang.String.format(
+                    "AddElementTag(\"%s\", \$bgColor=\"%s\", \$borderColor=\"%s\", \$fontColor=\"%s\", \$sprite=\"%s\", \$shadowing=\"%s\", \$borderStyle=\"%s\", \$borderThickness=\"%s\")",
+                    tagList,
+                    elementStyle.background,
+                    elementStyle.stroke,
+                    elementStyle.color,
+                    sprite,
+                    elementStyle.properties.getOrDefault(C4PLANTUML_SHADOW, ""),
+                    elementStyle.border.toString().toLowerCase(),
+                    borderThickness
+                )
+
+                line = line.replace(", \$borderThickness=\"1\")", ")")
+                writer.writeLine(line)
+            }
+        }
+        val relationshipStyles = view.relationships
+            .map { view.viewSet.configuration.styles.findRelationshipStyle(it.relationship) }
+            .associateBy { it.tag }
+
+        for (entry in relationshipStyles.entries) {
+            val relationshipStyle = entry.value
+            val tagList = entry.key.replaceFirst("Relationship,", "")
+
+            var lineStyle = "\"\""
+            if (relationshipStyle!!.style == LineStyle.Dashed) {
+                lineStyle = "DashedLine()"
+            } else if (relationshipStyle.style == LineStyle.Dotted) {
+                lineStyle = "DottedLine()"
+            }
+
+            writer.writeLine(
+                String.format(
+                    "AddRelTag(\"%s\", \$textColor=\"%s\", \$lineColor=\"%s\", \$lineStyle = %s)",
+                    tagList,
+                    relationshipStyle.color,
+                    relationshipStyle.color,
+                    lineStyle
+                )
+            )
+        }
+
+        // TODO boundary styles
+    }
+
+    private fun elementStyleHasSupportedIcon(elementStyle: ElementStyle): Boolean {
+        return !StringUtils.isNullOrEmpty(elementStyle.icon) && elementStyle.icon.startsWith("http")
+    }
+
+    private fun calculateIconScale(iconUrl: String?): Double {
+        var scale = 0.5
+
+        try {
+            val url = URL(iconUrl)
+            val bi = ImageIO.read(url)
+
+            val width = bi.width
+            val height = bi.height
+
+            scale = MAX_ICON_SIZE / max(width.toDouble(), height.toDouble())
+        } catch (e: UnsupportedOperationException) {
+            // This is a known issue on native builds since AWT packages aren't available.
+            // So we just swallow the error and use the default scale
+        } catch (e: UnsatisfiedLinkError) {
+        } catch (e: IIOException) {
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        return scale
     }
 
     private fun addIncludeUrls(view: View) {

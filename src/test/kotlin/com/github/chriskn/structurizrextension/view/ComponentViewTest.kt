@@ -16,6 +16,7 @@ import com.github.chriskn.structurizrextension.assertExpectedDiagramWasWrittenFo
 import com.structurizr.Workspace
 import com.structurizr.model.InteractionStyle.Asynchronous
 import com.structurizr.model.Location
+import com.structurizr.model.Tags
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 
@@ -23,7 +24,13 @@ class ComponentViewTest {
 
     private val pathToExpectedDiagrams = "view/component"
 
-    private val workspace = Workspace("My Workspace", "")
+    private val workspace = Workspace("My Workspace", "").also {
+        with (it.views.configuration.styles) {
+            addElementStyle(Tags.PERSON).background("#ff0000").color("#00ff00")
+            addElementStyle(Tags.CONTAINER).background("#0000ff").color("#ffff00")
+            addElementStyle("CustomTag").background("#146934").color("#ff4422")
+        }
+    }
     private val model = workspace.model
 
     private val softwareSystem = model.softwareSystem("My Software System", "system description")
@@ -41,6 +48,7 @@ class ComponentViewTest {
             "MyRestController",
             "Provides data via rest",
             technology = "REST",
+            tags = listOf("CustomTag"),
             usedBy = listOf(Dependency(user, "Website", "REST"))
         )
         val repository = backendApplication.component(
