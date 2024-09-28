@@ -6,3 +6,6 @@ import com.structurizr.view.ViewSet
 fun ViewSet.addElementStyle(elementStyle: ElementStyle) {
     this.configuration.styles.add(elementStyle)
 }
+
+fun ViewSet.getElementStyles(): List<ElementStyle> =
+    this.configuration.styles.elements.toList()

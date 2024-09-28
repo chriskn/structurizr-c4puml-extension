@@ -1,5 +1,9 @@
 package com.github.chriskn.structurizrextension.internal.export.writer
 
+import com.github.chriskn.structurizrextension.api.view.sprite.ImageSprite
+import com.github.chriskn.structurizrextension.api.view.sprite.OpenIconicSprite
+import com.github.chriskn.structurizrextension.api.view.sprite.PumlSprite
+import com.github.chriskn.structurizrextension.api.view.sprite.Sprite
 import com.github.chriskn.structurizrextension.api.view.style.C4Shape
 import com.github.chriskn.structurizrextension.api.view.style.borderColor
 import com.github.chriskn.structurizrextension.api.view.style.c4Shape
@@ -26,7 +30,6 @@ internal object ElementStyleWriter {
     }
 
     fun writeElementStyle(elementStyle: ElementStyle, writer: IndentingWriter) {
-        // AddElementTag(, ?techn, ?legendText, )
         val bgColor = elementStyle.background
         val fontColor = elementStyle.color
         val borderColor = elementStyle.borderColor
@@ -45,11 +48,13 @@ internal object ElementStyleWriter {
             C4Shape.ROUNDED_BOX -> "RoundedBoxShape()"
             else -> null
         }
-        val sprite = elementStyle.sprite
-        val legendSprite = elementStyle.legendSprite
+        val sprite = elementStyle.sprite?.toPlantUmlString()
+        val legendSprite = elementStyle.legendSprite?.toPlantUmlString()
         val legendText = elementStyle.legendText
         writer.writeLine(
             """AddElementTag(${elementStyle.tag}${
+                addIfNotNull("sprite", sprite)
+            }${
                 addIfNotNull("bgColor", bgColor)
             }${
                 addIfNotNull("fontColor", fontColor)
@@ -66,8 +71,6 @@ internal object ElementStyleWriter {
             }${
                 addIfNotNull("techn", technology)
             }${
-                addIfNotNull("sprite", sprite)
-            }${
                 addIfNotNull("legendSprite", legendSprite)
             }${
                 addIfNotNull("legendText", legendText)
@@ -77,6 +80,51 @@ internal object ElementStyleWriter {
 
     private fun addIfNotNull(name: String, value: Any?) = if (value != null) {
         """, ${'$'}$name=$value"""
+    } else {
+        ""
+    }
+
+    private fun Sprite.toPlantUmlString(): String = when (this) {
+        is PumlSprite -> """"${spriteString(this.name, scale, color)}""""
+        is OpenIconicSprite -> """"&${spriteString(this.name, scale, color)}""""
+        is ImageSprite -> {
+            val scaleString = scaleString(this.scale)
+            if (scaleString.isBlank()) {
+                """"$url""""
+            } else {
+                """"$url{$scaleString}""""
+            }
+        }
+
+        else -> throw IllegalArgumentException("Unknown sprite type ${this::class}")
+    }
+
+    private fun spriteString(
+        name: String,
+        scale: Double?,
+        color: String?,
+    ): String {
+        val scaleString = scaleString(scale)
+        val colorString = colorString(color)
+        return if (scaleString.isBlank() && colorString.isBlank()) {
+            name
+        } else if (colorString.isBlank()) {
+            "$name{$scaleString}"
+        } else if (scaleString.isBlank()) {
+            "$name{$colorString}"
+        } else {
+            "$name{$scaleString,$colorString}"
+        }
+    }
+
+    private fun colorString(color: String?): String = if (color != null) {
+        "color=$color"
+    } else {
+        ""
+    }
+
+    private fun scaleString(scale: Double?): String = if (scale != null) {
+        "scale=$scale"
     } else {
         ""
     }

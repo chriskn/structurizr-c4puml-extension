@@ -1,0 +1,16 @@
+@startuml(id=ContainerStyleTest)
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/postgresql.puml
+title My Software System - Containers
+caption ContainerStyleTest
+
+SHOW_PERSON_OUTLINE()
+LAYOUT_TOP_DOWN()
+
+AddElementTag(Container Style, $sprite="postgresql{scale=0.5,color=green}", $bgColor=#ffffff, $fontColor=#ff0000, $borderColor=#800080, $borderStyle=DottedLine(), $borderThickness=5, $shadowing=false, $shape=RoundedBoxShape(), $techn=REST, $legendSprite="&compass", $legendText=this is a legend text)
+Container(MySoftwareSystem.MyContainer, "My Container", "", "container", "", $tags="Container Style" )
+
+
+SHOW_LEGEND(true)
+
+@enduml

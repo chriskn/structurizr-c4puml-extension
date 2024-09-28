@@ -14,6 +14,7 @@ import com.structurizr.model.DeploymentElement
 import com.structurizr.model.Element
 import com.structurizr.model.InfrastructureNode
 import com.structurizr.model.Location
+import com.structurizr.model.ModelItem
 import com.structurizr.model.Person
 import com.structurizr.model.SoftwareSystem
 import com.structurizr.model.SoftwareSystemInstance
@@ -74,12 +75,12 @@ internal class ElementWriter(
     private fun SoftwareSystem.toMacro(id: String) =
         """System${this.c4Type?.c4Type.orEmpty()}${this.c4Location.toPlantUmlString()}($id, "$name", "${description.orEmpty()}", "${
             IconRegistry.iconFileNameFor(icon).orEmpty()
-        }"${tagToPlantUmlSting(this.tags)}${linkString(link)})"""
+        }"${tagsToPlantUmlSting(this)}${linkString(link)})"""
 
     private fun Container.toMacro(id: String): String =
         """Container${this.c4Type?.c4Type.orEmpty()}${this.c4Location.toPlantUmlString()}($id, "$name", "$technology", "${description.orEmpty()}", "${
             IconRegistry.iconFileNameFor(icon).orEmpty()
-        }"${linkString(link)})"""
+        }"${tagsToPlantUmlSting(this)}${linkString(link)})"""
 
     private fun Person.toMacro(): String {
         val externalMarker = this.c4Location.toPlantUmlString()
@@ -98,9 +99,9 @@ internal class ElementWriter(
 
     private fun Location.toPlantUmlString() = if (this == Location.External) "_Ext" else ""
 
-    // TODO how to handle tags without element style? ignore?
-    private fun tagToPlantUmlSting(tags: String): String {
-        val tagList = tags.split(",")
+    private fun tagsToPlantUmlSting(modelItem: ModelItem): String {
+        // dont add structurizr default tags
+        val tagList = modelItem.tagsAsSet - modelItem.defaultTags
         return if (tagList.isEmpty()) {
             ""
         } else {

@@ -1,0 +1,15 @@
+@startuml(id=SystemStyleTest)
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+title My Software System - System Context
+caption SystemStyleTest
+
+SHOW_PERSON_OUTLINE()
+LAYOUT_TOP_DOWN()
+
+AddElementTag(System Style, $sprite="img:https://plantuml.com/logo3.png{scale=0.4}", $bgColor=#000000, $fontColor=#ffff00, $borderColor=#008000, $borderStyle=DashedLine(), $borderThickness=4, $shadowing=true, $shape=EightSidedShape(), $techn=Kafka, $legendSprite="&compass{scale=3.0}", $legendText=this is a legend)
+System(MySoftwareSystem, "My Software System", "system", "", $tags="System Style" )
+
+
+SHOW_LEGEND(true)
+
+@enduml

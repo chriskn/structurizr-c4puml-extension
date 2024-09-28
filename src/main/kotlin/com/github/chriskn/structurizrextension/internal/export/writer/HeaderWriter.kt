@@ -6,6 +6,10 @@ import com.github.chriskn.structurizrextension.api.icons.IconRegistry
 import com.github.chriskn.structurizrextension.api.model.icon
 import com.github.chriskn.structurizrextension.api.view.dynamic.renderAsSequenceDiagram
 import com.github.chriskn.structurizrextension.api.view.layout.LayoutRegistry
+import com.github.chriskn.structurizrextension.api.view.sprite.PumlSprite
+import com.github.chriskn.structurizrextension.api.view.style.getElementStyles
+import com.github.chriskn.structurizrextension.api.view.style.legendSprite
+import com.github.chriskn.structurizrextension.api.view.style.sprite
 import com.structurizr.export.IndentingWriter
 import com.structurizr.model.DeploymentNode
 import com.structurizr.model.InteractionStyle
@@ -33,7 +37,8 @@ internal class HeaderWriter(val elementStyleWriter: ElementStyleWriter) {
     fun writeHeader(view: ModelView, writer: IndentingWriter) {
         includes.clear()
         val elementsStyles = elementStyleWriter.collectElementStyles(view)
-        addIncludeUrls(view)
+        addIconIncludeUrls(view)
+        addSpriteIncludeUrls(view)
         // Spaces in PlantUML ids can cause issues. Alternatively, id can be surrounded with double quotes
         writer.writeLine("@startuml(id=${view.key.replace(' ', '_')})")
         for (include in includes) {
@@ -65,7 +70,43 @@ internal class HeaderWriter(val elementStyleWriter: ElementStyleWriter) {
         }
     }
 
-    private fun addIncludeUrls(view: ModelView) {
+    private fun addSpriteIncludeUrls(view: ModelView) {
+        val elements: MutableSet<ModelItem> = collectModelElements(view)
+        val elementTags = elements.asSequence().map {
+            it.tagsAsSet - it.defaultTags // TODO extension method and reuse
+        }.flatten().toSet()
+        val appliedElementStyles = view.viewSet.getElementStyles().filter { elementTags.contains(it.tag) }
+        val spriteIncludeUrls = appliedElementStyles
+            .map { listOf(it.sprite, it.legendSprite) }
+            .flatten()
+            .filterIsInstance<PumlSprite>()
+            .map { it.includeUrl }
+            .toMutableList()
+        if (spriteIncludeUrls.any { it.startsWith(AWS_ICON_URL) }) {
+            spriteIncludeUrls.add(0, AWS_ICON_COMMONS)
+        }
+        includes.addAll(spriteIncludeUrls.map { URI.create(it) })
+    }
+
+    private fun addIconIncludeUrls(view: ModelView) {
+        val elements: MutableSet<ModelItem> = collectModelElements(view)
+        val iconsIncludesForElements = elements
+            .asSequence()
+            .mapNotNull { it.icon?.let { technology -> IconRegistry.iconUrlFor(technology) } }
+            .toSet()
+            .toList()
+            .sorted()
+            .toMutableList()
+
+        if (iconsIncludesForElements.any { it.startsWith(AWS_ICON_URL) }) {
+            iconsIncludesForElements.add(0, AWS_ICON_COMMONS)
+        }
+        iconsIncludesForElements.forEach { includes.add(URI(it)) }
+        val c4PumlIncludeURI = URI("$C4_PLANT_UML_STDLIB_URL/${includeForView(view)}")
+        includes.add(c4PumlIncludeURI)
+    }
+
+    private fun collectModelElements(view: ModelView): MutableSet<ModelItem> {
         val elements: MutableSet<ModelItem> = view.elements.map { it.element }.toMutableSet()
         if (view is DeploymentView) {
             val children = elements
@@ -74,19 +115,7 @@ internal class HeaderWriter(val elementStyleWriter: ElementStyleWriter) {
             elements.addAll(children)
         }
         elements += view.relationships.map { it.relationship }
-        val iconsIncludesForElements = elements
-            .asSequence()
-            .mapNotNull { it.icon?.let { technology -> IconRegistry.iconUrlFor(technology) } }
-            .toSet()
-            .toList()
-            .sorted()
-            .toMutableList()
-        if (iconsIncludesForElements.any { it.startsWith(AWS_ICON_URL) }) {
-            iconsIncludesForElements.add(0, AWS_ICON_COMMONS)
-        }
-        iconsIncludesForElements.forEach { includes.add(URI(it)) }
-        val c4PumlIncludeURI = URI("$C4_PLANT_UML_STDLIB_URL/${includeForView(view)}")
-        includes.add(c4PumlIncludeURI)
+        return elements
     }
 
     @Suppress("MaxLineLength")

@@ -1,7 +1,8 @@
 package com.github.chriskn.structurizrextension.view.style
 
+import com.github.chriskn.structurizrextension.api.view.sprite.ImageSprite
+import com.github.chriskn.structurizrextension.api.view.sprite.OpenIconicSprite
 import com.github.chriskn.structurizrextension.api.view.style.C4Shape.EIGHT_SIDED
-import com.github.chriskn.structurizrextension.api.view.style.Sprite
 import com.github.chriskn.structurizrextension.api.view.style.backgroundColor
 import com.github.chriskn.structurizrextension.api.view.style.borderColor
 import com.github.chriskn.structurizrextension.api.view.style.borderWith
@@ -18,14 +19,13 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import java.net.URI
 
 class ElementStyleExtensionTest {
 
     @Test
     fun `element style values are correctly set`() {
-        val expSprite = Sprite(URI.create("img:https://plantuml.com/logo3.png"), 0.4)
-        val expLegendSprite = Sprite("compass", 3.0, color = "blue")
+        val expSprite = ImageSprite("img:https://plantuml.com/logo3.png", 0.4)
+        val expLegendSprite = OpenIconicSprite("compass", scale = 3.0, color = "blue")
         val expTag = "styleTag"
         val expBackgroundColor = "#000000"
         val expBorder = Dashed
@@ -126,108 +126,6 @@ class ElementStyleExtensionTest {
         fun `named background color is translated to hex color`() {
             val elementStyle = createElementStyle("test", backgroundColor = "white")
             assertThat(elementStyle.backgroundColor).isEqualTo("#ffffff")
-        }
-    }
-
-    @Nested
-    inner class Sprite {
-
-        @Test
-        fun `sprite is serialized and deserialized correctly when URI with scale is used`() {
-            val expectedSprite = Sprite(URI.create("img:https://plantuml.com/logo.png"), 0.4)
-            val style = createElementStyle("test", sprite = expectedSprite)
-
-            assertThat(style.sprite).isEqualTo(expectedSprite)
-        }
-
-        @Test
-        fun `sprite is serialized and deserialized correctly when URI without scale is used`() {
-            val expectedSprite = Sprite(URI.create("img:https://plantuml.com/logo.png"))
-            val style = createElementStyle("test", sprite = expectedSprite)
-
-            assertThat(style.sprite).isEqualTo(expectedSprite)
-        }
-
-        @Test
-        fun `sprite is serialized and deserialized correctly when openIconicIcon with scale is used`() {
-            val expectedSprite = Sprite("folder", scale = 0.4)
-            val style = createElementStyle("test", sprite = expectedSprite)
-
-            assertThat(style.sprite).isEqualTo(expectedSprite)
-        }
-
-        @Test
-        fun `sprite is serialized and deserialized correctly when openIconicIcon with color is used`() {
-            val expectedSprite = Sprite("folder", color = "grey")
-            val style = createElementStyle("test", sprite = expectedSprite)
-
-            assertThat(style.sprite).isEqualTo(expectedSprite)
-        }
-
-        @Test
-        fun `sprite is serialized and deserialized correctly when openIconicIcon with scale and color is used`() {
-            val expectedSprite = Sprite("folder", color = "grey", scale = 0.1)
-            val style = createElementStyle("test", sprite = expectedSprite)
-
-            assertThat(style.sprite).isEqualTo(expectedSprite)
-        }
-
-        @Test
-        fun `sprite is serialized and deserialized correctly when openIconicIcon without scale and color is used`() {
-            val expectedSprite = Sprite("folder")
-            val style = createElementStyle("test", sprite = expectedSprite)
-
-            assertThat(style.sprite).isEqualTo(expectedSprite)
-        }
-
-        @Test
-        fun `IllegalArgumentException is thrown when uri without image schema is used`() {
-            assertThrows<IllegalArgumentException> {
-                Sprite(URI.create("https://plantuml.com/logo.png"))
-            }
-        }
-
-        @Test
-        fun `IllegalArgumentException is thrown when uri with different schema is used`() {
-            assertThrows<IllegalArgumentException> {
-                Sprite(URI.create("file:https://plantuml.com/logo.png"))
-            }
-        }
-
-        @Test
-        fun `IllegalArgumentException is thrown when uri is not absolute`() {
-            assertThrows<IllegalArgumentException> {
-                Sprite(URI.create("img:https://plantuml.com/"))
-            }
-        }
-
-        @Test
-        fun `IllegalArgumentException is thrown if scale is negative `() {
-            assertThrows<IllegalArgumentException> {
-                Sprite(URI.create("img:https://plantuml.com//logo.png"), -0.1)
-            }
-        }
-
-        @Test
-        fun `IllegalArgumentException is thrown if scale is zero `() {
-            assertThrows<IllegalArgumentException> {
-                Sprite(URI.create("img:https://plantuml.com//logo.png"), 0.0)
-            }
-        }
-
-        @Test
-        fun `sprite is serialized and deserialized correctly when openIconicIcon is used`() {
-            val expectedSprite = Sprite("iconName", 0.4)
-            val style = createElementStyle("test", sprite = expectedSprite)
-
-            assertThat(style.sprite).isEqualTo(expectedSprite)
-        }
-
-        @Test
-        fun `IllegalArgumentException is thrown for invalid sprite color color`() {
-            assertThrows<IllegalArgumentException> {
-                Sprite("folder", color = "123")
-            }
         }
     }
 }

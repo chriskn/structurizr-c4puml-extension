@@ -7,6 +7,8 @@ import java.net.URL
 internal const val AWS_ICON_URL = "https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/v11.1/dist/"
 internal const val AWS_ICON_COMMONS = "${AWS_ICON_URL}AWSCommon.puml"
 
+// TODO sprites and image parsings
+
 /**
  * Registry containing the available icons.
  *
