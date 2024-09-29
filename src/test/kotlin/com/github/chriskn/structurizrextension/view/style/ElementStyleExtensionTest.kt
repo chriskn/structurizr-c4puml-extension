@@ -1,7 +1,5 @@
 package com.github.chriskn.structurizrextension.view.style
 
-import com.github.chriskn.structurizrextension.api.view.sprite.ImageSprite
-import com.github.chriskn.structurizrextension.api.view.sprite.OpenIconicSprite
 import com.github.chriskn.structurizrextension.api.view.style.C4Shape.EIGHT_SIDED
 import com.github.chriskn.structurizrextension.api.view.style.backgroundColor
 import com.github.chriskn.structurizrextension.api.view.style.borderColor
@@ -13,6 +11,8 @@ import com.github.chriskn.structurizrextension.api.view.style.legendSprite
 import com.github.chriskn.structurizrextension.api.view.style.legendText
 import com.github.chriskn.structurizrextension.api.view.style.shadowing
 import com.github.chriskn.structurizrextension.api.view.style.sprite
+import com.github.chriskn.structurizrextension.api.view.style.sprite.ImageSprite
+import com.github.chriskn.structurizrextension.api.view.style.sprite.OpenIconicSprite
 import com.github.chriskn.structurizrextension.api.view.style.technology
 import com.structurizr.view.Border.Dashed
 import org.assertj.core.api.Assertions.assertThat

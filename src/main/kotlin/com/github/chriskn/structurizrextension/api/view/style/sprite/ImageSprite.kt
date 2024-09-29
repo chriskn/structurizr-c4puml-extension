@@ -1,4 +1,4 @@
-package com.github.chriskn.structurizrextension.api.view.sprite
+package com.github.chriskn.structurizrextension.api.view.style.sprite
 
 data class ImageSprite(
     val url: String,

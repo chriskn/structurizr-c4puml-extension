@@ -5,13 +5,13 @@ import com.github.chriskn.structurizrextension.api.model.component
 import com.github.chriskn.structurizrextension.api.model.container
 import com.github.chriskn.structurizrextension.api.model.softwareSystem
 import com.github.chriskn.structurizrextension.api.view.containerView
-import com.github.chriskn.structurizrextension.api.view.sprite.ImageSprite
-import com.github.chriskn.structurizrextension.api.view.sprite.OpenIconicSprite
-import com.github.chriskn.structurizrextension.api.view.sprite.PumlSprite
 import com.github.chriskn.structurizrextension.api.view.style.C4Shape.EIGHT_SIDED
 import com.github.chriskn.structurizrextension.api.view.style.C4Shape.ROUNDED_BOX
 import com.github.chriskn.structurizrextension.api.view.style.addElementStyle
 import com.github.chriskn.structurizrextension.api.view.style.createElementStyle
+import com.github.chriskn.structurizrextension.api.view.style.sprite.ImageSprite
+import com.github.chriskn.structurizrextension.api.view.style.sprite.OpenIconicSprite
+import com.github.chriskn.structurizrextension.api.view.style.sprite.PumlSprite
 import com.github.chriskn.structurizrextension.api.view.systemContextView
 import com.github.chriskn.structurizrextension.assertExpectedDiagramWasWrittenForView
 import com.structurizr.Workspace
@@ -93,5 +93,43 @@ class ElementStyleIntegrationTest {
         views.addElementStyle(containerStyle)
 
         assertExpectedDiagramWasWrittenForView(workspace, pathToExpectedDiagrams, diagramKey)
+    }
+
+    @Test
+    fun `element style can be applied for single views`() {
+        val diagramKeyWithStyle = "ContainerStyleTest"
+        val diagramKeyWithoutStyle = "ViewStyleTestWithoutStyle"
+
+        val sprite = PumlSprite(
+            includeUrl = IconRegistry.iconUrlFor("postgresql")!!,
+            name = "postgresql",
+            scale = 0.5,
+            color = "green"
+        )
+        val legendSprite = OpenIconicSprite("compass")
+        val containerStyle = createElementStyle(
+            tag = containerTag,
+            backgroundColor = "#ffffff",
+            border = Dotted,
+            borderWith = 5,
+            borderColor = "purple",
+            fontColor = "red",
+            shadowing = false,
+            technology = "REST",
+            c4Shape = ROUNDED_BOX,
+            sprite = sprite,
+            legendSprite = legendSprite,
+            legendText = "this is a legend text"
+        )
+        val containerViewWithStyle =
+            workspace.views.containerView(system, diagramKeyWithStyle, "ContainerStyleTest")
+        containerViewWithStyle.addAllContainers()
+        containerViewWithStyle.addElementStyle(containerStyle)
+        val containerViewWithoutStyle =
+            workspace.views.containerView(system, diagramKeyWithoutStyle, "ViewStyleTestWithoutStyle")
+        containerViewWithoutStyle.addAllContainers()
+
+        assertExpectedDiagramWasWrittenForView(workspace, pathToExpectedDiagrams, diagramKeyWithStyle)
+        assertExpectedDiagramWasWrittenForView(workspace, pathToExpectedDiagrams, diagramKeyWithoutStyle)
     }
 }

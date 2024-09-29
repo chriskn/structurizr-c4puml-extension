@@ -1,12 +1,8 @@
-package com.github.chriskn.structurizrextension.api.view.sprite
+package com.github.chriskn.structurizrextension.api.view.style.sprite
 
 import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type
 import com.fasterxml.jackson.annotation.JsonTypeInfo
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.fasterxml.jackson.module.kotlin.readValue
-
-private val mapper = jacksonObjectMapper()
 
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
@@ -22,11 +18,5 @@ private val mapper = jacksonObjectMapper()
 )
 interface Sprite {
 
-    companion object {
-        fun fromJson(json: String): Sprite = mapper.readValue(json)
-    }
-
     val scale: Double?
-
-    fun toJson(): String = mapper.writeValueAsString(this)
 }

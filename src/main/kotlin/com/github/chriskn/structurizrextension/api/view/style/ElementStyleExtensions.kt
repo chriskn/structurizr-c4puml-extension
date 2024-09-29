@@ -1,6 +1,8 @@
 package com.github.chriskn.structurizrextension.api.view.style
 
-import com.github.chriskn.structurizrextension.api.view.sprite.Sprite
+import com.github.chriskn.structurizrextension.api.view.style.sprite.Sprite
+import com.github.chriskn.structurizrextension.internal.export.view.style.spriteFormJson
+import com.github.chriskn.structurizrextension.internal.export.view.style.toJson
 import com.structurizr.view.Border
 import com.structurizr.view.ElementStyle
 import com.structurizr.view.createElementStyleFromTag
@@ -15,6 +17,7 @@ private const val TECHNOLOGY_PROPERTY_NAME = "c4:technology"
 
 // TODO doucment
 
+// @JsonCreator
 @Suppress("LongParameterList")
 fun createElementStyle(
     tag: String,
@@ -90,13 +93,13 @@ var ElementStyle.c4Shape: C4Shape?
     }
 
 var ElementStyle.sprite: Sprite?
-    get() = this.properties[SPRITE_PROPERTY_NAME]?.let { Sprite.fromJson(it) }
+    get() = this.properties[SPRITE_PROPERTY_NAME]?.let { spriteFormJson(it) }
     private set(sprite) {
         sprite?.let { this.addProperty(SPRITE_PROPERTY_NAME, it.toJson()) }
     }
 
 var ElementStyle.legendSprite: Sprite?
-    get() = this.properties[LEGEND_SPRITE_PROPERTY_NAME]?.let { Sprite.fromJson(it) }
+    get() = this.properties[LEGEND_SPRITE_PROPERTY_NAME]?.let { spriteFormJson(it) }
     private set(legendSprite) {
         legendSprite?.let { this.addProperty(LEGEND_SPRITE_PROPERTY_NAME, it.toJson()) }
     }

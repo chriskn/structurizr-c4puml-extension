@@ -1,4 +1,4 @@
-package com.github.chriskn.structurizrextension.api.view.sprite
+package com.github.chriskn.structurizrextension.api.view.style.sprite
 
 import com.github.chriskn.structurizrextension.api.icons.IconRegistry
 import java.net.MalformedURLException

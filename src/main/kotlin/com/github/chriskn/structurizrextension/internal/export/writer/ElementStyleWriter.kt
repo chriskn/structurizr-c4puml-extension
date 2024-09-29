@@ -1,16 +1,17 @@
 package com.github.chriskn.structurizrextension.internal.export.writer
 
-import com.github.chriskn.structurizrextension.api.view.sprite.ImageSprite
-import com.github.chriskn.structurizrextension.api.view.sprite.OpenIconicSprite
-import com.github.chriskn.structurizrextension.api.view.sprite.PumlSprite
-import com.github.chriskn.structurizrextension.api.view.sprite.Sprite
 import com.github.chriskn.structurizrextension.api.view.style.C4Shape
 import com.github.chriskn.structurizrextension.api.view.style.borderColor
 import com.github.chriskn.structurizrextension.api.view.style.c4Shape
+import com.github.chriskn.structurizrextension.api.view.style.getElementStyles
 import com.github.chriskn.structurizrextension.api.view.style.legendSprite
 import com.github.chriskn.structurizrextension.api.view.style.legendText
 import com.github.chriskn.structurizrextension.api.view.style.shadowing
 import com.github.chriskn.structurizrextension.api.view.style.sprite
+import com.github.chriskn.structurizrextension.api.view.style.sprite.ImageSprite
+import com.github.chriskn.structurizrextension.api.view.style.sprite.OpenIconicSprite
+import com.github.chriskn.structurizrextension.api.view.style.sprite.PumlSprite
+import com.github.chriskn.structurizrextension.api.view.style.sprite.Sprite
 import com.github.chriskn.structurizrextension.api.view.style.technology
 import com.structurizr.export.IndentingWriter
 import com.structurizr.model.ModelItem
@@ -22,10 +23,16 @@ import com.structurizr.view.ModelView
 
 internal object ElementStyleWriter {
 
-    fun collectElementStyles(view: ModelView): List<ElementStyle> {
+    fun collectAppliedElementStyles(view: ModelView): List<ElementStyle> {
         val elements: MutableSet<ModelItem> = view.elements.map { it.element }.toMutableSet()
         val usedTags = elements.map { it.tagsAsSet }.flatten().toSet()
-        val stylesForTags = view.viewSet.configuration.styles.elements.filter { usedTags.contains(it.tag) }
+        val stylesForTags =
+            view
+                .viewSet
+                .configuration
+                .styles
+                .elements
+                .filter { usedTags.contains(it.tag) } + view.getElementStyles()
         return stylesForTags
     }
 

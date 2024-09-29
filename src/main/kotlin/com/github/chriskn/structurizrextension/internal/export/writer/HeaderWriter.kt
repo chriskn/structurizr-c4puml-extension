@@ -6,10 +6,9 @@ import com.github.chriskn.structurizrextension.api.icons.IconRegistry
 import com.github.chriskn.structurizrextension.api.model.icon
 import com.github.chriskn.structurizrextension.api.view.dynamic.renderAsSequenceDiagram
 import com.github.chriskn.structurizrextension.api.view.layout.LayoutRegistry
-import com.github.chriskn.structurizrextension.api.view.sprite.PumlSprite
-import com.github.chriskn.structurizrextension.api.view.style.getElementStyles
 import com.github.chriskn.structurizrextension.api.view.style.legendSprite
 import com.github.chriskn.structurizrextension.api.view.style.sprite
+import com.github.chriskn.structurizrextension.api.view.style.sprite.PumlSprite
 import com.structurizr.export.IndentingWriter
 import com.structurizr.model.DeploymentNode
 import com.structurizr.model.InteractionStyle
@@ -24,19 +23,21 @@ import com.structurizr.view.SystemLandscapeView
 import com.structurizr.view.View
 import java.net.URI
 
-internal class HeaderWriter(val elementStyleWriter: ElementStyleWriter) {
+private const val ASYNC_REL_TAG_NAME = "async relationship"
 
-    companion object {
-        private const val ASYNC_REL_TAG_NAME = "async relationship"
-        private const val C4_PLANT_UML_STDLIB_URL =
-            "https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master"
-    }
+// TODO implement as rel style when ready
+private const val ASYNC_STYLE_ATTIRBUTES =
+    """${'$'}textColor="${'$'}ARROW_COLOR", ${'$'}lineColor="${'$'}ARROW_COLOR", ${'$'}lineStyle = DashedLine())"""
+private const val C4_PLANT_UML_STDLIB_URL =
+    "https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master"
+
+internal class HeaderWriter(private val elementStyleWriter: ElementStyleWriter) {
 
     private val includes = mutableSetOf<URI>()
 
     fun writeHeader(view: ModelView, writer: IndentingWriter) {
         includes.clear()
-        val elementsStyles = elementStyleWriter.collectElementStyles(view)
+        val elementsStyles = elementStyleWriter.collectAppliedElementStyles(view)
         addIconIncludeUrls(view)
         addSpriteIncludeUrls(view)
         // Spaces in PlantUML ids can cause issues. Alternatively, id can be surrounded with double quotes
@@ -71,12 +72,9 @@ internal class HeaderWriter(val elementStyleWriter: ElementStyleWriter) {
     }
 
     private fun addSpriteIncludeUrls(view: ModelView) {
-        val elements: MutableSet<ModelItem> = collectModelElements(view)
-        val elementTags = elements.asSequence().map {
-            it.tagsAsSet - it.defaultTags // TODO extension method and reuse
-        }.flatten().toSet()
-        val appliedElementStyles = view.viewSet.getElementStyles().filter { elementTags.contains(it.tag) }
+        val appliedElementStyles = ElementStyleWriter.collectAppliedElementStyles(view)
         val spriteIncludeUrls = appliedElementStyles
+            .asSequence()
             .map { listOf(it.sprite, it.legendSprite) }
             .flatten()
             .filterIsInstance<PumlSprite>()
@@ -118,10 +116,9 @@ internal class HeaderWriter(val elementStyleWriter: ElementStyleWriter) {
         return elements
     }
 
-    @Suppress("MaxLineLength")
     private fun writeAsyncRelTag(writer: IndentingWriter) {
         writer.writeLine(
-            """AddRelTag("$ASYNC_REL_TAG_NAME", ${'$'}textColor="${'$'}ARROW_COLOR", ${'$'}lineColor="${'$'}ARROW_COLOR", ${'$'}lineStyle = DashedLine())"""
+            """AddRelTag("$ASYNC_REL_TAG_NAME", $ASYNC_STYLE_ATTIRBUTES"""
         )
         writer.writeLine()
     }

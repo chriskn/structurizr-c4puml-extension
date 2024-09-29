@@ -1,0 +1,16 @@
+{
+  "properties": {
+    "c4:sprite": "{\"@type\":\"ImageSprite\",\"url\":\"img:https://plantuml.com/logo3.png\",\"scale\":0.4}",
+    "c4:borderColor": "#008000",
+    "c4:legendSprite": "{\"@type\":\"OpenIconicSprite\",\"name\":\"compass\",\"color\":\"blue\",\"scale\":3.0}",
+    "c4:legendText": "this is a legend",
+    "c4:technology": "Kafka",
+    "c4:shadowing": "true",
+    "c4:shape": "EIGHT_SIDED"
+  },
+  "tag": "styleTag",
+  "background": "#000000",
+  "strokeWidth": 4,
+  "color": "#ffffff",
+  "border": "Dashed"
+}
