@@ -16,7 +16,11 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo
         Type(value = PumlSprite::class, name = "PumlSprite"),
     ]
 )
-interface Sprite {
+abstract class Sprite(scale: Double?) {
 
-    val scale: Double?
+    init {
+        require((scale ?: 1.0) > 0.0) {
+            "Scale must be greater than zero."
+        }
+    }
 }

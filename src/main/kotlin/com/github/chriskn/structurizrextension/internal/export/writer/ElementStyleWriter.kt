@@ -32,8 +32,11 @@ internal object ElementStyleWriter {
                 .configuration
                 .styles
                 .elements
-                .filter { usedTags.contains(it.tag) } + view.getElementStyles()
-        return stylesForTags
+                .filter { usedTags.contains(it.tag) } +
+                view
+                    .getElementStyles()
+                    .filter { usedTags.contains(it.tag) }
+        return stylesForTags.distinctBy { it.tag }
     }
 
     fun writeElementStyle(elementStyle: ElementStyle, writer: IndentingWriter) {
@@ -92,8 +95,8 @@ internal object ElementStyleWriter {
     }
 
     private fun Sprite.toPlantUmlString(): String = when (this) {
-        is PumlSprite -> """"${spriteString(this.name, scale, color)}""""
-        is OpenIconicSprite -> """"&${spriteString(this.name, scale, color)}""""
+        is PumlSprite -> """"${spriteString(this.name, scale, validatedColor)}""""
+        is OpenIconicSprite -> """"&${spriteString(this.name, scale, validatedColor)}""""
         is ImageSprite -> {
             val scaleString = scaleString(this.scale)
             if (scaleString.isBlank()) {

@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Test
 class ElementStyleJsonTest {
 
     @Test
-    fun `ElementStyle is persisted correctly`() {
+    fun `ElementStyle is serialized and deserialized correctly`() {
         val expSprite = ImageSprite("img:https://plantuml.com/logo3.png", 0.4)
         val expLegendSprite = OpenIconicSprite("compass", scale = 3.0, color = "blue")
         val expTag = "styleTag"

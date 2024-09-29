@@ -13,6 +13,5 @@ fun View.addElementStyle(elementStyle: ElementStyle) {
 
 fun View.getElementStyles(): List<ElementStyle> =
     this.properties
-        .filterKeys { it.startsWith(ELEMENT_STYLE_PROPERTY_NAME_PREFIX) }
-        .values
-        .map { elementStyleFromJson(it) }
+        .filter { it.key.startsWith(ELEMENT_STYLE_PROPERTY_NAME_PREFIX) }
+        .map { elementStyleFromJson(it.value) }

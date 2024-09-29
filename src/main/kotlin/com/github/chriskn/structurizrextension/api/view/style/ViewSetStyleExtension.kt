@@ -9,3 +9,7 @@ fun ViewSet.addElementStyle(elementStyle: ElementStyle) {
 
 fun ViewSet.getElementStyles(): List<ElementStyle> =
     this.configuration.styles.elements.toList()
+
+internal fun ViewSet.clearElementStyles() {
+    this.configuration.styles.elements.clear()
+}

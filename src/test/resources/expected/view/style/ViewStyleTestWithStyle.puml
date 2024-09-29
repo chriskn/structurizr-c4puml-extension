@@ -1,8 +1,8 @@
-@startuml(id=ContainerStyleTest)
+@startuml(id=ViewStyleTestWithStyle)
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/postgresql.puml
 title My Software System - Containers
-caption ContainerStyleTest
+caption ViewStyleTestWithStyle
 
 SHOW_PERSON_OUTLINE()
 LAYOUT_TOP_DOWN()

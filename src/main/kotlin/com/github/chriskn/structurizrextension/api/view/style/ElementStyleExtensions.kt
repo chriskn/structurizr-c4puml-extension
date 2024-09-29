@@ -33,6 +33,7 @@ fun createElementStyle(
     legendText: String? = null,
     legendSprite: Sprite? = null,
 ): ElementStyle {
+    require(tag.isNotBlank()) { "tag cannot be blank" }
     val style = createElementStyleFromTag(tag)
     style.backgroundColor = backgroundColor
     style.fontColor = fontColor

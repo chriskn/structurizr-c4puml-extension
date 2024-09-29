@@ -8,6 +8,7 @@ import com.github.chriskn.structurizrextension.api.view.containerView
 import com.github.chriskn.structurizrextension.api.view.style.C4Shape.EIGHT_SIDED
 import com.github.chriskn.structurizrextension.api.view.style.C4Shape.ROUNDED_BOX
 import com.github.chriskn.structurizrextension.api.view.style.addElementStyle
+import com.github.chriskn.structurizrextension.api.view.style.clearElementStyles
 import com.github.chriskn.structurizrextension.api.view.style.createElementStyle
 import com.github.chriskn.structurizrextension.api.view.style.sprite.ImageSprite
 import com.github.chriskn.structurizrextension.api.view.style.sprite.OpenIconicSprite
@@ -17,6 +18,7 @@ import com.github.chriskn.structurizrextension.assertExpectedDiagramWasWrittenFo
 import com.structurizr.Workspace
 import com.structurizr.view.Border.Dashed
 import com.structurizr.view.Border.Dotted
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 class ElementStyleIntegrationTest {
@@ -34,6 +36,11 @@ class ElementStyleIntegrationTest {
     private val system = model.softwareSystem("My Software System", "system", tags = listOf(systemTag))
     private val container = system.container("My Container", "container", tags = listOf(containerTag))
     private val component = container.component("My Component", "component", tags = listOf(componentTag))
+
+    @BeforeEach
+    fun resetStyles() {
+        views.clearElementStyles()
+    }
 
     @Test
     fun `element style is applied for software systems`() {
@@ -97,7 +104,7 @@ class ElementStyleIntegrationTest {
 
     @Test
     fun `element style can be applied for single views`() {
-        val diagramKeyWithStyle = "ContainerStyleTest"
+        val diagramKeyWithStyle = "ViewStyleTestWithStyle"
         val diagramKeyWithoutStyle = "ViewStyleTestWithoutStyle"
 
         val sprite = PumlSprite(
@@ -107,7 +114,7 @@ class ElementStyleIntegrationTest {
             color = "green"
         )
         val legendSprite = OpenIconicSprite("compass")
-        val containerStyle = createElementStyle(
+        val containerTag = createElementStyle(
             tag = containerTag,
             backgroundColor = "#ffffff",
             border = Dotted,
@@ -122,14 +129,31 @@ class ElementStyleIntegrationTest {
             legendText = "this is a legend text"
         )
         val containerViewWithStyle =
-            workspace.views.containerView(system, diagramKeyWithStyle, "ContainerStyleTest")
+            workspace.views.containerView(system, diagramKeyWithStyle, "ViewStyleTestWithStyle")
         containerViewWithStyle.addAllContainers()
-        containerViewWithStyle.addElementStyle(containerStyle)
+        containerViewWithStyle.addElementStyle(containerTag)
         val containerViewWithoutStyle =
             workspace.views.containerView(system, diagramKeyWithoutStyle, "ViewStyleTestWithoutStyle")
         containerViewWithoutStyle.addAllContainers()
 
         assertExpectedDiagramWasWrittenForView(workspace, pathToExpectedDiagrams, diagramKeyWithStyle)
         assertExpectedDiagramWasWrittenForView(workspace, pathToExpectedDiagrams, diagramKeyWithoutStyle)
+    }
+
+    @Test
+    fun `element style for unused tags are not exported`() {
+        val diagramKey = "ViewStyleTestUnusedTag"
+
+        val unusedStyle = createElementStyle(
+            tag = "someUnusedTag",
+            backgroundColor = "#ffffff",
+            legendText = "this is a legend text"
+        )
+        val containerViewWithStyle =
+            workspace.views.containerView(system, diagramKey, "ViewStyleTestWithStyle")
+        containerViewWithStyle.addAllContainers()
+        containerViewWithStyle.addElementStyle(unusedStyle)
+
+        assertExpectedDiagramWasWrittenForView(workspace, pathToExpectedDiagrams, diagramKey)
     }
 }
