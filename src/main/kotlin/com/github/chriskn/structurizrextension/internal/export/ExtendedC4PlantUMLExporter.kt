@@ -7,11 +7,11 @@ import com.github.chriskn.structurizrextension.internal.export.view.DeploymentVi
 import com.github.chriskn.structurizrextension.internal.export.view.DynamicViewExporter
 import com.github.chriskn.structurizrextension.internal.export.view.SystemViewExporter
 import com.github.chriskn.structurizrextension.internal.export.writer.BoundaryWriter
-import com.github.chriskn.structurizrextension.internal.export.writer.ElementStyleWriter
 import com.github.chriskn.structurizrextension.internal.export.writer.ElementWriter
 import com.github.chriskn.structurizrextension.internal.export.writer.FooterWriter
 import com.github.chriskn.structurizrextension.internal.export.writer.HeaderWriter
 import com.github.chriskn.structurizrextension.internal.export.writer.PropertyWriter
+import com.github.chriskn.structurizrextension.internal.export.writer.StyleWriter
 import com.github.chriskn.structurizrextension.internal.export.writer.relationship.RelationshipWriter
 import com.structurizr.export.AbstractDiagramExporter
 import com.structurizr.export.Diagram
@@ -33,7 +33,7 @@ import com.structurizr.view.SystemLandscapeView
 @Suppress("TooManyFunctions")
 internal class ExtendedC4PlantUMLExporter : AbstractDiagramExporter() {
 
-    private val elementStyleWriter = ElementStyleWriter
+    private val elementStyleWriter = StyleWriter
     private val boundaryWriter = BoundaryWriter
     private val footerWriter = FooterWriter
     private val headerWriter = HeaderWriter(elementStyleWriter)

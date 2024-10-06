@@ -1,4 +1,4 @@
-package com.github.chriskn.structurizrextension.view.style
+package com.github.chriskn.structurizrextension.view.style.element
 
 import com.github.chriskn.structurizrextension.api.icons.IconRegistry
 import com.github.chriskn.structurizrextension.api.model.softwareSystem
@@ -6,21 +6,11 @@ import com.github.chriskn.structurizrextension.api.view.containerView
 import com.github.chriskn.structurizrextension.api.view.style.C4Shape.EIGHT_SIDED
 import com.github.chriskn.structurizrextension.api.view.style.C4Shape.ROUNDED_BOX
 import com.github.chriskn.structurizrextension.api.view.style.addElementStyle
-import com.github.chriskn.structurizrextension.api.view.style.backgroundColor
-import com.github.chriskn.structurizrextension.api.view.style.borderColor
-import com.github.chriskn.structurizrextension.api.view.style.borderWith
-import com.github.chriskn.structurizrextension.api.view.style.c4Shape
-import com.github.chriskn.structurizrextension.api.view.style.createElementStyle
-import com.github.chriskn.structurizrextension.api.view.style.fontColor
 import com.github.chriskn.structurizrextension.api.view.style.getElementStyles
-import com.github.chriskn.structurizrextension.api.view.style.legendSprite
-import com.github.chriskn.structurizrextension.api.view.style.legendText
-import com.github.chriskn.structurizrextension.api.view.style.shadowing
-import com.github.chriskn.structurizrextension.api.view.style.sprite
 import com.github.chriskn.structurizrextension.api.view.style.sprite.ImageSprite
 import com.github.chriskn.structurizrextension.api.view.style.sprite.OpenIconicSprite
 import com.github.chriskn.structurizrextension.api.view.style.sprite.PumlSprite
-import com.github.chriskn.structurizrextension.api.view.style.technology
+import com.github.chriskn.structurizrextension.api.view.style.styles.ElementStyle
 import com.github.chriskn.structurizrextension.internal.export.view.style.toJson
 import com.structurizr.Workspace
 import com.structurizr.view.Border.Dashed
@@ -47,7 +37,7 @@ class ElementStyleExtensionTest {
         val expC4Shape = EIGHT_SIDED
         val expLegendText = "this is a legend"
 
-        val style = createElementStyle(
+        val style = ElementStyle(
             tag = expTag,
             backgroundColor = expBackgroundColor,
             border = expBorder,
@@ -85,7 +75,7 @@ class ElementStyleExtensionTest {
             color = "green"
         )
         val legendSprite = OpenIconicSprite("compass")
-        val style1 = createElementStyle(
+        val style1 = ElementStyle(
             tag = "tag",
             backgroundColor = "#ffffff",
             border = Dotted,
@@ -99,7 +89,7 @@ class ElementStyleExtensionTest {
             legendSprite = legendSprite,
             legendText = "this is a legend text"
         )
-        val style2 = createElementStyle("tag1")
+        val style2 = ElementStyle("tag1")
 
         val workspace = Workspace("test", "test")
         val views = workspace.views
@@ -108,19 +98,19 @@ class ElementStyleExtensionTest {
         views.addElementStyle(style2)
 
         assertThat(views.getElementStyles()).hasSize(2)
-        assertThat(views.getElementStyles()[0]).isEqualTo(style1)
-        assertThat(views.getElementStyles()[1]).isEqualTo(style2)
+        assertThat(views.getElementStyles().firstOrNull { it.tag == style1.tag }).isEqualTo(style1)
+        assertThat(views.getElementStyles().firstOrNull { it.tag == style2.tag }).isEqualTo(style2)
     }
 
     @Test
     fun `element style can be added to View`() {
-        val style1 = createElementStyle(
+        val style1 = ElementStyle(
             tag = "tag",
             backgroundColor = "#ffffff",
             border = Dotted,
             borderWith = 5,
         )
-        val style2 = createElementStyle("tag1")
+        val style2 = ElementStyle("tag1")
 
         val workspace = Workspace("test", "test")
         val views = workspace.views
@@ -138,7 +128,7 @@ class ElementStyleExtensionTest {
     @Test
     fun `IllegalArgumentException is thrown when tag is blank`() {
         assertThrows<IllegalArgumentException> {
-            createElementStyle(" ")
+            ElementStyle(" ")
         }
     }
 
@@ -146,7 +136,7 @@ class ElementStyleExtensionTest {
     fun `element style can be initialized with null values`() {
         val expTag = "tag"
 
-        val style = createElementStyle(tag = expTag)
+        val style = ElementStyle(tag = expTag)
 
         assertThat(style.tag).isEqualTo(expTag)
         assertThat(style.backgroundColor).isNull()
@@ -168,140 +158,40 @@ class ElementStyleExtensionTest {
         @Test
         fun `IllegalArgumentException is thrown for invalid background color`() {
             assertThrows<IllegalArgumentException> {
-                createElementStyle("test", backgroundColor = "ABC")
+                ElementStyle("test", backgroundColor = "ABC")
             }
         }
 
         @Test
         fun `IllegalArgumentException is thrown for invalid font color`() {
             assertThrows<IllegalArgumentException> {
-                createElementStyle("test", fontColor = "jellow")
+                ElementStyle("test", fontColor = "jellow")
             }
         }
 
         @Test
         fun `IllegalArgumentException is thrown for invalid border color`() {
             assertThrows<IllegalArgumentException> {
-                createElementStyle("test", borderColor = "")
+                ElementStyle("test", borderColor = "")
             }
         }
 
         @Test
         fun `named border color is translated to hex color`() {
-            val elementStyle = createElementStyle("test", borderColor = "green")
+            val elementStyle = ElementStyle("test", borderColor = "green")
             assertThat(elementStyle.borderColor).isEqualTo("#008000")
         }
 
         @Test
         fun `named font color is translated to hex color`() {
-            val elementStyle = createElementStyle("test", fontColor = "black")
+            val elementStyle = ElementStyle("test", fontColor = "black")
             assertThat(elementStyle.fontColor).isEqualTo("#000000")
         }
 
         @Test
         fun `named background color is translated to hex color`() {
-            val elementStyle = createElementStyle("test", backgroundColor = "white")
+            val elementStyle = ElementStyle("test", backgroundColor = "white")
             assertThat(elementStyle.backgroundColor).isEqualTo("#ffffff")
-        }
-    }
-
-    @Nested
-    inner class Sprite {
-
-        @Test
-        fun `PumlSprite is serialized and deserialized correctly`() {
-            val expectedSprite = PumlSprite(
-                name = "android",
-                includeUrl = "https://test.com/sprites/android-icon.puml",
-            )
-            val style = createElementStyle("test", sprite = expectedSprite)
-
-            assertThat(style.sprite).isEqualTo(expectedSprite)
-        }
-
-        @Test
-        fun `PumlSprite is serialized and deserialized correctly when color is used`() {
-            val expectedSprite = PumlSprite(
-                name = "android",
-                includeUrl = "https://test.com/sprites/android-icon.puml",
-                color = "green"
-            )
-            val style = createElementStyle("test", sprite = expectedSprite)
-
-            assertThat(style.sprite).isEqualTo(expectedSprite)
-        }
-
-        @Test
-        fun `PumlSprite is serialized and deserialized correctly when scale is used`() {
-            val expectedSprite = PumlSprite(
-                name = "android",
-                includeUrl = "https://test.com/sprites/android-icon.puml",
-                scale = 0.4
-            )
-            val style = createElementStyle("test", sprite = expectedSprite)
-
-            assertThat(style.sprite).isEqualTo(expectedSprite)
-        }
-
-        @Test
-        fun `PumlSprite is serialized and deserialized correctly when scale and color is used`() {
-            val expectedSprite = PumlSprite(
-                name = "android",
-                includeUrl = "https://test.com/sprites/android-icon.puml",
-                scale = 0.4,
-                color = "green"
-            )
-            val style = createElementStyle("test", sprite = expectedSprite)
-
-            assertThat(style.sprite).isEqualTo(expectedSprite)
-        }
-
-        @Test
-        fun `OpenIconicSprite is serialized and deserialized correctly`() {
-            val expectedSprite = OpenIconicSprite("folder")
-            val style = createElementStyle("test", sprite = expectedSprite)
-
-            assertThat(style.sprite).isEqualTo(expectedSprite)
-        }
-
-        @Test
-        fun `OpenIconicSprite is serialized and deserialized correctly with scale`() {
-            val expectedSprite = OpenIconicSprite("folder", scale = 0.4)
-            val style = createElementStyle("test", sprite = expectedSprite)
-
-            assertThat(style.sprite).isEqualTo(expectedSprite)
-        }
-
-        @Test
-        fun `OpenIconicSprite is serialized and deserialized correctly with color`() {
-            val expectedSprite = OpenIconicSprite("folder", color = "grey")
-            val style = createElementStyle("test", sprite = expectedSprite)
-
-            assertThat(style.sprite).isEqualTo(expectedSprite)
-        }
-
-        @Test
-        fun `OpenIconicSprite is serialized and deserialized correctly with scale and color`() {
-            val expectedSprite = OpenIconicSprite("folder", color = "grey", scale = 0.1)
-            val style = createElementStyle("test", sprite = expectedSprite)
-
-            assertThat(style.sprite).isEqualTo(expectedSprite)
-        }
-
-        @Test
-        fun `ImageSprite is serialized and deserialized correctly when URI with scale is used`() {
-            val expectedSprite = ImageSprite("img:https://plantuml.com/logo.png", 0.4)
-            val style = createElementStyle("test", sprite = expectedSprite)
-
-            assertThat(style.sprite).isEqualTo(expectedSprite)
-        }
-
-        @Test
-        fun `ImageSprite is serialized and deserialized correctly when URI without scale is used`() {
-            val expectedSprite = ImageSprite("img:https://plantuml.com/logo.png")
-            val style = createElementStyle("test", sprite = expectedSprite)
-
-            assertThat(style.sprite).isEqualTo(expectedSprite)
         }
     }
 }

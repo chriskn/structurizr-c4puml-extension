@@ -86,7 +86,7 @@ internal class ElementWriter(
         val externalMarker = this.c4Location.toPlantUmlString()
         return """Person$externalMarker(${idOf(this)}, "$name", "${description.orEmpty()}", "${
             IconRegistry.iconFileNameFor(icon).orEmpty()
-        }"${linkString(link)})"""
+        }"${tagsToPlantUmlSting(this)}${linkString(link)})"""
     }
 
     private fun Component.toMacro(): String {
@@ -94,7 +94,7 @@ internal class ElementWriter(
             idOf(this)
         }, "$name", "${technology.orEmpty()}", "${description.orEmpty()}", "${
             IconRegistry.iconFileNameFor(icon).orEmpty()
-        }"${linkString(link)})"""
+        }"${tagsToPlantUmlSting(this)}${linkString(link)})"""
     }
 
     private fun Location.toPlantUmlString() = if (this == Location.External) "_Ext" else ""
@@ -105,7 +105,7 @@ internal class ElementWriter(
         return if (tagList.isEmpty()) {
             ""
         } else {
-            """, ${'$'}tags="${tagList.joinToString("+")}" """
+            """, ${'$'}tags="${tagList.joinToString("+")}""""
         }
     }
 }

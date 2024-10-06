@@ -13,7 +13,7 @@ AddRelTag("async relationship", $textColor="$ARROW_COLOR", $lineColor="$ARROW_CO
 ComponentDb(MySoftwareSystem.NewBackendApp.Cache, "Cache", "RocksDB", "In Memory DB", "rocksdb", $link="https://google.de")
 WithoutPropertyHeader()
 AddProperty("jdbcUrl", "someurl")
-Component(MySoftwareSystem.NewBackendApp.MyRepo, "MyRepo", "Kotlin, JDBC", "Provides CRUD operations for data", "")
+Component(MySoftwareSystem.NewBackendApp.MyRepo, "MyRepo", "Kotlin, JDBC", "Provides CRUD operations for data", "", $tags="repo+persistence" )
 Component(MySoftwareSystem.NewBackendApp.MyRestController, "MyRestController", "REST", "Provides data via rest", "")
 Component(MySoftwareSystem.NewBackendApp.MyService, "MyService", "", "Does implement some logic", "kotlin", $link="https://google.de")
 Rel(MySoftwareSystem.NewBackendApp.MyRestController, MySoftwareSystem.NewBackendApp.MyService, "calls")

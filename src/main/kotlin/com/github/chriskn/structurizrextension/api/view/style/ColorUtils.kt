@@ -2,8 +2,10 @@ package com.github.chriskn.structurizrextension.api.view.style
 
 import com.structurizr.view.Color
 
-fun toValidColor(color: String): String =
-    if (Color.isHexColorCode(color)) {
+fun toValidColor(color: String?): String? =
+    if (color == null) {
+        null
+    } else if (Color.isHexColorCode(color)) {
         color.lowercase()
     } else {
         val hexColorCode = Color.fromColorNameToHexColorCode(color)

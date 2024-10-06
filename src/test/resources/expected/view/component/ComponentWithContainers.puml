@@ -16,7 +16,7 @@ Container(MySoftwareSystem.FrontendApp, "Frontend App", "TS", "some frontend", "
 ComponentDb(MySoftwareSystem.NewBackendApp.Cache, "Cache", "RocksDB", "In Memory DB", "rocksdb", $link="https://google.de")
 WithoutPropertyHeader()
 AddProperty("jdbcUrl", "someurl")
-Component(MySoftwareSystem.NewBackendApp.MyRepo, "MyRepo", "Kotlin, JDBC", "Provides CRUD operations for data", "")
+Component(MySoftwareSystem.NewBackendApp.MyRepo, "MyRepo", "Kotlin, JDBC", "Provides CRUD operations for data", "", $tags="repo+persistence" )
 Component(MySoftwareSystem.NewBackendApp.MyRestController, "MyRestController", "REST", "Provides data via rest", "")
 Component(MySoftwareSystem.NewBackendApp.MyService, "MyService", "", "Does implement some logic", "kotlin", $link="https://google.de")
 Rel(MySoftwareSystem.NewBackendApp.MyRepo, MySoftwareSystem.Database, "gets data from")

@@ -6,9 +6,9 @@ import com.github.chriskn.structurizrextension.api.icons.IconRegistry
 import com.github.chriskn.structurizrextension.api.model.icon
 import com.github.chriskn.structurizrextension.api.view.dynamic.renderAsSequenceDiagram
 import com.github.chriskn.structurizrextension.api.view.layout.LayoutRegistry
-import com.github.chriskn.structurizrextension.api.view.style.legendSprite
-import com.github.chriskn.structurizrextension.api.view.style.sprite
 import com.github.chriskn.structurizrextension.api.view.style.sprite.PumlSprite
+import com.github.chriskn.structurizrextension.api.view.style.styles.BoundaryStyle
+import com.github.chriskn.structurizrextension.api.view.style.styles.ElementStyle
 import com.structurizr.export.IndentingWriter
 import com.structurizr.model.DeploymentNode
 import com.structurizr.model.InteractionStyle
@@ -31,19 +31,22 @@ private const val ASYNC_STYLE_ATTIRBUTES =
 private const val C4_PLANT_UML_STDLIB_URL =
     "https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master"
 
-internal class HeaderWriter(private val elementStyleWriter: ElementStyleWriter) {
+internal class HeaderWriter(private val styleWriter: StyleWriter) {
 
     private val includes = mutableSetOf<URI>()
 
     fun writeHeader(view: ModelView, writer: IndentingWriter) {
         includes.clear()
-        val elementsStyles = elementStyleWriter.collectAppliedElementStyles(view)
         addIconIncludeUrls(view)
-        addSpriteIncludeUrls(view)
+        val elementsStyles = styleWriter.collectAppliedElementStyles(view)
+        val boundaryStyles = styleWriter.collectAppliedBoundaryStyles(view)
+        val personStyles = styleWriter.collectAppliedPersonStyles(view)
+
+        addSpriteIncludeUrls(elementsStyles, boundaryStyles)
         // Spaces in PlantUML ids can cause issues. Alternatively, id can be surrounded with double quotes
         writer.writeLine("@startuml(id=${view.key.replace(' ', '_')})")
-        for (include in includes) {
-            writer.writeLine("!includeurl $include")
+        includes.forEach {
+            writer.writeLine("!includeurl $it")
         }
         var viewTitle = view.title
         if (viewTitle.isNullOrBlank()) {
@@ -67,19 +70,36 @@ internal class HeaderWriter(private val elementStyleWriter: ElementStyleWriter) 
             writeAsyncRelTag(writer)
         }
         elementsStyles.forEach { style ->
-            elementStyleWriter.writeElementStyle(style, writer)
+            styleWriter.writeElementStyle(style, writer)
+        }
+        boundaryStyles.forEach { style ->
+            styleWriter.writeC4PumlStyle(style, writer, "Boundary")
+        }
+        personStyles.forEach { style ->
+            styleWriter.writeC4PumlStyle(style, writer, "Person")
         }
     }
 
-    private fun addSpriteIncludeUrls(view: ModelView) {
-        val appliedElementStyles = ElementStyleWriter.collectAppliedElementStyles(view)
-        val spriteIncludeUrls = appliedElementStyles
+    private fun addSpriteIncludeUrls(
+        elementStyles: List<ElementStyle>,
+        boundaryStyles: List<BoundaryStyle>,
+    ) {
+        val spriteIncludeUrls = elementStyles
             .asSequence()
             .map { listOf(it.sprite, it.legendSprite) }
             .flatten()
             .filterIsInstance<PumlSprite>()
             .map { it.includeUrl }
             .toMutableList()
+        spriteIncludeUrls.addAll(
+            boundaryStyles
+                .asSequence()
+                .map { listOf(it.sprite, it.legendSprite) }
+                .flatten()
+                .filterIsInstance<PumlSprite>()
+                .map { it.includeUrl }
+                .toMutableList()
+        )
         if (spriteIncludeUrls.any { it.startsWith(AWS_ICON_URL) }) {
             spriteIncludeUrls.add(0, AWS_ICON_COMMONS)
         }

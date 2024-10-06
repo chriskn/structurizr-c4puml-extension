@@ -5,11 +5,8 @@ import com.github.chriskn.structurizrextension.internal.export.ExtendedC4PlantUM
 import com.github.chriskn.structurizrextension.internal.export.idOf
 import com.structurizr.export.Diagram
 import com.structurizr.export.IndentingWriter
-import com.structurizr.model.Component
-import com.structurizr.model.Container
 import com.structurizr.view.ComponentView
 import com.structurizr.view.ElementView
-import com.structurizr.view.ModelView
 
 internal class ComponentViewExporter(
     private val c4PlantUMLExporter: ExtendedC4PlantUMLExporter,
@@ -58,7 +55,7 @@ internal class ComponentViewExporter(
         writer: IndentingWriter,
         sortedElements: List<ElementView>
     ): List<ElementView> {
-        val boundaryContainers = getBoundaryContainer(view)
+        val boundaryContainers = view.getBoundaryContainer()
         for (container in boundaryContainers) {
             c4PlantUMLExporter.startContainerBoundary(view, container, writer)
 
@@ -71,13 +68,4 @@ internal class ComponentViewExporter(
         }
         return view.elements.filter { it.element.parent in boundaryContainers }
     }
-
-    private fun getBoundaryContainer(view: ModelView): List<Container> =
-        view.elements
-            .asSequence()
-            .map { obj: ElementView -> obj.element }
-            .filterIsInstance<Component>()
-            .map { it.container }
-            .toSet()
-            .sortedBy { idOf(it) }
 }

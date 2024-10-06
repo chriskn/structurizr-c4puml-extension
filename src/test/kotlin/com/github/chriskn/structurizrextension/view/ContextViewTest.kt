@@ -63,7 +63,6 @@ class ContextViewTest {
         model.person(
             "Actor",
             link = "https://www.google.de",
-            tags = listOf("human"),
             uses = listOf(
                 Dependency(
                     system1,
