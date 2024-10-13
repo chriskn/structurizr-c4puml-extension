@@ -6,7 +6,7 @@ caption ViewStyleTestWithStyle
 SHOW_PERSON_OUTLINE()
 LAYOUT_TOP_DOWN()
 
-Container(MySoftwareSystem.MyContainer, "My Container", "", "container", "", $tags="Container Style+Container Boundary Style")
+Container(MySoftwareSystem.MyContainer, "My Container", "", "container", "", $tags="Container Style+Boundary Style")
 
 
 SHOW_LEGEND(true)

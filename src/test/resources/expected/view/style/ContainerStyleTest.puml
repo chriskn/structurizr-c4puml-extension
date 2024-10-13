@@ -8,10 +8,10 @@ SHOW_PERSON_OUTLINE()
 LAYOUT_TOP_DOWN()
 
 AddElementTag(Container Style, $sprite="postgresql{scale=0.5,color=#008000}", $bgColor=#ffffff, $fontColor=#ff0000, $borderColor=#800080, $borderStyle=DottedLine(), $borderThickness=5, $shadowing=false, $shape=RoundedBoxShape(), $techn=REST, $legendSprite="&compass", $legendText=this is a legend container)
-AddBoundaryTag(System Boundary Style, $bgColor=#00ffff, $fontColor=#008000, $borderColor=#ff0000, $borderStyle=DottedLine(), $borderThickness=4, $shadowing=false, $legendText=this is a system)
+AddBoundaryTag(Boundary Style, $bgColor=#00ffff, $fontColor=#008000, $borderColor=#ff0000, $borderStyle=DottedLine(), $borderThickness=4, $shadowing=false, $legendText=this is a system)
 AddPersonTag(Person Style, $bgColor=#00ff00, $fontColor=#0000ff, $borderColor=#ff0000, $borderStyle=DashedLine(), $borderThickness=4, $shadowing=false, $shape=EightSidedShape(), $legendText=this is a person)
-System_Boundary(MySoftwareSystem, My Software System, $tags="System Style+System Boundary Style") { 
-  Container(MySoftwareSystem.MyContainer, "My Container", "", "container", "", $tags="Container Style+Container Boundary Style")
+System_Boundary(MySoftwareSystem, My Software System, $tags="System Style+Boundary Style") {
+  Container(MySoftwareSystem.MyContainer, "My Container", "", "container", "", $tags="Container Style+Boundary Style")
 }
 Person(Person, "Person", "", "", $tags="Person Style")
 

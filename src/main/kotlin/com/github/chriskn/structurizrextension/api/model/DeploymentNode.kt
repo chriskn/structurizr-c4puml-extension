@@ -35,7 +35,7 @@ fun DeploymentNode.deploymentNode(
     uses: List<Dependency<DeploymentElement>> = listOf(),
     usedBy: List<Dependency<DeploymentElement>> = listOf(),
     hostsSystems: List<SoftwareSystem> = listOf(),
-    hostsContainers: List<Container> = listOf()
+    hostsContainers: List<Container> = listOf(),
 ): DeploymentNode {
     val node = this.addDeploymentNode(name, description, technology)
     node.configure(icon, link, tags, properties, hostsSystems, hostsContainers, uses, usedBy)
@@ -67,7 +67,7 @@ fun DeploymentNode.infrastructureNode(
     tags: List<String> = listOf(),
     properties: C4Properties? = null,
     uses: List<Dependency<DeploymentElement>> = listOf(),
-    usedBy: List<Dependency<DeploymentNode>> = listOf()
+    usedBy: List<Dependency<DeploymentNode>> = listOf(),
 ): InfrastructureNode {
     val node = this.addInfrastructureNode(name, description, technology)
     node.configure(icon, link, tags, properties)
@@ -94,14 +94,22 @@ fun DeploymentNode.configure(
     usedBy: List<Dependency<DeploymentElement>>,
 ) {
     this.configure(icon, link, tags, properties)
-    hostsSystems.forEach { this.add(it) }
-    hostsContainers.forEach { this.add(it) }
+    hostsSystems.forEach {
+        val instance = this.add(it)
+        it.tagsAsSet.forEach { tag -> instance.addTags(tag) }
+    }
+    hostsContainers.forEach {
+        val instance = this.add(it)
+        it.tagsAsSet.forEach { tag -> instance.addTags(tag) }
+    }
     uses.forEach { dep ->
         when (dep.destination) {
             is DeploymentNode -> this.uses(dep.destination, dep.description, dep.technology, dep.interactionStyle)
                 .configure(dep.icon, dep.link, dep.tags, dep.properties)
+
             is InfrastructureNode -> this.uses(dep.destination, dep.description, dep.technology, dep.interactionStyle)
                 .configure(dep.icon, dep.link, dep.tags, dep.properties)
+
             else -> throw IllegalArgumentException("DeploymentNode cant use ${dep.destination::class.java.name}")
         }
     }
@@ -109,8 +117,10 @@ fun DeploymentNode.configure(
         when (dep.destination) {
             is DeploymentNode -> dep.destination.uses(this, dep.description, dep.technology, dep.interactionStyle)
                 .configure(dep.icon, dep.link, dep.tags, dep.properties)
+
             is InfrastructureNode -> dep.destination.uses(this, dep.description, dep.technology, dep.interactionStyle)
                 .configure(dep.icon, dep.link, dep.tags, dep.properties)
+
             else -> throw IllegalArgumentException("DeploymentNode cant be use by ${dep.destination::class.java.name}")
         }
     }

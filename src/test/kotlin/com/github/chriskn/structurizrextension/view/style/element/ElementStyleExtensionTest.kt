@@ -10,7 +10,7 @@ import com.github.chriskn.structurizrextension.api.view.style.getElementStyles
 import com.github.chriskn.structurizrextension.api.view.style.sprite.ImageSprite
 import com.github.chriskn.structurizrextension.api.view.style.sprite.OpenIconicSprite
 import com.github.chriskn.structurizrextension.api.view.style.sprite.PumlSprite
-import com.github.chriskn.structurizrextension.api.view.style.styles.ElementStyle
+import com.github.chriskn.structurizrextension.api.view.style.styles.createElementStyle
 import com.github.chriskn.structurizrextension.internal.export.view.style.toJson
 import com.structurizr.Workspace
 import com.structurizr.view.Border.Dashed
@@ -37,7 +37,7 @@ class ElementStyleExtensionTest {
         val expC4Shape = EIGHT_SIDED
         val expLegendText = "this is a legend"
 
-        val style = ElementStyle(
+        val style = createElementStyle(
             tag = expTag,
             backgroundColor = expBackgroundColor,
             border = expBorder,
@@ -75,7 +75,7 @@ class ElementStyleExtensionTest {
             color = "green"
         )
         val legendSprite = OpenIconicSprite("compass")
-        val style1 = ElementStyle(
+        val style1 = createElementStyle(
             tag = "tag",
             backgroundColor = "#ffffff",
             border = Dotted,
@@ -89,7 +89,7 @@ class ElementStyleExtensionTest {
             legendSprite = legendSprite,
             legendText = "this is a legend text"
         )
-        val style2 = ElementStyle("tag1")
+        val style2 = createElementStyle("tag1")
 
         val workspace = Workspace("test", "test")
         val views = workspace.views
@@ -104,13 +104,13 @@ class ElementStyleExtensionTest {
 
     @Test
     fun `element style can be added to View`() {
-        val style1 = ElementStyle(
+        val style1 = createElementStyle(
             tag = "tag",
             backgroundColor = "#ffffff",
             border = Dotted,
             borderWith = 5,
         )
-        val style2 = ElementStyle("tag1")
+        val style2 = createElementStyle("tag1")
 
         val workspace = Workspace("test", "test")
         val views = workspace.views
@@ -128,7 +128,7 @@ class ElementStyleExtensionTest {
     @Test
     fun `IllegalArgumentException is thrown when tag is blank`() {
         assertThrows<IllegalArgumentException> {
-            ElementStyle(" ")
+            createElementStyle(" ")
         }
     }
 
@@ -136,7 +136,7 @@ class ElementStyleExtensionTest {
     fun `element style can be initialized with null values`() {
         val expTag = "tag"
 
-        val style = ElementStyle(tag = expTag)
+        val style = createElementStyle(tag = expTag)
 
         assertThat(style.tag).isEqualTo(expTag)
         assertThat(style.backgroundColor).isNull()
@@ -158,39 +158,39 @@ class ElementStyleExtensionTest {
         @Test
         fun `IllegalArgumentException is thrown for invalid background color`() {
             assertThrows<IllegalArgumentException> {
-                ElementStyle("test", backgroundColor = "ABC")
+                createElementStyle("test", backgroundColor = "ABC")
             }
         }
 
         @Test
         fun `IllegalArgumentException is thrown for invalid font color`() {
             assertThrows<IllegalArgumentException> {
-                ElementStyle("test", fontColor = "jellow")
+                createElementStyle("test", fontColor = "jellow")
             }
         }
 
         @Test
         fun `IllegalArgumentException is thrown for invalid border color`() {
             assertThrows<IllegalArgumentException> {
-                ElementStyle("test", borderColor = "")
+                createElementStyle("test", borderColor = "")
             }
         }
 
         @Test
         fun `named border color is translated to hex color`() {
-            val elementStyle = ElementStyle("test", borderColor = "green")
+            val elementStyle = createElementStyle("test", borderColor = "green")
             assertThat(elementStyle.borderColor).isEqualTo("#008000")
         }
 
         @Test
         fun `named font color is translated to hex color`() {
-            val elementStyle = ElementStyle("test", fontColor = "black")
+            val elementStyle = createElementStyle("test", fontColor = "black")
             assertThat(elementStyle.fontColor).isEqualTo("#000000")
         }
 
         @Test
         fun `named background color is translated to hex color`() {
-            val elementStyle = ElementStyle("test", backgroundColor = "white")
+            val elementStyle = createElementStyle("test", backgroundColor = "white")
             assertThat(elementStyle.backgroundColor).isEqualTo("#ffffff")
         }
     }

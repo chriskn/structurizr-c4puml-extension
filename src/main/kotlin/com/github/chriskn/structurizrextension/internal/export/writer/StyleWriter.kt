@@ -15,6 +15,7 @@ import com.github.chriskn.structurizrextension.api.view.style.styles.C4PumlStyle
 import com.github.chriskn.structurizrextension.api.view.style.styles.ElementStyle
 import com.github.chriskn.structurizrextension.api.view.style.styles.PersonStyle
 import com.github.chriskn.structurizrextension.internal.export.view.getBoundaryContainer
+import com.github.chriskn.structurizrextension.internal.export.view.getBoundaryElements
 import com.github.chriskn.structurizrextension.internal.export.view.getBoundarySystems
 import com.structurizr.export.IndentingWriter
 import com.structurizr.model.ModelItem
@@ -25,6 +26,7 @@ import com.structurizr.view.Border.Dotted
 import com.structurizr.view.Border.Solid
 import com.structurizr.view.ComponentView
 import com.structurizr.view.ContainerView
+import com.structurizr.view.DynamicView
 import com.structurizr.view.ModelView
 
 @Suppress("TooManyFunctions")
@@ -35,19 +37,20 @@ internal object StyleWriter {
         val usedTags = elements.map { it.tagsAsSet }.flatten().toSet()
         val stylesForTags = view.viewSet.getElementStyles().filter { usedTags.contains(it.tag) } +
             view.getElementStyles().filter { usedTags.contains(it.tag) }
-        return stylesForTags.distinctBy { it.tag }
+        return stylesForTags.distinctBy { it.tag }.sortedBy { it.tag }
     }
 
     fun collectAppliedBoundaryStyles(view: ModelView): List<BoundaryStyle> {
         val elements: Set<ModelItem> = when (view) {
             is ContainerView -> view.getBoundarySystems().toSet()
             is ComponentView -> view.getBoundaryContainer().toSet()
+            is DynamicView -> view.getBoundaryElements().toSet()
             else -> emptySet()
         }
         val usedTags = elements.map { it.tagsAsSet }.flatten().toSet()
         val stylesForTags = view.viewSet.getBoundaryStyles().filter { usedTags.contains(it.tag) } +
             view.getBoundaryStyles().filter { usedTags.contains(it.tag) }
-        return stylesForTags.distinctBy { it.tag }
+        return stylesForTags.distinctBy { it.tag }.sortedBy { it.tag }
     }
 
     fun collectAppliedPersonStyles(view: ModelView): List<PersonStyle> {
@@ -55,7 +58,7 @@ internal object StyleWriter {
         val usedTags = person.map { it.tagsAsSet }.flatten().toSet()
         val stylesForTags = view.viewSet.getPersonStyles().filter { usedTags.contains(it.tag) } +
             view.getPersonStyles().filter { usedTags.contains(it.tag) }
-        return stylesForTags.distinctBy { it.tag }
+        return stylesForTags.distinctBy { it.tag }.sortedBy { it.tag }
     }
 
     fun writeElementStyle(elementStyle: ElementStyle, writer: IndentingWriter) {

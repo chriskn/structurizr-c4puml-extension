@@ -1,0 +1,20 @@
+@startuml(id=ComponentStyleTest)
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+title My Software System - My Container - Components
+caption ComponentStyleTest
+
+SHOW_PERSON_OUTLINE()
+LAYOUT_TOP_DOWN()
+
+AddElementTag(Component Style, $sprite="&compass", $bgColor=#ffffff, $fontColor=#ff0000, $borderColor=#800080, $borderStyle=DottedLine(), $borderThickness=5, $shadowing=false, $shape=RoundedBoxShape(), $techn=REST, $legendSprite="&compass", $legendText=this is a legend text)
+AddBoundaryTag(Boundary Style, $bgColor=#00ffff, $fontColor=#008000, $borderColor=#ff0000, $borderStyle=DottedLine(), $borderThickness=4, $shadowing=false, $legendText=this is a system)
+AddPersonTag(Person Style, $bgColor=#00ff00, $fontColor=#0000ff, $borderColor=#ff0000, $borderStyle=DashedLine(), $borderThickness=4, $shadowing=false, $shape=EightSidedShape(), $legendText=this is a person)
+Container_Boundary("MySoftwareSystem.MyContainer_boundary", "My Container" , $tags="Container Style+Boundary Style"){
+  Component(MySoftwareSystem.MyContainer.MyComponent, "My Component", "", "component", "", $tags="Component Style")
+}
+Person(Person, "Person", "", "", $tags="Person Style")
+Rel(Person, MySoftwareSystem.MyContainer.MyComponent, "uses component")
+
+SHOW_LEGEND(true)
+
+@enduml

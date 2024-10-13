@@ -70,7 +70,7 @@ internal class ElementWriter(
     private fun InfrastructureNode.toMacro() =
         """Node(${idOf(this)}, "$name", "${technology.orEmpty()}", "${description.orEmpty()}", "${
             IconRegistry.iconFileNameFor(icon).orEmpty()
-        }"${linkString(link)})"""
+        }"${tagsToPlantUmlSting(this)}${linkString(link)})"""
 
     private fun SoftwareSystem.toMacro(id: String) =
         """System${this.c4Type?.c4Type.orEmpty()}${this.c4Location.toPlantUmlString()}($id, "$name", "${description.orEmpty()}", "${

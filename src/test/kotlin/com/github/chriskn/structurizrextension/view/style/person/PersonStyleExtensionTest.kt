@@ -10,7 +10,7 @@ import com.github.chriskn.structurizrextension.api.view.style.getPersonStyles
 import com.github.chriskn.structurizrextension.api.view.style.sprite.ImageSprite
 import com.github.chriskn.structurizrextension.api.view.style.sprite.OpenIconicSprite
 import com.github.chriskn.structurizrextension.api.view.style.sprite.PumlSprite
-import com.github.chriskn.structurizrextension.api.view.style.styles.PersonStyle
+import com.github.chriskn.structurizrextension.api.view.style.styles.createPersonStyle
 import com.github.chriskn.structurizrextension.internal.export.view.style.toJson
 import com.structurizr.Workspace
 import com.structurizr.view.Border.Dashed
@@ -36,7 +36,7 @@ class PersonStyleExtensionTest {
         val expC4Shape = EIGHT_SIDED
         val expLegendText = "this is a legend"
 
-        val style = PersonStyle(
+        val style = createPersonStyle(
             tag = expTag,
             backgroundColor = expBackgroundColor,
             border = expBorder,
@@ -72,7 +72,7 @@ class PersonStyleExtensionTest {
             color = "green"
         )
         val legendSprite = OpenIconicSprite("compass")
-        val style1 = PersonStyle(
+        val style1 = createPersonStyle(
             tag = "tag",
             backgroundColor = "#ffffff",
             border = Dotted,
@@ -85,7 +85,7 @@ class PersonStyleExtensionTest {
             legendSprite = legendSprite,
             legendText = "this is a legend text"
         )
-        val style2 = PersonStyle("tag1")
+        val style2 = createPersonStyle("tag1")
 
         val workspace = Workspace("test", "test")
         val views = workspace.views
@@ -101,13 +101,13 @@ class PersonStyleExtensionTest {
 
     @Test
     fun `person style can be added to View`() {
-        val style1 = PersonStyle(
+        val style1 = createPersonStyle(
             tag = "tag",
             backgroundColor = "#ffffff",
             border = Dotted,
             borderWith = 5,
         )
-        val style2 = PersonStyle("tag1")
+        val style2 = createPersonStyle("tag1")
 
         val workspace = Workspace("test", "test")
         val views = workspace.views
@@ -125,7 +125,7 @@ class PersonStyleExtensionTest {
     @Test
     fun `IllegalArgumentException is thrown when tag is blank`() {
         assertThrows<IllegalArgumentException> {
-            PersonStyle(" ")
+            createPersonStyle(" ")
         }
     }
 
@@ -133,7 +133,7 @@ class PersonStyleExtensionTest {
     fun `person style can be initialized with null values`() {
         val expTag = "tag"
 
-        val style = PersonStyle(tag = expTag)
+        val style = createPersonStyle(tag = expTag)
 
         assertThat(style.tag).isEqualTo(expTag)
         assertThat(style.backgroundColor).isNull()
@@ -154,39 +154,39 @@ class PersonStyleExtensionTest {
         @Test
         fun `IllegalArgumentException is thrown for invalid background color`() {
             assertThrows<IllegalArgumentException> {
-                PersonStyle("test", backgroundColor = "ABC")
+                createPersonStyle("test", backgroundColor = "ABC")
             }
         }
 
         @Test
         fun `IllegalArgumentException is thrown for invalid font color`() {
             assertThrows<IllegalArgumentException> {
-                PersonStyle("test", fontColor = "jellow")
+                createPersonStyle("test", fontColor = "jellow")
             }
         }
 
         @Test
         fun `IllegalArgumentException is thrown for invalid border color`() {
             assertThrows<IllegalArgumentException> {
-                PersonStyle("test", borderColor = "")
+                createPersonStyle("test", borderColor = "")
             }
         }
 
         @Test
         fun `named border color is translated to hex color`() {
-            val elementStyle = PersonStyle("test", borderColor = "green")
+            val elementStyle = createPersonStyle("test", borderColor = "green")
             assertThat(elementStyle.borderColor).isEqualTo("#008000")
         }
 
         @Test
         fun `named font color is translated to hex color`() {
-            val elementStyle = PersonStyle("test", fontColor = "black")
+            val elementStyle = createPersonStyle("test", fontColor = "black")
             assertThat(elementStyle.fontColor).isEqualTo("#000000")
         }
 
         @Test
         fun `named background color is translated to hex color`() {
-            val elementStyle = PersonStyle("test", backgroundColor = "white")
+            val elementStyle = createPersonStyle("test", backgroundColor = "white")
             assertThat(elementStyle.backgroundColor).isEqualTo("#ffffff")
         }
     }

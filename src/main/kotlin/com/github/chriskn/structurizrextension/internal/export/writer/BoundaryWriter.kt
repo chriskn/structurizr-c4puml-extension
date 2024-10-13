@@ -89,7 +89,7 @@ internal object BoundaryWriter {
     private fun DeploymentNode.toMacro() =
         """Node(${idOf(this)}, "$name", "${technology.orEmpty()}", "${description.orEmpty()}", "${
             IconRegistry.iconFileNameFor(icon).orEmpty()
-        }"${linkString(link)})"""
+        }"${tagsToPlantUmlSting(this)}${linkString(link)})"""
 
     private fun determineBoundaryEndSymbol(view: View): String =
         if (view is DynamicView && view.renderAsSequenceDiagram) {

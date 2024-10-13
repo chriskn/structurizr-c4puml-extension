@@ -3,7 +3,7 @@ package com.github.chriskn.structurizrextension.view.style.person
 import com.github.chriskn.structurizrextension.api.view.style.C4Shape.EIGHT_SIDED
 import com.github.chriskn.structurizrextension.api.view.style.sprite.ImageSprite
 import com.github.chriskn.structurizrextension.api.view.style.sprite.OpenIconicSprite
-import com.github.chriskn.structurizrextension.api.view.style.styles.PersonStyle
+import com.github.chriskn.structurizrextension.api.view.style.styles.createPersonStyle
 import com.github.chriskn.structurizrextension.internal.export.view.style.elementStyleFromJson
 import com.github.chriskn.structurizrextension.internal.export.view.style.toJson
 import com.structurizr.view.Border.Dashed
@@ -26,7 +26,7 @@ class PersonStyleJsonTest {
         val expC4Shape = EIGHT_SIDED
         val expLegendText = "this is a legend"
 
-        val style = PersonStyle(
+        val style = createPersonStyle(
             tag = expTag,
             backgroundColor = expBackgroundColor,
             border = expBorder,

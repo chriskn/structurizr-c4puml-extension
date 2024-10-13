@@ -10,7 +10,7 @@ import com.github.chriskn.structurizrextension.api.view.style.getBoundaryStyles
 import com.github.chriskn.structurizrextension.api.view.style.sprite.ImageSprite
 import com.github.chriskn.structurizrextension.api.view.style.sprite.OpenIconicSprite
 import com.github.chriskn.structurizrextension.api.view.style.sprite.PumlSprite
-import com.github.chriskn.structurizrextension.api.view.style.styles.BoundaryStyle
+import com.github.chriskn.structurizrextension.api.view.style.styles.createBoundaryStyle
 import com.github.chriskn.structurizrextension.internal.export.view.style.toJson
 import com.structurizr.Workspace
 import com.structurizr.view.Border.Dashed
@@ -36,7 +36,7 @@ class BoundaryStyleExtensionTest {
         val expC4Shape = EIGHT_SIDED
         val expLegendText = "this is a legend"
 
-        val style = BoundaryStyle(
+        val style = createBoundaryStyle(
             tag = expTag,
             backgroundColor = expBackgroundColor,
             border = expBorder,
@@ -72,7 +72,7 @@ class BoundaryStyleExtensionTest {
             color = "green"
         )
         val legendSprite = OpenIconicSprite("compass")
-        val style1 = BoundaryStyle(
+        val style1 = createBoundaryStyle(
             tag = "tag",
             backgroundColor = "#ffffff",
             border = Dotted,
@@ -85,7 +85,7 @@ class BoundaryStyleExtensionTest {
             legendSprite = legendSprite,
             legendText = "this is a legend text"
         )
-        val style2 = BoundaryStyle("tag1")
+        val style2 = createBoundaryStyle("tag1")
 
         val workspace = Workspace("test", "test")
         val views = workspace.views
@@ -95,19 +95,18 @@ class BoundaryStyleExtensionTest {
 
         val personStyles = views.getBoundaryStyles()
         assertThat(personStyles).hasSize(2)
-        assertThat(personStyles.firstOrNull { it.tag == style1.tag }).isEqualTo(style1)
-        assertThat(personStyles.firstOrNull { it.tag == style2.tag }).isEqualTo(style2)
+        assertThat(personStyles.map { it.toJson() }).contains(style1.toJson(), style2.toJson())
     }
 
     @Test
     fun `boundary style  can be added to View`() {
-        val style1 = BoundaryStyle(
+        val style1 = createBoundaryStyle(
             tag = "tag",
             backgroundColor = "#ffffff",
             border = Dotted,
             borderWith = 5,
         )
-        val style2 = BoundaryStyle("tag1")
+        val style2 = createBoundaryStyle("tag1")
 
         val workspace = Workspace("test", "test")
         val views = workspace.views
@@ -125,7 +124,7 @@ class BoundaryStyleExtensionTest {
     @Test
     fun `IllegalArgumentException is thrown when tag is blank`() {
         assertThrows<IllegalArgumentException> {
-            BoundaryStyle(" ")
+            createBoundaryStyle(" ")
         }
     }
 
@@ -133,7 +132,7 @@ class BoundaryStyleExtensionTest {
     fun `boundary style  can be initialized with null values`() {
         val expTag = "tag"
 
-        val style = BoundaryStyle(tag = expTag)
+        val style = createBoundaryStyle(tag = expTag)
 
         assertThat(style.tag).isEqualTo(expTag)
         assertThat(style.backgroundColor).isNull()
@@ -154,39 +153,39 @@ class BoundaryStyleExtensionTest {
         @Test
         fun `IllegalArgumentException is thrown for invalid background color`() {
             assertThrows<IllegalArgumentException> {
-                BoundaryStyle("test", backgroundColor = "ABC")
+                createBoundaryStyle("test", backgroundColor = "ABC")
             }
         }
 
         @Test
         fun `IllegalArgumentException is thrown for invalid font color`() {
             assertThrows<IllegalArgumentException> {
-                BoundaryStyle("test", fontColor = "jellow")
+                createBoundaryStyle("test", fontColor = "jellow")
             }
         }
 
         @Test
         fun `IllegalArgumentException is thrown for invalid border color`() {
             assertThrows<IllegalArgumentException> {
-                BoundaryStyle("test", borderColor = "")
+                createBoundaryStyle("test", borderColor = "")
             }
         }
 
         @Test
         fun `named border color is translated to hex color`() {
-            val elementStyle = BoundaryStyle("test", borderColor = "green")
+            val elementStyle = createBoundaryStyle("test", borderColor = "green")
             assertThat(elementStyle.borderColor).isEqualTo("#008000")
         }
 
         @Test
         fun `named font color is translated to hex color`() {
-            val elementStyle = BoundaryStyle("test", fontColor = "black")
+            val elementStyle = createBoundaryStyle("test", fontColor = "black")
             assertThat(elementStyle.fontColor).isEqualTo("#000000")
         }
 
         @Test
         fun `named background color is translated to hex color`() {
-            val elementStyle = BoundaryStyle("test", backgroundColor = "white")
+            val elementStyle = createBoundaryStyle("test", backgroundColor = "white")
             assertThat(elementStyle.backgroundColor).isEqualTo("#ffffff")
         }
     }

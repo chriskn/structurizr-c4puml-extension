@@ -3,7 +3,7 @@ package com.github.chriskn.structurizrextension.view.style.boundary
 import com.github.chriskn.structurizrextension.api.view.style.C4Shape.EIGHT_SIDED
 import com.github.chriskn.structurizrextension.api.view.style.sprite.ImageSprite
 import com.github.chriskn.structurizrextension.api.view.style.sprite.OpenIconicSprite
-import com.github.chriskn.structurizrextension.api.view.style.styles.BoundaryStyle
+import com.github.chriskn.structurizrextension.api.view.style.styles.createBoundaryStyle
 import com.github.chriskn.structurizrextension.internal.export.view.style.elementStyleFromJson
 import com.github.chriskn.structurizrextension.internal.export.view.style.toJson
 import com.structurizr.view.Border.Dashed
@@ -26,7 +26,7 @@ class BoundaryStyleJsonTest {
         val expC4Shape = EIGHT_SIDED
         val expLegendText = "this is a legend"
 
-        val style = BoundaryStyle(
+        val style = createBoundaryStyle(
             tag = expTag,
             backgroundColor = expBackgroundColor,
             border = expBorder,

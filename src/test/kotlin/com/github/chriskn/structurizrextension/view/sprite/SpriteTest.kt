@@ -4,7 +4,7 @@ import com.github.chriskn.structurizrextension.api.icons.IconRegistry
 import com.github.chriskn.structurizrextension.api.view.style.sprite.ImageSprite
 import com.github.chriskn.structurizrextension.api.view.style.sprite.OpenIconicSprite
 import com.github.chriskn.structurizrextension.api.view.style.sprite.PumlSprite
-import com.github.chriskn.structurizrextension.api.view.style.styles.ElementStyle
+import com.github.chriskn.structurizrextension.api.view.style.styles.createElementStyle
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -21,7 +21,7 @@ class SpriteTest {
                 name = "android",
                 includeUrl = "https://test.com/sprites/android-icon.puml",
             )
-            val style = ElementStyle("test", sprite = expectedSprite)
+            val style = createElementStyle("test", sprite = expectedSprite)
 
             assertThat(style.sprite).isEqualTo(expectedSprite)
         }
@@ -33,7 +33,7 @@ class SpriteTest {
                 includeUrl = "https://test.com/sprites/android-icon.puml",
                 color = "green"
             )
-            val style = ElementStyle("test", sprite = expectedSprite)
+            val style = createElementStyle("test", sprite = expectedSprite)
 
             assertThat(style.sprite).isEqualTo(expectedSprite)
         }
@@ -45,7 +45,7 @@ class SpriteTest {
                 includeUrl = "https://test.com/sprites/android-icon.puml",
                 scale = 0.4
             )
-            val style = ElementStyle("test", sprite = expectedSprite)
+            val style = createElementStyle("test", sprite = expectedSprite)
 
             assertThat(style.sprite).isEqualTo(expectedSprite)
         }
@@ -58,7 +58,7 @@ class SpriteTest {
                 scale = 0.4,
                 color = "green"
             )
-            val style = ElementStyle("test", sprite = expectedSprite)
+            val style = createElementStyle("test", sprite = expectedSprite)
 
             assertThat(style.sprite).isEqualTo(expectedSprite)
         }
@@ -66,7 +66,7 @@ class SpriteTest {
         @Test
         fun `OpenIconicSprite is serialized and deserialized correctly`() {
             val expectedSprite = OpenIconicSprite("folder")
-            val style = ElementStyle("test", sprite = expectedSprite)
+            val style = createElementStyle("test", sprite = expectedSprite)
 
             assertThat(style.sprite).isEqualTo(expectedSprite)
         }
@@ -74,7 +74,7 @@ class SpriteTest {
         @Test
         fun `OpenIconicSprite is serialized and deserialized correctly with scale`() {
             val expectedSprite = OpenIconicSprite("folder", scale = 0.4)
-            val style = ElementStyle("test", sprite = expectedSprite)
+            val style = createElementStyle("test", sprite = expectedSprite)
 
             assertThat(style.sprite).isEqualTo(expectedSprite)
         }
@@ -82,7 +82,7 @@ class SpriteTest {
         @Test
         fun `OpenIconicSprite is serialized and deserialized correctly with color`() {
             val expectedSprite = OpenIconicSprite("folder", color = "grey")
-            val style = ElementStyle("test", sprite = expectedSprite)
+            val style = createElementStyle("test", sprite = expectedSprite)
 
             assertThat(style.sprite).isEqualTo(expectedSprite)
         }
@@ -90,7 +90,7 @@ class SpriteTest {
         @Test
         fun `OpenIconicSprite is serialized and deserialized correctly with scale and color`() {
             val expectedSprite = OpenIconicSprite("folder", color = "grey", scale = 0.1)
-            val style = ElementStyle("test", sprite = expectedSprite)
+            val style = createElementStyle("test", sprite = expectedSprite)
 
             assertThat(style.sprite).isEqualTo(expectedSprite)
         }
