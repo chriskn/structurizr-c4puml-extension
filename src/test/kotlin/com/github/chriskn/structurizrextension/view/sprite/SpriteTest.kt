@@ -166,11 +166,10 @@ class SpriteTest {
 
         @Test
         fun `IllegalArgumentException is thrown for invalid PumlSprite color`() {
-            val name = IconRegistry.iconFileNameFor("kafka")!!
-            val url = IconRegistry.iconUrlFor("kafka")!!
+            val sprite = IconRegistry.spriteForName("kafka")!!
 
             assertThrows<IllegalArgumentException> {
-                PUmlSprite(name = name, url = url, color = "123")
+                PUmlSprite(name = sprite.name, url = sprite.url, color = "123")
             }
         }
 

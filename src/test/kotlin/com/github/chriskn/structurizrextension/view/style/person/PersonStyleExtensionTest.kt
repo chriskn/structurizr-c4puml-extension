@@ -9,7 +9,6 @@ import com.github.chriskn.structurizrextension.api.view.style.addPersonStyle
 import com.github.chriskn.structurizrextension.api.view.style.getPersonStyles
 import com.github.chriskn.structurizrextension.api.view.style.sprite.ImageSprite
 import com.github.chriskn.structurizrextension.api.view.style.sprite.OpenIconicSprite
-import com.github.chriskn.structurizrextension.api.view.style.sprite.PUmlSprite
 import com.github.chriskn.structurizrextension.api.view.style.styles.C4PUmlLineStyle.DASHED
 import com.github.chriskn.structurizrextension.api.view.style.styles.C4PUmlLineStyle.DOTTED
 import com.github.chriskn.structurizrextension.api.view.style.styles.createPersonStyle
@@ -65,12 +64,7 @@ class PersonStyleExtensionTest {
 
     @Test
     fun `person style can be added to ViewSet`() {
-        val sprite = PUmlSprite(
-            url = IconRegistry.iconUrlFor("postgresql")!!,
-            name = "postgresql",
-            scale = 0.5,
-            color = "green"
-        )
+        val sprite = IconRegistry.spriteForName("postgresql")!!.copy(color = "green", scale = 0.5)
         val legendSprite = OpenIconicSprite("compass")
         val style1 = createPersonStyle(
             tag = "tag",

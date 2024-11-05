@@ -189,7 +189,7 @@ internal object StyleWriter {
         ""
     }
 
-    private fun Sprite.toPlantUmlString(): String = when (this) {
+    internal fun Sprite.toPlantUmlString(): String = when (this) {
         is PUmlSprite -> """"${spriteString(this.name, scale, colorValidated)}""""
         is OpenIconicSprite -> """"&${spriteString(this.name, scale, colorValidated)}""""
         is ImageSprite -> {

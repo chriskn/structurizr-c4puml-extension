@@ -1,5 +1,6 @@
 package com.github.chriskn.structurizrextension.view
 
+import com.github.chriskn.structurizrextension.api.icons.IconRegistry
 import com.github.chriskn.structurizrextension.api.model.C4Properties
 import com.github.chriskn.structurizrextension.api.model.C4Type
 import com.github.chriskn.structurizrextension.api.model.Dependency
@@ -312,7 +313,7 @@ class DynamicViewTest {
         "Stores a normalised version of all business data for ad hoc reporting purposes",
         technology = "MySql",
         c4Type = C4Type.DATABASE,
-        usedBy = listOf(Dependency(reportingService, "", icon = "mysql"))
+        usedBy = listOf(Dependency(reportingService, "", sprite = IconRegistry.spriteForName("mysql")))
     )
     private val auditingService = customerInformationSystem.container(
         "Auditing Service",

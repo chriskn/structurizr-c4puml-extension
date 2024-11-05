@@ -1,11 +1,10 @@
 package com.github.chriskn.structurizrextension.internal.export.writer
 
-import com.github.chriskn.structurizrextension.api.icons.IconRegistry
 import com.github.chriskn.structurizrextension.api.model.c4Location
 import com.github.chriskn.structurizrextension.api.model.c4Type
-import com.github.chriskn.structurizrextension.api.model.icon
 import com.github.chriskn.structurizrextension.api.model.link
 import com.github.chriskn.structurizrextension.internal.export.idOf
+import com.github.chriskn.structurizrextension.internal.export.writer.StyleWriter.toPlantUmlString
 import com.structurizr.export.IndentingWriter
 import com.structurizr.model.Component
 import com.structurizr.model.Container
@@ -67,34 +66,39 @@ internal class ElementWriter(
         }
     }
 
-    private fun InfrastructureNode.toMacro() =
-        """Node(${idOf(this)}, "$name", "${technology.orEmpty()}", "${description.orEmpty()}", "${
-            IconRegistry.iconFileNameFor(icon).orEmpty()
-        }"${tagsToPlantUmlSting(this)}${linkString(link)})"""
+    private fun InfrastructureNode.toMacro(): String {
+        val usedSprite = this.getUsedIconOrSprite()
+        return """Node(${idOf(this)}, "$name", "${technology.orEmpty()}", "${
+            description.orEmpty()}", $usedSprite${tagsToPlantUmlSting(this)}${linkString(link)})"""
+    }
 
-    private fun SoftwareSystem.toMacro(id: String) =
-        """System${this.c4Type?.c4Type.orEmpty()}${this.c4Location.toPlantUmlString()}($id, "$name", "${description.orEmpty()}", "${
-            IconRegistry.iconFileNameFor(icon).orEmpty()
-        }"${tagsToPlantUmlSting(this)}${linkString(link)})"""
+    private fun SoftwareSystem.toMacro(id: String): String {
+        val usedSprite = this.getUsedIconOrSprite()
+        return """System${this.c4Type?.c4Type.orEmpty()}${this.c4Location.toPlantUmlString()}($id, "$name", "${
+            description.orEmpty()}", $usedSprite${tagsToPlantUmlSting(this)}${linkString(link)})"""
+    }
 
-    private fun Container.toMacro(id: String): String =
-        """Container${this.c4Type?.c4Type.orEmpty()}${this.c4Location.toPlantUmlString()}($id, "$name", "$technology", "${description.orEmpty()}", "${
-            IconRegistry.iconFileNameFor(icon).orEmpty()
-        }"${tagsToPlantUmlSting(this)}${linkString(link)})"""
+    private fun Container.toMacro(id: String): String {
+        val usedSprite = this.getUsedIconOrSprite()
+        return """Container${this.c4Type?.c4Type.orEmpty()}${
+            this.c4Location.toPlantUmlString()}($id, "$name", "$technology", "${
+            description.orEmpty()}", $usedSprite${tagsToPlantUmlSting(this)}${linkString(link)})"""
+    }
 
     private fun Person.toMacro(): String {
+        val usedSprite = this.getUsedIconOrSprite()
         val externalMarker = this.c4Location.toPlantUmlString()
-        return """Person$externalMarker(${idOf(this)}, "$name", "${description.orEmpty()}", "${
-            IconRegistry.iconFileNameFor(icon).orEmpty()
-        }"${tagsToPlantUmlSting(this)}${linkString(link)})"""
+        return """Person$externalMarker(${idOf(this)}, "$name", "${description.orEmpty()}", $usedSprite${
+            tagsToPlantUmlSting(this)}${linkString(link)})"""
     }
 
     private fun Component.toMacro(): String {
+        val usedSprite = this.getUsedIconOrSprite()
+
         return """Component${this.c4Type?.c4Type.orEmpty()}(${
             idOf(this)
-        }, "$name", "${technology.orEmpty()}", "${description.orEmpty()}", "${
-            IconRegistry.iconFileNameFor(icon).orEmpty()
-        }"${tagsToPlantUmlSting(this)}${linkString(link)})"""
+        }, "$name", "${technology.orEmpty()}", "${description.orEmpty()}", $usedSprite${
+            tagsToPlantUmlSting(this)}${linkString(link)})"""
     }
 
     private fun Location.toPlantUmlString() = if (this == Location.External) "_Ext" else ""

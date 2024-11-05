@@ -25,7 +25,6 @@ import com.github.chriskn.structurizrextension.api.view.style.addElementStyle
 import com.github.chriskn.structurizrextension.api.view.style.addPersonStyle
 import com.github.chriskn.structurizrextension.api.view.style.sprite.ImageSprite
 import com.github.chriskn.structurizrextension.api.view.style.sprite.OpenIconicSprite
-import com.github.chriskn.structurizrextension.api.view.style.sprite.PUmlSprite
 import com.github.chriskn.structurizrextension.api.view.style.styles.BoundaryStyle
 import com.github.chriskn.structurizrextension.api.view.style.styles.C4PUmlLineStyle.BOLD
 import com.github.chriskn.structurizrextension.api.view.style.styles.C4PUmlLineStyle.DASHED
@@ -91,12 +90,7 @@ class StyleIntegrationTest {
     )
     private val personStyle = createPersonStyle(
         tag = personTag,
-        sprite = PUmlSprite(
-            url = IconRegistry.iconUrlFor("apple")!!,
-            name = IconRegistry.iconFileNameFor("apple")!!,
-            scale = 0.5,
-            color = "green"
-        ),
+        sprite = IconRegistry.spriteForName("apple")!!.copy(color = "green", scale = 0.5),
         backgroundColor = "#00FF00",
         borderStyle = DASHED,
         borderWidth = 4,
@@ -114,12 +108,7 @@ class StyleIntegrationTest {
         fontColor = "red",
         technology = "REST",
         c4Shape = ROUNDED_BOX,
-        sprite = PUmlSprite(
-            url = IconRegistry.iconUrlFor("postgresql")!!,
-            name = IconRegistry.iconFileNameFor("postgresql")!!,
-            scale = 0.5,
-            color = "green"
-        ),
+        sprite = IconRegistry.spriteForName("postgresql")!!.copy(color = "green", scale = 0.5),
         legendSprite = OpenIconicSprite("compass"),
         legendText = "this is a legend container"
     )
@@ -146,12 +135,7 @@ class StyleIntegrationTest {
         legendSprite = OpenIconicSprite("compass"),
         legendText = "this is a legend text"
     )
-    private val androidSprite = PUmlSprite(
-        name = IconRegistry.iconFileNameFor("android")!!,
-        url = IconRegistry.iconUrlFor("android")!!,
-        color = "green",
-        scale = 1.3
-    )
+    private val androidSprite = IconRegistry.spriteForName("android")!!.copy(color = "green", scale = 1.3)
     private val dependencyStyle = DependencyStyle(
         tag = dependencyTag,
         fontColor = "#aa9999",
@@ -270,7 +254,7 @@ class StyleIntegrationTest {
         val aws = model.deploymentNode(
             name = "AWS",
             description = "Production AWS environment",
-            icon = "aws",
+            sprite = IconRegistry.spriteForName("aws"),
         )
         val nodeWithStyle = aws.deploymentNode(
             name = "Node with style",

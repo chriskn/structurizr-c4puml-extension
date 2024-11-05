@@ -1,5 +1,6 @@
 package com.github.chriskn.structurizrextension.view
 
+import com.github.chriskn.structurizrextension.api.icons.IconRegistry
 import com.github.chriskn.structurizrextension.api.model.C4Properties
 import com.github.chriskn.structurizrextension.api.model.Dependency
 import com.github.chriskn.structurizrextension.api.model.enterpriseName
@@ -29,7 +30,7 @@ class ContextViewTest {
     private val system1 = model.softwareSystem(
         "Software System 1",
         "Description 1",
-        icon = "android",
+        sprite = IconRegistry.spriteForName("android"),
         link = "https://www.android.com",
         location = Location.Internal
     )
@@ -46,7 +47,7 @@ class ContextViewTest {
         model.softwareSystem(
             "Software System 2",
             "Description 2",
-            icon = "docker",
+            sprite = IconRegistry.spriteForName("docker"),
             link = "https://www.docker.com/",
             properties = C4Properties(
                 header = listOf("Property", "Value"),
@@ -69,7 +70,7 @@ class ContextViewTest {
                     "creates",
                     "HTTP",
                     link = "https://de.wikipedia.org/wiki/Hypertext_Transfer_Protocol",
-                    icon = "html5",
+                    sprite = IconRegistry.spriteForName("html5"),
                     properties = C4Properties(
                         values = listOf(
                             listOf("prop", "val")

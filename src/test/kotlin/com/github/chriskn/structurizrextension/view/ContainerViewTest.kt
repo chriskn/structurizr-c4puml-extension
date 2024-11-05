@@ -1,5 +1,6 @@
 package com.github.chriskn.structurizrextension.view
 
+import com.github.chriskn.structurizrextension.api.icons.IconRegistry
 import com.github.chriskn.structurizrextension.api.model.C4Properties
 import com.github.chriskn.structurizrextension.api.model.C4Type
 import com.github.chriskn.structurizrextension.api.model.Dependency
@@ -40,7 +41,7 @@ class ContainerViewTest {
         name = "Backend App",
         description = "some backend app",
         technology = "Kotlin",
-        icon = "docker",
+        sprite = IconRegistry.spriteForName("docker"),
         link = "https://www.google.de",
         properties = properties
     )
@@ -48,13 +49,13 @@ class ContainerViewTest {
         name = "App",
         description = "android app",
         technology = "Android",
-        icon = "android",
+        sprite = IconRegistry.spriteForName("android"),
     )
     private val graphql = model.softwareSystem(
         name = "GraphQL",
         description = "Federated GraphQL",
         location = Location.External,
-        icon = "graphql"
+        sprite = IconRegistry.spriteForName("graphql"),
     )
     private val internalSchema = graphql.container(
         name = "Internal Schema",
@@ -62,7 +63,13 @@ class ContainerViewTest {
         location = Location.Internal,
         usedBy = listOf(
             Dependency(backendApplication, "provides subgraph to"),
-            Dependency(app, "reuqest data using", "GraphQL", icon = "graphql", link = "https://graphql.org/")
+            Dependency(
+                app,
+                "request data using",
+                "GraphQL",
+                sprite = IconRegistry.spriteForName("graphql"),
+                link = "https://graphql.org/"
+            )
         )
     )
     private val externalSchema = graphql.container(
@@ -75,13 +82,13 @@ class ContainerViewTest {
         description = "Message Broker",
         location = Location.External,
         c4Type = C4Type.QUEUE,
-        icon = "kafka",
+        sprite = IconRegistry.spriteForName("kafka"),
     )
     private val topic = broker.container(
         "my.topic",
         "external topic",
         c4Type = C4Type.QUEUE,
-        icon = "kafka",
+        sprite = IconRegistry.spriteForName("kafka"),
         usedBy = listOf(
             Dependency(backendApplication, "reads topic", "Avro", interactionStyle = Asynchronous)
         )
@@ -91,7 +98,7 @@ class ContainerViewTest {
         description = "some database",
         c4Type = C4Type.DATABASE,
         technology = "postgres",
-        icon = "postgresql",
+        sprite = IconRegistry.spriteForName("postgresql"),
         usedBy = listOf(Dependency(backendApplication, "CRUD", "JPA"))
     )
 
@@ -111,11 +118,11 @@ class ContainerViewTest {
             name = "Android User",
             description = "some Android user",
             location = Location.External,
-            icon = "android",
+            sprite = IconRegistry.spriteForName("android"),
             uses = listOf(Dependency(app, "uses app"))
         )
         model.softwareSystem(
-            name = "Thrid Party System",
+            name = "Third Party System",
             description = "External System",
             location = Location.External,
             usedBy = listOf(Dependency(backendApplication, "uses"))

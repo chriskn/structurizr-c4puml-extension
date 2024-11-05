@@ -15,7 +15,7 @@ AddElementTag("Container Style", $sprite="postgresql{scale=0.5,color=#008000}", 
 AddElementTag("Deployment Node Tag", $bgColor=#00eeff, $borderThickness=4, $shadowing=false)
 AddElementTag("Infrastructure Node Tag", $bgColor=#bcaadd, $borderColor=#008000, $borderThickness=3, $shadowing=false)
 
-Node(Default.AWS, "AWS", "", "Production AWS environment", "Cloudalt") {
+Node(Default.AWS, "AWS", "", "Production AWS environment", $sprite="Cloudalt") {
   Node(Default.AWS.Nodewithstyle, "Node with style", "", "", "", $tags="Deployment Node Tag") {
     Container(Default.AWS.Nodewithstyle.MyContainer_1, "My Container", "", "container", "", $tags="Container Style+Boundary Style")
   }
