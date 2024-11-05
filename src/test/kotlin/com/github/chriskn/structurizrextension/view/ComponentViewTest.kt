@@ -1,5 +1,6 @@
 package com.github.chriskn.structurizrextension.view
 
+import com.github.chriskn.structurizrextension.api.icons.IconRegistry
 import com.github.chriskn.structurizrextension.api.model.C4Properties
 import com.github.chriskn.structurizrextension.api.model.C4Type
 import com.github.chriskn.structurizrextension.api.model.Dependency
@@ -55,7 +56,7 @@ class ComponentViewTest {
             "Does implement some logic",
             link = "https://google.de",
             technology = "",
-            icon = "kotlin",
+            sprite = IconRegistry.spriteForName("kotlin"),
             usedBy = listOf(Dependency(restController, "calls")),
             uses = listOf(
                 Dependency(
@@ -70,7 +71,7 @@ class ComponentViewTest {
             "In Memory DB",
             link = "https://google.de",
             technology = "RocksDB",
-            icon = "rocksdb",
+            sprite = IconRegistry.spriteForName("rocksdb"),
             c4Type = C4Type.DATABASE,
             usedBy = listOf(Dependency(service, "uses", link = ""))
         )
@@ -84,7 +85,7 @@ class ComponentViewTest {
             "some database",
             c4Type = C4Type.DATABASE,
             technology = "postgres",
-            icon = "postgresql",
+            sprite = IconRegistry.spriteForName("postgresql"),
             usedBy = listOf(Dependency(backendApplication.components.first { it.hasTag("repo") }, "gets data from"))
         )
         model.person(

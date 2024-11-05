@@ -1,10 +1,14 @@
 package com.github.chriskn.structurizrextension.api.model
 
+import com.github.chriskn.structurizrextension.api.view.style.sprite.Sprite
+import com.github.chriskn.structurizrextension.internal.export.view.style.spriteFromJson
+import com.github.chriskn.structurizrextension.internal.export.view.style.toJson
 import com.structurizr.model.ModelItem
 
 private const val C4_PROPERTY_PREFIX = "additionalProperty:"
 private const val C4_PROPERTY_HEADER_PREFIX = "additionalPropertyHeader"
 private const val ICON_PROPERTY = "icon"
+private const val SPRITE_PROPERTY = "sprite"
 private const val LINK_PROPERTY = "link"
 
 var ModelItem.c4Properties: C4Properties?
@@ -65,6 +69,21 @@ var ModelItem.icon: String?
         }
     }
 
+var ModelItem.sprite: Sprite?
+    /**
+     * Returns the sprite or null if not set.
+     */
+    get() = this.properties[SPRITE_PROPERTY]?.let { spriteFromJson(it) }
+
+    /**
+     * Sets the sprite if not null or blank.
+     */
+    set(sprite) {
+        if (sprite != null) {
+            this.addProperty(SPRITE_PROPERTY, sprite.toJson())
+        }
+    }
+
 var ModelItem.link: String?
     /**
      * Returns the link or null if not set.
@@ -82,11 +101,13 @@ var ModelItem.link: String?
 
 internal fun ModelItem.configure(
     icon: String?,
+    sprite: Sprite?,
     link: String?,
     tags: List<String>,
     c4Properties: C4Properties?
 ) {
     this.icon = icon
+    this.sprite = sprite
     this.link = link
     tags.forEach { tag -> this.addTags(tag) }
     this.c4Properties = c4Properties

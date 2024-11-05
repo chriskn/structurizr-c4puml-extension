@@ -7,6 +7,8 @@ style:
     maxLineLength: 150
   UnusedPrivateMember:
     excludes: "**/*Test.kt, **/test/**"
+  ReturnCount:
+    max: 3
 complexity:
   LongMethod:
     active: true
@@ -20,3 +22,4 @@ complexity:
     thresholdInFiles: 12
     thresholdInObjects: 12
     thresholdInInterfaces: 12
+

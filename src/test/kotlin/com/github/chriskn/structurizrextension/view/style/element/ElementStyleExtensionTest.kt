@@ -9,7 +9,6 @@ import com.github.chriskn.structurizrextension.api.view.style.addElementStyle
 import com.github.chriskn.structurizrextension.api.view.style.getElementStyles
 import com.github.chriskn.structurizrextension.api.view.style.sprite.ImageSprite
 import com.github.chriskn.structurizrextension.api.view.style.sprite.OpenIconicSprite
-import com.github.chriskn.structurizrextension.api.view.style.sprite.PUmlSprite
 import com.github.chriskn.structurizrextension.api.view.style.styles.C4PUmlLineStyle.DASHED
 import com.github.chriskn.structurizrextension.api.view.style.styles.C4PUmlLineStyle.DOTTED
 import com.github.chriskn.structurizrextension.api.view.style.styles.ElementStyle
@@ -68,12 +67,7 @@ class ElementStyleExtensionTest {
 
     @Test
     fun `element style can be added to ViewSet`() {
-        val sprite = PUmlSprite(
-            url = IconRegistry.iconUrlFor("postgresql")!!,
-            name = "postgresql",
-            scale = 0.5,
-            color = "green"
-        )
+        val sprite = IconRegistry.spriteForName("postgresql")!!.copy(color = "green", scale = 0.5)
         val legendSprite = OpenIconicSprite("compass")
         val style1 = ElementStyle(
             tag = "tag",

@@ -1,7 +1,5 @@
 package com.github.chriskn.structurizrextension.internal.export.writer
 
-import com.github.chriskn.structurizrextension.api.icons.IconRegistry
-import com.github.chriskn.structurizrextension.api.model.icon
 import com.github.chriskn.structurizrextension.api.model.link
 import com.github.chriskn.structurizrextension.api.view.dynamic.renderAsSequenceDiagram
 import com.github.chriskn.structurizrextension.internal.export.idOf
@@ -87,9 +85,9 @@ internal object BoundaryWriter {
     }
 
     private fun DeploymentNode.toMacro() =
-        """Node(${idOf(this)}, "$name", "${technology.orEmpty()}", "${description.orEmpty()}", "${
-            IconRegistry.iconFileNameFor(icon).orEmpty()
-        }"${tagsToPlantUmlSting(this)}${linkString(link)})"""
+        """Node(${idOf(this)}, "$name", "${technology.orEmpty()}", "${description.orEmpty()}", ${
+            this.getUsedIconOrSprite()
+        }${tagsToPlantUmlSting(this)}${linkString(link)})"""
 
     private fun determineBoundaryEndSymbol(view: View): String =
         if (view is DynamicView && view.renderAsSequenceDiagram) {

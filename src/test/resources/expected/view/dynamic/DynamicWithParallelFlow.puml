@@ -27,7 +27,7 @@ RelIndex(4,CustomerInformationSystem.CustomerService, CustomerInformationSystem.
 RelIndex(5,CustomerInformationSystem.MessageBus, CustomerInformationSystem.ReportingService, "Sends customer update events to", $tags="async relationship")
 RelIndex(5,CustomerInformationSystem.MessageBus, CustomerInformationSystem.AuditingService, "Sends customer update events to", $tags="async relationship")
 RelIndex(5,CustomerInformationSystem.CustomerService, CustomerInformationSystem.CustomerFrontendApplication, "Confirms update to", "WebSocket", $link="www.bing.com", $tags="async relationship")
-RelIndex(6,CustomerInformationSystem.ReportingService, CustomerInformationSystem.ReportingDatabase, "Stores data in", $sprite=mysql)
+RelIndex(6,CustomerInformationSystem.ReportingService, CustomerInformationSystem.ReportingDatabase, "Stores data in", $sprite="mysql")
 RelIndex(6,CustomerInformationSystem.AuditingService, CustomerInformationSystem.AuditStore, "Stores events in")
 
 SHOW_LEGEND(true)

@@ -15,14 +15,14 @@ Container_Boundary("MySoftwareSystem.FrontendApp_boundary", "Frontend App" ){
   Component(MySoftwareSystem.FrontendApp.SPA, "SPA", "", "Single Page Application", "")
 }
 Container_Boundary("MySoftwareSystem.NewBackendApp_boundary", "New Backend App" ){
-  ComponentDb(MySoftwareSystem.NewBackendApp.Cache, "Cache", "RocksDB", "In Memory DB", "rocksdb", $link="https://google.de")
+  ComponentDb(MySoftwareSystem.NewBackendApp.Cache, "Cache", "RocksDB", "In Memory DB", $sprite="rocksdb", $link="https://google.de")
   WithoutPropertyHeader()
   AddProperty("jdbcUrl", "someurl")
   Component(MySoftwareSystem.NewBackendApp.MyRepo, "MyRepo", "Kotlin, JDBC", "Provides CRUD operations for data", "", $tags="repo+persistence")
   Component(MySoftwareSystem.NewBackendApp.MyRestController, "MyRestController", "REST", "Provides data via rest", "")
-  Component(MySoftwareSystem.NewBackendApp.MyService, "MyService", "", "Does implement some logic", "kotlin", $link="https://google.de")
+  Component(MySoftwareSystem.NewBackendApp.MyService, "MyService", "", "Does implement some logic", $sprite="kotlin", $link="https://google.de")
 }
-ContainerDb(MySoftwareSystem.Database, "Database", "postgres", "some database", "postgresql")
+ContainerDb(MySoftwareSystem.Database, "Database", "postgres", "some database", $sprite="postgresql")
 Rel(MySoftwareSystem.NewBackendApp.MyRepo, MySoftwareSystem.Database, "gets data from")
 Rel(MySoftwareSystem.NewBackendApp.MyRestController, MySoftwareSystem.NewBackendApp.MyService, "calls")
 Rel(MySoftwareSystem.NewBackendApp.MyService, MySoftwareSystem.NewBackendApp.Cache, "uses")

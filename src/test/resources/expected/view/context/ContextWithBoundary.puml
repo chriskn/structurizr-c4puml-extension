@@ -9,7 +9,7 @@ SHOW_PERSON_OUTLINE()
 LAYOUT_LEFT_RIGHT()
 
 Enterprise_Boundary(enterprise, My Enterprise) {
-  System(SoftwareSystem1, "Software System 1", "Description 1", "android-icon", $link="https://www.android.com")
+  System(SoftwareSystem1, "Software System 1", "Description 1", $sprite="android-icon", $link="https://www.android.com")
 }
 
 WithoutPropertyHeader()
@@ -20,7 +20,7 @@ System_Ext(SoftwareSystem0, "Software System 0", "Description 0", "")
 Rel(Actor, SoftwareSystem0, "deletes", "gRPC")
 WithoutPropertyHeader()
 AddProperty("prop", "val")
-Rel(Actor, SoftwareSystem1, "creates", "HTTP", $sprite=html-5, $link="https://de.wikipedia.org/wiki/Hypertext_Transfer_Protocol")
+Rel(Actor, SoftwareSystem1, "creates", "HTTP", $sprite="html-5", $link="https://de.wikipedia.org/wiki/Hypertext_Transfer_Protocol")
 Rel(SoftwareSystem0, SoftwareSystem1, "0 used by 1")
 
 SHOW_FLOATING_LEGEND(LEGEND, false)

@@ -1,6 +1,7 @@
 package com.github.chriskn.structurizrextension.api.model
 
 import com.github.chriskn.structurizrextension.api.icons.IconRegistry
+import com.github.chriskn.structurizrextension.api.view.style.sprite.Sprite
 import com.structurizr.model.Container
 import com.structurizr.model.DeploymentElement
 import com.structurizr.model.DeploymentNode
@@ -13,6 +14,7 @@ import com.structurizr.model.SoftwareSystem
  * @param name              the name of the deployment node
  * @param description       the description of the deployment node
  * @param icon              the icon of the deployment node. See [IconRegistry] for available icons or add your own
+ * @param sprite            the sprite of the deployment node. See [Sprite] implementations for sprite types
  * @param link              the link of the deployment node
  * @param technology        the technology of the deployment node
  * @param tags              the list of tags of the deployment node
@@ -27,7 +29,10 @@ import com.structurizr.model.SoftwareSystem
 fun DeploymentNode.deploymentNode(
     name: String,
     description: String = "",
+    @Suppress("DEPRECATED_JAVA_ANNOTATION")
+    @java.lang.Deprecated(since = "Since 12.2. Use sprite API instead")
     icon: String? = null,
+    sprite: Sprite? = null,
     link: String? = null,
     technology: String = "",
     tags: List<String> = listOf(),
@@ -38,7 +43,7 @@ fun DeploymentNode.deploymentNode(
     hostsContainers: List<Container> = listOf(),
 ): DeploymentNode {
     val node = this.addDeploymentNode(name, description, technology)
-    node.configure(icon, link, tags, properties, hostsSystems, hostsContainers, uses, usedBy)
+    node.configure(icon, sprite, link, tags, properties, hostsSystems, hostsContainers, uses, usedBy)
     return node
 }
 
@@ -48,6 +53,7 @@ fun DeploymentNode.deploymentNode(
  * @param name              the name of the infrastructure node
  * @param description       the description of the infrastructure node
  * @param icon              the icon of the infrastructure node. See [IconRegistry] for available icons or add your own
+ * @param sprite            the sprite of the infrastructure node. See [Sprite] implementations for sprite types
  * @param link              the link of the infrastructure node
  * @param technology        the technology of the infrastructure node
  * @param tags              the list of tags of the infrastructure node
@@ -61,7 +67,10 @@ fun DeploymentNode.deploymentNode(
 fun DeploymentNode.infrastructureNode(
     name: String,
     description: String = "",
+    @Suppress("DEPRECATED_JAVA_ANNOTATION")
+    @java.lang.Deprecated(since = "Since 12.2. Use sprite API instead")
     icon: String? = null,
+    sprite: Sprite? = null,
     link: String? = null,
     technology: String = "",
     tags: List<String> = listOf(),
@@ -70,21 +79,24 @@ fun DeploymentNode.infrastructureNode(
     usedBy: List<Dependency<DeploymentNode>> = listOf(),
 ): InfrastructureNode {
     val node = this.addInfrastructureNode(name, description, technology)
-    node.configure(icon, link, tags, properties)
+    node.configure(icon, sprite, link, tags, properties)
     uses.forEach { dep ->
         node.uses(dep.destination, dep.description, dep.technology, dep.interactionStyle)
-            .configure(dep.icon, dep.link, dep.tags, dep.properties)
+            .configure(dep.icon, dep.sprite, dep.link, dep.tags, dep.properties)
     }
     usedBy.forEach { dep ->
         dep.destination.uses(node, dep.description, dep.technology, dep.interactionStyle)
-            .configure(dep.icon, dep.link, dep.tags, dep.properties)
+            .configure(dep.icon, dep.sprite, dep.link, dep.tags, dep.properties)
     }
     return node
 }
 
 @Suppress("LongParameterList")
-fun DeploymentNode.configure(
+internal fun DeploymentNode.configure(
+    @Suppress("DEPRECATED_JAVA_ANNOTATION")
+    @java.lang.Deprecated(since = "Since 12.2. Use sprite API instead")
     icon: String?,
+    sprite: Sprite?,
     link: String?,
     tags: List<String>,
     properties: C4Properties?,
@@ -93,7 +105,7 @@ fun DeploymentNode.configure(
     uses: List<Dependency<DeploymentElement>>,
     usedBy: List<Dependency<DeploymentElement>>,
 ) {
-    this.configure(icon, link, tags, properties)
+    this.configure(icon, sprite, link, tags, properties)
     hostsSystems.forEach {
         val instance = this.add(it)
         it.tagsAsSet.forEach { tag -> instance.addTags(tag) }
@@ -105,10 +117,10 @@ fun DeploymentNode.configure(
     uses.forEach { dep ->
         when (dep.destination) {
             is DeploymentNode -> this.uses(dep.destination, dep.description, dep.technology, dep.interactionStyle)
-                .configure(dep.icon, dep.link, dep.tags, dep.properties)
+                .configure(dep.icon, dep.sprite, dep.link, dep.tags, dep.properties)
 
             is InfrastructureNode -> this.uses(dep.destination, dep.description, dep.technology, dep.interactionStyle)
-                .configure(dep.icon, dep.link, dep.tags, dep.properties)
+                .configure(dep.icon, dep.sprite, dep.link, dep.tags, dep.properties)
 
             else -> throw IllegalArgumentException("DeploymentNode cant use ${dep.destination::class.java.name}")
         }
@@ -116,10 +128,10 @@ fun DeploymentNode.configure(
     usedBy.forEach { dep ->
         when (dep.destination) {
             is DeploymentNode -> dep.destination.uses(this, dep.description, dep.technology, dep.interactionStyle)
-                .configure(dep.icon, dep.link, dep.tags, dep.properties)
+                .configure(dep.icon, dep.sprite, dep.link, dep.tags, dep.properties)
 
             is InfrastructureNode -> dep.destination.uses(this, dep.description, dep.technology, dep.interactionStyle)
-                .configure(dep.icon, dep.link, dep.tags, dep.properties)
+                .configure(dep.icon, dep.sprite, dep.link, dep.tags, dep.properties)
 
             else -> throw IllegalArgumentException("DeploymentNode cant be use by ${dep.destination::class.java.name}")
         }

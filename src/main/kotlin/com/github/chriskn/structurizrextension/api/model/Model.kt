@@ -1,6 +1,7 @@
 package com.github.chriskn.structurizrextension.api.model
 
 import com.github.chriskn.structurizrextension.api.icons.IconRegistry
+import com.github.chriskn.structurizrextension.api.view.style.sprite.Sprite
 import com.structurizr.model.Container
 import com.structurizr.model.DeploymentElement
 import com.structurizr.model.DeploymentNode
@@ -28,6 +29,7 @@ var Model.enterpriseName: String?
  * @param description the description of the person
  * @param location    the [Location] of the person
  * @param icon        the icon of the person. See [IconRegistry] for available icons or add your own
+ * @param sprite      the sprite of the person. See [Sprite] implementations for sprite types
  * @param link        the link of the person
  * @param tags        the list of tags of the person
  * @param properties  the [C4Properties] of the person
@@ -40,7 +42,10 @@ fun Model.person(
     name: String,
     description: String = "",
     location: Location = Location.Unspecified,
+    @Suppress("DEPRECATED_JAVA_ANNOTATION")
+    @java.lang.Deprecated(since = "Since 12.2. Use sprite API instead")
     icon: String? = null,
+    sprite: Sprite? = null,
     link: String? = null,
     tags: List<String> = listOf(),
     properties: C4Properties? = null,
@@ -49,7 +54,7 @@ fun Model.person(
     @Suppress("DEPRECATION")
     val person = this.addPerson(name, description)
     person.c4Location = location
-    person.configure(icon, link, tags, properties)
+    person.configure(icon, sprite, link, tags, properties)
     uses.forEach { dep -> dep.addRelationShipFrom(person) }
     return person
 }
@@ -62,6 +67,7 @@ fun Model.person(
  * @param location      the [Location] of the system
  * @param c4Type        the [C4Type] of the system
  * @param icon          the icon of the system. See [IconRegistry] for available icons or add your own
+ * @param sprite        the sprite of the software systen. See [Sprite] implementations for sprite types
  * @param link          the link of the system
  * @param tags          the list of tags of the system
  * @param properties    the [C4Properties] of the system
@@ -76,7 +82,10 @@ fun Model.softwareSystem(
     description: String,
     location: Location = Location.Unspecified,
     c4Type: C4Type? = null,
+    @Suppress("DEPRECATED_JAVA_ANNOTATION")
+    @java.lang.Deprecated(since = "Since 12.2. Use sprite API instead")
     icon: String? = null,
+    sprite: Sprite? = null,
     link: String? = null,
     tags: List<String> = listOf(),
     properties: C4Properties? = null,
@@ -86,7 +95,7 @@ fun Model.softwareSystem(
     val softwareSystem = this.addSoftwareSystem(name, description)
     softwareSystem.c4Type = c4Type
     softwareSystem.c4Location = location
-    softwareSystem.configure(icon, link, tags, properties, uses, usedBy)
+    softwareSystem.configure(icon, sprite, link, tags, properties, uses, usedBy)
     return softwareSystem
 }
 
@@ -96,6 +105,7 @@ fun Model.softwareSystem(
  * @param name              the name of the deployment node
  * @param description       the description of the deployment node
  * @param icon              the icon of the deployment node. See [IconRegistry] for available icons or add your own
+ * @param sprite            the sprite of the deployment node. See [Sprite] implementations for sprite types
  * @param link              the link of the deployment node
  * @param technology        the technology of the deployment node
  * @param tags              the list of tags of the deployment node
@@ -112,7 +122,10 @@ fun Model.deploymentNode(
     name: String,
     description: String = "",
     environment: String? = DeploymentElement.DEFAULT_DEPLOYMENT_ENVIRONMENT,
+    @Suppress("DEPRECATED_JAVA_ANNOTATION")
+    @java.lang.Deprecated(since = "Since 12.2. Use sprite API instead")
     icon: String? = null,
+    sprite: Sprite? = null,
     link: String? = null,
     technology: String = "",
     tags: List<String> = listOf(),
@@ -123,6 +136,6 @@ fun Model.deploymentNode(
     hostsContainers: List<Container> = listOf(),
 ): DeploymentNode {
     val node = this.addDeploymentNode(environment, name, description, technology)
-    node.configure(icon, link, tags, properties, hostsSystems, hostsContainers, uses, usedBy)
+    node.configure(icon, sprite, link, tags, properties, hostsSystems, hostsContainers, uses, usedBy)
     return node
 }

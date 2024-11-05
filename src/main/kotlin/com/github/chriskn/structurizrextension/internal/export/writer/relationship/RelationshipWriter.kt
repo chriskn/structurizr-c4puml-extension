@@ -1,7 +1,5 @@
 package com.github.chriskn.structurizrextension.internal.export.writer.relationship
 
-import com.github.chriskn.structurizrextension.api.icons.IconRegistry
-import com.github.chriskn.structurizrextension.api.model.icon
 import com.github.chriskn.structurizrextension.api.model.link
 import com.github.chriskn.structurizrextension.api.view.dynamic.renderAsSequenceDiagram
 import com.github.chriskn.structurizrextension.api.view.layout.DependencyConfiguration
@@ -9,6 +7,7 @@ import com.github.chriskn.structurizrextension.api.view.layout.LayoutRegistry
 import com.github.chriskn.structurizrextension.api.view.layout.Mode
 import com.github.chriskn.structurizrextension.internal.export.idOf
 import com.github.chriskn.structurizrextension.internal.export.writer.PropertyWriter
+import com.github.chriskn.structurizrextension.internal.export.writer.getUsedIconOrSprite
 import com.github.chriskn.structurizrextension.internal.export.writer.linkString
 import com.structurizr.export.IndentingWriter
 import com.structurizr.model.InteractionStyle
@@ -86,9 +85,9 @@ internal class RelationshipWriter(
         if (relationship.technology != null) {
             relationshipBuilder.append(""", "${relationship.technology}"""")
         }
-        val sprite = IconRegistry.iconFileNameFor(relationship.icon.orEmpty())
-        if (!sprite.isNullOrBlank()) {
-            relationshipBuilder.append(""", ${'$'}sprite=$sprite""")
+        val sprite = relationship.getUsedIconOrSprite()
+        if (sprite.isNotBlank()) {
+            relationshipBuilder.append(", $sprite")
         }
         if (!relationship.link.isNullOrBlank()) {
             relationshipBuilder.append(linkString(relationship.link))
@@ -123,9 +122,9 @@ internal class RelationshipWriter(
             relationshipBuilder.append(""", ${'$'}techn="${relationship.technology}"""")
         }
 
-        val sprite = IconRegistry.iconFileNameFor(relationship.icon.orEmpty())
-        if (!sprite.isNullOrBlank()) {
-            relationshipBuilder.append(""", ${'$'}sprite="$sprite"""")
+        val sprite = relationship.getUsedIconOrSprite()
+        if (sprite.isNotBlank()) {
+            relationshipBuilder.append(", $sprite")
         }
 
         relationshipBuilder.append(relationship.tagsToPlantUmlSting())

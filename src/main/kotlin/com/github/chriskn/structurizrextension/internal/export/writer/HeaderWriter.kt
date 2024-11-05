@@ -4,6 +4,7 @@ import com.github.chriskn.structurizrextension.api.icons.AWS_ICON_COMMONS
 import com.github.chriskn.structurizrextension.api.icons.AWS_ICON_URL
 import com.github.chriskn.structurizrextension.api.icons.IconRegistry
 import com.github.chriskn.structurizrextension.api.model.icon
+import com.github.chriskn.structurizrextension.api.model.sprite
 import com.github.chriskn.structurizrextension.api.view.dynamic.renderAsSequenceDiagram
 import com.github.chriskn.structurizrextension.api.view.layout.LayoutRegistry
 import com.github.chriskn.structurizrextension.api.view.style.sprite.PUmlSprite
@@ -34,7 +35,7 @@ internal class HeaderWriter(private val styleWriter: StyleWriter) {
 
     fun writeHeader(view: ModelView, writer: IndentingWriter) {
         includes.clear()
-        addIconIncludeUrls(view)
+        addIncludeUrlsForModelElements(view)
         val personStyles = styleWriter.collectAppliedPersonStyles(view)
         val boundaryStyles = styleWriter.collectAppliedBoundaryStyles(view)
         val elementsStyles = styleWriter.collectAppliedElementStyles(view)
@@ -126,20 +127,26 @@ internal class HeaderWriter(private val styleWriter: StyleWriter) {
         includes.addAll(spriteIncludeUrls.map { URI.create(it) })
     }
 
-    private fun addIconIncludeUrls(view: ModelView) {
+    private fun addIncludeUrlsForModelElements(view: ModelView) {
         val elements: MutableSet<ModelItem> = collectModelElements(view)
         val iconsIncludesForElements = elements
             .asSequence()
             .mapNotNull { it.icon?.let { technology -> IconRegistry.iconUrlFor(technology) } }
-            .toSet()
-            .toList()
+        val spriteIncludesForElements = elements
+            .asSequence()
+            .mapNotNull { it.sprite }
+            .filterIsInstance<PUmlSprite>()
+            .map { it.url }
+
+        val includeUrlsForElements = (iconsIncludesForElements + spriteIncludesForElements)
+            .toSortedSet()
             .sorted()
             .toMutableList()
 
-        if (iconsIncludesForElements.any { it.startsWith(AWS_ICON_URL) }) {
-            iconsIncludesForElements.add(0, AWS_ICON_COMMONS)
+        if (includeUrlsForElements.any { it.startsWith(AWS_ICON_URL) }) {
+            includeUrlsForElements.add(0, AWS_ICON_COMMONS)
         }
-        iconsIncludesForElements.forEach { includes.add(URI(it)) }
+        includeUrlsForElements.forEach { includes.add(URI(it)) }
         val c4PumlIncludeURI = URI("$C4_PLANT_UML_STDLIB_URL/${includeForView(view)}")
         includes.add(c4PumlIncludeURI)
     }
