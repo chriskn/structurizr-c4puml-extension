@@ -1,4 +1,4 @@
-package com.github.chriskn.structurizrextension.api.view.style.sprite
+package com.github.chriskn.structurizrextension.api.view.sprite
 
 import java.net.URI
 
@@ -9,14 +9,19 @@ private val fileInUriRegex = "[^/\\\\&?]+\\.\\w{3,4}(?=([?&].*\$|\$))".toRegex()
  *
  * Can be used to include images via an image url.
  *
- * @property url    the image url. Must use "img:" scheme and point to a file. img:{File or Url}
- * @property scale  the image scale. Must be greater zero. 1.0 is default
+ * @property name                   the name of the sprite. can be null
+ * @property url                    the image url. Must use "img:" scheme and point to a file. img:{File or Url}
+ * @property scale                  the image scale. Must be greater zero. 1.0 is default
+ * @property additionalDefinitions  each will be written as !define <additionalDefinition> in the output file.
+ *                                  Can be used to define named urls. The names then can be used in the url
  * @constructor Create Image sprite
  */
 data class ImageSprite(
     val url: String,
     val scale: Double? = null,
-) : Sprite(scale) {
+    override val name: String? = null,
+    val additionalDefinitions: List<String>? = null,
+) : Sprite(name, scale) {
 
     init {
         validateImageUrl(url)

@@ -24,7 +24,7 @@ internal fun Relationship.getUsedIconOrSprite(): String {
     val usedSprite = if (spriteStr.isNotEmpty()) {
         "${'$'}sprite=$spriteStr"
     } else {
-        """$iconStr"""
+        iconStr
     }
     return usedSprite
 }

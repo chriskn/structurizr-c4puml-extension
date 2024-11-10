@@ -1,8 +1,8 @@
 package com.github.chriskn.structurizrextension.api.view.style.styles
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.github.chriskn.structurizrextension.api.view.sprite.Sprite
 import com.github.chriskn.structurizrextension.api.view.style.C4PUmlElementShape
-import com.github.chriskn.structurizrextension.api.view.style.sprite.Sprite
 import com.github.chriskn.structurizrextension.internal.view.style.toValidColor
 
 /**

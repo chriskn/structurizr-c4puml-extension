@@ -1,7 +1,7 @@
 package com.github.chriskn.structurizrextension.api.view.style.styles
 
+import com.github.chriskn.structurizrextension.api.view.sprite.Sprite
 import com.github.chriskn.structurizrextension.api.view.style.C4PUmlElementShape
-import com.github.chriskn.structurizrextension.api.view.style.sprite.Sprite
 
 /**
  * Element style.

@@ -1,13 +1,13 @@
 package com.github.chriskn.structurizrextension.internal.export.writer
 
+import com.github.chriskn.structurizrextension.api.view.sprite.ImageSprite
+import com.github.chriskn.structurizrextension.api.view.sprite.OpenIconicSprite
+import com.github.chriskn.structurizrextension.api.view.sprite.PlantUmlSprite
+import com.github.chriskn.structurizrextension.api.view.sprite.Sprite
 import com.github.chriskn.structurizrextension.api.view.style.getBoundaryStyles
 import com.github.chriskn.structurizrextension.api.view.style.getDependencyStyles
 import com.github.chriskn.structurizrextension.api.view.style.getElementStyles
 import com.github.chriskn.structurizrextension.api.view.style.getPersonStyles
-import com.github.chriskn.structurizrextension.api.view.style.sprite.ImageSprite
-import com.github.chriskn.structurizrextension.api.view.style.sprite.OpenIconicSprite
-import com.github.chriskn.structurizrextension.api.view.style.sprite.PUmlSprite
-import com.github.chriskn.structurizrextension.api.view.style.sprite.Sprite
 import com.github.chriskn.structurizrextension.api.view.style.styles.BoundaryStyle
 import com.github.chriskn.structurizrextension.api.view.style.styles.C4PUmlLineStyle.DASHED
 import com.github.chriskn.structurizrextension.api.view.style.styles.DependencyStyle
@@ -190,14 +190,14 @@ internal object StyleWriter {
     }
 
     internal fun Sprite.toPlantUmlString(): String = when (this) {
-        is PUmlSprite -> """"${spriteString(this.name, scale, colorValidated)}""""
-        is OpenIconicSprite -> """"&${spriteString(this.name, scale, colorValidated)}""""
+        is PlantUmlSprite -> """"${spriteString(this.reference, scale, colorValidated)}""""
+        is OpenIconicSprite -> """"${spriteString(this.name, scale, colorValidated)}""""
         is ImageSprite -> {
             val scaleString = scaleString(this.scale)
             if (scaleString.isBlank()) {
                 """"$url""""
             } else {
-                """"$url{$scaleString}""""
+                """"$url,$scaleString""""
             }
         }
 
@@ -211,15 +211,14 @@ internal object StyleWriter {
     ): String {
         val scaleString = scaleString(scale)
         val colorString = colorString(color)
-        return if (scaleString.isBlank() && colorString.isBlank()) {
-            name
-        } else if (colorString.isBlank()) {
-            "$name{$scaleString}"
-        } else if (scaleString.isBlank()) {
-            "$name{$colorString}"
-        } else {
-            "$name{$scaleString,$colorString}"
+        var spriteString = name
+        if (scaleString.isNotBlank()) {
+            spriteString += ",$scaleString"
         }
+        if (colorString.isNotBlank()) {
+            spriteString += ",$colorString"
+        }
+        return spriteString
     }
 
     private fun colorString(color: String?): String = if (color != null) {

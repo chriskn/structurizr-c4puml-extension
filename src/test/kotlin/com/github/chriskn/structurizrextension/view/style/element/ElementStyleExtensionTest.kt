@@ -3,12 +3,12 @@ package com.github.chriskn.structurizrextension.view.style.element
 import com.github.chriskn.structurizrextension.api.icons.IconRegistry
 import com.github.chriskn.structurizrextension.api.model.softwareSystem
 import com.github.chriskn.structurizrextension.api.view.containerView
+import com.github.chriskn.structurizrextension.api.view.sprite.ImageSprite
+import com.github.chriskn.structurizrextension.api.view.sprite.OpenIconicSprite
 import com.github.chriskn.structurizrextension.api.view.style.C4PUmlElementShape.EIGHT_SIDED
 import com.github.chriskn.structurizrextension.api.view.style.C4PUmlElementShape.ROUNDED_BOX
 import com.github.chriskn.structurizrextension.api.view.style.addElementStyle
 import com.github.chriskn.structurizrextension.api.view.style.getElementStyles
-import com.github.chriskn.structurizrextension.api.view.style.sprite.ImageSprite
-import com.github.chriskn.structurizrextension.api.view.style.sprite.OpenIconicSprite
 import com.github.chriskn.structurizrextension.api.view.style.styles.C4PUmlLineStyle.DASHED
 import com.github.chriskn.structurizrextension.api.view.style.styles.C4PUmlLineStyle.DOTTED
 import com.github.chriskn.structurizrextension.api.view.style.styles.ElementStyle
@@ -24,7 +24,7 @@ class ElementStyleExtensionTest {
     @Test
     fun `element style values are correctly set`() {
         val expSprite = ImageSprite("img:https://plantuml.com/logo3.png", 0.4)
-        val expLegendSprite = OpenIconicSprite("compass", scale = 3.0, color = "blue")
+        val expLegendSprite = OpenIconicSprite("&compass", scale = 3.0, color = "blue")
         val expTag = "styleTag"
         val expBackgroundColor = "#000000"
         val expBorder = DASHED
@@ -68,7 +68,7 @@ class ElementStyleExtensionTest {
     @Test
     fun `element style can be added to ViewSet`() {
         val sprite = IconRegistry.spriteForName("postgresql")!!.copy(color = "green", scale = 0.5)
-        val legendSprite = OpenIconicSprite("compass")
+        val legendSprite = OpenIconicSprite("&compass")
         val style1 = ElementStyle(
             tag = "tag",
             backgroundColor = "#ffffff",

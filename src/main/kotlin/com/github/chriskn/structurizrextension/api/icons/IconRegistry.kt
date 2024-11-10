@@ -1,14 +1,13 @@
 package com.github.chriskn.structurizrextension.api.icons
 
-import com.github.chriskn.structurizrextension.api.view.style.sprite.PUmlSprite
+import com.github.chriskn.structurizrextension.api.view.sprite.PlantUmlSprite
 import java.net.MalformedURLException
 import java.net.URI
 import java.net.URL
 
-internal const val AWS_ICON_URL = "https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/v11.1/dist/"
+internal const val AWS_ICON_URL = "https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/v18.0/dist/"
 internal const val AWS_ICON_COMMONS = "${AWS_ICON_URL}AWSCommon.puml"
 
-// TODO deprecate
 /**
  * Registry containing the available icons.
  *
@@ -36,7 +35,7 @@ object IconRegistry {
     }
 
     internal fun validate(name: String, url: String) {
-        require(name.isNotBlank()) { "Icon name cannot be blank" }
+        require(name.isNotBlank()) { "Icon name must not be blank" }
         require(url.endsWith(PUML_FILE_EXTENSION)) {
             "Icon URL needs to point to .puml file but was $url"
         }
@@ -73,7 +72,7 @@ object IconRegistry {
      * @param name the name of the sprite
      * @return the PumlSprite for a given name or null if no sprites exists
      */
-    internal fun spriteForName(name: String?): PUmlSprite? {
+    internal fun spriteForName(name: String?): PlantUmlSprite? {
         if (name == null || !exists(name)) {
             return null
         }
@@ -82,7 +81,7 @@ object IconRegistry {
         if (url == null || iconFileName == null) {
             return null
         }
-        return PUmlSprite(name = iconFileName, url = url.toString())
+        return PlantUmlSprite(name = iconFileName, path = url.toString())
     }
 
     internal fun reset() {

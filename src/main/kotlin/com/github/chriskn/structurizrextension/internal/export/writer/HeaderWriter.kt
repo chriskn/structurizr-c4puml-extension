@@ -7,11 +7,10 @@ import com.github.chriskn.structurizrextension.api.model.icon
 import com.github.chriskn.structurizrextension.api.model.sprite
 import com.github.chriskn.structurizrextension.api.view.dynamic.renderAsSequenceDiagram
 import com.github.chriskn.structurizrextension.api.view.layout.LayoutRegistry
-import com.github.chriskn.structurizrextension.api.view.style.sprite.PUmlSprite
+import com.github.chriskn.structurizrextension.api.view.sprite.PlantUmlSprite
 import com.github.chriskn.structurizrextension.api.view.style.styles.BoundaryStyle
 import com.github.chriskn.structurizrextension.api.view.style.styles.DependencyStyle
 import com.github.chriskn.structurizrextension.api.view.style.styles.ElementStyle
-import com.github.chriskn.structurizrextension.api.view.style.styles.ModelElementStyle
 import com.github.chriskn.structurizrextension.api.view.style.styles.PersonStyle
 import com.structurizr.export.IndentingWriter
 import com.structurizr.model.DeploymentNode
@@ -24,43 +23,64 @@ import com.structurizr.view.ModelView
 import com.structurizr.view.SystemContextView
 import com.structurizr.view.SystemLandscapeView
 import com.structurizr.view.View
-import java.net.URI
 
 private const val C4_PLANT_UML_STDLIB_URL =
     "https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master"
 
 internal class HeaderWriter(private val styleWriter: StyleWriter) {
 
-    private val includes = mutableSetOf<URI>()
-
     fun writeHeader(view: ModelView, writer: IndentingWriter) {
-        includes.clear()
-        addIncludeUrlsForModelElements(view)
+        // Spaces in PlantUML ids can cause issues. Alternatively, id can be surrounded with double quotes
+        writer.writeLine("@startuml(id=${view.key.replace(' ', '_')})")
+
+        val iconIncludes = addIncludeUrlsForIcons(view)
+        val dependencyStyles = styleWriter.collectAppliedDependencyStyles(view)
         val personStyles = styleWriter.collectAppliedPersonStyles(view)
         val boundaryStyles = styleWriter.collectAppliedBoundaryStyles(view)
         val elementsStyles = styleWriter.collectAppliedElementStyles(view)
-        val dependencyStyles = styleWriter.collectAppliedDependencyStyles(view)
+        val modelElementStyles = elementsStyles + boundaryStyles + personStyles
+        val sprites = (
+            modelElementStyles.map { listOf(it.sprite, it.legendSprite) }.toList().flatten() +
+                dependencyStyles.map { listOf(it.sprite, it.legendSprite) }.toList().flatten() +
+                collectModelElements(view).map { it.sprite } +
+                view.relationships.map { it.relationship.sprite }
+            ).filterNotNull()
+            .toSet()
+            .toList()
 
-        addSpriteIncludeUrls(
-            modelElementStyles = elementsStyles + boundaryStyles + personStyles,
-            dependencyStyles = dependencyStyles
-        )
+        val spriteDefinitions = sprites.map { it.additionalDefinitions() }.flatten().toSortedSet()
+        spriteDefinitions.forEach {
+            writer.writeLine("!define $it")
+        }
 
-        // Spaces in PlantUML ids can cause issues. Alternatively, id can be surrounded with double quotes
-        writer.writeLine("@startuml(id=${view.key.replace(' ', '_')})")
+        val spriteIncludes = sprites.filterIsInstance<PlantUmlSprite>().map { it.path }.toSortedSet()
+        val spriteAdditionalIncludes = sprites.map { it.additionalIncludes() }.flatten().toSortedSet().toList()
+        val allSpriteIncludes = spriteAdditionalIncludes + spriteIncludes
+        val includes = allSpriteIncludes + iconIncludes
         includes.forEach {
             writer.writeLine("!includeurl $it")
         }
-        var viewTitle = view.title
-        if (viewTitle.isNullOrBlank()) {
-            viewTitle = view.name
-        }
 
+        writer.writeLine()
+
+        val viewTitle = if (!view.title.isNullOrBlank()) {
+            view.title
+        } else {
+            view.name
+        }
         writer.writeLine("title $viewTitle")
         if (!view.description.isNullOrBlank()) {
             writer.writeLine("caption " + view.description)
-            writer.writeLine()
         }
+        writer.writeLine()
+
+        // included sprite sets can change alignment.
+        // make sure diagram is always aligned correctly
+        // TODO also needed for other diagrams?
+        if (view is DeploymentView) {
+            writer.writeLine("skinparam PackageTitleAlignment Center")
+        }
+
         val layout = LayoutRegistry.layoutForKey(view.key)
         if (layout.showPersonOutline) {
             writer.writeLine("SHOW_PERSON_OUTLINE()")
@@ -102,43 +122,13 @@ internal class HeaderWriter(private val styleWriter: StyleWriter) {
         }
     }
 
-    private fun addSpriteIncludeUrls(
-        modelElementStyles: List<ModelElementStyle>,
-        dependencyStyles: List<DependencyStyle>,
-    ) {
-        val elementIncludeUrls = modelElementStyles
-            .asSequence()
-            .map { listOf(it.sprite, it.legendSprite) }
-            .flatten()
-            .filterIsInstance<PUmlSprite>()
-            .map { it.url }
-
-        val dependencyIncludeUrls = dependencyStyles
-            .asSequence()
-            .map { listOf(it.sprite, it.legendSprite) }
-            .flatten()
-            .filterIsInstance<PUmlSprite>()
-            .map { it.url }
-
-        val spriteIncludeUrls = (elementIncludeUrls + dependencyIncludeUrls).toSortedSet()
-        if (spriteIncludeUrls.any { it.startsWith(AWS_ICON_URL) }) {
-            spriteIncludeUrls.add(AWS_ICON_COMMONS)
-        }
-        includes.addAll(spriteIncludeUrls.map { URI.create(it) })
-    }
-
-    private fun addIncludeUrlsForModelElements(view: ModelView) {
+    private fun addIncludeUrlsForIcons(view: ModelView): Set<String> {
+        val includes = mutableSetOf<String>()
         val elements: MutableSet<ModelItem> = collectModelElements(view)
         val iconsIncludesForElements = elements
             .asSequence()
-            .mapNotNull { it.icon?.let { technology -> IconRegistry.iconUrlFor(technology) } }
-        val spriteIncludesForElements = elements
-            .asSequence()
-            .mapNotNull { it.sprite }
-            .filterIsInstance<PUmlSprite>()
-            .map { it.url }
-
-        val includeUrlsForElements = (iconsIncludesForElements + spriteIncludesForElements)
+            .mapNotNull { it.icon?.let { name -> IconRegistry.iconUrlFor(name) } }
+        val includeUrlsForElements = iconsIncludesForElements
             .toSortedSet()
             .sorted()
             .toMutableList()
@@ -146,9 +136,11 @@ internal class HeaderWriter(private val styleWriter: StyleWriter) {
         if (includeUrlsForElements.any { it.startsWith(AWS_ICON_URL) }) {
             includeUrlsForElements.add(0, AWS_ICON_COMMONS)
         }
-        includeUrlsForElements.forEach { includes.add(URI(it)) }
-        val c4PumlIncludeURI = URI("$C4_PLANT_UML_STDLIB_URL/${includeForView(view)}")
+
+        includeUrlsForElements.forEach { includes.add(it) }
+        val c4PumlIncludeURI = "$C4_PLANT_UML_STDLIB_URL/${includeForView(view)}"
         includes.add(c4PumlIncludeURI)
+        return includes.toSortedSet()
     }
 
     private fun collectModelElements(view: ModelView): MutableSet<ModelItem> {
@@ -162,13 +154,6 @@ internal class HeaderWriter(private val styleWriter: StyleWriter) {
         elements += view.relationships.map { it.relationship }
         return elements
     }
-
-//    private fun writeAsyncRelTag(writer: IndentingWriter) {
-//        writer.writeLine(
-//            """AddRelTag("$ASYNC_REL_TAG_NAME", $ASYNC_STYLE_ATTIRBUTES"""
-//        )
-//        writer.writeLine()
-//    }
 
     private fun collectElements(
         deploymentNode: DeploymentNode,

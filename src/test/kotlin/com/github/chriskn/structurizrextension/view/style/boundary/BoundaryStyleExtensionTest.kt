@@ -3,13 +3,13 @@ package com.github.chriskn.structurizrextension.view.style.boundary
 import com.github.chriskn.structurizrextension.api.icons.IconRegistry
 import com.github.chriskn.structurizrextension.api.model.softwareSystem
 import com.github.chriskn.structurizrextension.api.view.containerView
+import com.github.chriskn.structurizrextension.api.view.sprite.ImageSprite
+import com.github.chriskn.structurizrextension.api.view.sprite.OpenIconicSprite
+import com.github.chriskn.structurizrextension.api.view.sprite.PlantUmlSprite
 import com.github.chriskn.structurizrextension.api.view.style.C4PUmlElementShape.EIGHT_SIDED
 import com.github.chriskn.structurizrextension.api.view.style.C4PUmlElementShape.ROUNDED_BOX
 import com.github.chriskn.structurizrextension.api.view.style.addBoundaryStyle
 import com.github.chriskn.structurizrextension.api.view.style.getBoundaryStyles
-import com.github.chriskn.structurizrextension.api.view.style.sprite.ImageSprite
-import com.github.chriskn.structurizrextension.api.view.style.sprite.OpenIconicSprite
-import com.github.chriskn.structurizrextension.api.view.style.sprite.PUmlSprite
 import com.github.chriskn.structurizrextension.api.view.style.styles.BoundaryStyle
 import com.github.chriskn.structurizrextension.api.view.style.styles.C4PUmlLineStyle.BOLD
 import com.github.chriskn.structurizrextension.api.view.style.styles.C4PUmlLineStyle.DASHED
@@ -25,8 +25,8 @@ class BoundaryStyleExtensionTest {
 
     @Test
     fun `boundary style values are correctly set`() {
-        val expSprite = ImageSprite("img:https://plantuml.com/logo3.png", 0.4)
-        val expLegendSprite = OpenIconicSprite("compass", scale = 3.0, color = "blue")
+        val expSprite = ImageSprite(url = "img:https://plantuml.com/logo3.png", scale = 0.4)
+        val expLegendSprite = OpenIconicSprite("&compass", scale = 3.0, color = "blue")
         val expTag = "styleTag"
         val expBackgroundColor = "#000000"
         val expBorder = DASHED
@@ -66,13 +66,13 @@ class BoundaryStyleExtensionTest {
 
     @Test
     fun `boundary style  can be added to ViewSet`() {
-        val sprite = PUmlSprite(
-            url = IconRegistry.iconUrlFor("postgresql")!!,
+        val sprite = PlantUmlSprite(
+            path = IconRegistry.iconUrlFor("postgresql")!!,
             name = "postgresql",
             scale = 0.5,
             color = "green"
         )
-        val legendSprite = OpenIconicSprite("compass")
+        val legendSprite = OpenIconicSprite("&compass")
         val style1 = BoundaryStyle(
             tag = "tag",
             backgroundColor = "#ffffff",

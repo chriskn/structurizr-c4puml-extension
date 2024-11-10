@@ -17,14 +17,14 @@ import com.github.chriskn.structurizrextension.api.view.dynamicView
 import com.github.chriskn.structurizrextension.api.view.showExternalBoundaries
 import com.github.chriskn.structurizrextension.api.view.showExternalContainerBoundaries
 import com.github.chriskn.structurizrextension.api.view.showExternalSoftwareSystemBoundaries
+import com.github.chriskn.structurizrextension.api.view.sprite.ImageSprite
+import com.github.chriskn.structurizrextension.api.view.sprite.OpenIconicSprite
 import com.github.chriskn.structurizrextension.api.view.style.C4PUmlElementShape.EIGHT_SIDED
 import com.github.chriskn.structurizrextension.api.view.style.C4PUmlElementShape.ROUNDED_BOX
 import com.github.chriskn.structurizrextension.api.view.style.addBoundaryStyle
 import com.github.chriskn.structurizrextension.api.view.style.addDependencyStyle
 import com.github.chriskn.structurizrextension.api.view.style.addElementStyle
 import com.github.chriskn.structurizrextension.api.view.style.addPersonStyle
-import com.github.chriskn.structurizrextension.api.view.style.sprite.ImageSprite
-import com.github.chriskn.structurizrextension.api.view.style.sprite.OpenIconicSprite
 import com.github.chriskn.structurizrextension.api.view.style.styles.BoundaryStyle
 import com.github.chriskn.structurizrextension.api.view.style.styles.C4PUmlLineStyle.BOLD
 import com.github.chriskn.structurizrextension.api.view.style.styles.C4PUmlLineStyle.DASHED
@@ -72,8 +72,8 @@ class StyleIntegrationTest {
         )
     )
 
-    private val sprite = ImageSprite("img:https://plantuml.com/logo3.png", 0.4)
-    private val legendSprite = OpenIconicSprite("compass", scale = 3.0)
+    private val sprite = ImageSprite(url = "img:https://plantuml.com/logo3.png", scale = 0.4)
+    private val legendSprite = OpenIconicSprite("&compass", scale = 3.0)
     private val systemStyle = ElementStyle(
         tag = systemTag,
         backgroundColor = "#000000",
@@ -109,7 +109,7 @@ class StyleIntegrationTest {
         technology = "REST",
         c4Shape = ROUNDED_BOX,
         sprite = IconRegistry.spriteForName("postgresql")!!.copy(color = "green", scale = 0.5),
-        legendSprite = OpenIconicSprite("compass"),
+        legendSprite = OpenIconicSprite("&compass"),
         legendText = "this is a legend container"
     )
     private val boundaryStyle = BoundaryStyle(
@@ -131,8 +131,8 @@ class StyleIntegrationTest {
         shadowing = false,
         technology = "REST",
         c4Shape = ROUNDED_BOX,
-        sprite = OpenIconicSprite("compass"),
-        legendSprite = OpenIconicSprite("compass"),
+        sprite = OpenIconicSprite("&compass"),
+        legendSprite = OpenIconicSprite("&compass"),
         legendText = "this is a legend text"
     )
     private val androidSprite = IconRegistry.spriteForName("android")!!.copy(color = "green", scale = 1.3)

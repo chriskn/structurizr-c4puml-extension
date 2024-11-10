@@ -105,7 +105,6 @@ internal class RelationshipWriter(
         relationshipView: RelationshipView,
         writer: IndentingWriter,
     ) {
-        // Rel($from, $to, $label, $techn="", $descr="", $sprite="", $tags="", $link="", $index="", $rel=""
         val relationship = relationshipView.relationship
         var source = relationship.source
         var destination = relationship.destination

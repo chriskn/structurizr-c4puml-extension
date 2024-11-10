@@ -3,10 +3,10 @@ package com.github.chriskn.structurizrextension.view.style.dependency
 import com.github.chriskn.structurizrextension.api.icons.IconRegistry
 import com.github.chriskn.structurizrextension.api.model.softwareSystem
 import com.github.chriskn.structurizrextension.api.view.containerView
+import com.github.chriskn.structurizrextension.api.view.sprite.ImageSprite
+import com.github.chriskn.structurizrextension.api.view.sprite.OpenIconicSprite
 import com.github.chriskn.structurizrextension.api.view.style.addDependencyStyle
 import com.github.chriskn.structurizrextension.api.view.style.getDependencyStyles
-import com.github.chriskn.structurizrextension.api.view.style.sprite.ImageSprite
-import com.github.chriskn.structurizrextension.api.view.style.sprite.OpenIconicSprite
 import com.github.chriskn.structurizrextension.api.view.style.styles.C4PUmlLineStyle.BOLD
 import com.github.chriskn.structurizrextension.api.view.style.styles.C4PUmlLineStyle.DASHED
 import com.github.chriskn.structurizrextension.api.view.style.styles.C4PUmlLineStyle.DOTTED
@@ -23,7 +23,7 @@ class DependencyStyleExtensionTest {
     @Test
     fun `dependency style values are correctly set`() {
         val expSprite = ImageSprite("img:https://plantuml.com/logo3.png", 0.4)
-        val expLegendSprite = OpenIconicSprite("compass", scale = 3.0, color = "blue")
+        val expLegendSprite = OpenIconicSprite("&compass", scale = 3.0, color = "blue")
         val expTag = "styleTag"
         val expLineColor = "#00ff00"
         val expLineStyle = DASHED
@@ -58,7 +58,7 @@ class DependencyStyleExtensionTest {
     @Test
     fun `dependency style can be added to ViewSet`() {
         val sprite = IconRegistry.spriteForName("postgresql")!!.copy(color = "green", scale = 0.5)
-        val legendSprite = OpenIconicSprite("compass")
+        val legendSprite = OpenIconicSprite("&compass")
         val style1 = DependencyStyle(
             tag = "tag",
             lineColor = "#ffffff",
