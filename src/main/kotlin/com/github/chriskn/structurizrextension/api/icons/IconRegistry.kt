@@ -1,6 +1,5 @@
 package com.github.chriskn.structurizrextension.api.icons
 
-import com.github.chriskn.structurizrextension.api.view.sprite.PlantUmlSprite
 import java.net.MalformedURLException
 import java.net.URI
 import java.net.URL
@@ -55,7 +54,7 @@ object IconRegistry {
     /**
      * @return The file name of an icon with the given name (case-insensitive) or null if no icon with the given name exists.
      */
-    @Deprecated("use spriteForName instead")
+    @Deprecated("use sprite API instead")
     internal fun iconFileNameFor(name: String?): String? {
         return if (name == null || !exists(name)) {
             null
@@ -66,22 +65,6 @@ object IconRegistry {
                 .last()
                 .replace(PUML_FILE_EXTENSION, "")
         }
-    }
-
-    /**
-     * @param name the name of the sprite
-     * @return the PumlSprite for a given name or null if no sprites exists
-     */
-    internal fun spriteForName(name: String?): PlantUmlSprite? {
-        if (name == null || !exists(name)) {
-            return null
-        }
-        val url = iconNameToIconUrl[name.lowercase()]
-        val iconFileName = iconFileNameFor(name)
-        if (url == null || iconFileName == null) {
-            return null
-        }
-        return PlantUmlSprite(name = iconFileName, path = url.toString())
     }
 
     internal fun reset() {

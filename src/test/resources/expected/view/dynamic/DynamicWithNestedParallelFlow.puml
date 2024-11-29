@@ -1,6 +1,7 @@
 @startuml(id=DynamicWithNestedParallelFlow)
-!includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/mysql.puml
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Dynamic.puml
+!includeurl <tupadr3/devicons/mysql>
+
 title Customer Information System - Dynamic
 caption This diagram shows what happens when a customer updates their details
 

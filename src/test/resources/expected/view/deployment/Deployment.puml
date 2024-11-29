@@ -1,4 +1,5 @@
 @startuml(id=Deployment)
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Deployment.puml
 !includeurl <awslib14/AWSCommon>
 !includeurl <awslib14/Containers/EKSCloud>
 !includeurl <awslib14/Database/AuroraPostgreSQLInstance>
@@ -10,7 +11,6 @@
 !includeurl <logos/spring>
 !includeurl <tupadr3/devicons/apple>
 !includeurl <tupadr3/devicons2/jaegertracing>
-!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Deployment.puml
 
 title System container - Deployment - Default
 caption A deployment diagram showing the environment.

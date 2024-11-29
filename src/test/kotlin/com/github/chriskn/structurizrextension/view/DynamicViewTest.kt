@@ -1,6 +1,5 @@
 package com.github.chriskn.structurizrextension.view
 
-import com.github.chriskn.structurizrextension.api.icons.IconRegistry
 import com.github.chriskn.structurizrextension.api.model.C4Properties
 import com.github.chriskn.structurizrextension.api.model.C4Type
 import com.github.chriskn.structurizrextension.api.model.Dependency
@@ -18,6 +17,7 @@ import com.github.chriskn.structurizrextension.api.view.layout.Direction.Left
 import com.github.chriskn.structurizrextension.api.view.layout.Direction.Right
 import com.github.chriskn.structurizrextension.api.view.layout.Mode.Neighbor
 import com.github.chriskn.structurizrextension.api.view.showExternalBoundaries
+import com.github.chriskn.structurizrextension.api.view.sprite.library.SpriteLibrary
 import com.github.chriskn.structurizrextension.assertExpectedDiagramWasWrittenForView
 import com.structurizr.Workspace
 import com.structurizr.model.InteractionStyle.Asynchronous
@@ -313,7 +313,7 @@ class DynamicViewTest {
         "Stores a normalised version of all business data for ad hoc reporting purposes",
         technology = "MySql",
         c4Type = C4Type.DATABASE,
-        usedBy = listOf(Dependency(reportingService, "", sprite = IconRegistry.spriteForName("mysql")))
+        usedBy = listOf(Dependency(reportingService, "", sprite = SpriteLibrary.spriteByName("tupadr3-devicons-mysql")))
     )
     private val auditingService = customerInformationSystem.container(
         "Auditing Service",

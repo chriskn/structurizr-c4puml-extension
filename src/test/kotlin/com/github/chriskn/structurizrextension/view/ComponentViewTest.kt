@@ -1,6 +1,5 @@
 package com.github.chriskn.structurizrextension.view
 
-import com.github.chriskn.structurizrextension.api.icons.IconRegistry
 import com.github.chriskn.structurizrextension.api.model.C4Properties
 import com.github.chriskn.structurizrextension.api.model.C4Type
 import com.github.chriskn.structurizrextension.api.model.Dependency
@@ -13,6 +12,7 @@ import com.github.chriskn.structurizrextension.api.view.layout.C4PlantUmlLayout
 import com.github.chriskn.structurizrextension.api.view.layout.Layout.LeftToRight
 import com.github.chriskn.structurizrextension.api.view.layout.LineType.Ortho
 import com.github.chriskn.structurizrextension.api.view.showExternalContainerBoundaries
+import com.github.chriskn.structurizrextension.api.view.sprite.library.SpriteLibrary
 import com.github.chriskn.structurizrextension.assertExpectedDiagramWasWrittenForView
 import com.structurizr.Workspace
 import com.structurizr.model.InteractionStyle.Asynchronous
@@ -56,7 +56,7 @@ class ComponentViewTest {
             "Does implement some logic",
             link = "https://google.de",
             technology = "",
-            sprite = IconRegistry.spriteForName("kotlin"),
+            sprite = SpriteLibrary.spriteByName("logos-kotlin-icon"),
             usedBy = listOf(Dependency(restController, "calls")),
             uses = listOf(
                 Dependency(
@@ -71,7 +71,7 @@ class ComponentViewTest {
             "In Memory DB",
             link = "https://google.de",
             technology = "RocksDB",
-            sprite = IconRegistry.spriteForName("rocksdb"),
+            sprite = SpriteLibrary.spriteByName("tupadr3-devicons2-rocksdb"),
             c4Type = C4Type.DATABASE,
             usedBy = listOf(Dependency(service, "uses", link = ""))
         )
@@ -85,7 +85,7 @@ class ComponentViewTest {
             "some database",
             c4Type = C4Type.DATABASE,
             technology = "postgres",
-            sprite = IconRegistry.spriteForName("postgresql"),
+            sprite = SpriteLibrary.spriteByName("logos-postgresql"),
             usedBy = listOf(Dependency(backendApplication.components.first { it.hasTag("repo") }, "gets data from"))
         )
         model.person(

@@ -1,7 +1,8 @@
 @startuml(id=ComponentWithoutBoundary)
-!includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/kotlin.puml
-!includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/rocksdb.puml
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+!includeurl <logos/kotlin-icon>
+!includeurl <tupadr3/devicons2/rocksdb>
+
 title My Software System - New Backend App - Components
 caption Test component view
 
@@ -15,7 +16,7 @@ WithoutPropertyHeader()
 AddProperty("jdbcUrl", "someurl")
 Component(MySoftwareSystem.NewBackendApp.MyRepo, "MyRepo", "Kotlin, JDBC", "Provides CRUD operations for data", "", $tags="repo+persistence")
 Component(MySoftwareSystem.NewBackendApp.MyRestController, "MyRestController", "REST", "Provides data via rest", "")
-Component(MySoftwareSystem.NewBackendApp.MyService, "MyService", "", "Does implement some logic", $sprite="kotlin", $link="https://google.de")
+Component(MySoftwareSystem.NewBackendApp.MyService, "MyService", "", "Does implement some logic", $sprite="kotlin-icon", $link="https://google.de")
 Rel(MySoftwareSystem.NewBackendApp.MyRestController, MySoftwareSystem.NewBackendApp.MyService, "calls")
 Rel(MySoftwareSystem.NewBackendApp.MyService, MySoftwareSystem.NewBackendApp.Cache, "uses")
 Rel(MySoftwareSystem.NewBackendApp.MyService, MySoftwareSystem.NewBackendApp.MyRepo, "gets notified", $tags="async relationship")

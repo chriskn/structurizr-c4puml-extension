@@ -1,7 +1,7 @@
 package com.github.chriskn.structurizrextension.view.style.boundary
 
-import com.github.chriskn.structurizrextension.api.view.sprite.ImageSprite
-import com.github.chriskn.structurizrextension.api.view.sprite.OpenIconicSprite
+import com.github.chriskn.structurizrextension.api.view.sprite.sprites.ImageSprite
+import com.github.chriskn.structurizrextension.api.view.sprite.sprites.OpenIconicSprite
 import com.github.chriskn.structurizrextension.api.view.style.C4PUmlElementShape.EIGHT_SIDED
 import com.github.chriskn.structurizrextension.api.view.style.styles.BoundaryStyle
 import com.github.chriskn.structurizrextension.api.view.style.styles.C4PUmlLineStyle.SOLID

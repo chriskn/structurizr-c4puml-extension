@@ -1,7 +1,7 @@
 package com.github.chriskn.structurizrextension.view.style.dependency
 
-import com.github.chriskn.structurizrextension.api.view.sprite.ImageSprite
-import com.github.chriskn.structurizrextension.api.view.sprite.OpenIconicSprite
+import com.github.chriskn.structurizrextension.api.view.sprite.sprites.ImageSprite
+import com.github.chriskn.structurizrextension.api.view.sprite.sprites.OpenIconicSprite
 import com.github.chriskn.structurizrextension.api.view.style.styles.C4PUmlLineStyle.DASHED
 import com.github.chriskn.structurizrextension.api.view.style.styles.DependencyStyle
 import com.github.chriskn.structurizrextension.internal.export.view.style.dependencyStyleFromJson

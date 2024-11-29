@@ -4,7 +4,7 @@ package com.github.chriskn.structurizrextension.internal.export.view.style
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import com.github.chriskn.structurizrextension.api.view.sprite.Sprite
+import com.github.chriskn.structurizrextension.api.view.sprite.sprites.Sprite
 
 private val mapper = jacksonObjectMapper()
 

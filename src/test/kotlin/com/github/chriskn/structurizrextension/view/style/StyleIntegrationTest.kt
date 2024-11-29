@@ -1,6 +1,5 @@
 package com.github.chriskn.structurizrextension.view.style
 
-import com.github.chriskn.structurizrextension.api.icons.IconRegistry
 import com.github.chriskn.structurizrextension.api.model.Dependency
 import com.github.chriskn.structurizrextension.api.model.component
 import com.github.chriskn.structurizrextension.api.model.container
@@ -17,8 +16,10 @@ import com.github.chriskn.structurizrextension.api.view.dynamicView
 import com.github.chriskn.structurizrextension.api.view.showExternalBoundaries
 import com.github.chriskn.structurizrextension.api.view.showExternalContainerBoundaries
 import com.github.chriskn.structurizrextension.api.view.showExternalSoftwareSystemBoundaries
-import com.github.chriskn.structurizrextension.api.view.sprite.ImageSprite
-import com.github.chriskn.structurizrextension.api.view.sprite.OpenIconicSprite
+import com.github.chriskn.structurizrextension.api.view.sprite.library.SpriteLibrary
+import com.github.chriskn.structurizrextension.api.view.sprite.sprites.ImageSprite
+import com.github.chriskn.structurizrextension.api.view.sprite.sprites.OpenIconicSprite
+import com.github.chriskn.structurizrextension.api.view.sprite.sprites.PlantUmlSprite
 import com.github.chriskn.structurizrextension.api.view.style.C4PUmlElementShape.EIGHT_SIDED
 import com.github.chriskn.structurizrextension.api.view.style.C4PUmlElementShape.ROUNDED_BOX
 import com.github.chriskn.structurizrextension.api.view.style.addBoundaryStyle
@@ -88,9 +89,10 @@ class StyleIntegrationTest {
         legendSprite = legendSprite,
         legendText = "this is a legend"
     )
+    private val appleSprite = SpriteLibrary.spriteByName("tupadr3-devicons-apple")!! as PlantUmlSprite
     private val personStyle = createPersonStyle(
         tag = personTag,
-        sprite = IconRegistry.spriteForName("apple")!!.copy(color = "green", scale = 0.5),
+        sprite = appleSprite.copy(color = "green", scale = 0.5),
         backgroundColor = "#00FF00",
         borderStyle = DASHED,
         borderWidth = 4,
@@ -99,6 +101,7 @@ class StyleIntegrationTest {
         c4Shape = EIGHT_SIDED,
         legendText = "this is a apple"
     )
+    private val postgresSprite = SpriteLibrary.spriteByName("tupadr3-devicons-postgresql") as PlantUmlSprite
     private val containerStyle = ElementStyle(
         tag = containerTag,
         backgroundColor = "#ffffff",
@@ -108,7 +111,7 @@ class StyleIntegrationTest {
         fontColor = "red",
         technology = "REST",
         c4Shape = ROUNDED_BOX,
-        sprite = IconRegistry.spriteForName("postgresql")!!.copy(color = "green", scale = 0.5),
+        sprite = postgresSprite.copy(color = "green", scale = 0.5),
         legendSprite = OpenIconicSprite("&compass"),
         legendText = "this is a legend container"
     )
@@ -135,13 +138,15 @@ class StyleIntegrationTest {
         legendSprite = OpenIconicSprite("&compass"),
         legendText = "this is a legend text"
     )
-    private val androidSprite = IconRegistry.spriteForName("android")!!.copy(color = "green", scale = 1.3)
+    private val androidSprite = SpriteLibrary.spriteByName(
+        "office-devices-cell-phone-android-stand-alone"
+    ) as PlantUmlSprite
     private val dependencyStyle = DependencyStyle(
         tag = dependencyTag,
         fontColor = "#aa9999",
         sprite = androidSprite,
         legendText = "Android user uses",
-        legendSprite = androidSprite.copy(scale = 0.3),
+        legendSprite = androidSprite.copy(color = "green", scale = 0.3),
         technology = "Android",
         lineColor = "green",
         lineStyle = DOTTED,
@@ -254,7 +259,7 @@ class StyleIntegrationTest {
         val aws = model.deploymentNode(
             name = "AWS",
             description = "Production AWS environment",
-            sprite = IconRegistry.spriteForName("aws"),
+            sprite = SpriteLibrary.spriteByName("tupadr3-devicons-aws"),
         )
         val nodeWithStyle = aws.deploymentNode(
             name = "Node with style",

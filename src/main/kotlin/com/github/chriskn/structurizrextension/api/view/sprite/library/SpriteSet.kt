@@ -1,11 +1,11 @@
-package com.github.chriskn.structurizrextension.api.view.sprite.registry
+package com.github.chriskn.structurizrextension.api.view.sprite.library
 
-import com.github.chriskn.structurizrextension.api.view.sprite.Sprite
+import com.github.chriskn.structurizrextension.api.view.sprite.sprites.Sprite
 
 /**
  * SpriteSet
  *
- * Used to describe a set of sprites as json and load it via [SpriteRegistry]
+ * Used to describe a set of sprites as json and load it via [SpriteLibrary]
  *
  * @property name                   name of the SpriteSet. Should describe the contained sprites
  * @property source                 optional url or other pointer to the original source of the sprites contained

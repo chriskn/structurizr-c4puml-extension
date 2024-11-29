@@ -1,4 +1,4 @@
-package com.github.chriskn.structurizrextension.api.view.sprite
+package com.github.chriskn.structurizrextension.api.view.sprite.sprites
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.github.chriskn.structurizrextension.internal.view.style.toValidColor
@@ -17,8 +17,6 @@ import com.github.chriskn.structurizrextension.internal.view.style.toValidColor
  *                                  Can be used to define named urls. The names then can be used in the url
  *                                  Will be written before additionalIncludes
  * @constructor Create Plant UML sprite
- * @throws IllegalArgumentException if url or additionalIncludes do not point to a puml file or is a stdlib reference
- *
  */
 data class PlantUmlSprite(
     override val name: String,
@@ -26,15 +24,15 @@ data class PlantUmlSprite(
     val reference: String = defaultReference(path),
     val color: String? = null,
     val scale: Double? = null,
-    val additionalIncludes: List<String>? = null,
-    val additionalDefinitions: List<String>? = null,
+    val additionalIncludes: Set<String>? = null,
+    val additionalDefinitions: Set<String>? = null,
 ) : Sprite(name, scale) {
 
     companion object {
-        private const val PUML_FILE_EXTENSION = ".puml"
+        private const val PLANT_UML_FILE_EXTENSION = ".puml"
         private fun defaultReference(path: String): String = path
             .substringAfterLast("/")
-            .replace(PUML_FILE_EXTENSION, "")
+            .replace(PLANT_UML_FILE_EXTENSION, "")
             .replace(">", "")
     }
 
@@ -43,13 +41,15 @@ data class PlantUmlSprite(
 
     init {
         require(name.isNotBlank()) { "Icon name must not be blank" }
-        validateUrl(path)
-        additionalIncludes?.forEach { validateUrl(it) }
+        validatePath(path)
+        additionalIncludes?.forEach { validatePath(it) }
     }
 
-    private fun validateUrl(url: String) {
-        require(url.endsWith(PUML_FILE_EXTENSION) || (url.startsWith("<") && url.endsWith(">"))) {
-            "Icon URL needs to point to $PUML_FILE_EXTENSION file or must be a part of the Plantuml StdLib but was $url"
+    private fun validatePath(path: String) {
+        val pathIsStandardLibReference = path.startsWith("<") && path.endsWith(">")
+        val pathPointsToPumlFile = path.endsWith(PLANT_UML_FILE_EXTENSION)
+        require(pathPointsToPumlFile || pathIsStandardLibReference) {
+            "Icon URL needs to point to $PLANT_UML_FILE_EXTENSION file or must be a reference to the Plantuml StdLib but was $path"
         }
     }
 }

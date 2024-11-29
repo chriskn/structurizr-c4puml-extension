@@ -1,6 +1,5 @@
 package com.github.chriskn.structurizrextension.view
 
-import com.github.chriskn.structurizrextension.api.icons.IconRegistry
 import com.github.chriskn.structurizrextension.api.model.C4Properties
 import com.github.chriskn.structurizrextension.api.model.Dependency
 import com.github.chriskn.structurizrextension.api.model.enterpriseName
@@ -10,6 +9,7 @@ import com.github.chriskn.structurizrextension.api.view.layout.C4PlantUmlLayout
 import com.github.chriskn.structurizrextension.api.view.layout.Layout.LeftToRight
 import com.github.chriskn.structurizrextension.api.view.layout.Legend.ShowFloatingLegend
 import com.github.chriskn.structurizrextension.api.view.showEnterpriseBoundary
+import com.github.chriskn.structurizrextension.api.view.sprite.library.SpriteLibrary
 import com.github.chriskn.structurizrextension.api.view.systemContextView
 import com.github.chriskn.structurizrextension.api.view.systemLandscapeView
 import com.github.chriskn.structurizrextension.assertExpectedDiagramWasWrittenForView
@@ -30,7 +30,7 @@ class ContextViewTest {
     private val system1 = model.softwareSystem(
         "Software System 1",
         "Description 1",
-        sprite = IconRegistry.spriteForName("android"),
+        sprite = SpriteLibrary.spriteByName("logos-android-icon"),
         link = "https://www.android.com",
         location = Location.Internal
     )
@@ -47,7 +47,7 @@ class ContextViewTest {
         model.softwareSystem(
             "Software System 2",
             "Description 2",
-            sprite = IconRegistry.spriteForName("docker"),
+            sprite = SpriteLibrary.spriteByName("logos-docker-icon"),
             link = "https://www.docker.com/",
             properties = C4Properties(
                 header = listOf("Property", "Value"),
@@ -70,7 +70,7 @@ class ContextViewTest {
                     "creates",
                     "HTTP",
                     link = "https://de.wikipedia.org/wiki/Hypertext_Transfer_Protocol",
-                    sprite = IconRegistry.spriteForName("html5"),
+                    sprite = SpriteLibrary.spriteByName("logos-html-5-img"),
                     properties = C4Properties(
                         values = listOf(
                             listOf("prop", "val")

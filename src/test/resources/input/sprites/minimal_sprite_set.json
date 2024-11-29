@@ -1,0 +1,10 @@
+{
+  "name": "Minimal Test Sprite Set",
+  "sprites": [
+    {
+      "@type": "PlantUmlSprite",
+      "name": "TestSprite",
+      "path": "<awslib14/AWSC4Integration>"
+    }
+  ]
+}

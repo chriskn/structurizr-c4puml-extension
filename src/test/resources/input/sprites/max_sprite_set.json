@@ -1,0 +1,41 @@
+{
+  "name": "Max Test Sprite Set",
+  "source": "some source",
+  "additionalIncludes": [
+    "common_include.puml"
+  ],
+  "additionalDefinitions": [
+    "common_definition"
+  ],
+  "sprites": [
+    {
+      "@type": "PlantUmlSprite",
+      "name": "TestPlantUmlSprite",
+      "path": "<awslib14/AWSC4Integration>",
+      "color": "#eeeeee",
+      "scale": 0.5,
+      "additionalDefinitions": [
+        "local_definition"
+      ],
+      "additionalIncludes": [
+        "<local_include>"
+      ],
+      "reference": "test_reference"
+    },
+    {
+      "@type": "ImageSprite",
+      "name": "TestImageSprite",
+      "url": "img:someDefinition/active-campaign-icon.png",
+      "additionalDefinitions": [
+        "local_definition_img"
+      ],
+      "scale": 1.5
+    },
+    {
+      "@type": "OpenIconicSprite",
+      "name": "&compass",
+      "color": "#ffffff",
+      "scale": 1.2
+    }
+  ]
+}

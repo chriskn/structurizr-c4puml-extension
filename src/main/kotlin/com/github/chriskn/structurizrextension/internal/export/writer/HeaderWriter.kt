@@ -7,7 +7,7 @@ import com.github.chriskn.structurizrextension.api.model.icon
 import com.github.chriskn.structurizrextension.api.model.sprite
 import com.github.chriskn.structurizrextension.api.view.dynamic.renderAsSequenceDiagram
 import com.github.chriskn.structurizrextension.api.view.layout.LayoutRegistry
-import com.github.chriskn.structurizrextension.api.view.sprite.PlantUmlSprite
+import com.github.chriskn.structurizrextension.api.view.sprite.sprites.PlantUmlSprite
 import com.github.chriskn.structurizrextension.api.view.style.styles.BoundaryStyle
 import com.github.chriskn.structurizrextension.api.view.style.styles.DependencyStyle
 import com.github.chriskn.structurizrextension.api.view.style.styles.ElementStyle
@@ -33,6 +33,7 @@ internal class HeaderWriter(private val styleWriter: StyleWriter) {
         // Spaces in PlantUML ids can cause issues. Alternatively, id can be surrounded with double quotes
         writer.writeLine("@startuml(id=${view.key.replace(' ', '_')})")
 
+        val c4PumlIncludeURI = "$C4_PLANT_UML_STDLIB_URL/${includeForView(view)}"
         val iconIncludes = addIncludeUrlsForIcons(view)
         val dependencyStyles = styleWriter.collectAppliedDependencyStyles(view)
         val personStyles = styleWriter.collectAppliedPersonStyles(view)
@@ -56,7 +57,7 @@ internal class HeaderWriter(private val styleWriter: StyleWriter) {
         val spriteIncludes = sprites.filterIsInstance<PlantUmlSprite>().map { it.path }.toSortedSet()
         val spriteAdditionalIncludes = sprites.map { it.additionalIncludes() }.flatten().toSortedSet().toList()
         val allSpriteIncludes = spriteAdditionalIncludes + spriteIncludes
-        val includes = allSpriteIncludes + iconIncludes
+        val includes = listOf(c4PumlIncludeURI) + allSpriteIncludes + iconIncludes
         includes.forEach {
             writer.writeLine("!includeurl $it")
         }
@@ -74,9 +75,6 @@ internal class HeaderWriter(private val styleWriter: StyleWriter) {
         }
         writer.writeLine()
 
-        // included sprite sets can change alignment.
-        // make sure diagram is always aligned correctly
-        // TODO also needed for other diagrams?
         if (view is DeploymentView) {
             writer.writeLine("skinparam PackageTitleAlignment Center")
         }
@@ -138,8 +136,6 @@ internal class HeaderWriter(private val styleWriter: StyleWriter) {
         }
 
         includeUrlsForElements.forEach { includes.add(it) }
-        val c4PumlIncludeURI = "$C4_PLANT_UML_STDLIB_URL/${includeForView(view)}"
-        includes.add(c4PumlIncludeURI)
         return includes.toSortedSet()
     }
 

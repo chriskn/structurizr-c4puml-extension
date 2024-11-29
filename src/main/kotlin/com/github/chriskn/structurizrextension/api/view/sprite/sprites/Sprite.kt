@@ -1,4 +1,4 @@
-package com.github.chriskn.structurizrextension.api.view.sprite
+package com.github.chriskn.structurizrextension.api.view.sprite.sprites
 
 import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type
@@ -28,13 +28,13 @@ sealed class Sprite(open val name: String? = null, scale: Double?) {
     }
 
     internal fun additionalDefinitions(): List<String> = when (this) {
-        is PlantUmlSprite -> this.additionalDefinitions.orEmpty()
-        is ImageSprite -> this.additionalDefinitions.orEmpty()
+        is PlantUmlSprite -> this.additionalDefinitions.orEmpty().toList()
+        is ImageSprite -> this.additionalDefinitions.orEmpty().toList()
         is OpenIconicSprite -> emptyList()
     }
 
     internal fun additionalIncludes(): List<String> = when (this) {
-        is PlantUmlSprite -> this.additionalIncludes.orEmpty()
+        is PlantUmlSprite -> this.additionalIncludes.orEmpty().toList()
         is ImageSprite -> emptyList()
         is OpenIconicSprite -> emptyList()
     }

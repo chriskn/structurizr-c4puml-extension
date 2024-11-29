@@ -1,10 +1,11 @@
 package com.github.chriskn.structurizrextension.view.style.dependency
 
-import com.github.chriskn.structurizrextension.api.icons.IconRegistry
 import com.github.chriskn.structurizrextension.api.model.softwareSystem
 import com.github.chriskn.structurizrextension.api.view.containerView
-import com.github.chriskn.structurizrextension.api.view.sprite.ImageSprite
-import com.github.chriskn.structurizrextension.api.view.sprite.OpenIconicSprite
+import com.github.chriskn.structurizrextension.api.view.sprite.library.SpriteLibrary
+import com.github.chriskn.structurizrextension.api.view.sprite.sprites.ImageSprite
+import com.github.chriskn.structurizrextension.api.view.sprite.sprites.OpenIconicSprite
+import com.github.chriskn.structurizrextension.api.view.sprite.sprites.PlantUmlSprite
 import com.github.chriskn.structurizrextension.api.view.style.addDependencyStyle
 import com.github.chriskn.structurizrextension.api.view.style.getDependencyStyles
 import com.github.chriskn.structurizrextension.api.view.style.styles.C4PUmlLineStyle.BOLD
@@ -57,7 +58,8 @@ class DependencyStyleExtensionTest {
 
     @Test
     fun `dependency style can be added to ViewSet`() {
-        val sprite = IconRegistry.spriteForName("postgresql")!!.copy(color = "green", scale = 0.5)
+        val sprite = (SpriteLibrary.spriteByName("tupadr3-devicons-postgresql") as PlantUmlSprite)
+            .copy(color = "green", scale = 0.5)
         val legendSprite = OpenIconicSprite("&compass")
         val style1 = DependencyStyle(
             tag = "tag",

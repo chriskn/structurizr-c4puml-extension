@@ -1,11 +1,11 @@
 @startuml(id=ContainerWithoutBoundary)
 !define GILBARBARA_PNG_URL https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/v1.1/pngs
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 !includeurl <azure/AzureCommon>
 !includeurl <azure/AIMachineLearning/AzureTranslatorText>
 !includeurl <logos/android-icon>
 !includeurl <logos/docker-icon>
 !includeurl <tupadr3/devicons2/graphql>
-!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 
 title My Software System - Containers
 caption Test container view

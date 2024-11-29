@@ -1,9 +1,9 @@
 package com.github.chriskn.structurizrextension.internal.export.writer
 
-import com.github.chriskn.structurizrextension.api.view.sprite.ImageSprite
-import com.github.chriskn.structurizrextension.api.view.sprite.OpenIconicSprite
-import com.github.chriskn.structurizrextension.api.view.sprite.PlantUmlSprite
-import com.github.chriskn.structurizrextension.api.view.sprite.Sprite
+import com.github.chriskn.structurizrextension.api.view.sprite.sprites.ImageSprite
+import com.github.chriskn.structurizrextension.api.view.sprite.sprites.OpenIconicSprite
+import com.github.chriskn.structurizrextension.api.view.sprite.sprites.PlantUmlSprite
+import com.github.chriskn.structurizrextension.api.view.sprite.sprites.Sprite
 import com.github.chriskn.structurizrextension.api.view.style.getBoundaryStyles
 import com.github.chriskn.structurizrextension.api.view.style.getDependencyStyles
 import com.github.chriskn.structurizrextension.api.view.style.getElementStyles

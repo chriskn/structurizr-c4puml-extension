@@ -1,6 +1,6 @@
 package com.github.chriskn.structurizrextension.api.model
 
-import com.github.chriskn.structurizrextension.api.view.sprite.Sprite
+import com.github.chriskn.structurizrextension.api.view.sprite.sprites.Sprite
 import com.github.chriskn.structurizrextension.internal.export.view.style.spriteFromJson
 import com.github.chriskn.structurizrextension.internal.export.view.style.toJson
 import com.structurizr.model.ModelItem

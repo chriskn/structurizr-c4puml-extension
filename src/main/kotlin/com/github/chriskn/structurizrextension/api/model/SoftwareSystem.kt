@@ -1,7 +1,7 @@
 package com.github.chriskn.structurizrextension.api.model
 
 import com.github.chriskn.structurizrextension.api.icons.IconRegistry
-import com.github.chriskn.structurizrextension.api.view.sprite.Sprite
+import com.github.chriskn.structurizrextension.api.view.sprite.sprites.Sprite
 import com.structurizr.model.Container
 import com.structurizr.model.Location
 import com.structurizr.model.SoftwareSystem

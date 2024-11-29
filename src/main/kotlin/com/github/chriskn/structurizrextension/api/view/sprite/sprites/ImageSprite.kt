@@ -1,8 +1,6 @@
-package com.github.chriskn.structurizrextension.api.view.sprite
+package com.github.chriskn.structurizrextension.api.view.sprite.sprites
 
 import java.net.URI
-
-private val fileInUriRegex = "[^/\\\\&?]+\\.\\w{3,4}(?=([?&].*\$|\$))".toRegex()
 
 /**
  * Image sprite
@@ -14,13 +12,14 @@ private val fileInUriRegex = "[^/\\\\&?]+\\.\\w{3,4}(?=([?&].*\$|\$))".toRegex()
  * @property scale                  the image scale. Must be greater zero. 1.0 is default
  * @property additionalDefinitions  each will be written as !define <additionalDefinition> in the output file.
  *                                  Can be used to define named urls. The names then can be used in the url
+ *
  * @constructor Create Image sprite
  */
 data class ImageSprite(
     val url: String,
     val scale: Double? = null,
     override val name: String? = null,
-    val additionalDefinitions: List<String>? = null,
+    val additionalDefinitions: Set<String>? = null,
 ) : Sprite(name, scale) {
 
     init {
@@ -28,10 +27,12 @@ data class ImageSprite(
     }
 
     private fun validateImageUrl(urlString: String) {
+        require(urlString.isNotBlank()) {
+            "URL cannot be blank"
+        }
         val uri = URI(urlString)
-        val mathResult = fileInUriRegex.find(uri.schemeSpecificPart)
-        val fileWithEnding = mathResult?.groupValues?.first()
-        require(fileWithEnding?.contains(".") == true) {
+        val fileWithEnding = uri.normalize().schemeSpecificPart.split("/").lastOrNull()
+        require(fileWithEnding != null && fileWithEnding.matches(Regex(".+\\.\\w{3,4}"))) {
             "Image URI must point to a file"
         }
         require(uri.scheme == "img") { "Image URI must use img scheme" }
