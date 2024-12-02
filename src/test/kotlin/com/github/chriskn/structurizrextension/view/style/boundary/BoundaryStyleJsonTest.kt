@@ -1,8 +1,8 @@
 package com.github.chriskn.structurizrextension.view.style.boundary
 
+import com.github.chriskn.structurizrextension.api.view.sprite.sprites.ImageSprite
+import com.github.chriskn.structurizrextension.api.view.sprite.sprites.OpenIconicSprite
 import com.github.chriskn.structurizrextension.api.view.style.C4PUmlElementShape.EIGHT_SIDED
-import com.github.chriskn.structurizrextension.api.view.style.sprite.ImageSprite
-import com.github.chriskn.structurizrextension.api.view.style.sprite.OpenIconicSprite
 import com.github.chriskn.structurizrextension.api.view.style.styles.BoundaryStyle
 import com.github.chriskn.structurizrextension.api.view.style.styles.C4PUmlLineStyle.SOLID
 import com.github.chriskn.structurizrextension.internal.export.view.style.elementStyleFromJson
@@ -15,7 +15,7 @@ class BoundaryStyleJsonTest {
     @Test
     fun `person is serialized and deserialized correctly`() {
         val expSprite = ImageSprite("img:https://plantuml.com/logo3.png", 0.4)
-        val expLegendSprite = OpenIconicSprite("compass", scale = 3.0, color = "blue")
+        val expLegendSprite = OpenIconicSprite("&compass", scale = 3.0, color = "blue")
         val expTag = "styleTag"
         val expBackgroundColor = "#000000"
         val expBorder = SOLID

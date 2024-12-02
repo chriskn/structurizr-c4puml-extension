@@ -1,10 +1,12 @@
 @startuml(id=ContainerWithBoundary)
-!includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/android-icon.puml
-!includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/docker-icon.puml
-!includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/graphql.puml
-!includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/kafka.puml
-!includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/postgresql.puml
+!define GILBARBARA_PNG_URL https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/v1.1/pngs
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+!includeurl <azure/AzureCommon>
+!includeurl <azure/AIMachineLearning/AzureTranslatorText>
+!includeurl <logos/android-icon>
+!includeurl <logos/docker-icon>
+!includeurl <tupadr3/devicons2/graphql>
+
 title My Software System - Containers
 caption Example container view
 
@@ -14,18 +16,18 @@ LAYOUT_TOP_DOWN()
 AddRelTag("async relationship", $lineStyle=DashedLine(), $legendText=async relationship (dashed))
 
 System_Boundary(Broker, Broker) {
-  ContainerQueue_Ext(Broker.mytopic, "my.topic", "", "external topic", $sprite="kafka")
+  ContainerQueue_Ext(Broker.mytopic, "my.topic", "", "external topic", $sprite="img:GILBARBARA_PNG_URL/kafka.png")
 }
 System_Boundary(GraphQL, GraphQL) {
   Container_Ext(GraphQL.ExternalSchema, "External Schema", "", "Schema provided by another team", "")
   Container(GraphQL.InternalSchema, "Internal Schema", "", "Schema provided by our app", "")
 }
 System_Boundary(MySoftwareSystem, My Software System) {
-  Container(MySoftwareSystem.App, "App", "Android", "android app", $sprite="android-icon")
+  Container(MySoftwareSystem.App, "App", "Some Service", "Azure app", $sprite="AzureTranslatorText,color=#ffffff")
   WithoutPropertyHeader()
   AddProperty("prop 1", "value 1")
   Container(MySoftwareSystem.BackendApp, "Backend App", "Kotlin", "some backend app", $sprite="docker-icon", $link="https://www.google.de")
-  ContainerDb(MySoftwareSystem.Database, "Database", "postgres", "some database", $sprite="postgresql")
+  ContainerDb(MySoftwareSystem.Database, "Database", "postgres", "some database", $sprite="img:GILBARBARA_PNG_URL/postgresql.png")
 }
 Person_Ext(AndroidUser, "Android User", "some Android user", $sprite="android-icon")
 WithoutPropertyHeader()

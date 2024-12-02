@@ -1,0 +1,9 @@
+{
+  "name": "ImageSprites without a name cant be addressed in the SpriteRegistry and therefore are not added",
+  "sprites": [
+    {
+      "@type": "ImageSprite",
+      "url": "img:someDefinition/active-campaign-icon.png"
+    }
+  ]
+}

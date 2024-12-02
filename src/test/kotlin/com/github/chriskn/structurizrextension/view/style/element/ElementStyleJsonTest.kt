@@ -1,8 +1,8 @@
 package com.github.chriskn.structurizrextension.view.style.element
 
+import com.github.chriskn.structurizrextension.api.view.sprite.sprites.ImageSprite
+import com.github.chriskn.structurizrextension.api.view.sprite.sprites.OpenIconicSprite
 import com.github.chriskn.structurizrextension.api.view.style.C4PUmlElementShape.EIGHT_SIDED
-import com.github.chriskn.structurizrextension.api.view.style.sprite.ImageSprite
-import com.github.chriskn.structurizrextension.api.view.style.sprite.OpenIconicSprite
 import com.github.chriskn.structurizrextension.api.view.style.styles.C4PUmlLineStyle.DASHED
 import com.github.chriskn.structurizrextension.api.view.style.styles.ElementStyle
 import com.github.chriskn.structurizrextension.internal.export.view.style.elementStyleFromJson
@@ -15,7 +15,7 @@ class ElementStyleJsonTest {
     @Test
     fun `element style is serialized and deserialized correctly`() {
         val expSprite = ImageSprite("img:https://plantuml.com/logo3.png", 0.4)
-        val expLegendSprite = OpenIconicSprite("compass", scale = 3.0, color = "blue")
+        val expLegendSprite = OpenIconicSprite("&compass", scale = 3.0, color = "blue")
         val expTag = "styleTag"
         val expBackgroundColor = "#000000"
         val expBorder = DASHED

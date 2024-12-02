@@ -1,14 +1,15 @@
 package com.github.chriskn.structurizrextension.view.style.person
 
-import com.github.chriskn.structurizrextension.api.icons.IconRegistry
 import com.github.chriskn.structurizrextension.api.model.softwareSystem
 import com.github.chriskn.structurizrextension.api.view.containerView
+import com.github.chriskn.structurizrextension.api.view.sprite.library.SpriteLibrary
+import com.github.chriskn.structurizrextension.api.view.sprite.sprites.ImageSprite
+import com.github.chriskn.structurizrextension.api.view.sprite.sprites.OpenIconicSprite
+import com.github.chriskn.structurizrextension.api.view.sprite.sprites.PlantUmlSprite
 import com.github.chriskn.structurizrextension.api.view.style.C4PUmlElementShape.EIGHT_SIDED
 import com.github.chriskn.structurizrextension.api.view.style.C4PUmlElementShape.ROUNDED_BOX
 import com.github.chriskn.structurizrextension.api.view.style.addPersonStyle
 import com.github.chriskn.structurizrextension.api.view.style.getPersonStyles
-import com.github.chriskn.structurizrextension.api.view.style.sprite.ImageSprite
-import com.github.chriskn.structurizrextension.api.view.style.sprite.OpenIconicSprite
 import com.github.chriskn.structurizrextension.api.view.style.styles.C4PUmlLineStyle.DASHED
 import com.github.chriskn.structurizrextension.api.view.style.styles.C4PUmlLineStyle.DOTTED
 import com.github.chriskn.structurizrextension.api.view.style.styles.createPersonStyle
@@ -24,7 +25,7 @@ class PersonStyleExtensionTest {
     @Test
     fun `person style values are correctly set`() {
         val expSprite = ImageSprite("img:https://plantuml.com/logo3.png", 0.4)
-        val expLegendSprite = OpenIconicSprite("compass", scale = 3.0, color = "blue")
+        val expLegendSprite = OpenIconicSprite("&compass", scale = 3.0, color = "blue")
         val expTag = "styleTag"
         val expBackgroundColor = "#000000"
         val expBorder = DASHED
@@ -64,8 +65,9 @@ class PersonStyleExtensionTest {
 
     @Test
     fun `person style can be added to ViewSet`() {
-        val sprite = IconRegistry.spriteForName("postgresql")!!.copy(color = "green", scale = 0.5)
-        val legendSprite = OpenIconicSprite("compass")
+        val sprite = (SpriteLibrary.spriteByName("tupadr3-devicons-postgresql") as PlantUmlSprite)
+            .copy(color = "green", scale = 0.5)
+        val legendSprite = OpenIconicSprite("&compass")
         val style1 = createPersonStyle(
             tag = "tag",
             backgroundColor = "#ffffff",

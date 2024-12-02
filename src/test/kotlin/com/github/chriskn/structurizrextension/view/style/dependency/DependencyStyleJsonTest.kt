@@ -1,7 +1,7 @@
 package com.github.chriskn.structurizrextension.view.style.dependency
 
-import com.github.chriskn.structurizrextension.api.view.style.sprite.ImageSprite
-import com.github.chriskn.structurizrextension.api.view.style.sprite.OpenIconicSprite
+import com.github.chriskn.structurizrextension.api.view.sprite.sprites.ImageSprite
+import com.github.chriskn.structurizrextension.api.view.sprite.sprites.OpenIconicSprite
 import com.github.chriskn.structurizrextension.api.view.style.styles.C4PUmlLineStyle.DASHED
 import com.github.chriskn.structurizrextension.api.view.style.styles.DependencyStyle
 import com.github.chriskn.structurizrextension.internal.export.view.style.dependencyStyleFromJson
@@ -14,7 +14,7 @@ class DependencyStyleJsonTest {
     @Test
     fun `dependency style is serialized and deserialized correctly`() {
         val expSprite = ImageSprite("img:https://plantuml.com/logo3.png", 0.4)
-        val expLegendSprite = OpenIconicSprite("compass", scale = 3.0, color = "blue")
+        val expLegendSprite = OpenIconicSprite("&compass", scale = 3.0, color = "blue")
         val expTag = "styleTag"
         val expBackgroundColor = "#000000"
         val expBorder = DASHED

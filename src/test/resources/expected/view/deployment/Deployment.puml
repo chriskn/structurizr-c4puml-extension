@@ -1,17 +1,21 @@
 @startuml(id=Deployment)
-!includeurl https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/v11.1/dist/AWSCommon.puml
-!includeurl https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/v11.1/dist/Containers/EKSCloud.puml
-!includeurl https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/v11.1/dist/GroupIcons/Cloudalt.puml
-!includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/apple.puml
-!includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/docker-icon.puml
-!includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/kafka.puml
-!includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/nginx.puml
-!includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/postgresql.puml
-!includeurl https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/master/sprites/spring.puml
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Deployment.puml
+!includeurl <awslib14/AWSCommon>
+!includeurl <awslib14/Containers/EKSCloud>
+!includeurl <awslib14/Database/AuroraPostgreSQLInstance>
+!includeurl <awslib14/Groups/AWSCloudAlt>
+!includeurl <logos/docker-icon>
+!includeurl <logos/kafka-icon>
+!includeurl <logos/nginx>
+!includeurl <logos/postgresql>
+!includeurl <logos/spring>
+!includeurl <tupadr3/devicons/apple>
+!includeurl <tupadr3/devicons2/jaegertracing>
+
 title System container - Deployment - Default
 caption A deployment diagram showing the environment.
 
+skinparam PackageTitleAlignment Center
 SHOW_PERSON_OUTLINE()
 LAYOUT_LEFT_RIGHT()
 
@@ -20,8 +24,8 @@ AddRelTag("async relationship", $lineStyle=DashedLine(), $legendText=async relat
 SetPropertyHeader("Property", "Value", "Description")
 AddProperty("Property1", "Value1", "Description1")
 AddProperty("Property2", "Value2", "Description2")
-Node(Default.AWS, "AWS", "", "Production AWS environment", $sprite="Cloudalt") {
-  Node(Default.AWS.AWSRDS, "AWS RDS", "", "", "") {
+Node(Default.AWS, "AWS", "", "Production AWS environment", $sprite="AWSCloudAlt,color=#232f3e") {
+  Node(Default.AWS.AWSRDS, "AWS RDS", "", "", $sprite="AuroraPostgreSQLInstance,color=#c925d1") {
     WithoutPropertyHeader()
     AddProperty("region", "eu-central-1")
     ContainerDb(Default.AWS.AWSRDS.Database_1, "Database", "PostgreSql", "Stores data", $sprite="postgresql")
@@ -29,10 +33,10 @@ Node(Default.AWS, "AWS", "", "Production AWS environment", $sprite="Cloudalt") {
     AddProperty("region", "eu-west-1")
     ContainerDb(Default.AWS.AWSRDS.FailoverDatabase_1, "Failover Database", "PostgreSql", "Stores data", $sprite="postgresql")
   }
-  Node(Default.AWS.EKScluster, "EKS cluster", "", "", $sprite="EKSCloud") {
+  Node(Default.AWS.EKScluster, "EKS cluster", "", "", $sprite="EKSCloud,color=#ed7100") {
     Node(Default.AWS.EKScluster.mywebapp, "my.web.app", "", "Web App POD", "") {
       Node(Default.AWS.EKScluster.mywebapp.WebAppcontainer, "Web App container", "", "", $sprite="docker-icon") {
-        Node(Default.AWS.EKScluster.mywebapp.WebAppcontainer.JaegerSidecar, "Jaeger Sidecar", "", "Jaeger sidecar sending Traces", "")
+        Node(Default.AWS.EKScluster.mywebapp.WebAppcontainer.JaegerSidecar, "Jaeger Sidecar", "", "Jaeger sidecar sending Traces", $sprite="jaegertracing")
         Container(Default.AWS.EKScluster.mywebapp.WebAppcontainer.WebApplication_1, "Web Application", "Java and Spring MVC", "Spring Boot web application", $sprite="spring")
       }
     }
@@ -41,7 +45,7 @@ Node(Default.AWS, "AWS", "", "Production AWS environment", $sprite="Cloudalt") {
     Node(Default.AWS.EKScluster.LoadBalancer, "Load Balancer", "nginx", "Nginx Load Balancer", $sprite="nginx", $link="https://www.google.de")
   }
 }
-Node(Default.AnotherAWSAccount, "Another AWS Account", "", "", $sprite="Cloudalt") {
+Node(Default.AnotherAWSAccount, "Another AWS Account", "", "", $sprite="AWSCloudAlt,color=#232f3e") {
   Node(Default.AnotherAWSAccount.JaegerContainer, "Jaeger Container", "", "", "") {
     Node(Default.AnotherAWSAccount.JaegerContainer.Jaeger, "Jaeger", "", "", "")
   }
@@ -53,7 +57,7 @@ Rel(Default.AppleDevice, Default.AWS.EKScluster.LoadBalancer, "requests data fro
 Rel_R(Default.AWS.AWSRDS.Database_1, Default.AWS.AWSRDS.FailoverDatabase_1, "replicates data to")
 SetPropertyHeader("key", "value")
 AddProperty("ip", "10.234.12.13")
-Rel(Default.AWS.EKScluster.mywebapp.WebAppcontainer.JaegerSidecar, Default.AnotherAWSAccount.JaegerContainer, "writes traces to", $sprite="kafka", $link="https://www.jaegertracing.io/", $tags="async relationship")
+Rel(Default.AWS.EKScluster.mywebapp.WebAppcontainer.JaegerSidecar, Default.AnotherAWSAccount.JaegerContainer, "writes traces to", $sprite="kafka-icon", $link="https://www.jaegertracing.io/", $tags="async relationship")
 Rel_R(Default.AWS.EKScluster.LoadBalancer, Default.AWS.EKScluster.mywebapp.WebAppcontainer, "forwards requests to")
 Rel(Default.AWS.EKScluster.mywebapp.WebAppcontainer.WebApplication_1, Default.AWS.AWSRDS.Database_1, "stores data in", "JDBC")
 

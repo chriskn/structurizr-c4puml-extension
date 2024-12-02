@@ -1,8 +1,10 @@
 @startuml(id=DeploymentView)
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Deployment.puml
+
 title Software System 1 - Deployment - Default
 caption A test Deployment View
 
+skinparam PackageTitleAlignment Center
 SHOW_PERSON_OUTLINE()
 LAYOUT_TOP_DOWN()
 

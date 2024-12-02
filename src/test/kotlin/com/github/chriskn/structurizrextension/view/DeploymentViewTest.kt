@@ -1,6 +1,5 @@
 package com.github.chriskn.structurizrextension.view
 
-import com.github.chriskn.structurizrextension.api.icons.IconRegistry
 import com.github.chriskn.structurizrextension.api.model.C4Properties
 import com.github.chriskn.structurizrextension.api.model.C4Type
 import com.github.chriskn.structurizrextension.api.model.Dependency
@@ -15,6 +14,7 @@ import com.github.chriskn.structurizrextension.api.view.layout.C4PlantUmlLayout
 import com.github.chriskn.structurizrextension.api.view.layout.DependencyConfiguration
 import com.github.chriskn.structurizrextension.api.view.layout.Direction.Right
 import com.github.chriskn.structurizrextension.api.view.layout.Layout.LeftToRight
+import com.github.chriskn.structurizrextension.api.view.sprite.library.SpriteLibrary
 import com.github.chriskn.structurizrextension.assertExpectedDiagramWasWrittenForView
 import com.structurizr.Workspace
 import com.structurizr.model.Container
@@ -50,20 +50,20 @@ class DeploymentViewTest {
             "Web Application",
             "Spring Boot web application",
             technology = "Java and Spring MVC",
-            sprite = IconRegistry.spriteForName("springboot"),
+            sprite = SpriteLibrary.spriteByName("logos-spring"),
         )
         val database: Container = mySystem.container(
             "Database",
             "Stores data",
             technology = "PostgreSql",
-            sprite = IconRegistry.spriteForName("postgresql"),
+            sprite = SpriteLibrary.spriteByName("logos-postgresql"),
             c4Type = C4Type.DATABASE,
             properties = C4Properties(values = listOf(listOf("region", "eu-central-1"))),
             usedBy = listOf(Dependency(webApplication, "stores data in", "JDBC"))
         )
         val failoverDatabase: Container = mySystem.container(
-            "Failover Database",
-            database.description,
+            name = "Failover Database",
+            description = database.description,
             technology = database.technology,
             sprite = database.sprite,
             c4Type = database.c4Type,
@@ -73,7 +73,7 @@ class DeploymentViewTest {
         val aws = model.deploymentNode(
             "AWS",
             "Production AWS environment",
-            sprite = IconRegistry.spriteForName("aws"),
+            sprite = SpriteLibrary.spriteByName("aws-Groups-AWSCloudAlt"),
             properties = C4Properties(
                 header = listOf("Property", "Value", "Description"),
                 values = listOf(
@@ -84,12 +84,12 @@ class DeploymentViewTest {
         )
         aws.deploymentNode(
             "AWS RDS",
-            sprite = IconRegistry.spriteForName("rds"),
+            sprite = SpriteLibrary.spriteByName("aws-database-AuroraPostgreSQLInstance"),
             hostsContainers = listOf(failoverDatabase, database)
         )
         val eks = aws.deploymentNode(
             "EKS cluster",
-            sprite = IconRegistry.spriteForName("awsEKSCloud"),
+            sprite = SpriteLibrary.spriteByName("aws-containers-EKSCloud"),
         )
 
         val webAppPod = eks.deploymentNode(
@@ -97,16 +97,17 @@ class DeploymentViewTest {
             "Web App POD"
         ).deploymentNode(
             "Web App container",
-            sprite = IconRegistry.spriteForName("docker"),
+            sprite = SpriteLibrary.spriteByName("logos-docker-icon"),
             hostsContainers = listOf(webApplication)
         )
         val jaegerSidecar = webAppPod.infrastructureNode(
             "Jaeger Sidecar",
-            "Jaeger sidecar sending Traces"
+            "Jaeger sidecar sending Traces",
+            sprite = SpriteLibrary.spriteByName("tupadr3-devicons2-jaegertracing")
         )
         model.deploymentNode(
             "Another AWS Account",
-            sprite = IconRegistry.spriteForName("aws")
+            sprite = SpriteLibrary.spriteByName("aws-groups-AWSCloudAlt")
         ).deploymentNode(
             "Jaeger Container",
             usedBy = listOf(
@@ -114,7 +115,7 @@ class DeploymentViewTest {
                     jaegerSidecar,
                     "writes traces to",
                     interactionStyle = Asynchronous,
-                    sprite = IconRegistry.spriteForName("kafka"),
+                    sprite = SpriteLibrary.spriteByName("logos-kafka-icon"),
                     link = "https://www.jaegertracing.io/",
                     properties = C4Properties(
                         header = listOf("key", "value"),
@@ -125,7 +126,7 @@ class DeploymentViewTest {
         ).infrastructureNode("Jaeger")
         val appleDevice = model.deploymentNode(
             "Apple Device",
-            sprite = IconRegistry.spriteForName("apple"),
+            sprite = SpriteLibrary.spriteByName("tupadr3-devicons-apple"),
             hostsSystems = listOf(iosApp)
         )
 
@@ -133,7 +134,7 @@ class DeploymentViewTest {
             name = "Load Balancer",
             description = "Nginx Load Balancer",
             technology = "nginx",
-            sprite = IconRegistry.spriteForName("nginx"),
+            sprite = SpriteLibrary.spriteByName("logos-nginx"),
             link = "https://www.google.de",
             uses = listOf(Dependency(webAppPod, "forwards requests to")),
             usedBy = listOf(Dependency(appleDevice, "requests data from")),

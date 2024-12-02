@@ -1,14 +1,12 @@
 package com.github.chriskn.structurizrextension.api.icons
 
-import com.github.chriskn.structurizrextension.api.view.style.sprite.PUmlSprite
 import java.net.MalformedURLException
 import java.net.URI
 import java.net.URL
 
-internal const val AWS_ICON_URL = "https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/v11.1/dist/"
+internal const val AWS_ICON_URL = "https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/v18.0/dist/"
 internal const val AWS_ICON_COMMONS = "${AWS_ICON_URL}AWSCommon.puml"
 
-// TODO deprecate
 /**
  * Registry containing the available icons.
  *
@@ -36,7 +34,7 @@ object IconRegistry {
     }
 
     internal fun validate(name: String, url: String) {
-        require(name.isNotBlank()) { "Icon name cannot be blank" }
+        require(name.isNotBlank()) { "Icon name must not be blank" }
         require(url.endsWith(PUML_FILE_EXTENSION)) {
             "Icon URL needs to point to .puml file but was $url"
         }
@@ -56,7 +54,7 @@ object IconRegistry {
     /**
      * @return The file name of an icon with the given name (case-insensitive) or null if no icon with the given name exists.
      */
-    @Deprecated("use spriteForName instead")
+    @Deprecated("use sprite API instead")
     internal fun iconFileNameFor(name: String?): String? {
         return if (name == null || !exists(name)) {
             null
@@ -67,22 +65,6 @@ object IconRegistry {
                 .last()
                 .replace(PUML_FILE_EXTENSION, "")
         }
-    }
-
-    /**
-     * @param name the name of the sprite
-     * @return the PumlSprite for a given name or null if no sprites exists
-     */
-    internal fun spriteForName(name: String?): PUmlSprite? {
-        if (name == null || !exists(name)) {
-            return null
-        }
-        val url = iconNameToIconUrl[name.lowercase()]
-        val iconFileName = iconFileNameFor(name)
-        if (url == null || iconFileName == null) {
-            return null
-        }
-        return PUmlSprite(name = iconFileName, url = url.toString())
     }
 
     internal fun reset() {

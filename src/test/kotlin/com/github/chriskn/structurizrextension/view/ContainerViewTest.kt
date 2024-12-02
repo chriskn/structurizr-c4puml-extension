@@ -1,6 +1,5 @@
 package com.github.chriskn.structurizrextension.view
 
-import com.github.chriskn.structurizrextension.api.icons.IconRegistry
 import com.github.chriskn.structurizrextension.api.model.C4Properties
 import com.github.chriskn.structurizrextension.api.model.C4Type
 import com.github.chriskn.structurizrextension.api.model.Dependency
@@ -17,6 +16,8 @@ import com.github.chriskn.structurizrextension.api.view.layout.Legend.None
 import com.github.chriskn.structurizrextension.api.view.layout.Legend.ShowLegend
 import com.github.chriskn.structurizrextension.api.view.layout.LineType.Ortho
 import com.github.chriskn.structurizrextension.api.view.showExternalSoftwareSystemBoundaries
+import com.github.chriskn.structurizrextension.api.view.sprite.library.SpriteLibrary
+import com.github.chriskn.structurizrextension.api.view.sprite.sprites.PlantUmlSprite
 import com.github.chriskn.structurizrextension.assertExpectedDiagramWasWrittenForView
 import com.structurizr.Workspace
 import com.structurizr.model.InteractionStyle.Asynchronous
@@ -41,21 +42,23 @@ class ContainerViewTest {
         name = "Backend App",
         description = "some backend app",
         technology = "Kotlin",
-        sprite = IconRegistry.spriteForName("docker"),
+        sprite = SpriteLibrary.spriteByName("logos-docker-icon"),
         link = "https://www.google.de",
         properties = properties
     )
     private val app = softwareSystem.container(
         name = "App",
-        description = "android app",
-        technology = "Android",
-        sprite = IconRegistry.spriteForName("android"),
+        description = "Azure app",
+        technology = "Some Service",
+        sprite = (SpriteLibrary.spriteByName("Azure-AIMachineLearning-AzureTranslatorText") as PlantUmlSprite).copy(
+            color = "white"
+        ),
     )
     private val graphql = model.softwareSystem(
         name = "GraphQL",
         description = "Federated GraphQL",
         location = Location.External,
-        sprite = IconRegistry.spriteForName("graphql"),
+        sprite = SpriteLibrary.spriteByName("logos-graphql"),
     )
     private val internalSchema = graphql.container(
         name = "Internal Schema",
@@ -67,7 +70,7 @@ class ContainerViewTest {
                 app,
                 "request data using",
                 "GraphQL",
-                sprite = IconRegistry.spriteForName("graphql"),
+                sprite = SpriteLibrary.spriteByName("tupadr3-devicons2-graphql"),
                 link = "https://graphql.org/"
             )
         )
@@ -82,13 +85,13 @@ class ContainerViewTest {
         description = "Message Broker",
         location = Location.External,
         c4Type = C4Type.QUEUE,
-        sprite = IconRegistry.spriteForName("kafka"),
+        sprite = SpriteLibrary.spriteByName("logos-kafka"),
     )
     private val topic = broker.container(
         "my.topic",
         "external topic",
         c4Type = C4Type.QUEUE,
-        sprite = IconRegistry.spriteForName("kafka"),
+        sprite = SpriteLibrary.spriteByName("logos-kafka-img"),
         usedBy = listOf(
             Dependency(backendApplication, "reads topic", "Avro", interactionStyle = Asynchronous)
         )
@@ -98,7 +101,7 @@ class ContainerViewTest {
         description = "some database",
         c4Type = C4Type.DATABASE,
         technology = "postgres",
-        sprite = IconRegistry.spriteForName("postgresql"),
+        sprite = SpriteLibrary.spriteByName("logos-postgresql-img"),
         usedBy = listOf(Dependency(backendApplication, "CRUD", "JPA"))
     )
 
@@ -118,7 +121,7 @@ class ContainerViewTest {
             name = "Android User",
             description = "some Android user",
             location = Location.External,
-            sprite = IconRegistry.spriteForName("android"),
+            sprite = SpriteLibrary.spriteByName("logos-android-icon"),
             uses = listOf(Dependency(app, "uses app"))
         )
         model.softwareSystem(

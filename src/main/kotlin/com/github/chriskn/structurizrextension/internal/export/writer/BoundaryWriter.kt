@@ -46,7 +46,7 @@ internal object BoundaryWriter {
         writer.writeLine(
             "System_Boundary(${idOf(
                 softwareSystem
-            )}, ${softwareSystem.name}${tagsToPlantUmlSting(softwareSystem)}) ${determineBoundaryStartSymbol(view)} "
+            )}, ${softwareSystem.name}${tagsToPlantUmlSting(softwareSystem)}) ${determineBoundaryStartSymbol(view)}"
         )
         writer.indent()
     }
@@ -60,7 +60,7 @@ internal object BoundaryWriter {
         writer.writeLine(
             """Container_Boundary("${
                 idOf(container)
-            }_boundary", "${container.name}" ${tagsToPlantUmlSting(container)})${determineBoundaryStartSymbol(view)} """
+            }_boundary", "${container.name}" ${tagsToPlantUmlSting(container)})${determineBoundaryStartSymbol(view)}"""
         )
         writer.indent()
     }
