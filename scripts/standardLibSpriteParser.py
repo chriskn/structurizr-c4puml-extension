@@ -4,21 +4,23 @@ import os
 import glob
 
 STANDARD_LIB_FOLDER = "../../plantuml-stdlib/stdlib"
-STANDARD_LIB_FOLDER_URL = "https://github.com/plantuml/plantuml-stdlib/tree/master/stdlib"
+STANDARD_LIB_FOLDER_URL = (
+    "https://github.com/plantuml/plantuml-stdlib/tree/master/stdlib"
+)
 
-AWS_STANDARD_LIB_FOLDER =  "/awslib14/"
+AWS_STANDARD_LIB_FOLDER = "/awslib14/"
 AWS_OUTPUT_FILE_PATH = "../src/main/resources/sprites/aws_stdlib_sprites.json"
 
-AZURE_STANDARD_LIB_FOLDER =  "/azure/"
+AZURE_STANDARD_LIB_FOLDER = "/azure/"
 AZURE_OUTPUT_FILE_PATH = "../src/main/resources/sprites/azure_stdlib_sprites.json"
 
-ELASTIC_STANDARD_LIB_FOLDER =  "/elastic/"
+ELASTIC_STANDARD_LIB_FOLDER = "/elastic/"
 ELASTIC_OUTPUT_FILE_PATH = "../src/main/resources/sprites/elastic_stdlib_sprites.json"
 
-GCP_STANDARD_LIB_FOLDER =  "/gcp/"
+GCP_STANDARD_LIB_FOLDER = "/gcp/"
 GCP_OUTPUT_FILE_PATH = "../src/main/resources/sprites/gcp_stdlib_sprites.json"
 
-K8S_STANDARD_LIB_FOLDER =  "/k8s/"
+K8S_STANDARD_LIB_FOLDER = "/k8s/"
 K8S_OUTPUT_FILE_PATH = "../src/main/resources/sprites/k8s_stdlib_sprites.json"
 
 CLOUDINSIGHT_STANDARD_LIB_FOLDER = "/cloudinsight/"
@@ -30,16 +32,16 @@ CLOUDINSIGHT_OUTPUT_FILE_PATH = (
 MATERIAL_STANDARD_LIB_FOLDER = "/material/"
 MATERIAL_OUTPUT_FILE_PATH = "../src/main/resources/sprites/material_stdlib_sprites.json"
 
-LOGOS_STANDARD_LIB_FOLDER =  "/logos/"
+LOGOS_STANDARD_LIB_FOLDER = "/logos/"
 LOGOS_OUTPUT_FILE_PATH = "../src/main/resources/sprites/logos_stdlib_sprites.json"
 
 OFFICE_STANDARD_LIB_FOLDER = "/office/"
 OFFICE_OUTPUT_FILE_PATH = "../src/main/resources/sprites/office_stdlib_sprites.json"
 
-OSA_STANDARD_LIB_FOLDER =  "/osa/"
+OSA_STANDARD_LIB_FOLDER = "/osa/"
 OSA_OUTPUT_FILE_PATH = "../src/main/resources/sprites/osa_stdlib_sprites.json"
 
-TUPADR3_STANDARD_LIB_FOLDER =  "/tupadr3/"
+TUPADR3_STANDARD_LIB_FOLDER = "/tupadr3/"
 TUPADR3_OUTPUT_FILE_PATH = "../src/main/resources/sprites/tupadr3_stdlib_sprites.json"
 
 # violet
@@ -128,12 +130,7 @@ def write_sprite_set(
         f.write(json.dumps(sprite_set))
 
 
-def create_sprites(
-    paths,
-    color_function,
-    name_function,
-    reference_function
-):
+def create_sprites(paths, color_function, name_function, reference_function):
     json_sprites = []
     for path in paths:
         category = path.split("/")[1]
@@ -169,19 +166,19 @@ def process_sprite_folder(
     additional_includes=None,
     color_function=None,
     name_function=default_name_function,
-    reference_function=None
+    reference_function=None,
 ):
-    paths = parse_paths(STANDARD_LIB_FOLDER+sprite_source_folder, sprite_fileending)
+    paths = parse_paths(STANDARD_LIB_FOLDER + sprite_source_folder, sprite_fileending)
     json_sprites = create_sprites(
         paths=paths,
         color_function=color_function,
         name_function=name_function,
-        reference_function=reference_function
+        reference_function=reference_function,
     )
     write_sprite_set(
         output_file=output_file,
         sprite_set_name=sprite_set_name,
-        sprite_set_source=STANDARD_LIB_FOLDER_URL+sprite_source_folder,
+        sprite_set_source=STANDARD_LIB_FOLDER_URL + sprite_source_folder,
         json_sprites=json_sprites,
         additional_includes=additional_includes,
     )
@@ -242,7 +239,7 @@ if __name__ == "__main__":
         sprite_source_folder=MATERIAL_STANDARD_LIB_FOLDER,
         output_file=MATERIAL_OUTPUT_FILE_PATH,
         sprite_set_name="Google Material plantuml-stdlib Sprites",
-        reference_function=lambda path: "ma_"+path.split("/")[-1]
+        reference_function=lambda path: "ma_" + path.split("/")[-1],
     )
 
     process_sprite_folder(

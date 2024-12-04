@@ -1,8 +1,8 @@
 package com.github.chriskn.structurizrextension.internal.export.writer
 
 import com.github.chriskn.structurizrextension.api.view.layout.C4PlantUmlLayout
-import com.github.chriskn.structurizrextension.api.view.layout.LayoutRegistry
 import com.github.chriskn.structurizrextension.api.view.layout.Legend
+import com.github.chriskn.structurizrextension.internal.view.layout.LayoutRegistry
 import com.structurizr.export.IndentingWriter
 import com.structurizr.view.ModelView
 

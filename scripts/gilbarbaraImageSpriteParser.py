@@ -2,21 +2,25 @@ import re
 import json
 import urllib.request
 
-GILBARBARA_ICON_URL = "https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/v1.1"
-SPRITE_FILE_URL = "https://raw.githubusercontent.com/rabelenda/gilbarbara-plantuml-sprites/refs/heads/master/sprites-list.md"
+BASE_PATH = (
+    "https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites"
+)
+GILBARBARA_ICON_URL = BASE_PATH + "/v1.1"
+SPRITE_FILE_URL = BASE_PATH + "/refs/heads/master/sprites-list.md"
 OUTPUT_FILE_JSON = "../src/main/resources/sprites/gilbarbara_image_sprites.json"
 URL_VAR_NAME = "GILBARBARA_PNG_URL"
-ADDITIOANL_DEFINITIONS = [URL_VAR_NAME + " " + GILBARBARA_ICON_URL+"/pngs"]
+ADDITIOANL_DEFINITIONS = [URL_VAR_NAME + " " + GILBARBARA_ICON_URL + "/pngs"]
 
 
 def icon_names_to_path():
     sprite_defs = urllib.request.urlopen(SPRITE_FILE_URL).readlines()
+    index_to_start = sprite_defs.index(b"|--------|------|\n") + 1
     icon_name_to_path = {}
-    for sprite_def in sprite_defs[5:]:
-        sprite_values = sprite_def.decode("utf-8").split("|")
-        name = sprite_values[1] + "-img"
-        icon = sprite_values[2]
-        icon_path = re.search(r"\((.+)\)", icon).group(1).replace("pngs","")
+    for sprite_def in sprite_defs[index_to_start:]:
+        sprite_values = sprite_def.decode("utf-8").replace("🧟", "").split("|")
+        name = sprite_values[1].strip() + "-img"
+        icon = sprite_values[2].strip()
+        icon_path = re.search(r"\((.+)\)", icon).group(1).replace("pngs", "")
         icon_path = "img:" + GILBARBARA_ICON_URL + icon_path
         icon_name_to_path[name] = icon_path
     return icon_name_to_path

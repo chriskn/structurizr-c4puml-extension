@@ -1,6 +1,8 @@
-package com.github.chriskn.structurizrextension.api.view.layout
+package com.github.chriskn.structurizrextension.internal.view.layout
 
-object LayoutRegistry {
+import com.github.chriskn.structurizrextension.api.view.layout.C4PlantUmlLayout
+
+internal object LayoutRegistry {
 
     private val keyToLayout = mutableMapOf<String, C4PlantUmlLayout>()
 
