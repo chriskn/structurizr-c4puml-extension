@@ -1,4 +1,4 @@
-package com.github.chriskn.structurizrextension.icons
+package com.github.chriskn.structurizrextension.view.layout
 
 import com.github.chriskn.structurizrextension.api.model.softwareSystem
 import com.github.chriskn.structurizrextension.api.model.usedBy

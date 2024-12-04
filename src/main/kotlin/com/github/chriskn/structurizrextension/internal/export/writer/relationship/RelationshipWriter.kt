@@ -3,12 +3,12 @@ package com.github.chriskn.structurizrextension.internal.export.writer.relations
 import com.github.chriskn.structurizrextension.api.model.link
 import com.github.chriskn.structurizrextension.api.view.dynamic.renderAsSequenceDiagram
 import com.github.chriskn.structurizrextension.api.view.layout.DependencyConfiguration
-import com.github.chriskn.structurizrextension.api.view.layout.LayoutRegistry
 import com.github.chriskn.structurizrextension.api.view.layout.Mode
 import com.github.chriskn.structurizrextension.internal.export.idOf
 import com.github.chriskn.structurizrextension.internal.export.writer.PropertyWriter
 import com.github.chriskn.structurizrextension.internal.export.writer.getUsedIconOrSprite
 import com.github.chriskn.structurizrextension.internal.export.writer.linkString
+import com.github.chriskn.structurizrextension.internal.view.layout.LayoutRegistry
 import com.structurizr.export.IndentingWriter
 import com.structurizr.model.InteractionStyle
 import com.structurizr.model.Relationship

@@ -6,12 +6,12 @@ import com.github.chriskn.structurizrextension.api.icons.IconRegistry
 import com.github.chriskn.structurizrextension.api.model.icon
 import com.github.chriskn.structurizrextension.api.model.sprite
 import com.github.chriskn.structurizrextension.api.view.dynamic.renderAsSequenceDiagram
-import com.github.chriskn.structurizrextension.api.view.layout.LayoutRegistry
 import com.github.chriskn.structurizrextension.api.view.sprite.sprites.PlantUmlSprite
 import com.github.chriskn.structurizrextension.api.view.style.styles.BoundaryStyle
 import com.github.chriskn.structurizrextension.api.view.style.styles.DependencyStyle
 import com.github.chriskn.structurizrextension.api.view.style.styles.ElementStyle
 import com.github.chriskn.structurizrextension.api.view.style.styles.PersonStyle
+import com.github.chriskn.structurizrextension.internal.view.layout.LayoutRegistry
 import com.structurizr.export.IndentingWriter
 import com.structurizr.model.DeploymentNode
 import com.structurizr.model.ModelItem

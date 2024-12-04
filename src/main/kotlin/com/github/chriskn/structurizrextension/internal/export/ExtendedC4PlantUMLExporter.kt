@@ -1,6 +1,5 @@
 package com.github.chriskn.structurizrextension.internal.export
 
-import com.github.chriskn.structurizrextension.api.view.layout.LayoutRegistry
 import com.github.chriskn.structurizrextension.internal.export.view.ComponentViewExporter
 import com.github.chriskn.structurizrextension.internal.export.view.ContainerViewExporter
 import com.github.chriskn.structurizrextension.internal.export.view.DeploymentViewExporter
@@ -13,6 +12,7 @@ import com.github.chriskn.structurizrextension.internal.export.writer.HeaderWrit
 import com.github.chriskn.structurizrextension.internal.export.writer.PropertyWriter
 import com.github.chriskn.structurizrextension.internal.export.writer.StyleWriter
 import com.github.chriskn.structurizrextension.internal.export.writer.relationship.RelationshipWriter
+import com.github.chriskn.structurizrextension.internal.view.layout.LayoutRegistry
 import com.structurizr.export.AbstractDiagramExporter
 import com.structurizr.export.Diagram
 import com.structurizr.export.IndentingWriter
