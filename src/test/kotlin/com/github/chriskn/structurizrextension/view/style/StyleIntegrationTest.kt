@@ -135,7 +135,7 @@ class StyleIntegrationTest {
         technology = "REST",
         c4Shape = ROUNDED_BOX,
         sprite = OpenIconicSprite("&compass"),
-        legendSprite = OpenIconicSprite("&compass"),
+        legendSprite = OpenIconicSprite("&compass", scale = 1.1, color = "red"),
         legendText = "this is a legend text"
     )
     private val androidSprite = SpriteLibrary.spriteByName(

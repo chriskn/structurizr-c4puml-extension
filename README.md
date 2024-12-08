@@ -11,7 +11,7 @@ Structurizr C4-PlantUML extension aims to bridge the gap between the [structuriz
 
 ## Examples
 
-The following examples diagrams demonstrate the additional features the Structurizr C4-PlantUML extension provides: 
+The following examples diagrams demonstrate the features the Structurizr C4-PlantUML provides: 
 
 * links, icons and properties for elements and relationships
 * external containers 
@@ -20,10 +20,12 @@ The following examples diagrams demonstrate the additional features the Structur
 * differentiation between synchronous and asynchronous relationships
 * nested numbered parallel sequences for dynamic diagrams
 * advanced layout configuration for C4-PlantUML diagrams
+* sprite api allowing to use the PlantUML StdLib and custom sprite definitions
+* custom styles for model elements and relationships
 
 More examples can be found under `src/test/kotlin`
 
-### Core diagrams 
+### Core diagrams
 
 ![Example container diagram](./docs/container_example.svg)
 
@@ -43,7 +45,7 @@ val backendApplication = softwareSystem.container(
     description = "some backend app",
     technology = "Kotlin",
     tags = listOf("Tag2"),
-    icon = "docker",
+    sprite = SpriteLibrary.spriteByName("logos-docker-icon"),
     link = "https://www.google.de",
     properties = properties
 )
@@ -51,94 +53,124 @@ val app = softwareSystem.container(
     name = "App",
     description = "android app",
     technology = "Android",
-    icon = "android",
+    sprite = SpriteLibrary.spriteByName("logos-android-icon"),
 )
 val database = softwareSystem.container(
     name = "Database",
     description = "some database",
     c4Type = C4Type.DATABASE,
     technology = "postgres",
-    icon = "postgresql",
-    usedBy = listOf(Dependency(backendApplication, "CRUD", "JPA"))
+    sprite = SpriteLibrary.spriteByName("logos-postgresql"),
+    usedBy = listOf(
+        Dependency(
+            destination = backendApplication,
+            description = "CRUD",
+            technology = "JPA"
+        )
+    )
 )
 val broker = model.softwareSystem(
     name = "Broker",
     description = "Message Broker",
     location = Location.External,
     c4Type = C4Type.QUEUE,
-    icon = "kafka",
+    sprite = SpriteLibrary.spriteByName("tupadr3-devicons2-apachekafka-original-wordmark"),
 )
 val topic = broker.container(
     "my.topic",
     "external topic",
     c4Type = C4Type.QUEUE,
-    icon = "kafka",
+    sprite = SpriteLibrary.spriteByName("tupadr3-devicons2-apachekafka-original-wordmark"),
     usedBy = listOf(
-        Dependency(backendApplication, "reads topic", "Avro", interactionStyle = InteractionStyle.Asynchronous)
+        Dependency(
+            destination = backendApplication,
+            description = "reads topic",
+            technology = "Avro",
+            interactionStyle = InteractionStyle.Asynchronous
+        )
     )
 )
 val graphql = model.softwareSystem(
     name = "GraphQL",
     description = "Federated GraphQL",
     location = Location.External,
-    icon = "graphql"
+    sprite = SpriteLibrary.spriteByName("logos-graphql")
 )
 val internalSchema = graphql.container(
     name = "Internal Schema",
     description = "Schema provided by our app",
     location = Location.Internal,
     usedBy = listOf(
-        Dependency(backendApplication, "provides subgraph to"),
-        Dependency(app, "reuqest data using", "GraphQL", icon = "graphql", link = "https://graphql.org/")
+        Dependency(
+            destination = backendApplication,
+            description = "provides subgraph to"
+        ),
+        Dependency(
+            destination = app,
+            description = "reuqest data using",
+            technology = "GraphQL",
+            sprite = SpriteLibrary.spriteByName("logos-graphql"),
+            link = "https://graphql.org/"
+        )
     )
 )
 val externalSchema = graphql.container(
     name = "External Schema",
     description = "Schema provided by another team",
-    uses = listOf(Dependency(internalSchema, "extends schema"))
+    uses = listOf(Dependency(destination = internalSchema, description = "extends schema"))
 )
-val androidUser = model.person(
+model.person(
     name = "Android User",
     description = "some Android user",
     location = Location.External,
-    icon = "android",
-    uses = listOf(Dependency(app, "uses app"))
+    sprite = SpriteLibrary.spriteByName("logos-android-icon"),
+    uses = listOf(Dependency(destination = app, description = "uses app"))
 )
-val maintainer = model.person(
+model.person(
     name = "Maintainer",
     description = "some employee",
     location = Location.Internal,
     link = "https://www.google.de",
     uses = listOf(
-        Dependency(backendApplication, "Admin UI", "REST")
+        Dependency(
+            destination = backendApplication,
+            description = "Admin UI",
+            technology = "REST"
+        )
     ),
     properties = properties
 )
 
-fun createAndWriteContainerView(){
-    val containerView = workspace.views.containerView(
-        softwareSystem,
-        "ContainerWithBoundary",
-        "Example container view",
-        C4PlantUmlLayout(
-            legend = Legend.ShowLegend,
-            layout = Layout.TopDown,
-            lineType = LineType.Ortho,
-            nodeSep = 100,
-            rankSep = 130,
-            dependencyConfigurations = listOf(
-                DependencyConfiguration(filter = { it.destination == database }, direction = Direction.Right),
-                DependencyConfiguration(filter = { it.destination == topic }, direction = Direction.Up)
+val diagramKey = "ContainerWithBoundary"
+val containerView = workspace.views.containerView(
+    system = softwareSystem,
+    key = diagramKey,
+    description = "example container view",
+    layout = C4PlantUmlLayout(
+        legend = Legend.ShowLegend,
+        layout = Layout.TopDown,
+        lineType = LineType.Ortho,
+        nodeSep = 100,
+        rankSep = 130,
+        dependencyConfigurations = listOf(
+            DependencyConfiguration(
+                filter = { it.destination == database },
+                direction = Right
+            ),
+            DependencyConfiguration(
+                filter = { it.destination == topic },
+                direction = Up
             )
         )
     )
-    containerView.addAllContainers()
-    containerView.externalSoftwareSystemBoundariesVisible = true
-    containerView.add(topic)
-    containerView.add(internalSchema)
-    containerView.add(externalSchema)
-    containerView.addDependentSoftwareSystems()
-    containerView.addAllPeople()
+)
+containerView.addAllContainers()
+containerView.showExternalSoftwareSystemBoundaries = true
+containerView.add(topic)
+containerView.add(internalSchema)
+containerView.add(externalSchema)
+containerView.addDependentSoftwareSystems()
+containerView.addAllPeople()
 
     workspace.writeDiagrams(File("diagrams/"))
 }
@@ -147,27 +179,56 @@ fun createAndWriteContainerView(){
 
 As the following example shows, the C4-PlantUML extension provides, in addition to the parallel sequences provided by the Structurizr library, nested numbered parallel sequences for dynamic diagrams. 
 
-![Example dynamic diagram](./docs/dynamic_example_nested.svg)
+![Example dynamic diagram](./docs/dynamic_example_nested.png)
 
 ```kotlin
-dynamicView.add(customer, customerFrontend, "Uses")
-dynamicView.add(customerFrontend, customerService, "Updates customer information using")
-dynamicView.add(customerService, customerDatabase, "Stores data in")
-dynamicView.add(customerService, messageBus, "Sends customer update events to")
+val dynamicView: DynamicView = workspace.views.dynamicView(
+    system = customerInformationSystem,
+    key = diagramKey,
+    description = "This diagram shows what happens when a customer updates their details",
+    layout = C4PlantUmlLayout(
+        dependencyConfigurations = listOf(
+            DependencyConfiguration(
+                filter = { it.source == customerFrontend || it.destination == messageBus },
+                direction = Right
+            ),
+            DependencyConfiguration(
+                filter = { it.source == customerService && it.destination == customerFrontend },
+                direction = Left
+            ),
+            DependencyConfiguration(
+                filter = { it.source == customer },
+                direction = Right
+            ),
+            DependencyConfiguration(
+                filter = { it.destination == customer },
+                direction = Left
+            )
+        )
+    )
+)
+
+dynamicView.add(source = customer, destination = customerFrontend, description = "Uses")
+dynamicView.add(source = customerFrontend, destination = customerService, description = "Updates customer information using")
+dynamicView.add(source = customerService, destination = customerDatabase, description = "Stores data in")
+dynamicView.add(source = customerService, destination = messageBus, description = "Sends customer update events to")
 with(dynamicView.startNestedParallelSequence()) {
-    add(messageBus, reportingService, "Sends customer update events to")
+    add(source = messageBus, destination = reportingService, description = "Sends customer update events to")
     with(this.startNestedParallelSequence()) {
-        add(reportingService, reportingDatabase, "Stores data in")
+        add(source = reportingService, destination = reportingDatabase, description = "Stores data in")
         endParallelSequence()
     }
-    add(messageBus, auditingService, "Sends customer update events to")
+    add(source = messageBus, destination = auditingService, description = "Sends customer update events to")
     with(this.startNestedParallelSequence()) {
-        add(auditingService, auditStore, "Stores events in")
+        add(source = auditingService, destination = auditStore, description = "Stores events in")
         endParallelSequence()
     }
-    add(customerService, customerFrontend, "Confirms update to")
+    add(source = customerService, destination = customerFrontend, description = "Confirms update to")
     endParallelSequence()
 }
+dynamicView.add(source = customerFrontend, destination = customer, description = "Sends feedback to")
+
+assertExpectedDiagramWasWrittenForView(workspace, pathToExpectedDiagrams, diagramKey)
 ```
 
 Dynamic diagrams can also be rendered as sequence diagram by setting the property `DynamicView.renderAsSequenceDiagram` to true.
@@ -181,7 +242,7 @@ As the following example demonstrates how to model deployments and create deploy
 ![Example deployment diagram](./docs/deployment_example.svg)
 
 ```kotlin
-val mySystem = model.softwareSystem(
+  val mySystem = model.softwareSystem(
     "System container",
     "Example System",
     Location.Internal
@@ -195,22 +256,22 @@ val webApplication: Container = mySystem.container(
     "Web Application",
     "Spring Boot web application",
     technology = "Java and Spring MVC",
-    icon = "springboot"
+    sprite = SpriteLibrary.spriteByName("logos-spring"),
 )
 val database: Container = mySystem.container(
     "Database",
     "Stores data",
     technology = "PostgreSql",
-    icon = "postgresql",
+    sprite = SpriteLibrary.spriteByName("logos-postgresql"),
     c4Type = C4Type.DATABASE,
     properties = C4Properties(values = listOf(listOf("region", "eu-central-1"))),
     usedBy = listOf(Dependency(webApplication, "stores data in", "JDBC"))
 )
 val failoverDatabase: Container = mySystem.container(
-    "Failover Database",
-    database.description,
+    name = "Failover Database",
+    description = database.description,
     technology = database.technology,
-    icon = database.icon,
+    sprite = database.sprite,
     c4Type = database.c4Type,
     properties = C4Properties(values = listOf(listOf("region", "eu-west-1"))),
     usedBy = listOf(Dependency(database, "replicates data to"))
@@ -218,7 +279,7 @@ val failoverDatabase: Container = mySystem.container(
 val aws = model.deploymentNode(
     "AWS",
     "Production AWS environment",
-    icon = "aws",
+    sprite = SpriteLibrary.spriteByName("aws-Groups-AWSCloudAlt"),
     properties = C4Properties(
         header = listOf("Property", "Value", "Description"),
         values = listOf(
@@ -229,12 +290,12 @@ val aws = model.deploymentNode(
 )
 aws.deploymentNode(
     "AWS RDS",
-    icon = "rds",
+    sprite = SpriteLibrary.spriteByName("aws-database-AuroraPostgreSQLInstance"),
     hostsContainers = listOf(failoverDatabase, database)
 )
 val eks = aws.deploymentNode(
     "EKS cluster",
-    icon = "awsEKSCloud",
+    sprite = SpriteLibrary.spriteByName("aws-containers-EKSCloud"),
 )
 
 val webAppPod = eks.deploymentNode(
@@ -242,30 +303,42 @@ val webAppPod = eks.deploymentNode(
     "Web App POD"
 ).deploymentNode(
     "Web App container",
-    icon = "docker",
+    sprite = SpriteLibrary.spriteByName("logos-docker-img"),
     hostsContainers = listOf(webApplication)
 )
+val jaegerSprite = (
+        SpriteLibrary.spriteByName("tupadr3-devicons2-jaegertracing") as PlantUmlSprite
+        ).copy(color = "lightblue")
 val jaegerSidecar = webAppPod.infrastructureNode(
     "Jaeger Sidecar",
-    "Jaeger sidecar sending Traces"
+    "Jaeger sidecar sending Traces",
+    sprite = jaegerSprite
 )
-model.deploymentNode(
+val aws2 = model.deploymentNode(
     "Another AWS Account",
-    icon = "aws"
-).deploymentNode(
-    "Jaeger Container",
+    sprite = SpriteLibrary.spriteByName("aws-groups-AWSCloudAlt")
+)
+val jaegerContainer = aws2.deploymentNode(
+    name = "Jaeger Container",
+    sprite = SpriteLibrary.spriteByName("logos-docker-img"),
     usedBy = listOf(
         Dependency(
             jaegerSidecar,
             "writes traces to",
-            interactionStyle = InteractionStyle.Asynchronous,
+            interactionStyle = Asynchronous,
             link = "https://www.jaegertracing.io/",
+            sprite = SpriteLibrary.spriteByName("k8s-KubernetesCronjob"),
+            properties = C4Properties(
+                header = listOf("key", "value"),
+                values = listOf(listOf("ip", "10.234.12.13"))
+            )
         )
     )
-).infrastructureNode("Jaeger")
+)
+jaegerContainer.infrastructureNode("Jaeger", sprite = jaegerSprite)
 val appleDevice = model.deploymentNode(
     "Apple Device",
-    icon = "apple",
+    sprite = SpriteLibrary.spriteByName("tupadr3-devicons-apple"),
     hostsSystems = listOf(iosApp)
 )
 
@@ -273,7 +346,7 @@ val loadBalancer = eks.infrastructureNode(
     name = "Load Balancer",
     description = "Nginx Load Balancer",
     technology = "nginx",
-    icon = "nginx",
+    sprite = SpriteLibrary.spriteByName("logos-nginx"),
     link = "https://www.google.de",
     uses = listOf(Dependency(webAppPod, "forwards requests to")),
     usedBy = listOf(Dependency(appleDevice, "requests data from")),
@@ -283,21 +356,22 @@ val loadBalancer = eks.infrastructureNode(
     )
 )
 
-val deploymentView = views.deploymentView(
+val deploymentView =
+    views.deploymentView(
         mySystem,
-        "Deployment",
+        diagramKey,
         "A deployment diagram showing the environment.",
         C4PlantUmlLayout(
             nodeSep = 50,
             rankSep = 50,
-            layout = Layout.LeftToRight,
+            layout = LeftToRight,
             dependencyConfigurations =
             listOf(
                 DependencyConfiguration(
                     filter = {
                         it.source == loadBalancer || it.destination.name == failoverDatabase.name
                     },
-                    direction = Direction.Left
+                    direction = Right
                 )
             )
         )

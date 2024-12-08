@@ -1,5 +1,6 @@
 @startuml(id=DynamicWithBoundary)
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Dynamic.puml
+!includeurl <tupadr3/devicons2/openapi>
 
 title Reporting Service - Dynamic
 caption This diagram shows what happens when a customer updates their details
@@ -8,12 +9,12 @@ SHOW_PERSON_OUTLINE()
 LAYOUT_TOP_DOWN()
 
 System_Boundary(CustomerInformationSystem, Customer Information System) {
-  Container_Boundary("CustomerInformationSystem.ReportingService_boundary", "Reporting Service") {
+  Container_Boundary("CustomerInformationSystem.ReportingService_boundary", "Reporting Service" ){
     Component(CustomerInformationSystem.ReportingService.ReportingController, "Reporting Controller", "REST", "Reporting Controller", "")
     Component(CustomerInformationSystem.ReportingService.ReportingRepository, "Reporting Repository", "JDBC", "Reporting repository", "")
   }
 }
-RelIndex(1,CustomerInformationSystem.ReportingService.ReportingController, CustomerInformationSystem.ReportingService.ReportingRepository, "Stores entity")
+RelIndex(1,CustomerInformationSystem.ReportingService.ReportingController, CustomerInformationSystem.ReportingService.ReportingRepository, "Stores entity", $sprite="openapi")
 
 SHOW_LEGEND(true)
 

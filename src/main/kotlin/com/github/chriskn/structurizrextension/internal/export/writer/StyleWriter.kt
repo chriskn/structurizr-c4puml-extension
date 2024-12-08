@@ -197,11 +197,9 @@ internal object StyleWriter {
             if (scaleString.isBlank()) {
                 """"$url""""
             } else {
-                """"$url,$scaleString""""
+                """"$url{$scaleString}""""
             }
         }
-
-        else -> throw IllegalArgumentException("Unknown sprite type ${this::class}")
     }
 
     private fun spriteString(
