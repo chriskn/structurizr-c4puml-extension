@@ -1,11 +1,12 @@
 @startuml(id=Deployment)
+!define GILBARBARA_PNG_URL https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/v1.1/pngs
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Deployment.puml
 !includeurl <awslib14/AWSCommon>
+!includeurl <k8s/Common>
 !includeurl <awslib14/Containers/EKSCloud>
 !includeurl <awslib14/Database/AuroraPostgreSQLInstance>
 !includeurl <awslib14/Groups/AWSCloudAlt>
-!includeurl <logos/docker-icon>
-!includeurl <logos/kafka-icon>
+!includeurl <k8s/OSS/KubernetesCronjob>
 !includeurl <logos/nginx>
 !includeurl <logos/postgresql>
 !includeurl <logos/spring>
@@ -35,8 +36,8 @@ Node(Default.AWS, "AWS", "", "Production AWS environment", $sprite="AWSCloudAlt,
   }
   Node(Default.AWS.EKScluster, "EKS cluster", "", "", $sprite="EKSCloud,color=#ed7100") {
     Node(Default.AWS.EKScluster.mywebapp, "my.web.app", "", "Web App POD", "") {
-      Node(Default.AWS.EKScluster.mywebapp.WebAppcontainer, "Web App container", "", "", $sprite="docker-icon") {
-        Node(Default.AWS.EKScluster.mywebapp.WebAppcontainer.JaegerSidecar, "Jaeger Sidecar", "", "Jaeger sidecar sending Traces", $sprite="jaegertracing")
+      Node(Default.AWS.EKScluster.mywebapp.WebAppcontainer, "Web App container", "", "", $sprite="img:GILBARBARA_PNG_URL/docker.png") {
+        Node(Default.AWS.EKScluster.mywebapp.WebAppcontainer.JaegerSidecar, "Jaeger Sidecar", "", "Jaeger sidecar sending Traces", $sprite="jaegertracing,color=#add8e6")
         Container(Default.AWS.EKScluster.mywebapp.WebAppcontainer.WebApplication_1, "Web Application", "Java and Spring MVC", "Spring Boot web application", $sprite="spring")
       }
     }
@@ -46,8 +47,8 @@ Node(Default.AWS, "AWS", "", "Production AWS environment", $sprite="AWSCloudAlt,
   }
 }
 Node(Default.AnotherAWSAccount, "Another AWS Account", "", "", $sprite="AWSCloudAlt,color=#232f3e") {
-  Node(Default.AnotherAWSAccount.JaegerContainer, "Jaeger Container", "", "", "") {
-    Node(Default.AnotherAWSAccount.JaegerContainer.Jaeger, "Jaeger", "", "", "")
+  Node(Default.AnotherAWSAccount.JaegerContainer, "Jaeger Container", "", "", $sprite="img:GILBARBARA_PNG_URL/docker.png") {
+    Node(Default.AnotherAWSAccount.JaegerContainer.Jaeger, "Jaeger", "", "", $sprite="jaegertracing,color=#add8e6")
   }
 }
 Node(Default.AppleDevice, "Apple Device", "", "", $sprite="apple") {
@@ -57,7 +58,7 @@ Rel(Default.AppleDevice, Default.AWS.EKScluster.LoadBalancer, "requests data fro
 Rel_R(Default.AWS.AWSRDS.Database_1, Default.AWS.AWSRDS.FailoverDatabase_1, "replicates data to")
 SetPropertyHeader("key", "value")
 AddProperty("ip", "10.234.12.13")
-Rel(Default.AWS.EKScluster.mywebapp.WebAppcontainer.JaegerSidecar, Default.AnotherAWSAccount.JaegerContainer, "writes traces to", $sprite="kafka-icon", $link="https://www.jaegertracing.io/", $tags="async relationship")
+Rel(Default.AWS.EKScluster.mywebapp.WebAppcontainer.JaegerSidecar, Default.AnotherAWSAccount.JaegerContainer, "writes traces to", $sprite="KubernetesCronjob,color=#66abdd", $link="https://www.jaegertracing.io/", $tags="async relationship")
 Rel_R(Default.AWS.EKScluster.LoadBalancer, Default.AWS.EKScluster.mywebapp.WebAppcontainer, "forwards requests to")
 Rel(Default.AWS.EKScluster.mywebapp.WebAppcontainer.WebApplication_1, Default.AWS.AWSRDS.Database_1, "stores data in", "JDBC")
 

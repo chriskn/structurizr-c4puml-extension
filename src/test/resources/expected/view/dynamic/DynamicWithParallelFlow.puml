@@ -1,6 +1,8 @@
 @startuml(id=DynamicWithParallelFlow)
+!define GILBARBARA_PNG_URL https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/v1.1/pngs
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Dynamic.puml
 !includeurl <tupadr3/devicons/mysql>
+!includeurl <tupadr3/devicons2/oracle_original>
 
 title Customer Information System - Dynamic
 caption This diagram shows what happens when a customer updates their details
@@ -13,11 +15,11 @@ AddRelTag("async relationship", $lineStyle=DashedLine(), $legendText=async relat
 Person(Customer, "Customer", "A costumer", "")
 Container(CustomerInformationSystem.CustomerFrontendApplication, "Customer Frontend Application", "Angular", "Allows customers to manage their profile", "")
 Container(CustomerInformationSystem.CustomerService, "Customer Service", "Java and Spring Boot", "The point of access for customer information.", "")
-ContainerDb(CustomerInformationSystem.CustomerDatabase, "Customer Database", "Oracle", "Stores customer information", "")
-ContainerQueue(CustomerInformationSystem.MessageBus, "Message Bus", "RabbitMQ", "Transport for business events.", "")
+ContainerDb(CustomerInformationSystem.CustomerDatabase, "Customer Database", "Oracle", "Stores customer information", $sprite="oracle_original")
+ContainerQueue(CustomerInformationSystem.MessageBus, "Message Bus", "RabbitMQ", "Transport for business events.", $sprite="img:GILBARBARA_PNG_URL/rabbitmq-icon.png{scale=0.3}")
 Container(CustomerInformationSystem.ReportingService, "Reporting Service", "Ruby", "Creates normalised data for reporting purposes.", "")
 Container(CustomerInformationSystem.AuditingService, "Auditing Service", "C#, Net", "Provides organisation-wide auditing facilities.", "")
-ContainerDb(CustomerInformationSystem.ReportingDatabase, "Reporting Database", "MySql", "Stores a normalised version of all business data for ad hoc reporting purposes", "")
+ContainerDb(CustomerInformationSystem.ReportingDatabase, "Reporting Database", "MySql", "Stores a normalised version of all business data for ad hoc reporting purposes", $sprite="mysql")
 ContainerDb(CustomerInformationSystem.AuditStore, "Audit Store", "Event Store", "Stores information about events that have happened", "")
 RelIndex(1,Customer, CustomerInformationSystem.CustomerFrontendApplication, "Uses")
 RelIndex(2,CustomerInformationSystem.CustomerFrontendApplication, CustomerInformationSystem.CustomerService, "Updates customer information using", "JSON/HTTPS")
@@ -28,7 +30,7 @@ RelIndex(4,CustomerInformationSystem.CustomerService, CustomerInformationSystem.
 RelIndex(5,CustomerInformationSystem.MessageBus, CustomerInformationSystem.ReportingService, "Sends customer update events to", $tags="async relationship")
 RelIndex(5,CustomerInformationSystem.MessageBus, CustomerInformationSystem.AuditingService, "Sends customer update events to", $tags="async relationship")
 RelIndex(5,CustomerInformationSystem.CustomerService, CustomerInformationSystem.CustomerFrontendApplication, "Confirms update to", "WebSocket", $link="www.bing.com", $tags="async relationship")
-RelIndex(6,CustomerInformationSystem.ReportingService, CustomerInformationSystem.ReportingDatabase, "Stores data in", $sprite="mysql")
+RelIndex(6,CustomerInformationSystem.ReportingService, CustomerInformationSystem.ReportingDatabase, "Stores data in")
 RelIndex(6,CustomerInformationSystem.AuditingService, CustomerInformationSystem.AuditStore, "Stores events in")
 
 SHOW_LEGEND(true)

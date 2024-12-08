@@ -15,6 +15,7 @@ import com.github.chriskn.structurizrextension.api.view.layout.DependencyConfigu
 import com.github.chriskn.structurizrextension.api.view.layout.Direction.Right
 import com.github.chriskn.structurizrextension.api.view.layout.Layout.LeftToRight
 import com.github.chriskn.structurizrextension.api.view.sprite.library.SpriteLibrary
+import com.github.chriskn.structurizrextension.api.view.sprite.sprites.PlantUmlSprite
 import com.github.chriskn.structurizrextension.assertExpectedDiagramWasWrittenForView
 import com.structurizr.Workspace
 import com.structurizr.model.Container
@@ -97,33 +98,39 @@ class DeploymentViewTest {
             "Web App POD"
         ).deploymentNode(
             "Web App container",
-            sprite = SpriteLibrary.spriteByName("logos-docker-icon"),
+            sprite = SpriteLibrary.spriteByName("logos-docker-img"),
             hostsContainers = listOf(webApplication)
         )
+        val jaegerSprite = (
+            SpriteLibrary.spriteByName("tupadr3-devicons2-jaegertracing") as PlantUmlSprite
+            ).copy(color = "lightblue")
         val jaegerSidecar = webAppPod.infrastructureNode(
             "Jaeger Sidecar",
             "Jaeger sidecar sending Traces",
-            sprite = SpriteLibrary.spriteByName("tupadr3-devicons2-jaegertracing")
+            sprite = jaegerSprite
         )
-        model.deploymentNode(
+        val aws2 = model.deploymentNode(
             "Another AWS Account",
             sprite = SpriteLibrary.spriteByName("aws-groups-AWSCloudAlt")
-        ).deploymentNode(
-            "Jaeger Container",
+        )
+        val jaegerContainer = aws2.deploymentNode(
+            name = "Jaeger Container",
+            sprite = SpriteLibrary.spriteByName("logos-docker-img"),
             usedBy = listOf(
                 Dependency(
                     jaegerSidecar,
                     "writes traces to",
                     interactionStyle = Asynchronous,
-                    sprite = SpriteLibrary.spriteByName("logos-kafka-icon"),
                     link = "https://www.jaegertracing.io/",
+                    sprite = SpriteLibrary.spriteByName("k8s-KubernetesCronjob"),
                     properties = C4Properties(
                         header = listOf("key", "value"),
                         values = listOf(listOf("ip", "10.234.12.13"))
                     )
                 )
             )
-        ).infrastructureNode("Jaeger")
+        )
+        jaegerContainer.infrastructureNode("Jaeger", sprite = jaegerSprite)
         val appleDevice = model.deploymentNode(
             "Apple Device",
             sprite = SpriteLibrary.spriteByName("tupadr3-devicons-apple"),

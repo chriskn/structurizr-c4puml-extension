@@ -1,7 +1,8 @@
 package com.github.chriskn.structurizrextension.view
 
 import com.github.chriskn.structurizrextension.api.model.C4Properties
-import com.github.chriskn.structurizrextension.api.model.C4Type
+import com.github.chriskn.structurizrextension.api.model.C4Type.DATABASE
+import com.github.chriskn.structurizrextension.api.model.C4Type.QUEUE
 import com.github.chriskn.structurizrextension.api.model.Dependency
 import com.github.chriskn.structurizrextension.api.model.component
 import com.github.chriskn.structurizrextension.api.model.container
@@ -18,6 +19,7 @@ import com.github.chriskn.structurizrextension.api.view.layout.Direction.Right
 import com.github.chriskn.structurizrextension.api.view.layout.Mode.Neighbor
 import com.github.chriskn.structurizrextension.api.view.showExternalBoundaries
 import com.github.chriskn.structurizrextension.api.view.sprite.library.SpriteLibrary
+import com.github.chriskn.structurizrextension.api.view.sprite.sprites.ImageSprite
 import com.github.chriskn.structurizrextension.assertExpectedDiagramWasWrittenForView
 import com.structurizr.Workspace
 import com.structurizr.model.InteractionStyle.Asynchronous
@@ -101,12 +103,21 @@ class DynamicViewTest {
                     DependencyConfiguration(
                         filter = { it.source == customerService && it.destination == customerFrontend },
                         direction = Left
+                    ),
+                    DependencyConfiguration(
+                        filter = { it.source == customer },
+                        direction = Right
+                    ),
+                    DependencyConfiguration(
+                        filter = { it.destination == customer },
+                        direction = Left
                     )
                 )
             )
         )
 
         configureWithNestedParallelNumbering(dynamicView)
+
         dynamicView.renderAsSequenceDiagram = asSequenceDiagram
 
         assertExpectedDiagramWasWrittenForView(workspace, pathToExpectedDiagrams, diagramKey)
@@ -282,14 +293,17 @@ class DynamicViewTest {
         "Customer Database",
         "Stores customer information",
         technology = "Oracle",
-        c4Type = C4Type.DATABASE,
+        sprite = SpriteLibrary.spriteByName("tupadr3-devicons2-oracle-original"),
+        c4Type = DATABASE,
         usedBy = listOf(Dependency(customerService, "", technology = "JDBC", link = "www.google.com"))
     )
+    val rabbitMqSprite = SpriteLibrary.spriteByName("logos-rabbitmq-icon-img") as ImageSprite
     private val messageBus = customerInformationSystem.container(
         "Message Bus",
         "Transport for business events.",
         technology = "RabbitMQ",
-        c4Type = C4Type.QUEUE,
+        c4Type = QUEUE,
+        sprite = rabbitMqSprite.copy(scale = 0.3),
         usedBy = listOf(
             Dependency(
                 customerService,
@@ -312,8 +326,9 @@ class DynamicViewTest {
         "Reporting Database",
         "Stores a normalised version of all business data for ad hoc reporting purposes",
         technology = "MySql",
-        c4Type = C4Type.DATABASE,
-        usedBy = listOf(Dependency(reportingService, "", sprite = SpriteLibrary.spriteByName("tupadr3-devicons-mysql")))
+        c4Type = DATABASE,
+        sprite = SpriteLibrary.spriteByName("tupadr3-devicons-mysql"),
+        usedBy = listOf(Dependency(reportingService, ""))
     )
     private val auditingService = customerInformationSystem.container(
         "Auditing Service",
@@ -325,7 +340,7 @@ class DynamicViewTest {
         "Audit Store",
         "Stores information about events that have happened",
         technology = "Event Store",
-        c4Type = C4Type.DATABASE,
+        c4Type = DATABASE,
         usedBy = listOf(Dependency(auditingService, ""))
     )
     private val reportingController = reportingService.component(
@@ -337,6 +352,8 @@ class DynamicViewTest {
         "Reporting Repository",
         "Reporting repository",
         technology = "JDBC",
-        usedBy = listOf(Dependency(reportingController, ""))
+        usedBy = listOf(
+            Dependency(reportingController, "", sprite = SpriteLibrary.spriteByName("tupadr3-devicons2-openapi"))
+        )
     )
 }

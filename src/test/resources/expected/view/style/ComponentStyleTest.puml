@@ -10,7 +10,7 @@ SHOW_PERSON_OUTLINE()
 LAYOUT_TOP_DOWN()
 
 AddRelTag("Dependency Style", $sprite="cell_phone_android_stand_alone", $lineColor=#008000, $textColor=#aa9999, $techn=Android, $lineStyle=DottedLine(), $lineThickness=2, $legendSprite="cell_phone_android_stand_alone,scale=0.3,color=#008000", $legendText=Android user uses)
-AddElementTag("Component Style", $sprite="&compass", $bgColor=#ffffff, $fontColor=#ff0000, $borderColor=#800080, $borderStyle=BoldLine(), $borderThickness=5, $shadowing=false, $shape=RoundedBoxShape(), $techn=REST, $legendSprite="&compass", $legendText=this is a legend text)
+AddElementTag("Component Style", $sprite="&compass", $bgColor=#ffffff, $fontColor=#ff0000, $borderColor=#800080, $borderStyle=BoldLine(), $borderThickness=5, $shadowing=false, $shape=RoundedBoxShape(), $techn=REST, $legendSprite="&compass,scale=1.1,color=#ff0000", $legendText=this is a legend text)
 AddBoundaryTag("Boundary Style", $bgColor=#00ffff, $fontColor=#008000, $borderColor=#ff0000, $borderStyle=DottedLine(), $borderThickness=4, $shadowing=false, $legendText=this is a system)
 AddPersonTag("Person Style", $sprite="apple,scale=0.5,color=#008000", $bgColor=#00ff00, $fontColor=#0000ff, $borderColor=#ff0000, $borderStyle=DashedLine(), $borderThickness=4, $shadowing=false, $shape=EightSidedShape(), $legendText=this is a apple)
 
