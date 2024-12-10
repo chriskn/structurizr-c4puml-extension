@@ -1,5 +1,6 @@
 package com.github.chriskn.structurizrextension.view.sprite.library
 
+import com.fasterxml.jackson.core.JsonParseException
 import com.github.chriskn.structurizrextension.api.view.sprite.library.SpriteLibrary
 import com.github.chriskn.structurizrextension.api.view.sprite.sprites.ImageSprite
 import com.github.chriskn.structurizrextension.api.view.sprite.sprites.OpenIconicSprite
@@ -7,9 +8,6 @@ import com.github.chriskn.structurizrextension.api.view.sprite.sprites.PlantUmlS
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import java.io.File
-import java.io.FileNotFoundException
-import java.net.URI
 
 private const val EXISTING_SPRITE_NAME = "logos-DocKer-Icon"
 
@@ -58,9 +56,8 @@ class SpriteLibraryTest {
     @Test
     fun `loadSpriteSet loads minimal test sprite set`() {
         val expectedSpriteName = "TestSprite"
-        val spriteSetPath = this.javaClass.getResource("/input/sprites/minimal_sprite_set.json")!!
 
-        val spriteSet = SpriteLibrary.loadSpriteSet(spriteSetPath.toURI())
+        val spriteSet = SpriteLibrary.loadSpriteSet("/input/sprites/minimal_sprite_set.json")
         assertThat(spriteSet.sprites).hasSize(1)
 
         val spriteFromLibrary = SpriteLibrary.spriteByName(expectedSpriteName)
@@ -81,9 +78,8 @@ class SpriteLibraryTest {
             additionalIncludes = setOf("common_include.puml", "<local_include>"),
             reference = "test_reference"
         )
-        val spriteSetPath = this.javaClass.getResource("/input/sprites/max_sprite_set.json")!!
 
-        val spriteSet = SpriteLibrary.loadSpriteSet(spriteSetPath.toURI())
+        val spriteSet = SpriteLibrary.loadSpriteSet("/input/sprites/max_sprite_set.json")
         val plantUmlSprite = spriteSet.sprites.first { it.name == expectedPlantUmlSprite.name }
         val plantUmlSpriteFromLib = SpriteLibrary.spriteByName(expectedPlantUmlSprite.name)
         assertThat(plantUmlSprite).isEqualTo(plantUmlSpriteFromLib)
@@ -98,9 +94,8 @@ class SpriteLibraryTest {
             scale = 1.5,
             additionalDefinitions = setOf("common_definition", "local_definition_img"),
         )
-        val spriteSetPath = this.javaClass.getResource("/input/sprites/max_sprite_set.json")!!
 
-        val spriteSet = SpriteLibrary.loadSpriteSet(spriteSetPath.toURI())
+        val spriteSet = SpriteLibrary.loadSpriteSet("/input/sprites/max_sprite_set.json")
         val imageSprite = spriteSet.sprites.first { it.name == expectedImageSprite.name }
         val imageSpriteFromLib = SpriteLibrary.spriteByName(expectedImageSprite.name!!)
         assertThat(imageSprite).isEqualTo(imageSpriteFromLib)
@@ -114,9 +109,8 @@ class SpriteLibraryTest {
             color = "#ffffff",
             scale = 1.2
         )
-        val spriteSetPath = this.javaClass.getResource("/input/sprites/max_sprite_set.json")!!
 
-        val spriteSet = SpriteLibrary.loadSpriteSet(spriteSetPath.toURI())
+        val spriteSet = SpriteLibrary.loadSpriteSet("/input/sprites/max_sprite_set.json")
         val openIconicSprite = spriteSet.sprites.first { it.name == expectedOpenIconicSprite.name }
         val openIconicSpriteFromLib = SpriteLibrary.spriteByName(expectedOpenIconicSprite.name)
         assertThat(openIconicSprite).isEqualTo(openIconicSpriteFromLib)
@@ -126,23 +120,22 @@ class SpriteLibraryTest {
     @Test
     fun `loadSpriteSet returns ImageSprites without name`() {
         val sprites = SpriteLibrary.loadSpriteSet(
-            this.javaClass.getResource("/input/sprites/unnamed_image_sprite_sprite_set.json")!!.toURI()
+            "/input/sprites/unnamed_image_sprite_sprite_set.json"
         )
         assertThat(sprites.sprites).hasSize(1)
     }
 
     @Test
     fun `loadSpriteSet throws Exception when url cant be resolved`() {
-        // <java.net.ConnectException> vs <java.io.FileNotFoundException> depending on jvm version
-        assertThrows<Exception> {
-            SpriteLibrary.loadSpriteSet(URI("http://localhost/not_existing"))
+        assertThrows<IllegalArgumentException> {
+            SpriteLibrary.loadSpriteSet("http://localhost/not_existing")
         }
     }
 
     @Test
     fun `loadSpriteSet throws FileNotFoundException when no file exists under path`() {
-        assertThrows<FileNotFoundException> {
-            SpriteLibrary.loadSpriteSet(File("/input/sprites/").toURI())
+        assertThrows<JsonParseException> {
+            SpriteLibrary.loadSpriteSet("/input/sprites/")
         }
     }
 }

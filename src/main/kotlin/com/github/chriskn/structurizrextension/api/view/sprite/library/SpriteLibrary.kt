@@ -4,9 +4,8 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.github.chriskn.structurizrextension.api.view.sprite.sprites.ImageSprite
 import com.github.chriskn.structurizrextension.api.view.sprite.sprites.PlantUmlSprite
 import com.github.chriskn.structurizrextension.api.view.sprite.sprites.Sprite
-import java.net.URI
-import kotlin.io.path.listDirectoryEntries
-import kotlin.io.path.toPath
+import java.io.BufferedReader
+import java.io.InputStreamReader
 
 /**
  * Sprite library
@@ -21,15 +20,25 @@ object SpriteLibrary {
 
     private val spritesByName: MutableMap<String, Sprite> = mutableMapOf()
 
-    private val defaultSpriteSetPaths = this.javaClass.getResource(DEFAULT_SPRITES_FOLDER)
-        ?.toURI()
-        ?.toPath()
-        ?.listDirectoryEntries()
-        .orEmpty()
+    private val spriteSetNames = listOf(
+        "aws_stdlib_sprites.json",
+        "azure_stdlib_sprites.json",
+        "cloudinsight_stdlib_sprites.json",
+        "elastic_stdlib_sprites.json",
+        "gcp_stdlib_sprites.json",
+        "gilbarbara_image_sprites.json",
+        "k8s_stdlib_sprites.json",
+        "logos_stdlib_sprites.json",
+        "material_stdlib_sprites.json",
+        "office_stdlib_sprites.json",
+        "osa_stdlib_sprites.json",
+        "tupadr3_stdlib_sprites.json",
+    )
 
     init {
-        defaultSpriteSetPaths.map { spriteSetPath ->
-            loadSpriteSet(spriteSetPath.toUri())
+        spriteSetNames.forEach { spriteSetName ->
+            val spriteSetPath = DEFAULT_SPRITES_FOLDER + spriteSetName
+            loadSpriteSet(spriteSetPath)
         }
     }
 
@@ -80,16 +89,22 @@ object SpriteLibrary {
      *
      * Loads a [SpriteSet] json from the given URL and adds the contained sprites to the library
      *
-     * @param spriteSetJsonUri URI pointing to [SpriteSet] json file
+     * @param spriteSetPath path pointing to [SpriteSet] json file
      * @return the loaded SpriteSet
      */
-    fun loadSpriteSet(spriteSetJsonUri: URI): SpriteSet {
-        val spriteSet = jacksonObjectMapper().readValue(spriteSetJsonUri.toURL(), SpriteSet::class.java)
-        val configuredSprites = spriteSet.sprites.map { sprite ->
-            configureSprite(sprite, spriteSet)
-        }.toSet()
-        addSpritesByName(configuredSprites)
-        return spriteSet.copy(sprites = configuredSprites)
+    fun loadSpriteSet(spriteSetPath: String): SpriteSet {
+        val spriteSetStream = this.javaClass.getResourceAsStream(spriteSetPath)
+            ?: throw IllegalArgumentException("SpriteSet not found under path: $spriteSetPath")
+        BufferedReader(
+            InputStreamReader(spriteSetStream, Charsets.UTF_8)
+        ).use { reader ->
+            val spriteSet = jacksonObjectMapper().readValue(reader.readText(), SpriteSet::class.java)
+            val configuredSprites = spriteSet.sprites.map { sprite ->
+                configureSprite(sprite, spriteSet)
+            }.toSet()
+            addSpritesByName(configuredSprites)
+            return spriteSet.copy(sprites = configuredSprites)
+        }
     }
 
     private fun addSpritesByName(sprites: Set<Sprite>) {
