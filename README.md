@@ -5,13 +5,13 @@
 Structurizr C4-PlantUML extension aims to bridge the gap between the [structurizr java library](https://github.com/structurizr/java) and [C4-PlantUML](https://github.com/plantuml-stdlib/C4-PlantUML) by extending the structurizr model and providing an extended C4-PlantUML exporter. It is written in Kotlin.   
 
 ## Table of contents
-  * [Examples](#example)
+  * [Example Diagrams](#example-diagrams)
   * [How to use it](#how-to-use-it)
   * [Related resources](#related-resources)
 
-## Examples
+## Example Diagrams
 
-The following examples diagrams demonstrate the features the Structurizr C4-PlantUML provides: 
+The following example diagrams demonstrate the features the Structurizr C4-PlantUML provides: 
 
 * links, icons and properties for elements and relationships
 * external containers 
@@ -172,12 +172,12 @@ containerView.add(externalSchema)
 containerView.addDependentSoftwareSystems()
 containerView.addAllPeople()
 
-    workspace.writeDiagrams(File("diagrams/"))
+workspace.writeDiagrams(File("diagrams/"))
 }
 ```
 ### Dynamic diagrams
 
-As the following example shows, the C4-PlantUML extension provides, in addition to the parallel sequences provided by the Structurizr library, nested numbered parallel sequences for dynamic diagrams. 
+As the following example shows, in addition to the parallel sequences provided by the Structurizr library, nested numbered parallel sequences for dynamic diagrams are supported. 
 
 ![Example dynamic diagram](./docs/dynamic_example_nested.png)
 
@@ -237,12 +237,12 @@ Dynamic diagrams can also be rendered as sequence diagram by setting the propert
 
 ### Deployment diagrams
 
-As the following example demonstrates how to model deployments and create deployment diagrams using the C4-PlantUML extension.
+As the following example demonstrates how to model deployments and create deployment diagrams.
 
 ![Example deployment diagram](./docs/deployment_example.svg)
 
 ```kotlin
-  val mySystem = model.softwareSystem(
+val mySystem = model.softwareSystem(
     "System container",
     "Example System",
     Location.Internal
@@ -379,7 +379,7 @@ val deploymentView =
 deploymentView.addDefaultElements()
 ```
 
-## How to use it 
+## How to use it
 
 Structurizr C4-PlantUML extension is available in maven central. 
 
