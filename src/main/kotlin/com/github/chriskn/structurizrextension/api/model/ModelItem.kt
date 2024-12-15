@@ -7,7 +7,6 @@ import com.structurizr.model.ModelItem
 
 private const val C4_PROPERTY_PREFIX = "additionalProperty:"
 private const val C4_PROPERTY_HEADER_PREFIX = "additionalPropertyHeader"
-private const val ICON_PROPERTY = "icon"
 private const val SPRITE_PROPERTY = "sprite"
 private const val LINK_PROPERTY = "link"
 
@@ -54,21 +53,6 @@ var ModelItem.c4Properties: C4Properties?
         }
     }
 
-var ModelItem.icon: String?
-    /**
-     * Returns the icon or null if not set.
-     */
-    get() = this.properties[ICON_PROPERTY]
-
-    /**
-     * Sets the icon if not null or blank.
-     */
-    set(icon) {
-        if (!icon.isNullOrBlank()) {
-            this.addProperty(ICON_PROPERTY, icon)
-        }
-    }
-
 var ModelItem.sprite: Sprite?
     /**
      * Returns the sprite or null if not set.
@@ -100,13 +84,11 @@ var ModelItem.link: String?
     }
 
 internal fun ModelItem.configure(
-    icon: String?,
     sprite: Sprite?,
     link: String?,
     tags: List<String>,
     c4Properties: C4Properties?
 ) {
-    this.icon = icon
     this.sprite = sprite
     this.link = link
     tags.forEach { tag -> this.addTags(tag) }

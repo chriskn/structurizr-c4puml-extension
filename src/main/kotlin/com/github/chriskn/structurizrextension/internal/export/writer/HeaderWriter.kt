@@ -1,9 +1,5 @@
 package com.github.chriskn.structurizrextension.internal.export.writer
 
-import com.github.chriskn.structurizrextension.api.icons.AWS_ICON_COMMONS
-import com.github.chriskn.structurizrextension.api.icons.AWS_ICON_URL
-import com.github.chriskn.structurizrextension.api.icons.IconRegistry
-import com.github.chriskn.structurizrextension.api.model.icon
 import com.github.chriskn.structurizrextension.api.model.sprite
 import com.github.chriskn.structurizrextension.api.view.dynamic.renderAsSequenceDiagram
 import com.github.chriskn.structurizrextension.api.view.sprite.sprites.PlantUmlSprite
@@ -34,7 +30,6 @@ internal class HeaderWriter(private val styleWriter: StyleWriter) {
         writer.writeLine("@startuml(id=${view.key.replace(' ', '_')})")
 
         val c4PumlIncludeURI = "$C4_PLANT_UML_STDLIB_URL/${includeForView(view)}"
-        val iconIncludes = addIncludeUrlsForIcons(view)
         val dependencyStyles = styleWriter.collectAppliedDependencyStyles(view)
         val personStyles = styleWriter.collectAppliedPersonStyles(view)
         val boundaryStyles = styleWriter.collectAppliedBoundaryStyles(view)
@@ -57,7 +52,7 @@ internal class HeaderWriter(private val styleWriter: StyleWriter) {
         val spriteIncludes = sprites.filterIsInstance<PlantUmlSprite>().map { it.path }.toSortedSet()
         val spriteAdditionalIncludes = sprites.map { it.additionalIncludes() }.flatten().toSortedSet().toList()
         val allSpriteIncludes = spriteAdditionalIncludes + spriteIncludes
-        val includes = listOf(c4PumlIncludeURI) + allSpriteIncludes + iconIncludes
+        val includes = listOf(c4PumlIncludeURI) + allSpriteIncludes
         includes.forEach {
             writer.writeLine("!includeurl $it")
         }
@@ -118,25 +113,6 @@ internal class HeaderWriter(private val styleWriter: StyleWriter) {
         ) {
             writer.writeLine()
         }
-    }
-
-    private fun addIncludeUrlsForIcons(view: ModelView): Set<String> {
-        val includes = mutableSetOf<String>()
-        val elements: MutableSet<ModelItem> = collectModelElements(view)
-        val iconsIncludesForElements = elements
-            .asSequence()
-            .mapNotNull { it.icon?.let { name -> IconRegistry.iconUrlFor(name) } }
-        val includeUrlsForElements = iconsIncludesForElements
-            .toSortedSet()
-            .sorted()
-            .toMutableList()
-
-        if (includeUrlsForElements.any { it.startsWith(AWS_ICON_URL) }) {
-            includeUrlsForElements.add(0, AWS_ICON_COMMONS)
-        }
-
-        includeUrlsForElements.forEach { includes.add(it) }
-        return includes.toSortedSet()
     }
 
     private fun collectModelElements(view: ModelView): MutableSet<ModelItem> {

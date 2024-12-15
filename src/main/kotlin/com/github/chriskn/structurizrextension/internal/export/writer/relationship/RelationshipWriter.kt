@@ -6,8 +6,8 @@ import com.github.chriskn.structurizrextension.api.view.layout.DependencyConfigu
 import com.github.chriskn.structurizrextension.api.view.layout.Mode
 import com.github.chriskn.structurizrextension.internal.export.idOf
 import com.github.chriskn.structurizrextension.internal.export.writer.PropertyWriter
-import com.github.chriskn.structurizrextension.internal.export.writer.getUsedIconOrSprite
 import com.github.chriskn.structurizrextension.internal.export.writer.linkString
+import com.github.chriskn.structurizrextension.internal.export.writer.spriteString
 import com.github.chriskn.structurizrextension.internal.view.layout.LayoutRegistry
 import com.structurizr.export.IndentingWriter
 import com.structurizr.model.InteractionStyle
@@ -85,10 +85,9 @@ internal class RelationshipWriter(
         if (relationship.technology != null) {
             relationshipBuilder.append(""", "${relationship.technology}"""")
         }
-        val sprite = relationship.getUsedIconOrSprite()
-        if (sprite.isNotBlank()) {
-            relationshipBuilder.append(", $sprite")
-        }
+        val sprite = relationship.spriteString()
+        relationshipBuilder.append(sprite)
+
         if (!relationship.link.isNullOrBlank()) {
             relationshipBuilder.append(linkString(relationship.link))
         }
@@ -121,10 +120,8 @@ internal class RelationshipWriter(
             relationshipBuilder.append(""", ${'$'}techn="${relationship.technology}"""")
         }
 
-        val sprite = relationship.getUsedIconOrSprite()
-        if (sprite.isNotBlank()) {
-            relationshipBuilder.append(", $sprite")
-        }
+        val sprite = relationship.spriteString()
+        relationshipBuilder.append(sprite)
 
         relationshipBuilder.append(relationship.tagsToPlantUmlSting())
 

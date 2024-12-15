@@ -35,7 +35,7 @@ Node(Default.AWS, "AWS", "", "Production AWS environment", $sprite="AWSCloudAlt,
     ContainerDb(Default.AWS.AWSRDS.FailoverDatabase_1, "Failover Database", "PostgreSql", "Stores data", $sprite="postgresql")
   }
   Node(Default.AWS.EKScluster, "EKS cluster", "", "", $sprite="EKSCloud,color=#ed7100") {
-    Node(Default.AWS.EKScluster.mywebapp, "my.web.app", "", "Web App POD", "") {
+    Node(Default.AWS.EKScluster.mywebapp, "my.web.app", "", "Web App POD") {
       Node(Default.AWS.EKScluster.mywebapp.WebAppcontainer, "Web App container", "", "", $sprite="img:GILBARBARA_PNG_URL/docker.png") {
         Node(Default.AWS.EKScluster.mywebapp.WebAppcontainer.JaegerSidecar, "Jaeger Sidecar", "", "Jaeger sidecar sending Traces", $sprite="jaegertracing,color=#add8e6")
         Container(Default.AWS.EKScluster.mywebapp.WebAppcontainer.WebApplication_1, "Web Application", "Java and Spring MVC", "Spring Boot web application", $sprite="spring")
@@ -52,7 +52,7 @@ Node(Default.AnotherAWSAccount, "Another AWS Account", "", "", $sprite="AWSCloud
   }
 }
 Node(Default.AppleDevice, "Apple Device", "", "", $sprite="apple") {
-  System_Ext(Default.AppleDevice.iOSApp_1, "iOS App", "iOS Application", "")
+  System_Ext(Default.AppleDevice.iOSApp_1, "iOS App", "iOS Application")
 }
 Rel(Default.AppleDevice, Default.AWS.EKScluster.LoadBalancer, "requests data from")
 Rel_R(Default.AWS.AWSRDS.Database_1, Default.AWS.AWSRDS.FailoverDatabase_1, "replicates data to")

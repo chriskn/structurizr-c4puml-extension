@@ -1,22 +1,20 @@
-@startuml(id=DependencyMode)
+@startuml(id=DependencyPositionMode)
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
 title System Landscape
 caption Dependency Test
 
 SHOW_PERSON_OUTLINE()
 LAYOUT_TOP_DOWN()
 
-System(A, "A", "A", "")
-System(B, "B", "B", "")
-System(C, "C", "C", "")
-System(D, "D", "D", "")
-System(E, "E", "E", "")
+System(A, "A", "A")
+System(B, "B", "B")
+System(C, "C", "C")
+System(D, "D", "D")
+System(E, "E", "E")
 
-Rel_Neighbor(A, D, "uses")
+Rel_Back(A, D, "uses")
 Rel(B, A, "uses")
 Rel(C, A, "uses")
 Rel(E, A, "uses")
-
-LAYOUT_WITH_LEGEND()
-
 @enduml

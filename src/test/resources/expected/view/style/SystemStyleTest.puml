@@ -13,8 +13,8 @@ AddRelTag("Dependency Style", $sprite="cell_phone_android_stand_alone", $lineCol
 AddElementTag("System Style", $sprite="img:https://plantuml.com/logo3.png{scale=0.4}", $bgColor=#000000, $fontColor=#ffff00, $borderColor=#008000, $borderStyle=DashedLine(), $borderThickness=4, $shadowing=true, $shape=EightSidedShape(), $techn=Kafka, $legendSprite="&compass,scale=3.0", $legendText=this is a legend)
 AddPersonTag("Person Style", $sprite="apple,scale=0.5,color=#008000", $bgColor=#00ff00, $fontColor=#0000ff, $borderColor=#ff0000, $borderStyle=DashedLine(), $borderThickness=4, $shadowing=false, $shape=EightSidedShape(), $legendText=this is a apple)
 
-System(MySoftwareSystem, "My Software System", "system", "", $tags="System Style+Boundary Style")
-Person(Person, "Person", "", "", $tags="Person Style")
+System(MySoftwareSystem, "My Software System", "system", $tags="System Style+Boundary Style")
+Person(Person, "Person", "", $tags="Person Style")
 
 Rel(Person, MySoftwareSystem, "uses system", $tags="Dependency Style")
 

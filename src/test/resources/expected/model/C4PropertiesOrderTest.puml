@@ -1,5 +1,6 @@
 @startuml(id=C4PropertiesOrderTest)
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
 title test asc - System Context
 caption properties should retain order
 
@@ -11,13 +12,13 @@ AddProperty("1", "x", "y")
 AddProperty("a", "x", "y")
 AddProperty("b", "x", "y")
 AddProperty("c", "x", "y")
-System(testasc, "test asc", "test asc", "")
+System(testasc, "test asc", "test asc")
 WithoutPropertyHeader()
 AddProperty("c", "x", "y")
 AddProperty("b", "x", "y")
 AddProperty("a", "x", "y")
 AddProperty("1", "x", "y")
-System(testdesc, "test desc", "test desc", "")
+System(testdesc, "test desc", "test desc")
 
 WithoutPropertyHeader()
 AddProperty("1", "x", "y")

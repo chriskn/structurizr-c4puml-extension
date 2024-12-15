@@ -11,16 +11,16 @@ Structurizr C4-PlantUML extension aims to bridge the gap between the [structuriz
 
 ## Example Diagrams
 
-The following example diagrams demonstrate the features the Structurizr C4-PlantUML provides: 
+The following example diagrams demonstrate the features the Structurizr C4-PlantUML library provides: 
 
-* links, icons and properties for elements and relationships
+* links and properties for elements and relationships
 * external containers 
 * visualization for system and container boundaries
 * database and queue shapes
 * differentiation between synchronous and asynchronous relationships
 * nested numbered parallel sequences for dynamic diagrams
 * advanced layout configuration for C4-PlantUML diagrams
-* sprite api allowing to use the PlantUML StdLib and custom sprite definitions
+* sprite api allowing to use the PlantUML StdLib and custom sprite definitions for elements and relationships
 * custom styles for model elements and relationships
 
 More examples can be found under `src/test/kotlin`

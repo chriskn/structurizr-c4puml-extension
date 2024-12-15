@@ -13,14 +13,14 @@ LAYOUT_LEFT_RIGHT()
 AddRelTag("async relationship", $lineStyle=DashedLine(), $legendText=async relationship (dashed))
 
 Container_Boundary("MySoftwareSystem.FrontendApp_boundary", "Frontend App" ){
-  Component(MySoftwareSystem.FrontendApp.SPA, "SPA", "", "Single Page Application", "")
+  Component(MySoftwareSystem.FrontendApp.SPA, "SPA", "", "Single Page Application")
 }
 Container_Boundary("MySoftwareSystem.NewBackendApp_boundary", "New Backend App" ){
   ComponentDb(MySoftwareSystem.NewBackendApp.Cache, "Cache", "RocksDB", "In Memory DB", $sprite="rocksdb", $link="https://google.de")
   WithoutPropertyHeader()
   AddProperty("jdbcUrl", "someurl")
-  Component(MySoftwareSystem.NewBackendApp.MyRepo, "MyRepo", "Kotlin, JDBC", "Provides CRUD operations for data", "", $tags="repo+persistence")
-  Component(MySoftwareSystem.NewBackendApp.MyRestController, "MyRestController", "REST", "Provides data via rest", "")
+  Component(MySoftwareSystem.NewBackendApp.MyRepo, "MyRepo", "Kotlin, JDBC", "Provides CRUD operations for data", $tags="repo+persistence")
+  Component(MySoftwareSystem.NewBackendApp.MyRestController, "MyRestController", "REST", "Provides data via rest")
   Component(MySoftwareSystem.NewBackendApp.MyService, "MyService", "", "Does implement some logic", $sprite="kotlin-icon", $link="https://google.de")
 }
 ContainerDb(MySoftwareSystem.Database, "Database", "postgres", "some database", $sprite="postgresql")
