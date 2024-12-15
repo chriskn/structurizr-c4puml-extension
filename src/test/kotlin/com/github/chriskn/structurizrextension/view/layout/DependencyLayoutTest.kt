@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test
 
 class DependencyLayoutTest {
 
-    private val pathToExpectedDiagrams = "plantuml"
+    private val pathToExpectedDiagrams = "dependency"
 
     private val workspace = Workspace("My Workspace", "Some Description")
     private val model: Model = workspace.model

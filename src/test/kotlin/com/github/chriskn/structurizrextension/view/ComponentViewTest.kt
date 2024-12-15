@@ -92,7 +92,7 @@ class ComponentViewTest {
             "Maintainer",
             "some employee",
             location = Location.Internal,
-            uses = listOf(Dependency(restController, "Admin UI", "REST", icon = "empty"))
+            uses = listOf(Dependency(restController, "Admin UI", "REST"))
         )
     }
 

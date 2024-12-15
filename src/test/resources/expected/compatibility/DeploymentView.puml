@@ -8,11 +8,11 @@ skinparam PackageTitleAlignment Center
 SHOW_PERSON_OUTLINE()
 LAYOUT_TOP_DOWN()
 
-Node(Default.Cloud, "Cloud", "", "", "") {
-  Node(Default.Cloud.ContainerRuntime, "Container Runtime", "Something", "Something that runs containers", "") {
-    Container(Default.Cloud.ContainerRuntime.Container1System1_1, "Container 1 System 1", "", "", "")
+Node(Default.Cloud, "Cloud", "", "") {
+  Node(Default.Cloud.ContainerRuntime, "Container Runtime", "Something", "Something that runs containers") {
+    Container(Default.Cloud.ContainerRuntime.Container1System1_1, "Container 1 System 1", "", "")
   }
-  Node(Default.Cloud.LoadBalancer, "Load Balancer", "", "", "")
+  Node(Default.Cloud.LoadBalancer, "Load Balancer", "", "")
 }
 Rel(Default.Cloud.LoadBalancer, Default.Cloud.ContainerRuntime, "forwards requests to", "something")
 

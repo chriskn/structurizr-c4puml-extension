@@ -15,9 +15,9 @@ import com.github.chriskn.structurizrextension.api.view.style.C4PUmlElementShape
  * @property borderColor        the border color for the element. Must be a valid hex code or a named color (e.g. "green")
  * @property shadowing          the element is rendered with a shadow if set to true
  * @property c4Shape            the shape of the element. See [C4PUmlElementShape]
- * @property sprite             the icon for the element
+ * @property sprite             the sprite for the element. See [Sprite]
  * @property legendText         the legend text for the element
- * @property legendSprite       the legend icon for the element
+ * @property legendSprite       the legend  for the element
  * @property technology         the technology of the element
  * @constructor Create new Element style
  */

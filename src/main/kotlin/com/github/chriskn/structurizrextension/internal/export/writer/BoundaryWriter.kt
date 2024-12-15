@@ -60,7 +60,7 @@ internal object BoundaryWriter {
         writer.writeLine(
             """Container_Boundary("${
                 idOf(container)
-            }_boundary", "${container.name}" ${tagsToPlantUmlSting(container)})${determineBoundaryStartSymbol(view)}"""
+            }_boundary", "${container.name}"${tagsToPlantUmlSting(container)})${determineBoundaryStartSymbol(view)}"""
         )
         writer.indent()
     }
@@ -85,8 +85,8 @@ internal object BoundaryWriter {
     }
 
     private fun DeploymentNode.toMacro() =
-        """Node(${idOf(this)}, "$name", "${technology.orEmpty()}", "${description.orEmpty()}", ${
-            this.getUsedIconOrSprite()
+        """Node(${idOf(this)}, "$name", "${technology.orEmpty()}", "${description.orEmpty()}"${
+            this.spriteString()
         }${tagsToPlantUmlSting(this)}${linkString(link)})"""
 
     private fun determineBoundaryEndSymbol(view: View): String =

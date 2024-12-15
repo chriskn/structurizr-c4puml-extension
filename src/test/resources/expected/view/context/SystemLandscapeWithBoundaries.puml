@@ -16,8 +16,8 @@ Enterprise_Boundary(enterprise, My Enterprise) {
 
 WithoutPropertyHeader()
 AddProperty("prop 1", "value 1")
-Person(Actor, "Actor", "", "", $link="https://www.google.de")
-System_Ext(SoftwareSystem0, "Software System 0", "Description 0", "")
+Person(Actor, "Actor", "", $link="https://www.google.de")
+System_Ext(SoftwareSystem0, "Software System 0", "Description 0")
 SetPropertyHeader("Property", "Value")
 AddProperty("prop key0", "prop value0")
 AddProperty("prop key1", "prop value1")

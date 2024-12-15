@@ -1,6 +1,5 @@
 package com.github.chriskn.structurizrextension.api.model
 
-import com.github.chriskn.structurizrextension.api.icons.IconRegistry
 import com.github.chriskn.structurizrextension.api.view.sprite.sprites.Sprite
 import com.structurizr.model.Component
 import com.structurizr.model.Container
@@ -12,7 +11,6 @@ import com.structurizr.model.StaticStructureElement
  * @param name          the name of the component
  * @param description   the description of the component
  * @param c4Type        the [C4Type] of the component
- * @param icon          the icon of the component. See [IconRegistry] for available icons or add your own
  * @param sprite        the sprite of the component. See [Sprite] implementations for sprite types
  * @param link          the link of the component
  * @param technology    the technology of the component
@@ -28,9 +26,6 @@ fun Container.component(
     name: String,
     description: String,
     c4Type: C4Type? = null,
-    @Suppress("DEPRECATED_JAVA_ANNOTATION")
-    @java.lang.Deprecated(since = "Since 12.2. Use sprite API instead")
-    icon: String? = null,
     sprite: Sprite? = null,
     link: String? = null,
     technology: String = "",
@@ -41,6 +36,6 @@ fun Container.component(
 ): Component {
     val component = this.addComponent(name, description, technology)
     component.c4Type = c4Type
-    component.configure(icon, sprite, link, tags, properties, uses, usedBy)
+    component.configure(sprite, link, tags, properties, uses, usedBy)
     return component
 }

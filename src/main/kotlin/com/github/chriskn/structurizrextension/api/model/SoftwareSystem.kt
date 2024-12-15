@@ -1,6 +1,5 @@
 package com.github.chriskn.structurizrextension.api.model
 
-import com.github.chriskn.structurizrextension.api.icons.IconRegistry
 import com.github.chriskn.structurizrextension.api.view.sprite.sprites.Sprite
 import com.structurizr.model.Container
 import com.structurizr.model.Location
@@ -14,7 +13,7 @@ import com.structurizr.model.StaticStructureElement
  * @param description   the description of the container
  * @param location      the [Location] of the container
  * @param c4Type        the [C4Type] of the container
- * @param icon          the icon of the container. See [IconRegistry] for available icons or add your own
+
  * @param sprite        the sprite of the container. See [Sprite] implementations for sprite types
  * @param link          the link of the container
  * @param tags          the list of tags of the container
@@ -30,9 +29,6 @@ fun SoftwareSystem.container(
     description: String,
     location: Location = this.c4Location,
     c4Type: C4Type? = null,
-    @Suppress("DEPRECATED_JAVA_ANNOTATION")
-    @java.lang.Deprecated(since = "Since 12.2. Use sprite API instead")
-    icon: String? = null,
     sprite: Sprite? = null,
     link: String? = null,
     technology: String = "",
@@ -44,6 +40,6 @@ fun SoftwareSystem.container(
     val container = this.addContainer(name, description, technology)
     container.c4Type = c4Type
     container.c4Location = location
-    container.configure(icon, sprite, link, tags, properties, uses, usedBy)
+    container.configure(sprite, link, tags, properties, uses, usedBy)
     return container
 }

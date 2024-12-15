@@ -10,8 +10,8 @@ LAYOUT_TOP_DOWN()
 
 System_Boundary(CustomerInformationSystem, Customer Information System) {
   Container_Boundary("CustomerInformationSystem.ReportingService_boundary", "Reporting Service" ){
-    Component(CustomerInformationSystem.ReportingService.ReportingController, "Reporting Controller", "REST", "Reporting Controller", "")
-    Component(CustomerInformationSystem.ReportingService.ReportingRepository, "Reporting Repository", "JDBC", "Reporting repository", "")
+    Component(CustomerInformationSystem.ReportingService.ReportingController, "Reporting Controller", "REST", "Reporting Controller")
+    Component(CustomerInformationSystem.ReportingService.ReportingRepository, "Reporting Repository", "JDBC", "Reporting repository")
   }
 }
 RelIndex(1,CustomerInformationSystem.ReportingService.ReportingController, CustomerInformationSystem.ReportingService.ReportingRepository, "Stores entity", $sprite="openapi")

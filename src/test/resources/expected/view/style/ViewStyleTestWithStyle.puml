@@ -16,9 +16,9 @@ AddBoundaryTag("Boundary Style", $bgColor=#00ffff, $fontColor=#008000, $borderCo
 AddPersonTag("Person Style", $sprite="apple,scale=0.5,color=#008000", $bgColor=#00ff00, $fontColor=#0000ff, $borderColor=#ff0000, $borderStyle=DashedLine(), $borderThickness=4, $shadowing=false, $shape=EightSidedShape(), $legendText=this is a legend)
 
 System_Boundary(MySoftwareSystem, My Software System, $tags="System Style+Boundary Style") {
-  Container(MySoftwareSystem.MyContainer, "My Container", "", "container", "", $tags="Container Style+Boundary Style")
+  Container(MySoftwareSystem.MyContainer, "My Container", "", "container", $tags="Container Style+Boundary Style")
 }
-Person(Person, "Person", "", "", $tags="Person Style")
+Person(Person, "Person", "", $tags="Person Style")
 
 Rel(Person, MySoftwareSystem.MyContainer, "uses container", $tags="Dependency Style")
 

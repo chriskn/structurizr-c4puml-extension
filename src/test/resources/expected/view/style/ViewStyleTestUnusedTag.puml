@@ -1,12 +1,13 @@
 @startuml(id=ViewStyleTestUnusedTag)
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
 title My Software System - Containers
 caption ViewStyleTestWithStyle
 
 SHOW_PERSON_OUTLINE()
 LAYOUT_TOP_DOWN()
 
-Container(MySoftwareSystem.MyContainer, "My Container", "", "container", "", $tags="Container Style+Boundary Style")
+Container(MySoftwareSystem.MyContainer, "My Container", "", "container", $tags="Container Style+Boundary Style")
 
 
 SHOW_LEGEND(true)

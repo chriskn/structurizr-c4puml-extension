@@ -17,13 +17,13 @@ AddElementTag("Deployment Node Tag", $bgColor=#00eeff, $borderThickness=4, $shad
 AddElementTag("Infrastructure Node Tag", $bgColor=#bcaadd, $borderColor=#008000, $borderThickness=3, $shadowing=false)
 
 Node(Default.AWS, "AWS", "", "Production AWS environment", $sprite="aws") {
-  Node(Default.AWS.Nodewithstyle, "Node with style", "", "", "", $tags="Deployment Node Tag") {
-    Container(Default.AWS.Nodewithstyle.MyContainer_1, "My Container", "", "container", "", $tags="Container Style+Boundary Style")
+  Node(Default.AWS.Nodewithstyle, "Node with style", "", "", $tags="Deployment Node Tag") {
+    Container(Default.AWS.Nodewithstyle.MyContainer_1, "My Container", "", "container", $tags="Container Style+Boundary Style")
   }
-  Node(Default.AWS.Nodewithoutstyle, "Node without style", "", "", "") {
-    Container(Default.AWS.Nodewithoutstyle.SomeContainer_1, "Some Container", "", "", "")
+  Node(Default.AWS.Nodewithoutstyle, "Node without style", "", "") {
+    Container(Default.AWS.Nodewithoutstyle.SomeContainer_1, "Some Container", "", "")
   }
-  Node(Default.AWS.SomeInfrastructureNode, "Some Infrastructure Node", "", "", "", $tags="Infrastructure Node Tag")
+  Node(Default.AWS.SomeInfrastructureNode, "Some Infrastructure Node", "", "", $tags="Infrastructure Node Tag")
 }
 Rel(Default.AWS.Nodewithstyle, Default.AWS.SomeInfrastructureNode, "uses")
 Rel(Default.AWS.Nodewithoutstyle, Default.AWS.SomeInfrastructureNode, "uses", $tags="Dependency Style")
