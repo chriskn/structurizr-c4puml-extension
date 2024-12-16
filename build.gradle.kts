@@ -21,7 +21,7 @@ repositories {
 
 val structurizrVersion = "3.2.1"
 val structurizrExportVersion = "3.2.1"
-val junitVersion = "5.11.3"
+val junitVersion = "5.11.4"
 val assertJVersion = "3.26.3"
 val detektVersion = "1.23.7"
 val kotlinLoggingVersion = "3.0.5"
