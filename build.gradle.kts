@@ -21,7 +21,7 @@ repositories {
 
 val structurizrVersion = "4.0.0"
 val structurizrExportVersion = "4.0.0"
-val junitVersion = "5.11.4"
+val junitVersion = "5.12.2"
 val assertJVersion = "3.27.3"
 val detektVersion = "1.23.8"
 val kotlinLoggingVersion = "3.0.5"
@@ -36,8 +36,8 @@ dependencies {
 
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:$detektVersion")
 
-    testImplementation(platform("org.junit:junit-bom:$junitVersion"))
-    testImplementation("org.junit.jupiter:junit-jupiter")
+    testImplementation("org.junit.jupiter:junit-jupiter:$junitVersion")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testImplementation("org.assertj:assertj-core:$assertJVersion")
 }
 
