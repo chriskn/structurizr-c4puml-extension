@@ -1,7 +1,7 @@
 @startuml(id=ViewStyleTestUnusedTag)
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 
-title My Software System - Containers
+title Container View: My Software System
 caption ViewStyleTestWithStyle
 
 SHOW_PERSON_OUTLINE()

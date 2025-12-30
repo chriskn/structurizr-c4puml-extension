@@ -1,7 +1,7 @@
 @startuml(id=ContainerView)
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 
-title Software System 1 - Containers
+title Container View: Software System 1
 caption A test Container View
 
 SHOW_PERSON_OUTLINE()

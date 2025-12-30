@@ -4,7 +4,7 @@
 !includeurl <tupadr3/devicons/apple>
 !includeurl <tupadr3/devicons/postgresql>
 
-title My Software System - Dynamic
+title Dynamic View: My Software System
 caption DynamicStyleSequenceTest
 
 SHOW_PERSON_OUTLINE()

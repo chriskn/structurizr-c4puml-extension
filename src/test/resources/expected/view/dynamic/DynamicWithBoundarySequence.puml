@@ -2,7 +2,7 @@
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Sequence.puml
 !includeurl <tupadr3/devicons2/openapi>
 
-title Reporting Service - Dynamic
+title Dynamic View: Customer Information System - Reporting Service
 caption This diagram shows what happens when a customer updates their details
 
 SHOW_PERSON_OUTLINE()

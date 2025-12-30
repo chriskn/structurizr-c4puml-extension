@@ -4,7 +4,7 @@
 !includeurl <logos/android-icon>
 !includeurl <logos/docker-icon>
 
-title System Landscape
+title System Landscape View
 caption A test Landscape
 
 SHOW_PERSON_OUTLINE()

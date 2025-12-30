@@ -1,7 +1,7 @@
 @startuml(id=LandscapeView)
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
 
-title System Landscape
+title System Landscape View
 caption A test Landscape View
 
 SHOW_PERSON_OUTLINE()

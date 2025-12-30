@@ -1,7 +1,7 @@
 @startuml(id=DependencyPosition)
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
 
-title System Landscape
+title System Landscape View
 caption Dependency Test
 
 SHOW_PERSON_OUTLINE()

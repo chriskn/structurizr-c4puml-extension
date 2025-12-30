@@ -3,7 +3,7 @@
 !includeurl <office/Devices/cell_phone_android_stand_alone>
 !includeurl <tupadr3/devicons/apple>
 
-title My Software System - System Context
+title System Context View: My Software System
 caption SystemStyleTest
 
 SHOW_PERSON_OUTLINE()

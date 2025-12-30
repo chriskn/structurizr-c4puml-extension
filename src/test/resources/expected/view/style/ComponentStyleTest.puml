@@ -3,7 +3,7 @@
 !includeurl <office/Devices/cell_phone_android_stand_alone>
 !includeurl <tupadr3/devicons/apple>
 
-title My Software System - My Container - Components
+title Component View: My Software System - My Container
 caption ComponentStyleTest
 
 SHOW_PERSON_OUTLINE()

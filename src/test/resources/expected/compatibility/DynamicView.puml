@@ -1,7 +1,7 @@
 @startuml(id=DynamicView)
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Dynamic.puml
 
-title Software System 1 - Dynamic
+title Dynamic View: Software System 1
 caption A test Dynamic View
 
 SHOW_PERSON_OUTLINE()

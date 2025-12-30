@@ -1,7 +1,7 @@
 @startuml(id=C4PropertiesOrderTest)
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
 
-title test asc - System Context
+title System Context View: test asc
 caption properties should retain order
 
 SHOW_PERSON_OUTLINE()
