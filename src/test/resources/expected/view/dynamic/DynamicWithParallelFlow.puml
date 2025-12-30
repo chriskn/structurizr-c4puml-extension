@@ -4,7 +4,7 @@
 !includeurl <tupadr3/devicons/mysql>
 !includeurl <tupadr3/devicons2/oracle_original>
 
-title Customer Information System - Dynamic
+title Dynamic View: Customer Information System
 caption This diagram shows what happens when a customer updates their details
 
 SHOW_PERSON_OUTLINE()

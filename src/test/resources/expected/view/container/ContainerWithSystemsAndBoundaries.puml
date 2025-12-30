@@ -7,7 +7,7 @@
 !includeurl <logos/docker-icon>
 !includeurl <tupadr3/devicons2/graphql>
 
-title My Software System - Containers
+title Container View: My Software System
 caption Example container view
 
 SHOW_PERSON_OUTLINE()

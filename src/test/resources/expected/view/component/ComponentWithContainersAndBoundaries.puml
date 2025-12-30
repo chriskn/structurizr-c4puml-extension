@@ -4,7 +4,7 @@
 !includeurl <logos/postgresql>
 !includeurl <tupadr3/devicons2/rocksdb>
 
-title My Software System - New Backend App - Components
+title Component View: My Software System - New Backend App
 caption Test component view
 
 SHOW_PERSON_OUTLINE()

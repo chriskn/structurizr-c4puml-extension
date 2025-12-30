@@ -3,7 +3,7 @@
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
 !includeurl <logos/android-icon>
 
-title Software System 1 - System Context
+title System Context View: Software System 1
 caption A test Landscape
 
 SHOW_PERSON_OUTLINE()

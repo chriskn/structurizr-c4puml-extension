@@ -90,11 +90,11 @@ internal class ExtendedC4PlantUMLExporter : AbstractDiagramExporter() {
 
     override fun export(view: SystemContextView): Diagram = systemViewExporter.exportContextView(view)
 
-    public override fun startEnterpriseBoundary(view: ModelView, enterpriseName: String, writer: IndentingWriter) {
+    fun startEnterpriseBoundary(view: ModelView, enterpriseName: String, writer: IndentingWriter) {
         boundaryWriter.startEnterpriseBoundary(view, enterpriseName, writer)
     }
 
-    public override fun endEnterpriseBoundary(view: ModelView, writer: IndentingWriter) {
+    fun endEnterpriseBoundary(view: ModelView, writer: IndentingWriter) {
         boundaryWriter.endEnterpriseBoundary(writer, view)
     }
 

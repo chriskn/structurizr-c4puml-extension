@@ -1,7 +1,7 @@
 @startuml(id=DynamicViewSequenceOrdering)
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Sequence.puml
 
-title Customer Information System - Dynamic
+title Dynamic View: Customer Information System
 caption More than 10 messages
 
 SHOW_PERSON_OUTLINE()

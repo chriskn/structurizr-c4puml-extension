@@ -1,7 +1,7 @@
 @startuml(id=DeploymentView)
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Deployment.puml
 
-title Software System 1 - Deployment - Default
+title Deployment View: Software System 1 - Default
 caption A test Deployment View
 
 skinparam PackageTitleAlignment Center

@@ -1,7 +1,7 @@
 @startuml(id=ComponentView)
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
 
-title Software System 1 - Container 1 System 1 - Components
+title Component View: Software System 1 - Container 1 System 1
 caption A test Component View
 
 SHOW_PERSON_OUTLINE()

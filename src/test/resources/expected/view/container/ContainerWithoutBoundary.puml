@@ -7,7 +7,7 @@
 !includeurl <logos/docker-icon>
 !includeurl <tupadr3/devicons2/graphql>
 
-title My Software System - Containers
+title Container View: My Software System
 caption Test container view
 
 LAYOUT_TOP_DOWN()

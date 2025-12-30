@@ -13,7 +13,7 @@
 !includeurl <tupadr3/devicons/apple>
 !includeurl <tupadr3/devicons2/jaegertracing>
 
-title System container - Deployment - Default
+title Deployment View: System container - Default
 caption A deployment diagram showing the environment.
 
 skinparam PackageTitleAlignment Center
