@@ -29,7 +29,7 @@ val kotlinLoggingVersion = "3.0.5"
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation("io.github.microutils:kotlin-logging:$kotlinLoggingVersion")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.20.1")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.21.0")
 
     api("com.structurizr:structurizr-core:$structurizrVersion")
     api("com.structurizr:structurizr-export:$structurizrExportVersion")
