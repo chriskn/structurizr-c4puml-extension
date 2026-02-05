@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    kotlin("jvm") version "2.3.0"
+    kotlin("jvm") version "2.3.10"
     id("io.gitlab.arturbosch.detekt") version "1.23.8"
     id("com.adarshr.test-logger") version "4.0.0"
     jacoco
