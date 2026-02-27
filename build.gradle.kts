@@ -19,7 +19,7 @@ repositories {
     mavenCentral()
 }
 
-val structurizrVersion = "5.0.3"
+val structurizrVersion = "6.0.0"
 val structurizrExportVersion = "5.0.3"
 val junitVersion = "6.0.3"
 val assertJVersion = "3.27.7"
